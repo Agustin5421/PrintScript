@@ -1,3 +1,5 @@
+package token;
+
 public class Token implements TokenI {
     private final TokenType type;
     private final String value;
@@ -29,6 +31,6 @@ public class Token implements TokenI {
 
     @Override
     public String toString() {
-        return String.format("Token(%s, %s, %d, %d)", type, value, line, column);
+        return String.format("token.Token(%s, %s, %d, %d)", type, value, line, column);
     }
 }

@@ -1,4 +1,6 @@
 import org.junit.jupiter.api.Test;
+import token.DataTypeTokenVal;
+import token.TokenTypeGetter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

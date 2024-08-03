@@ -1,3 +1,5 @@
+package token;
+
 public interface TokenI {
     TokenType getType();
     String getValue();

@@ -1,3 +1,5 @@
+package token;
+
 public class DataTypeTokenVal implements TypeGetter {
     @Override
     public boolean checkType(String token) {
