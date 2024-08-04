@@ -1,5 +1,5 @@
 import org.junit.jupiter.api.Test;
-import token.DataTypeTokenVal;
+import token.DataTypeTokenChecker;
 import token.TokenTypeGetter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,7 +10,7 @@ public class ExtractTextTest {
 
     @Test
     public void testTokenize() {
-        Lexer lexer = new Lexer(new TokenTypeGetter(List.of(new DataTypeTokenVal())));
+        Lexer lexer = new Lexer(new TokenTypeGetter(List.of(new DataTypeTokenChecker())));
 
         // Caso 1: Código de ejemplo
         String code1 = "public final String name = \"Olive\"; 'hello' 123";

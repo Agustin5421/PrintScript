@@ -11,13 +11,14 @@ public class TokenTypeGetter {
     }
 
 
-    public TokenType getType(String token) {
+    public TokenType getType(String word) {
         for (TypeGetter validator : validators) {
-            if (validator.checkType(token)) {
-                return validator.getType();
+            TokenType type = validator.getType(word);
+            if (type != null) {
+                return type;
             }
         }
-        //TODO: should it just throw an exception instead of a MISMATCH type?
-        return TokenType.MISMATCH;
+        //TODO: every word that does not match is an identifier?
+        return TokenType.IDENTIFIER;
     }
 }
