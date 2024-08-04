@@ -1,6 +1,8 @@
+package lexer;
+
 import token.Token;
-import token.TokenType;
-import token.TokenTypeGetter;
+import token.tokenTypes.TokenType;
+import token.tokenTypeCheckers.TokenTypeChecker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    private final TokenTypeGetter tokenTypeGetter;
+    private final TokenTypeChecker tokenTypeGetter;
 
     private static final String TEXT_PATTERNS =
             "\"[^\"]*\"" +                                     // Text between double quotes
@@ -20,7 +22,7 @@ public class Lexer {
 
 
 
-    public Lexer(TokenTypeGetter tokenTypeGetter) {
+    public Lexer(TokenTypeChecker tokenTypeGetter) {
         this.tokenTypeGetter = tokenTypeGetter;
     }
 

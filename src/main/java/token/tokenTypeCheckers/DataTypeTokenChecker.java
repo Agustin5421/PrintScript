@@ -1,17 +1,20 @@
-package token;
+package token.tokenTypeCheckers;
+
+import token.tokenTypes.TokenType;
+import token.tokenTypes.TokenValueType;
 
 public class DataTypeTokenChecker implements TypeGetter {
 
     @Override
     public TokenType getType(String value) {
         if (isString(value)) {
-            return TokenType.STRING;
+            return TokenValueType.STRING;
         } else if (isInteger(value)) {
-            return TokenType.INTEGER;
+            return TokenValueType.INTEGER;
         } else if (isFloat(value)) {
-            return TokenType.FLOAT;
+            return TokenValueType.FLOAT;
         } else if (isBoolean(value)) {
-            return TokenType.BOOLEAN;
+            return TokenValueType.BOOLEAN;
         } else {
             return null;
         }

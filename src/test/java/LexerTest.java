@@ -1,10 +1,11 @@
+import lexer.Lexer;
 import org.junit.jupiter.api.Test;
-import token.DataTypeTokenChecker;
-import token.OperationTypeTokenChecker;
-import token.TagTypeTokenChecker;
+import token.tokenTypeCheckers.DataTypeTokenChecker;
+import token.tokenTypeCheckers.OperationTypeTokenChecker;
+import token.tokenTypeCheckers.TagTypeTokenChecker;
 import token.Token;
-import token.TokenType;
-import token.TokenTypeGetter;
+import token.tokenTypes.TokenTagType;
+import token.tokenTypeCheckers.TokenTypeChecker;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class LexerTest {
         OperationTypeTokenChecker OTTChecker = new OperationTypeTokenChecker();
         DataTypeTokenChecker DTTChecker = new DataTypeTokenChecker();
 
-        TokenTypeGetter TTGetter = new TokenTypeGetter(List.of(TTTChecker, OTTChecker, DTTChecker));
+        TokenTypeChecker TTGetter = new TokenTypeChecker(List.of(TTTChecker, OTTChecker, DTTChecker));
 
         Lexer lexer = new Lexer(TTGetter);
 
@@ -33,6 +34,6 @@ public class LexerTest {
                 "\n abc");
 
 
-        assertEquals(TokenType.IDENTIFIER, tokens.get(0).getType());
+        assertEquals(TokenTagType.IDENTIFIER, tokens.get(0).getType());
     }
 }

@@ -1,0 +1,102 @@
+@startuml
+class token.tokenTypeCheckers.DataTypeTokenChecker {
++ TokenType getType(String)
+- {static} boolean isString(String)
+- {static} boolean isInteger(String)
+- {static} boolean isFloat(String)
+- {static} boolean isBoolean(String)
+}
+
+enum token.tokenTypes.TokenOperandType implements token.tokenTypes.TokenType{
++  ADD_OPERATION
++  SUB_OPERATION
++  MUL_OPERATION
++  DIV_OPERATION
+}
+
+class token.tokenTypeCheckers.TagTypeTokenChecker {
+- {static} Map<String,TokenType> reservedWords
++ TokenType getType(String)
+}
+
+
+enum token.tokenTypes.TokenTagType implements token.tokenTypes.TokenType {
++  PUBLIC_KEYWORD
++  FINAL_KEYWORD
++  IDENTIFIER
++  ASSIGNATION
++  SEMICOLON
++  DECLARATION
++  SYNTAX
+}
+
+token.tokenTypes --* token.Token
+
+token --* lexer.Lexer
+
+class token.Token {
+- TokenType type
+- String value
+- int line
+- int column
++ TokenType getType()
++ String getValue()
++ int getRow()
++ int getCol()
++ String toString()
+}
+
+
+class token.tokenTypeCheckers.TokenTypeChecker {
+- List<TypeGetter> validators
++ TokenType getType(String)
+}
+
+
+enum token.tokenTypes.TokenDataType implements token.tokenTypes.TokenType{
++  STRING_TYPE
++  INTEGER_TYPE
++  FLOAT_TYPE
++  BOOLEAN_TYPE
+}
+
+class lexer.Lexer {
+- TokenTypeChecker tokenTypeGetter
+- {static} String TEXT_PATTERNS
++ List<Token> extractTokens(String)
+- {static} void UpdateRowCol(String,int,int,Position)
+}
+
+
+class lexer.Lexer$Position {
+~ int row
+~ int col
+}
+
+enum token.tokenTypes.TokenValueType implements token.tokenTypes.TokenType{
++  STRING
++  INTEGER
++  FLOAT
++  BOOLEAN
+}
+
+class token.tokenTypeCheckers.OperationTypeTokenChecker {
+- {static} Map<String,TokenType> operationsMap
++ TokenType getType(String)
+}
+
+
+interface token.tokenTypes.TokenType {
+}
+interface token.tokenTypeCheckers.TypeGetter {
+~ TokenType getType(String)
+}
+
+
+
+token.tokenTypeCheckers.TypeGetter <|.. token.tokenTypeCheckers.DataTypeTokenChecker
+token.tokenTypeCheckers.TypeGetter <|.. token.tokenTypeCheckers.TagTypeTokenChecker
+token.tokenTypeCheckers.TypeGetter <|.. token.tokenTypeCheckers.TokenTypeChecker
+lexer.Lexer +.. lexer.Lexer$Position
+token.tokenTypeCheckers.TypeGetter <|.. token.tokenTypeCheckers.OperationTypeTokenChecker
+@enduml

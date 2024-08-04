@@ -1,5 +1,7 @@
 package token;
 
+import token.tokenTypes.TokenType;
+
 public class Token {
     private final TokenType type;
     private final String value;

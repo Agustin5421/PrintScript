@@ -1,12 +1,15 @@
-package token;
+package token.tokenTypeCheckers;
+
+import token.tokenTypes.TokenTagType;
+import token.tokenTypes.TokenType;
 
 import java.util.List;
 
-public class TokenTypeGetter implements TypeGetter{
+public class TokenTypeChecker implements TypeGetter{
 
     private final List<TypeGetter> validators;
 
-    public TokenTypeGetter(List<TypeGetter> validators) {
+    public TokenTypeChecker(List<TypeGetter> validators) {
         this.validators = validators;
     }
 
@@ -19,6 +22,6 @@ public class TokenTypeGetter implements TypeGetter{
             }
         }
         //TODO: every word that does not match is an identifier?
-        return TokenType.IDENTIFIER;
+        return TokenTagType.IDENTIFIER;
     }
 }
