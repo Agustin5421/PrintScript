@@ -65,5 +65,11 @@ public class ExtractTextTest {
         assertEquals("=", tokens4.get(2));
         assertEquals("'c'", tokens4.get(3));
         assertEquals(";", tokens4.get(4));
+
+
+        //My checks
+
+        List<String> tokens5 = lexer.extractWords("String name = 190+2+number;");
+        System.out.println(tokens5);
     }
 }

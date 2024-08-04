@@ -15,7 +15,8 @@ public class Lexer {
                     "|'[^']*'" +                        // Cadenas entre comillas simples
                     "|\\d+" +                           // Enteros
                     "|[a-zA-Z_][a-zA-Z_0-9]*" +         // Identificadores y palabras clave
-                    "|[=;]";                            // Operadores y signos de puntuación
+                    "|[=;]" +                           // Operadores y signos de puntuación
+                    "|[+\\-*/]";                        // Operadores aritméticos
 
     public Lexer(TokenTypeGetter tokenTypeGenerator) {
         this.tokenTypeGenerator = tokenTypeGenerator;
