@@ -11,40 +11,67 @@ public class Lexer {
     private final TokenTypeGetter tokenTypeGenerator;
 
     private static final String TEXT_PATTERNS =
-            "\"[^\"]*\"" +                              // Cadenas entre comillas dobles
-                    "|'[^']*'" +                        // Cadenas entre comillas simples
-                    "|\\d+" +                           // Enteros
-                    "|[a-zA-Z_][a-zA-Z_0-9]*" +         // Identificadores y palabras clave
-                    "|[=;]" +                           // Operadores y signos de puntuación
-                    "|[+\\-*/]";                        // Operadores aritméticos
+            "\"[^\"]*\"" +                                     // Text between double quotes
+                    "|'[^']*'" +                               // Text between single quotes
+                    "|\\d+" +                                  // Integers
+                    "|[a-zA-Z_][a-zA-Z_0-9]*" +                // Identifiers and keywords
+                    "|[=;]" +                                  // Equal
+                    "|[+\\-*/]";                               // Arithmetic Operands
+
+
 
     public Lexer(TokenTypeGetter tokenTypeGenerator) {
         this.tokenTypeGenerator = tokenTypeGenerator;
     }
 
 
-    public List<String> extractWords(String code) {
-        List<String> codeAsList = new ArrayList<>();
+
+    public List<Token> extractTokens(String code) {
+        List<Token> tokens = new ArrayList<>();
         Pattern pattern = Pattern.compile(TEXT_PATTERNS);
         Matcher matcher = pattern.matcher(code);
+
+        Position position = new Position(1, 0);
+        int currentIndex = 0;
+
         while (matcher.find()) {
-            codeAsList.add(matcher.group());
+            String word = matcher.group();
+            int start = matcher.start();
+
+            UpdateRowCol(code, currentIndex, start, position);
+            currentIndex = matcher.end();
+
+            //Create Token
+            TokenType type = tokenTypeGenerator.getType(word);
+            Token token = new Token(type, word, position.row, position.col);
+            tokens.add(token);
+
+            //Update col
+            position.col += word.length();
         }
-        return codeAsList;
+
+        return tokens;
     }
 
-
-    //TODO: no idea how to check col/row
-    public List<Token> extractTokens(String code) {
-        int row = 0;
-        int col = 0;
-        List<Token> tokens = new ArrayList<>();
-        List<String> words = extractWords(code);
-        for (String word : words) {
-            TokenType type = tokenTypeGenerator.getType(word);
-            Token token = new Token(type, word, row, col);
-            tokens.add(token);
+    private static void UpdateRowCol(String code, int currentIndex, int start, Position position) {
+        // Update row and col
+        for (int i = currentIndex; i < start; i++) {
+            if (code.charAt(i) == '\n') {
+                position.row++;
+                position.col = 0;
+            } else {
+                position.col++;
+            }
         }
-        return tokens;
+    }
+
+    private static class Position {
+        int row;
+        int col;
+
+        Position(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
     }
 }
