@@ -2,7 +2,7 @@ package token;
 
 import java.util.List;
 
-public class TokenTypeGetter {
+public class TokenTypeGetter implements TypeGetter{
 
     private final List<TypeGetter> validators;
 

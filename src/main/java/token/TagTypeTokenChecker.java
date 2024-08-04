@@ -17,6 +17,8 @@ public class TagTypeTokenChecker implements TypeGetter{
         reservedWords.put("boolean", TokenType.BOOLEAN_TYPE);
         reservedWords.put("=", TokenType.ASSIGNATION);
         reservedWords.put(";", TokenType.SEMICOLON);
+        reservedWords.put("let", TokenType.DECLARATION);
+        reservedWords.put(":", TokenType.SYNTAX);
     }
 
 

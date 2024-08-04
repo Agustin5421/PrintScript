@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Lexer {
-    private final TokenTypeGetter tokenTypeGenerator;
+    private final TokenTypeGetter tokenTypeGetter;
 
     private static final String TEXT_PATTERNS =
             "\"[^\"]*\"" +                                     // Text between double quotes
@@ -20,8 +20,8 @@ public class Lexer {
 
 
 
-    public Lexer(TokenTypeGetter tokenTypeGenerator) {
-        this.tokenTypeGenerator = tokenTypeGenerator;
+    public Lexer(TokenTypeGetter tokenTypeGetter) {
+        this.tokenTypeGetter = tokenTypeGetter;
     }
 
 
@@ -42,7 +42,7 @@ public class Lexer {
             currentIndex = matcher.end();
 
             //Create Token
-            TokenType type = tokenTypeGenerator.getType(word);
+            TokenType type = tokenTypeGetter.getType(word);
             Token token = new Token(type, word, position.row, position.col);
             tokens.add(token);
 
@@ -54,7 +54,6 @@ public class Lexer {
     }
 
     private static void UpdateRowCol(String code, int currentIndex, int start, Position position) {
-        // Update row and col
         for (int i = currentIndex; i < start; i++) {
             if (code.charAt(i) == '\n') {
                 position.row++;

@@ -25,7 +25,7 @@ public class LexerTest {
         assertEquals(13, lexer.extractTokens("2; let code = 9                     5 this is a VARIABLE VAR STRING").size());
         assertEquals(5, lexer.extractTokens("String name = Olive;").size());
         assertEquals(5, lexer.extractTokens("String name = 190;").size());
-        assertEquals(9, lexer.extractTokens("String name = 190+2+number;").size());
+        assertEquals(9, lexer.extractTokens("String name = 190+2+nu mber;").size());
 
 
 

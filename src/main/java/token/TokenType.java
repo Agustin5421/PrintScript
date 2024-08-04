@@ -18,4 +18,6 @@ public enum TokenType {
     FLOAT,
     BOOLEAN,
     SEMICOLON,
+    DECLARATION,
+    SYNTAX
 }
