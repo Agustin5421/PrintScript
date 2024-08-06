@@ -9,7 +9,7 @@ public class DataTypeTokenChecker implements TypeGetter {
     public TokenType getType(String value) {
         if (isString(value)) {
             return TokenValueType.STRING;
-        } else if (isInteger(value)) {
+        } else if (isNumber(value)) {
             return TokenValueType.NUMBER;
         } /*else if (isFloat(value)) {
             return TokenValueType.FLOAT;
@@ -24,6 +24,10 @@ public class DataTypeTokenChecker implements TypeGetter {
         return (value.startsWith("\"") && value.endsWith("\"")) || (value.startsWith("'") && value.endsWith("'"));
     }
 
+    private static boolean isNumber(String value) {
+        return isInteger(value) || isFloat(value);
+    }
+
     private static boolean isInteger(String value) {
         try {
             Integer.parseInt(value);
@@ -33,7 +37,6 @@ public class DataTypeTokenChecker implements TypeGetter {
         }
     }
 
-    /*
     private static boolean isFloat(String value) {
         try {
             Float.parseFloat(value);
@@ -43,9 +46,9 @@ public class DataTypeTokenChecker implements TypeGetter {
         }
     }
 
+    /*
     private static boolean isBoolean(String value) {
         return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
     }
-
-     */
+    */
 }
