@@ -1,6 +1,6 @@
 package token.tokenTypeCheckers;
 
-import token.tokenTypes.TokenOperandType;
+import token.tokenTypes.TokenDataType;
 import token.tokenTypes.TokenType;
 
 import java.util.HashMap;
@@ -11,12 +11,12 @@ public class OperationTypeTokenChecker implements TypeGetter {
 
     static {
         operationsMap = new HashMap<>();
-        operationsMap.put("+", TokenOperandType.OPERAND);
-        operationsMap.put("-", TokenOperandType.OPERAND);
-        operationsMap.put("*", TokenOperandType.OPERAND);
-        operationsMap.put("/", TokenOperandType.OPERAND);
-        operationsMap.put("<", TokenOperandType.OPERAND);
-        operationsMap.put(">", TokenOperandType.OPERAND);
+        operationsMap.put("+", TokenDataType.OPERAND);
+        operationsMap.put("-", TokenDataType.OPERAND);
+        operationsMap.put("*", TokenDataType.OPERAND);
+        operationsMap.put("/", TokenDataType.OPERAND);
+        operationsMap.put("<", TokenDataType.OPERAND);
+        operationsMap.put(">", TokenDataType.OPERAND);
 
     }
 
