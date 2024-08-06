@@ -1,11 +1,8 @@
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
-import token.tokenTypeCheckers.DataTypeTokenChecker;
-import token.tokenTypeCheckers.OperationTypeTokenChecker;
-import token.tokenTypeCheckers.TagTypeTokenChecker;
+import token.tokenTypeCheckers.*;
 import token.Token;
 import token.tokenTypes.TokenTagType;
-import token.tokenTypeCheckers.TokenTypeChecker;
 
 import java.util.List;
 
@@ -18,9 +15,9 @@ public class LexerTest {
         Lexer lexer = initLexer();
 
         assertEquals(13, lexer.extractTokens("2; let code = 9                     5 this is a VARIABLE VAR STRING").size());
-        assertEquals(5, lexer.extractTokens("String name = Olive;").size());
-        assertEquals(5, lexer.extractTokens("String name = 190;").size());
-        assertEquals(9, lexer.extractTokens("String name = 190+2+number;").size());
+        assertEquals(5, lexer.extractTokens("string name = Olive;").size());
+        assertEquals(5, lexer.extractTokens("string name = 190;").size());
+        assertEquals(9, lexer.extractTokens("string name = 190+2+number;").size());
 
         List<Token> tokens = lexer.extractTokens("name = 'hello world + 2' + 'hola'" +
                 "\n abc");
@@ -36,12 +33,11 @@ public class LexerTest {
 
         // Define the test cases
             String[] testCases = {
+                    "2a = 'test' * 2.5",
                     "name = 2",
                     "\"Hello World\" + 3.14",
-                    "if (x > 0) { x = x + 1; }", //If not yet implemented
                     "\n abc",
-                    "'string' true 45",
-                    "a = 'test' * 2.5"
+                    "'string' true 45"
             };
 
             // Run the test cases
@@ -58,8 +54,9 @@ public class LexerTest {
         TagTypeTokenChecker tagTypeChecker = new TagTypeTokenChecker();
         OperationTypeTokenChecker operationTypeChecker = new OperationTypeTokenChecker();
         DataTypeTokenChecker dataTypeChecker = new DataTypeTokenChecker();
+        IdentifierTypeChecker identifierTypeChecker = new IdentifierTypeChecker();
 
-        TokenTypeChecker tokenTypeChecker = new TokenTypeChecker(List.of(tagTypeChecker, operationTypeChecker, dataTypeChecker));
+        TokenTypeChecker tokenTypeChecker = new TokenTypeChecker(List.of(tagTypeChecker, operationTypeChecker, dataTypeChecker, identifierTypeChecker));
 
         return new Lexer(tokenTypeChecker);
     }

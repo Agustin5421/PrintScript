@@ -15,12 +15,15 @@ public class Lexer {
     private static final String TEXT_PATTERNS =
             "\"[^\"]*\"" +                                     // Text between double quotes
                     "|'[^']*'" +                               // Text between single quotes
-                    "|\\d+\\.\\d+" +                           // Decimal numbers
-                    "|\\d+" +                                  // Integers
-                    "|[a-zA-Z_][a-zA-Z_0-9]*" +                // Identifiers and keywords
-                    "|[=;]" +                                  // Equal and semicolon
-                    "|[+\\-*/]" +                              // Arithmetic Operands
-                    "|[()<>]";                                 // Parentheses and angle brackets
+                    "|\\d+(\\.\\d+)?[a-zA-Z_]*" +              // Numbers with optional decimal part and units (with letters)
+                    "|\\b[a-zA-Z_][a-zA-Z\\d_]*\\b" +          // Identifiers and keywords
+                    "|[=;:]" +                                 // Equal, semicolon, and colon
+                    "|[+\\-*/%]" +                             // Arithmetic operands
+                    "|[()<>{},]" +                             // Parentheses, angle brackets, curly braces, comma
+                    "|[.]";                                    // Period (for decimal for decimal points or standalone)
+
+
+
 
 
     public Lexer(TokenTypeChecker tokenTypeGetter) {

@@ -10,12 +10,12 @@ public class DataTypeTokenChecker implements TypeGetter {
         if (isString(value)) {
             return TokenValueType.STRING;
         } else if (isInteger(value)) {
-            return TokenValueType.INTEGER;
-        } else if (isFloat(value)) {
+            return TokenValueType.NUMBER;
+        } /*else if (isFloat(value)) {
             return TokenValueType.FLOAT;
         } else if (isBoolean(value)) {
             return TokenValueType.BOOLEAN;
-        } else {
+        } */else {
             return null;
         }
     }

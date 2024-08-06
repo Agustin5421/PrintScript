@@ -21,7 +21,6 @@ public class TokenTypeChecker implements TypeGetter{
                 return type;
             }
         }
-        //TODO: every word that does not match is an identifier?
-        return TokenTagType.IDENTIFIER;
+        return TokenTagType.INVALID;
     }
 }
