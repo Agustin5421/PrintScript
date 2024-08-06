@@ -33,6 +33,7 @@ public class DataTypeTokenChecker implements TypeGetter {
         }
     }
 
+    /*
     private static boolean isFloat(String value) {
         try {
             Float.parseFloat(value);
@@ -45,4 +46,6 @@ public class DataTypeTokenChecker implements TypeGetter {
     private static boolean isBoolean(String value) {
         return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
     }
+
+     */
 }
