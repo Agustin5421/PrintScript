@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import token.tokenTypeCheckers.*;
 import token.Token;
 import token.tokenTypes.TokenTagType;
+import token.tokenTypes.TokenValueType;
 
 import java.util.List;
 
@@ -48,6 +49,32 @@ public class LexerTest {
                 tokens.forEach(token -> System.out.println("Token: " + token));
         }
         System.out.println("--------------------------------------------------------------------");
+    }
+
+    @Test
+    public void testSeveralLinesCode() {
+        Lexer lexer = initLexer();
+
+        String code = "This\nis\nan\nexample\n'hi\nhey'";
+
+        List<Token> tokens = lexer.extractTokens(code);
+
+        List<Token> tokensToCompare = List.of(
+                new Token(TokenTagType.IDENTIFIER, "This", 1, 0),
+                new Token(TokenTagType.IDENTIFIER, "is", 2, 0),
+                new Token(TokenTagType.IDENTIFIER, "an", 3, 0),
+                new Token(TokenTagType.IDENTIFIER, "example", 4, 0),
+                new Token(TokenValueType.STRING, "'hi\nhey'", 5, 0)
+                );
+
+        for (int i = 0; i < tokens.size(); i++) {
+            Token tokenToComp = tokensToCompare.get(i);
+            Token token = tokens.get(i);
+            assertEquals(tokenToComp.getValue(), token.getValue());
+            assertEquals(tokenToComp.getType(), token.getType());
+            assertEquals(tokenToComp.getRow(), token.getRow());
+            assertEquals(tokenToComp.getCol(), token.getCol());
+        }
     }
 
     private static Lexer initLexer() {
