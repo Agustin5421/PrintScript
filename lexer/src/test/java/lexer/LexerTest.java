@@ -1,4 +1,5 @@
-import lexer.Lexer;
+package lexer;
+
 import org.junit.jupiter.api.Test;
 import token.tokenTypeCheckers.*;
 import token.Token;
