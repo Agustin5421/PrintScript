@@ -1,6 +1,7 @@
 package lexer;
 
 import token.Token;
+import token.TokenPosition;
 import token.tokenTypes.TokenType;
 import token.tokenTypeCheckers.TokenTypeChecker;
 
@@ -38,46 +39,45 @@ public class Lexer {
         Pattern pattern = Pattern.compile(TEXT_PATTERNS);
         Matcher matcher = pattern.matcher(code);
 
-        Position position = new Position(1, 1);
+//        Position position = new Position(1, 1);
+        TokenPosition initialPosition = new TokenPosition(1, 1);
         int currentIndex = 0;
 
         while (matcher.find()) {
             String word = matcher.group();
             int start = matcher.start();
+            int end = matcher.end();
 
-            UpdateRowCol(code, currentIndex, start, position);
-            currentIndex = matcher.end();
+            initialPosition = updatePosition(code, currentIndex, start, initialPosition);
+            TokenPosition finalPosition = updatePosition(code, start, end, initialPosition);
+
+            currentIndex = end;
 
             //Create Token
             TokenType type = tokenTypeGetter.getType(word);
-            Token token = new Token(type, word, position.row, position.col);
+            Token token = new Token(type, word, initialPosition, finalPosition);
             tokens.add(token);
 
-            //Update col
-            position.col += word.length();
+            //Update position
+            initialPosition = finalPosition;
         }
 
         return tokens;
     }
 
-    private static void UpdateRowCol(String code, int currentIndex, int start, Position position) {
-        for (int i = currentIndex; i < start; i++) {
+    private TokenPosition updatePosition(String code, int initialIndex, int finalIndex, TokenPosition position) {
+        int row = position.getRow();
+        int col = position.getCol();
+
+        for (int i = initialIndex; i < finalIndex; i++) {
             if (code.charAt(i) == '\n') {
-                position.row++;
-                position.col = 1;
+                row++;
+                col = 1;
             } else {
-                position.col++;
+                col++;
             }
         }
-    }
 
-    private static class Position {
-        int row;
-        int col;
-
-        Position(int row, int col) {
-            this.row = row;
-            this.col = col;
-        }
+        return new TokenPosition(row, col);
     }
 }
