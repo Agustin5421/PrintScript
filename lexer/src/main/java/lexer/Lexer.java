@@ -22,7 +22,7 @@ public class Lexer {
                     "|[+\\-*/%]" +                             // Arithmetic operands
                     "|[()<>{},]" +                             // Parentheses, angle brackets, curly braces, comma
                     "|[.]" +                                   // Period (for decimal for decimal points or standalone)
-                    "|\\S";                                     // Any other single character (mismatch), excluding spaces
+                    "|\\S";                                    // Any other single character (mismatch), excluding spaces
 
 
 
