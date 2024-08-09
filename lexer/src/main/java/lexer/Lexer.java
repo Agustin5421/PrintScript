@@ -20,7 +20,8 @@ public class Lexer {
                     "|[=;:]" +                                 // Equal, semicolon, and colon
                     "|[+\\-*/%]" +                             // Arithmetic operands
                     "|[()<>{},]" +                             // Parentheses, angle brackets, curly braces, comma
-                    "|[.]";                                    // Period (for decimal for decimal points or standalone)
+                    "|[.]" +                                   // Period (for decimal for decimal points or standalone)
+                    "|\\S";                                     // Any other single character (mismatch), excluding spaces
 
 
 
@@ -37,7 +38,7 @@ public class Lexer {
         Pattern pattern = Pattern.compile(TEXT_PATTERNS);
         Matcher matcher = pattern.matcher(code);
 
-        Position position = new Position(1, 0);
+        Position position = new Position(1, 1);
         int currentIndex = 0;
 
         while (matcher.find()) {
@@ -63,7 +64,7 @@ public class Lexer {
         for (int i = currentIndex; i < start; i++) {
             if (code.charAt(i) == '\n') {
                 position.row++;
-                position.col = 0;
+                position.col = 1;
             } else {
                 position.col++;
             }
