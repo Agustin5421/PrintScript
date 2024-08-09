@@ -73,6 +73,8 @@ public class LexerTest {
             assertEquals(tokenToComp.getValue(), token.getValue());
             assertEquals(tokenToComp.getType(), token.getType());
             assertEquals(tokenToComp.getInitialPosition().getRow(), token.getInitialPosition().getRow());
+            assertEquals(tokenToComp.getInitialPosition().getCol(), token.getInitialPosition().getCol());
+            assertEquals(tokenToComp.getFinalPosition().getRow(), token.getFinalPosition().getRow());
             assertEquals(tokenToComp.getFinalPosition().getCol(), token.getFinalPosition().getCol());
         }
     }
