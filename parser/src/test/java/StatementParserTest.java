@@ -36,7 +36,7 @@ public class StatementParserTest {
         VariableDeclaration secondDeclaration = (VariableDeclaration) program2.getStatements().get(1);
         assertEquals("myNumber", secondDeclaration.getIdentifier().getName(), "Second identifier should be 'myNumber'");
         assertInstanceOf(NumberLiteral.class, secondDeclaration.getLiteral(), "Second literal should be a LiteralNumber");
-        assertEquals(42, ((NumberLiteral) secondDeclaration.getLiteral()).getValue(), "Second literal value should be 42");
+        assertEquals(42, (secondDeclaration.getLiteral()).getValue(), "Second literal value should be 42");
 
     }
 
