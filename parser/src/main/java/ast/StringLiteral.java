@@ -1,6 +1,6 @@
 package ast;
 
-public class StringLiteral implements Literal {
+public class StringLiteral implements Literal<String> {
     private final String value;
     public StringLiteral(String value) {
         this.value = value;
@@ -14,7 +14,7 @@ public class StringLiteral implements Literal {
     }
 
     @Override
-    public Object getValue() {
+    public String getValue() {
         return value;
     }
 }
