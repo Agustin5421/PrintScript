@@ -27,7 +27,7 @@ public class Interpreter {
 
             return variablesRepository.addVariable(name, value);
         } else if (statement instanceof ast.BinaryExpression)  {
-            BinaryExpressionEvaluator binaryExpression = new BinaryExpressionEvaluator();
+            BinaryExpressionEvaluator binaryExpression = new BinaryExpressionEvaluator(variablesRepository);
             binaryExpression.evaluate((Expression) statement);
         }
         return variablesRepository;

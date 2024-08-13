@@ -1,82 +1,75 @@
 package interpreter.runtime;
 
-import ast.BinaryExpression;
-import ast.Expression;
-import ast.Literal;
+import ast.*;
+import interpreter.VariablesRepository;
 
 public class BinaryExpressionEvaluator implements Evaluator {
+    VariablesRepository variablesRepository;
+    public BinaryExpressionEvaluator(VariablesRepository variablesRepository) {
+        this.variablesRepository = variablesRepository;
+    }
+
     @Override
-    public void evaluate(Expression statement) {
-        BinaryExpression binaryExpression = (BinaryExpression) statement;
-        Expression left = binaryExpression.left;
-        Expression right = binaryExpression.right;
-        String operator = binaryExpression.operator;
-        if (checkLiterals(left, right)) {
-            Literal<?> left1 = (Literal<?>) left;
-            Literal<?> right1 = (Literal<?>) right;
-            if (checkStrings(left1, right1)) {
-                evaluateStringOperations((Literal<String>) left1, (Literal<String>) right1, operator);
+    public Expression evaluate(Expression statement) {
+        if (statement instanceof BinaryExpression) {
+            return handleBinaryOperation((BinaryExpression) statement);
+        }
+        else if (statement instanceof Literal<?>) {
+            return statement;
+        }
+        else if (statement instanceof Identifier) {
+            try {
+                String variable = variablesRepository.getStringVariable(((Identifier) statement).getName());
+                return new StringLiteral(variable);
             }
-            else if (checkNumbers(left1, right1)){
-                evaluateNumberOperations((Literal<Integer>) left1, (Literal<Integer>) right1, operator);
-            }
-            else {
-                // TODO implement number and string operations?
-                throw new RuntimeException("Not implemented number and string operations yet");
+            catch (IllegalArgumentException exception) {
+                Number variable = variablesRepository.getNumberVariable(((Identifier) statement).getName());
+                return new NumberLiteral(variable);
             }
         }
         else {
-
-        }
-        // TODO implement non literal operations
-        throw new RuntimeException("Not implemented variable operations yet");
-    }
-
-    private void evaluateBinaryExpression() {
-
-    }
-
-    private void evaluateNumberOperations(Literal<Integer> left, Literal<Integer> right, String operator) {
-        Integer result;
-        switch (operator) {
-            case "+":
-                result = left.getValue() + right.getValue();
-                break;
-            case "-":
-                result = left.getValue() - right.getValue();
-                break;
-            case "*":
-                result = left.getValue() * right.getValue();
-                break;
-            case "/":
-                result = left.getValue() / right.getValue();
-                break;
-            case "%":
-                result = left.getValue() % right.getValue();
-                break;
+            throw new RuntimeException("Something else went wrong?");
         }
     }
 
-    private void evaluateStringOperations(Literal<String> left, Literal<String> right, String operator) {
-        String result;
-        switch (operator) {
-            case "+":
-                result = left.getValue() + right.getValue();
-                break;
-            default:
-                throw new RuntimeException("Not an opperation supported for strings");
+    private Expression handleBinaryOperation(BinaryExpression statement) {
+        Expression left = evaluate(statement.left);
+        Expression right = evaluate(statement.right);
+        if (statement.operator.equals("+")) {
+            return validateAddOperation(left, right);
+        }
+        else {
+            switch (statement.operator) {
+                case "-":
+                    return new NumberLiteral((getNumberDoubleValue(evaluate(left)) - getNumberDoubleValue(evaluate(right))));
+                case "/":
+                    return new NumberLiteral((getNumberDoubleValue(left) / getNumberDoubleValue(right)));
+                case "*":
+                    return new NumberLiteral((getNumberDoubleValue(left) * getNumberDoubleValue(right)));
+                case "%":
+                    return new NumberLiteral((getNumberDoubleValue(left) % getNumberDoubleValue(right)));
+                default:
+                    throw new RuntimeException("Not a valid operation");
+            }
         }
     }
 
-    private static boolean checkLiterals(Expression left, Expression right) {
-        return left instanceof Literal && right instanceof Literal;
+    private Expression validateAddOperation(Expression left, Expression right) {
+        if (left instanceof StringLiteral || right instanceof StringLiteral) {
+            String leftValue = left instanceof StringLiteral ? ((StringLiteral) left).getValue() : String.valueOf(((Literal<?>) left).getValue());
+            String rightValue = right instanceof StringLiteral ? ((StringLiteral) right).getValue() : String.valueOf(((Literal<?>) right).getValue());
+            return new StringLiteral(leftValue + rightValue);
+        }
+        else if (left instanceof NumberLiteral && right instanceof NumberLiteral) {
+            return new NumberLiteral(((NumberLiteral) left).getValue().doubleValue() + ((NumberLiteral) right).getValue().doubleValue());
+        }
+        else {
+            // TODO check for variable operations
+            return null;
+        }
     }
 
-    private boolean checkNumbers(Literal<?> left, Literal<?> right) {
-        return left.getValue() instanceof Integer && right.getValue() instanceof Integer;
-    }
-
-    private static boolean checkStrings(Literal<?> left, Literal<?> right) {
-        return left.getValue() instanceof String && right.getValue() instanceof String;
+    public double getNumberDoubleValue(Expression numberLiteral) {
+        return ((NumberLiteral) numberLiteral).getValue().doubleValue();
     }
 }
