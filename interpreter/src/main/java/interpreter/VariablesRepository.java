@@ -17,7 +17,17 @@ public class VariablesRepository {
         this.numberVars = numberVars;
     }
 
-    public VariablesRepository setStringVar(String name, String value) {
+    public VariablesRepository addVariable(String name, Object value) {
+        if(value instanceof String) {
+            return addVariable(name, (String) value);
+        } else if(value instanceof Number) {
+            return addVariable(name, (Number) value);
+        } else {
+            throw new IllegalArgumentException("Unknown literal type");
+        }
+    }
+
+    private VariablesRepository addVariable(String name, String value) {
         if(numberVars.containsKey(name)) {
             throw new IllegalArgumentException("Variable " + name + " is already defined as a number");
         }
@@ -27,7 +37,7 @@ public class VariablesRepository {
         return new VariablesRepository(newStringVars, numberVars);
     }
 
-    public VariablesRepository setNumberVar(String name, Number value) {
+    private VariablesRepository addVariable(String name, Number value) {
         if(stringVars.containsKey(name)) {
             throw new IllegalArgumentException("Variable " + name + " is already defined as a string");
         }
