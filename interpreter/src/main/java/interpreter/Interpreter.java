@@ -5,12 +5,14 @@ import ast.Program;
 import ast.ASTNode;
 
 public class Interpreter {
-    public void executeProgram(Program program) {
+    public VariablesRepository executeProgram(Program program) {
         VariablesRepository variablesRepository = new VariablesRepository();
 
         for (ASTNode statement : program.getStatements()) {
             variablesRepository = evaluateStatement(statement, variablesRepository);
         }
+
+        return variablesRepository;
     }
 
     private VariablesRepository evaluateStatement(ASTNode statement, VariablesRepository variablesRepository) {
