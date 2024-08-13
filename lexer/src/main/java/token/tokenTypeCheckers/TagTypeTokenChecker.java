@@ -24,6 +24,9 @@ public class TagTypeTokenChecker implements TypeGetter{
         reservedWords.put(";", TokenTagType.SEMICOLON);
         reservedWords.put("let", TokenTagType.DECLARATION);
         reservedWords.put(":", TokenTagType.SYNTAX);
+        reservedWords.put("(", TokenTagType.OPEN_PARENTHESIS);
+        reservedWords.put(")", TokenTagType.CLOSE_PARENTHESIS);
+        reservedWords.put(",", TokenTagType.COMMA);
     }
 
 
