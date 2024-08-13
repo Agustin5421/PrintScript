@@ -5,10 +5,10 @@ import token.tokenTypes.TokenType;
 public class Token {
     private final TokenType type;
     private final String value;
-    private final TokenPosition initialPosition;
-    private final TokenPosition finalPosition;
+    private final Position initialPosition;
+    private final Position finalPosition;
 
-    public Token(TokenType type, String value, TokenPosition initialPosition, TokenPosition finalPosition) {
+    public Token(TokenType type, String value, Position initialPosition, Position finalPosition) {
         this.type = type;
         this.value = value;
         this.initialPosition = initialPosition;
@@ -23,11 +23,11 @@ public class Token {
         return value;
     }
 
-    public TokenPosition getInitialPosition() {
+    public Position getInitialPosition() {
         return initialPosition;
     }
 
-    public TokenPosition getFinalPosition() {
+    public Position getFinalPosition() {
         return finalPosition;
     }
 

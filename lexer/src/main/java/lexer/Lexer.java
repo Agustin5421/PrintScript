@@ -1,7 +1,7 @@
 package lexer;
 
 import token.Token;
-import token.TokenPosition;
+import token.Position;
 import token.tokenTypes.TokenType;
 import token.tokenTypeCheckers.TokenTypeChecker;
 
@@ -40,7 +40,7 @@ public class Lexer {
         Matcher matcher = pattern.matcher(code);
 
 //        Position position = new Position(1, 1);
-        TokenPosition initialPosition = new TokenPosition(1, 1);
+        Position initialPosition = new Position(1, 1);
         int currentIndex = 0;
 
         while (matcher.find()) {
@@ -49,7 +49,7 @@ public class Lexer {
             int end = matcher.end();
 
             initialPosition = updatePosition(code, currentIndex, start, initialPosition);
-            TokenPosition finalPosition = updatePosition(code, start, end, initialPosition);
+            Position finalPosition = updatePosition(code, start, end, initialPosition);
 
             currentIndex = end;
 
@@ -65,7 +65,7 @@ public class Lexer {
         return tokens;
     }
 
-    private TokenPosition updatePosition(String code, int initialIndex, int finalIndex, TokenPosition position) {
+    private Position updatePosition(String code, int initialIndex, int finalIndex, Position position) {
         int row = position.getRow();
         int col = position.getCol();
 
@@ -78,6 +78,6 @@ public class Lexer {
             }
         }
 
-        return new TokenPosition(row, col);
+        return new Position(row, col);
     }
 }

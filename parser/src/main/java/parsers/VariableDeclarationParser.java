@@ -2,6 +2,7 @@ package parsers;
 
 import ast.*;
 import token.Token;
+import token.Position;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +14,10 @@ public class VariableDeclarationParser implements InstructionParser {
             throw new IllegalArgumentException("Invalid tokens for VariableDeclarationParser");
         }
 
-        Identifier identifier = new Identifier(tokens.get(1).getValue());
+        Position start = tokens.get(0).getInitialPosition();
+        Position end = tokens.get(tokens.size() - 1).getFinalPosition();
+
+        Identifier identifier = new Identifier(tokens.get(1).getValue(), start, end);
 
         if (!tokens.get(2).getValue().equals(":")) {
             throw new IllegalArgumentException("Invalid tokens for VariableDeclarationParser");

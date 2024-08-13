@@ -1,7 +1,7 @@
 package lexer;
 
 import org.junit.jupiter.api.Test;
-import token.TokenPosition;
+import token.Position;
 import token.tokenTypeCheckers.*;
 import token.Token;
 import token.tokenTypes.TokenTagType;
@@ -61,11 +61,11 @@ public class LexerTest {
         List<Token> tokens = lexer.extractTokens(code);
 
         List<Token> tokensToCompare = List.of(
-                new Token(TokenTagType.IDENTIFIER, "This", new TokenPosition(1, 1), new TokenPosition(1, 5)),
-                new Token(TokenTagType.IDENTIFIER, "is", new TokenPosition(2, 1), new TokenPosition(2, 3)),
-                new Token(TokenTagType.IDENTIFIER, "an", new TokenPosition(3, 1), new TokenPosition(3, 3)),
-                new Token(TokenTagType.IDENTIFIER, "example", new TokenPosition(4, 1), new TokenPosition(4, 8)),
-                new Token(TokenValueType.STRING, "'hi\nhey'", new TokenPosition(5, 1), new TokenPosition(6, 5))
+                new Token(TokenTagType.IDENTIFIER, "This", new Position(1, 1), new Position(1, 5)),
+                new Token(TokenTagType.IDENTIFIER, "is", new Position(2, 1), new Position(2, 3)),
+                new Token(TokenTagType.IDENTIFIER, "an", new Position(3, 1), new Position(3, 3)),
+                new Token(TokenTagType.IDENTIFIER, "example", new Position(4, 1), new Position(4, 8)),
+                new Token(TokenValueType.STRING, "'hi\nhey'", new Position(5, 1), new Position(6, 5))
                 );
 
         for (int i = 0; i < tokens.size(); i++) {

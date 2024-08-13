@@ -4,6 +4,7 @@ import ast.ASTNode;
 import ast.AssignmentExpression;
 import ast.Identifier;
 import token.Token;
+import token.Position;
 import token.tokenTypes.TokenTagType;
 
 import java.util.List;
@@ -14,8 +15,15 @@ public class AssignmentExpressionParser implements InstructionParser{
     public ASTNode parse(List<Token> tokens) {
         validateSyntax(tokens);
 
-        Identifier left = new Identifier(tokens.get(0).getValue());
-        Identifier right = new Identifier(tokens.get(2).getValue());
+        Position leftStart = tokens.get(0).getInitialPosition();
+        Position leftEnd = tokens.get(0).getFinalPosition();
+
+        Position rightStart = tokens.get(2).getInitialPosition();
+        Position rightEnd = tokens.get(2).getFinalPosition();
+
+
+        Identifier left = new Identifier(tokens.get(0).getValue(), leftStart, leftEnd);
+        Identifier right = new Identifier(tokens.get(2).getValue(), rightStart, rightEnd);
         return new AssignmentExpression(left, right, tokens.get(1).getValue());
     }
 

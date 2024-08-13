@@ -2,6 +2,7 @@ package parsers;
 
 import ast.*;
 import token.Token;
+import token.Position;
 import token.tokenTypes.TokenTagType;
 import token.tokenTypes.TokenType;
 
@@ -14,11 +15,11 @@ public class CallExpressionParser implements InstructionParser{
     @Override
     public ASTNode parse(List<Token> tokens) {
         String functionName = tokens.get(0).getValue();
-        int start = tokens.get(0).getCol();
-        int end = tokens.get(tokens.size() - 1).getCol();
+        Position start = tokens.get(0).getInitialPosition();
+        Position end = tokens.get(tokens.size() - 1).getFinalPosition();
 
         //Function name
-        Identifier identifier = new Identifier(functionName); //TODO: add start and end
+        Identifier identifier = new Identifier(functionName, start, end); //TODO: add start and end
 
         //Arguments
         List<Token> subList = tokens.subList(1, tokens.size());

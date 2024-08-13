@@ -9,6 +9,7 @@ import parsers.CallExpressionParser;
 import parsers.StatementParser;
 import parsers.VariableDeclarationParser;
 import token.Token;
+import token.Position;
 import token.tokenTypeCheckers.*;
 import token.tokenTypes.TokenDataType;
 import token.tokenTypes.TokenTagType;
@@ -59,28 +60,29 @@ public class StatementParserTest {
     private static Program getProgram() {
         Parser parser = getParser();
 
+        Position position = new Position(0, 0);
 
         List<Token> tokens2 = List.of(
-                new Token(TokenTagType.DECLARATION, "let", 0, 0),
-                new Token(TokenTagType.IDENTIFIER, "myVar", 0, 4),
-                new Token(TokenTagType.SYNTAX, ":", 0, 9),
-                new Token(TokenDataType.STRING_TYPE, "string", 0, 11),
-                new Token(TokenTagType.ASSIGNATION, "=", 0, 18),
-                new Token(TokenValueType.STRING, "Hello", 0, 20),
-                new Token(TokenTagType.SEMICOLON, ";", 0, 27),
+                new Token(TokenTagType.DECLARATION, "let", position, position),
+                new Token(TokenTagType.IDENTIFIER, "myVar", position, position),
+                new Token(TokenTagType.SYNTAX, ":", position, position),
+                new Token(TokenDataType.STRING_TYPE, "string", position, position),
+                new Token(TokenTagType.ASSIGNATION, "=", position, position),
+                new Token(TokenValueType.STRING, "Hello", position, position),
+                new Token(TokenTagType.SEMICOLON, ";", position, position),
 
-                new Token(TokenTagType.DECLARATION, "let", 1, 0),
-                new Token(TokenTagType.IDENTIFIER, "myNumber", 1, 4),
-                new Token(TokenTagType.SYNTAX, ":", 1, 12),
-                new Token(TokenDataType.STRING_TYPE, "number", 1, 14),
-                new Token(TokenTagType.ASSIGNATION, "=", 1, 21),
-                new Token(TokenValueType.NUMBER, "42", 1, 23),
-                new Token(TokenTagType.SEMICOLON, ";", 1, 25),
+                new Token(TokenTagType.DECLARATION, "let", position, position),
+                new Token(TokenTagType.IDENTIFIER, "myNumber", position, position),
+                new Token(TokenTagType.SYNTAX, ":", position, position),
+                new Token(TokenDataType.STRING_TYPE, "number", position, position),
+                new Token(TokenTagType.ASSIGNATION, "=", position, position),
+                new Token(TokenValueType.NUMBER, "42", position, position),
+                new Token(TokenTagType.SEMICOLON, ";", position, position),
 
-                new Token(TokenTagType.IDENTIFIER, "name", 1, 12),
-                new Token(TokenTagType.ASSIGNATION, "=", 1, 21),
-                new Token(TokenValueType.STRING, "agustin", 1, 23),
-                new Token(TokenTagType.SEMICOLON, ";", 1, 25)
+                new Token(TokenTagType.IDENTIFIER, "name", position, position),
+                new Token(TokenTagType.ASSIGNATION, "=", position, position),
+                new Token(TokenValueType.STRING, "agustin", position, position),
+                new Token(TokenTagType.SEMICOLON, ";", position, position)
                 )
                 ;
 
@@ -93,8 +95,7 @@ public class StatementParserTest {
         CallExpressionParser callExpressionParser = new CallExpressionParser();
         StatementParser statementParser = new StatementParser(List.of(variableDeclarationParser, assignmentExpressionParser, callExpressionParser));
 
-        Parser parser = new Parser(List.of(statementParser));
-        return parser;
+        return new Parser(List.of(statementParser));
     }
 
 
