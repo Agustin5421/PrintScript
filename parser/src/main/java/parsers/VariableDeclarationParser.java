@@ -20,11 +20,12 @@ public class VariableDeclarationParser implements InstructionParser {
         Identifier identifier = new Identifier(tokens.get(1).getValue(), start, end);
 
         if (!tokens.get(2).getValue().equals(":")) {
-            throw new IllegalArgumentException("Invalid tokens for VariableDeclarationParser");
+            throw new IllegalArgumentException("Expected ':' at " + tokens.get(2).getInitialPosition().toString() + " but found " + tokens.get(2).getValue() + " instead.");
         }
 
+        //TODO create an exception for this
         if (!tokens.get(3).getValue().equals("number") && !tokens.get(3).getValue().equals("string")) {
-            throw new IllegalArgumentException("Invalid tokens for VariableDeclarationParser");
+            throw new IllegalArgumentException("Expected 'number' or 'string' at " + tokens.get(3).getInitialPosition().toString() + " but found " + tokens.get(3).getValue() + " instead.");
         }
         Literal literal = LiteralFactory.createLiteral(tokens.get(5));
 
