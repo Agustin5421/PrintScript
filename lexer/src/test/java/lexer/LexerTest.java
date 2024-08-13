@@ -1,13 +1,12 @@
 package lexer;
 
 import org.junit.jupiter.api.Test;
+import token.Position;
 import token.tokenTypeCheckers.*;
 import token.Token;
 import token.tokenTypes.TokenTagType;
 import token.tokenTypes.TokenValueType;
-
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LexerTest {
@@ -24,6 +23,7 @@ public class LexerTest {
         List<Token> tokens = lexer.extractTokens("name = 'hello world + 2' + 'hola'" +
                 "\n abc");
 
+        List<Token> functionTest = lexer.extractTokens("println('Hello', 'World')");
         assertEquals(TokenTagType.IDENTIFIER, tokens.get(0).getType());
     }
 
@@ -61,11 +61,11 @@ public class LexerTest {
         List<Token> tokens = lexer.extractTokens(code);
 
         List<Token> tokensToCompare = List.of(
-                new Token(TokenTagType.IDENTIFIER, "This", 1, 0),
-                new Token(TokenTagType.IDENTIFIER, "is", 2, 0),
-                new Token(TokenTagType.IDENTIFIER, "an", 3, 0),
-                new Token(TokenTagType.IDENTIFIER, "example", 4, 0),
-                new Token(TokenValueType.STRING, "'hi\nhey'", 5, 0)
+                new Token(TokenTagType.IDENTIFIER, "This", new Position(1, 1), new Position(1, 5)),
+                new Token(TokenTagType.IDENTIFIER, "is", new Position(2, 1), new Position(2, 3)),
+                new Token(TokenTagType.IDENTIFIER, "an", new Position(3, 1), new Position(3, 3)),
+                new Token(TokenTagType.IDENTIFIER, "example", new Position(4, 1), new Position(4, 8)),
+                new Token(TokenValueType.STRING, "'hi\nhey'", new Position(5, 1), new Position(6, 5))
                 );
 
         for (int i = 0; i < tokens.size(); i++) {
@@ -73,9 +73,34 @@ public class LexerTest {
             Token token = tokens.get(i);
             assertEquals(tokenToComp.getValue(), token.getValue());
             assertEquals(tokenToComp.getType(), token.getType());
-            assertEquals(tokenToComp.getRow(), token.getRow());
-            assertEquals(tokenToComp.getCol(), token.getCol());
+            assertEquals(tokenToComp.getInitialPosition().getRow(), token.getInitialPosition().getRow());
+            assertEquals(tokenToComp.getInitialPosition().getCol(), token.getInitialPosition().getCol());
+            assertEquals(tokenToComp.getFinalPosition().getRow(), token.getFinalPosition().getRow());
+            assertEquals(tokenToComp.getFinalPosition().getCol(), token.getFinalPosition().getCol());
         }
+    }
+
+    @Test
+    public void testInvalidCase() {
+        Lexer lexer = initLexer();
+        String code = "!";
+
+//        assertThrows(Exception.class, () -> {
+//            lexer.extractTokens(code);
+//        });
+
+        List<Token> tokens = lexer.extractTokens(code);
+        assertEquals(tokens.get(0).getType(), TokenTagType.INVALID);
+    }
+
+    @Test
+    public void testOneBasedPosition() {
+        Lexer lexer = initLexer();
+        String code = "let";
+
+        Token token = lexer.extractTokens(code).get(0);
+
+        assertEquals(token.getInitialPosition().getCol(), 1);
     }
 
     private static Lexer initLexer() {

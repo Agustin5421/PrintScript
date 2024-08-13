@@ -1,6 +1,7 @@
 package lexer;
 
 import token.Token;
+import token.Position;
 import token.tokenTypes.TokenType;
 import token.tokenTypeCheckers.TokenTypeChecker;
 
@@ -20,7 +21,8 @@ public class Lexer {
                     "|[=;:]" +                                 // Equal, semicolon, and colon
                     "|[+\\-*/%]" +                             // Arithmetic operands
                     "|[()<>{},]" +                             // Parentheses, angle brackets, curly braces, comma
-                    "|[.]";                                    // Period (for decimal for decimal points or standalone)
+                    "|[.]" +                                   // Period (for decimal for decimal points or standalone)
+                    "|\\S";                                    // Any other single character (mismatch), excluding spaces
 
 
 
@@ -37,46 +39,45 @@ public class Lexer {
         Pattern pattern = Pattern.compile(TEXT_PATTERNS);
         Matcher matcher = pattern.matcher(code);
 
-        Position position = new Position(1, 0);
+//        Position position = new Position(1, 1);
+        Position initialPosition = new Position(1, 1);
         int currentIndex = 0;
 
         while (matcher.find()) {
             String word = matcher.group();
             int start = matcher.start();
+            int end = matcher.end();
 
-            UpdateRowCol(code, currentIndex, start, position);
-            currentIndex = matcher.end();
+            initialPosition = updatePosition(code, currentIndex, start, initialPosition);
+            Position finalPosition = updatePosition(code, start, end, initialPosition);
+
+            currentIndex = end;
 
             //Create Token
             TokenType type = tokenTypeGetter.getType(word);
-            Token token = new Token(type, word, position.row, position.col);
+            Token token = new Token(type, word, initialPosition, finalPosition);
             tokens.add(token);
 
-            //Update col
-            position.col += word.length();
+            //Update position
+            initialPosition = finalPosition;
         }
 
         return tokens;
     }
 
-    private static void UpdateRowCol(String code, int currentIndex, int start, Position position) {
-        for (int i = currentIndex; i < start; i++) {
+    private Position updatePosition(String code, int initialIndex, int finalIndex, Position position) {
+        int row = position.getRow();
+        int col = position.getCol();
+
+        for (int i = initialIndex; i < finalIndex; i++) {
             if (code.charAt(i) == '\n') {
-                position.row++;
-                position.col = 0;
+                row++;
+                col = 1;
             } else {
-                position.col++;
+                col++;
             }
         }
-    }
 
-    private static class Position {
-        int row;
-        int col;
-
-        Position(int row, int col) {
-            this.row = row;
-            this.col = col;
-        }
+        return new Position(row, col);
     }
 }
