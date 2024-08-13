@@ -1,8 +1,10 @@
 package interpreter;
 
+import ast.Expression;
 import ast.Literal;
 import ast.Program;
 import ast.ASTNode;
+import interpreter.runtime.BinaryExpressionEvaluator;
 
 public class Interpreter {
     public VariablesRepository executeProgram(Program program) {
@@ -24,8 +26,10 @@ public class Interpreter {
             Object value = literal.getValue();
 
             return variablesRepository.addVariable(name, value);
-        } else {
-            return variablesRepository;
+        } else if (statement instanceof ast.BinaryExpression)  {
+            BinaryExpressionEvaluator binaryExpression = new BinaryExpressionEvaluator();
+            binaryExpression.evaluate((Expression) statement);
         }
+        return variablesRepository;
     }
 }
