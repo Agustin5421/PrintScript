@@ -5,14 +5,14 @@ import token.tokenTypes.TokenType;
 public class Token {
     private final TokenType type;
     private final String value;
-    private final int line;
-    private final int column;
+    private final TokenPosition initialPosition;
+    private final TokenPosition finalPosition;
 
-    public Token(TokenType type, String value, int line, int column) {
+    public Token(TokenType type, String value, TokenPosition initialPosition, TokenPosition finalPosition) {
         this.type = type;
         this.value = value;
-        this.line = line;
-        this.column = column;
+        this.initialPosition = initialPosition;
+        this.finalPosition = finalPosition;
     }
 
     public TokenType getType() {
@@ -23,16 +23,16 @@ public class Token {
         return value;
     }
 
-    public int getRow() {
-        return line;
+    public TokenPosition getInitialPosition() {
+        return initialPosition;
     }
 
-    public int getCol() {
-        return column;
+    public TokenPosition getFinalPosition() {
+        return finalPosition;
     }
 
     @Override
     public String toString() {
-        return String.format("Token(type: %s, value: %s, row: %d, col: %d)", type, value, line, column);
+        return String.format("Token(type: %s, value: %s, initialP: %s, finalP: %s)", type, value, initialPosition, finalPosition);
     }
 }
