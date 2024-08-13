@@ -1,6 +1,9 @@
 package interpreter;
 
 import ast.*;
+import ast.literal.Literal;
+import ast.literal.NumberLiteral;
+import ast.literal.StringLiteral;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;

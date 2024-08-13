@@ -1,4 +1,6 @@
-package ast;
+package ast.literal;
+
+import ast.Expression;
 
 public interface Literal<T> extends Expression {
     T getValue();

@@ -4,8 +4,13 @@ import ast.*;
 import ast.expressions.CallExpression;
 import ast.expressions.ExpressionStatement;
 import ast.expressions.ExpressionType;
+import ast.literal.Literal;
+import ast.literal.NumberLiteral;
+import ast.literal.StringLiteral;
 
 import java.util.List;
+
+import static ast.records.StatementValidator.*;
 
 public class Interpreter {
     public VariablesRepository executeProgram(Program program) {
@@ -19,23 +24,23 @@ public class Interpreter {
     }
 
     private VariablesRepository evaluateStatement(ASTNode statement, VariablesRepository variablesRepository) {
-        if (statement instanceof ast.VariableDeclaration) {
-            ast.VariableDeclaration variableDeclaration = (ast.VariableDeclaration) statement;
+        if (isVariableDeclaration(statement)) {
+            VariableDeclaration variableDeclaration = (VariableDeclaration) statement;
 
-            String name = variableDeclaration.getIdentifier().getName();
-            Literal literal = variableDeclaration.getLiteral();
+            String name = variableDeclaration.identifier().getName();
+            Literal literal = variableDeclaration.literal();
             Object value = literal.getValue();
 
             return variablesRepository.addVariable(name, value);
-        } else if (statement instanceof ExpressionStatement) {
+        } else if (isExpressionStatement(statement)) {
             ExpressionStatement expressionStatement = (ExpressionStatement) statement;
-            ExpressionType expressionType = expressionStatement.getExpressionType();
+            ExpressionType expressionType = expressionStatement.expressionType();
 
-            if (expressionType instanceof CallExpression) {
+            if (isCallExpression(expressionType)) {
                 CallExpression callExpression = (CallExpression) expressionType;
-                Identifier identifier = callExpression.getIdentifier();
-                List<Expression> arguments = callExpression.getArguments();
-                boolean optionalParameters = callExpression.hasOptionalParameters();
+                Identifier identifier = callExpression.identifier();
+                List<Expression> arguments = callExpression.arguments();
+                boolean optionalParameters = callExpression.optionalParameters();
 
                 if (identifier.getName().equals("println")) {
                     for (Expression argument : arguments) {

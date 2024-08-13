@@ -1,4 +1,4 @@
-package ast;
+package ast.literal;
 
 import token.Token;
 import token.tokenTypes.TokenValueType;

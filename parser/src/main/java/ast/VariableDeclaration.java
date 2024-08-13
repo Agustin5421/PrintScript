@@ -1,23 +1,8 @@
 package ast;
 
-public class VariableDeclaration implements Statement {
-    private final Identifier identifier;
-    private final Literal literal;
+import ast.literal.Literal;
 
-
-    public VariableDeclaration(Identifier identifier, Literal literal) {
-        this.identifier = identifier;
-        this.literal = literal;
-    }
-
-    public Identifier getIdentifier() {
-        return identifier;
-    }
-
-    public Literal getLiteral() {
-        return literal;
-    }
-
+public record VariableDeclaration(Identifier identifier, Literal literal) implements Statement {
     @Override
     public String toString() {
         return "VariableDeclaration{" +
@@ -25,4 +10,5 @@ public class VariableDeclaration implements Statement {
                 ", literal=" + literal +
                 '}';
     }
+    // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
 }

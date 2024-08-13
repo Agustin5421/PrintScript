@@ -1,4 +1,4 @@
-package ast;
+package ast.literal;
 
 public class StringLiteral implements Literal<String> {
     private final String value;

@@ -1,6 +1,6 @@
-import ast.NumberLiteral;
+import ast.literal.NumberLiteral;
 import ast.Program;
-import ast.StringLiteral;
+import ast.literal.StringLiteral;
 import ast.VariableDeclaration;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
@@ -28,15 +28,15 @@ public class StatementParserTest {
 
         // Verifies the first declaration
         VariableDeclaration firstDeclaration = (VariableDeclaration) program2.getStatements().get(0);
-        assertEquals("myVar", firstDeclaration.getIdentifier().getName(), "First identifier should be 'myVar'");
-        assertInstanceOf(StringLiteral.class, firstDeclaration.getLiteral(), "First literal should be a LiteralString");
-        assertEquals("Hello", (firstDeclaration.getLiteral()).getValue(), "First literal value should be 'Hello'");
+        assertEquals("myVar", firstDeclaration.identifier().getName(), "First identifier should be 'myVar'");
+        assertInstanceOf(StringLiteral.class, firstDeclaration.literal(), "First literal should be a LiteralString");
+        assertEquals("Hello", (firstDeclaration.literal()).getValue(), "First literal value should be 'Hello'");
 
         // Verifies the second declaration
         VariableDeclaration secondDeclaration = (VariableDeclaration) program2.getStatements().get(1);
-        assertEquals("myNumber", secondDeclaration.getIdentifier().getName(), "Second identifier should be 'myNumber'");
-        assertInstanceOf(NumberLiteral.class, secondDeclaration.getLiteral(), "Second literal should be a LiteralNumber");
-        assertEquals(42, (secondDeclaration.getLiteral()).getValue(), "Second literal value should be 42");
+        assertEquals("myNumber", secondDeclaration.identifier().getName(), "Second identifier should be 'myNumber'");
+        assertInstanceOf(NumberLiteral.class, secondDeclaration.literal(), "Second literal should be a LiteralNumber");
+        assertEquals(42, (secondDeclaration.literal()).getValue(), "Second literal value should be 42");
 
     }
 

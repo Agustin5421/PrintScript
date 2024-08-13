@@ -1,4 +1,4 @@
-package ast;
+package ast.literal;
 
 public class NumberLiteral implements Literal<Number> {
     private final Number value;
