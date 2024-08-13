@@ -19,7 +19,7 @@ public class CallExpressionParser implements InstructionParser{
         Position end = tokens.get(tokens.size() - 1).getFinalPosition();
 
         //Function name
-        Identifier identifier = new Identifier(functionName, start, end); //TODO: add start and end
+        Identifier identifier = new Identifier(functionName, start, end);
 
         //Arguments
         List<Token> subList = tokens.subList(1, tokens.size());
@@ -72,7 +72,6 @@ public class CallExpressionParser implements InstructionParser{
                 }
                 inArguments = false;
                 openParentheses--;
-                // Añadir el argumento acumulado si existe al final
                 if (!currentArgument.isEmpty()) {
                     argumentTokens.addAll(currentArgument);
                     currentArgument.clear();
@@ -82,7 +81,6 @@ public class CallExpressionParser implements InstructionParser{
 
             if (inArguments) {
                 if (type == TokenTagType.COMMA) {
-                    // Añadir el argumento acumulado si existe
                     if (currentArgument.isEmpty()) {
                         throw new InvalidSyntaxException("Comma without preceding argument.");
                     }
@@ -94,12 +92,10 @@ public class CallExpressionParser implements InstructionParser{
             }
         }
 
-        // Verificar paréntesis desbalanceados
         if (openParentheses != 0) {
             throw new InvalidSyntaxException("Unmatched '(' encountered.");
         }
 
-        // Añadir el último argumento si existe
         if (!currentArgument.isEmpty()) {
             argumentTokens.addAll(currentArgument);
         }
