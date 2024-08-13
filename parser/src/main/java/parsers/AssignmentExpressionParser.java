@@ -24,7 +24,7 @@ public class AssignmentExpressionParser implements InstructionParser{
 
         Identifier left = new Identifier(tokens.get(0).getValue(), leftStart, leftEnd);
         Identifier right = new Identifier(tokens.get(2).getValue(), rightStart, rightEnd);
-        return new AssignmentExpression(left, right, tokens.get(1).getValue());
+        return new AssignmentExpression(left, right, tokens.get(1).getValue(), leftStart, rightEnd);
     }
 
     private void validateSyntax(List<Token> tokens) {

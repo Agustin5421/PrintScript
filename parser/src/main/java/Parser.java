@@ -1,6 +1,7 @@
 import ast.ASTNode;
 import ast.Program;
 import parsers.InstructionParser;
+import token.Position;
 import token.Token;
 import token.tokenTypes.TokenTagType;
 
@@ -29,7 +30,10 @@ public class Parser {
             }
         }
 
-        return new Program(astNodes);
+        Position start = tokens.get(0).getInitialPosition();
+        Position end = tokens.get(tokens.size() - 1).getFinalPosition();
+
+        return new Program(astNodes, start, end);
     }
 
 

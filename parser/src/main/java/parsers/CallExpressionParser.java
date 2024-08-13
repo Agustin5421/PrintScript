@@ -30,7 +30,7 @@ public class CallExpressionParser implements InstructionParser{
             argumentLiterals.add(LiteralFactory.createLiteral(token));
         }
 
-        return new CallExpression(identifier, argumentLiterals);
+        return new CallExpression(identifier, argumentLiterals, start, end);
     }
 
     @Override

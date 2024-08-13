@@ -29,7 +29,7 @@ public class VariableDeclarationParser implements InstructionParser {
         Literal literal = LiteralFactory.createLiteral(tokens.get(5));
 
 
-        return new VariableDeclaration(identifier, literal);
+        return new VariableDeclaration(identifier, literal, start, end);
     }
 
     @Override
