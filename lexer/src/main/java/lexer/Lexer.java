@@ -66,8 +66,8 @@ public class Lexer {
     }
 
     private Position updatePosition(String code, int initialIndex, int finalIndex, Position position) {
-        int row = position.getRow();
-        int col = position.getCol();
+        int row = position.row();
+        int col = position.col();
 
         for (int i = initialIndex; i < finalIndex; i++) {
             if (code.charAt(i) == '\n') {

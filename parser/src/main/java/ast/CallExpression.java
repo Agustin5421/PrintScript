@@ -1,5 +1,6 @@
 package ast;
 
+import ast.literal.Literal;
 import token.Position;
 
 import java.util.List;

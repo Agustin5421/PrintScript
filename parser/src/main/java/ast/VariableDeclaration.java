@@ -1,5 +1,6 @@
 package ast;
 
+import ast.literal.Literal;
 import token.Position;
 
 public record VariableDeclaration(Identifier identifier, Literal literal, Position start, Position end) implements Statement {

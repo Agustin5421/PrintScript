@@ -29,7 +29,7 @@ public class Interpreter {
 
             String name = variableDeclaration.identifier().getName();
             Literal literal = variableDeclaration.literal();
-            Object value = literal.getValue();
+            Object value = literal.value();
 
             return variablesRepository.addVariable(name, value);
         } else if (isExpressionStatement(statement)) {
@@ -46,10 +46,10 @@ public class Interpreter {
                     for (Expression argument : arguments) {
                         if (argument instanceof StringLiteral) {
                             StringLiteral stringLiteral = (StringLiteral) argument;
-                            System.out.print(stringLiteral.getValue());
+                            System.out.print(stringLiteral.value());
                         } else if (argument instanceof NumberLiteral) {
                             NumberLiteral numberLiteral = (NumberLiteral) argument;
-                            System.out.print(numberLiteral.getValue());
+                            System.out.print(numberLiteral.value());
                         } else if (argument instanceof Identifier) {
                             Identifier identifierArgument = (Identifier) argument;
                             System.out.print(variablesRepository.getVariable(identifierArgument.getName()));

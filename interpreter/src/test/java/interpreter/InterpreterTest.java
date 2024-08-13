@@ -18,7 +18,7 @@ public class InterpreterTest {
         Literal<String> literal = new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
         VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal, new Position(4, 0), new Position(4, 5));
         List<ASTNode> statements = List.of(variableDeclaration);
-        Program program = new Program(statements);
+        Program program = new Program(statements, new Position(0, 0), new Position(0, 1));
 
         Interpreter interpreter = new Interpreter();
         VariablesRepository repository = interpreter.executeProgram(program);
@@ -32,7 +32,7 @@ public class InterpreterTest {
         Literal<Number> literal = new NumberLiteral(42, new Position(2, 0), new Position(2, 3));
         VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal, new Position(4, 0), new Position(4, 5));
         List<ASTNode> statements = List.of(variableDeclaration);
-        Program program = new Program(statements);
+        Program program = new Program(statements, new Position(0, 0), new Position(0, 1));
 
         Interpreter interpreter = new Interpreter();
         VariablesRepository repository = interpreter.executeProgram(program);
@@ -51,7 +51,7 @@ public class InterpreterTest {
         VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, literal2, new Position(10, 0), new Position(10, 11));
 
         List<ASTNode> statements = List.of(variableDeclaration1, variableDeclaration2);
-        Program program = new Program(statements);
+        Program program = new Program(statements,new Position(0, 0), new Position(0, 1));
 
         Interpreter interpreter = new Interpreter();
         VariablesRepository repository = interpreter.executeProgram(program);
@@ -71,7 +71,7 @@ public class InterpreterTest {
         VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, literal2, new Position(10, 0), new Position(10, 11));
 
         List<ASTNode> statements = List.of(variableDeclaration1, variableDeclaration2);
-        Program program = new Program(statements);
+        Program program = new Program(statements, new Position(0, 0), new Position(0, 1));
 
         Interpreter interpreter = new Interpreter();
 
@@ -82,7 +82,7 @@ public class InterpreterTest {
 
     @Test
     public void testExecuteEmptyProgram() {
-        Program program = new Program(List.of());
+        Program program = new Program(List.of(),new Position(0, 0), new Position(0, 1));
 
         Interpreter interpreter = new Interpreter();
         VariablesRepository repository = interpreter.executeProgram(program);

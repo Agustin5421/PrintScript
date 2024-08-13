@@ -73,10 +73,10 @@ public class LexerTest {
             Token token = tokens.get(i);
             assertEquals(tokenToComp.getValue(), token.getValue());
             assertEquals(tokenToComp.getType(), token.getType());
-            assertEquals(tokenToComp.getInitialPosition().getRow(), token.getInitialPosition().getRow());
-            assertEquals(tokenToComp.getInitialPosition().getCol(), token.getInitialPosition().getCol());
-            assertEquals(tokenToComp.getFinalPosition().getRow(), token.getFinalPosition().getRow());
-            assertEquals(tokenToComp.getFinalPosition().getCol(), token.getFinalPosition().getCol());
+            assertEquals(tokenToComp.getInitialPosition().row(), token.getInitialPosition().row());
+            assertEquals(tokenToComp.getInitialPosition().col(), token.getInitialPosition().col());
+            assertEquals(tokenToComp.getFinalPosition().row(), token.getFinalPosition().row());
+            assertEquals(tokenToComp.getFinalPosition().col(), token.getFinalPosition().col());
         }
     }
 
@@ -100,7 +100,7 @@ public class LexerTest {
 
         Token token = lexer.extractTokens(code).get(0);
 
-        assertEquals(token.getInitialPosition().getCol(), 1);
+        assertEquals(token.getInitialPosition().col(), 1);
     }
 
     private static Lexer initLexer() {

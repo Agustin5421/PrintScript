@@ -12,7 +12,7 @@ public class NumberLiteral implements Literal<Number> {
         this.end = end;
     }
 
-    public Number getValue() {
+    public Number value() {
         return value;
     }
 
