@@ -24,6 +24,7 @@ public class LexerTest {
         List<Token> tokens = lexer.extractTokens("name = 'hello world + 2' + 'hola'" +
                 "\n abc");
 
+        List<Token> functionTest = lexer.extractTokens("println('Hello', 'World')");
         assertEquals(TokenTagType.IDENTIFIER, tokens.get(0).getType());
     }
 

@@ -4,6 +4,8 @@ import ast.StringLiteral;
 import ast.VariableDeclaration;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
+import parsers.AssignmentExpressionParser;
+import parsers.CallExpressionParser;
 import parsers.StatementParser;
 import parsers.VariableDeclarationParser;
 import token.Token;
@@ -24,7 +26,7 @@ public class StatementParserTest {
         Program program2 = getProgram();
 
         // Verifies the program contains 2 statements
-        assertEquals(2, program2.getStatements().size(), "Program should contain 2 statements");
+        assertEquals(3, program2.getStatements().size(), "Program should contain 2 statements");
 
         // Verifies the first declaration
         VariableDeclaration firstDeclaration = (VariableDeclaration) program2.getStatements().get(0);
@@ -40,11 +42,22 @@ public class StatementParserTest {
 
     }
 
-    private static Program getProgram() {
-        VariableDeclarationParser variableDeclarationParser = new VariableDeclarationParser();
-        StatementParser statementParser = new StatementParser(List.of(variableDeclarationParser));
 
-        Parser parser = new Parser(List.of(statementParser));
+    @Test
+    public void test1() {
+        Parser parser = getParser();
+
+
+        Lexer lexer = initLexer();
+        List<Token>  tokens = lexer.extractTokens("println ('hola');");
+        Program program = parser.parse(tokens);
+
+        System.out.println("done");
+
+    }
+
+    private static Program getProgram() {
+        Parser parser = getParser();
 
 
         List<Token> tokens2 = List.of(
@@ -62,10 +75,26 @@ public class StatementParserTest {
                 new Token(TokenDataType.STRING_TYPE, "number", 1, 14),
                 new Token(TokenTagType.ASSIGNATION, "=", 1, 21),
                 new Token(TokenValueType.NUMBER, "42", 1, 23),
-                new Token(TokenTagType.SEMICOLON, ";", 1, 25))
+                new Token(TokenTagType.SEMICOLON, ";", 1, 25),
+
+                new Token(TokenTagType.IDENTIFIER, "name", 1, 12),
+                new Token(TokenTagType.ASSIGNATION, "=", 1, 21),
+                new Token(TokenValueType.STRING, "agustin", 1, 23),
+                new Token(TokenTagType.SEMICOLON, ";", 1, 25)
+                )
                 ;
 
         return parser.parse(tokens2);
+    }
+
+    private static Parser getParser() {
+        VariableDeclarationParser variableDeclarationParser = new VariableDeclarationParser();
+        AssignmentExpressionParser assignmentExpressionParser = new AssignmentExpressionParser();
+        CallExpressionParser callExpressionParser = new CallExpressionParser();
+        StatementParser statementParser = new StatementParser(List.of(variableDeclarationParser, assignmentExpressionParser, callExpressionParser));
+
+        Parser parser = new Parser(List.of(statementParser));
+        return parser;
     }
 
 
