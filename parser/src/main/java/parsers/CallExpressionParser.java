@@ -33,7 +33,7 @@ public class CallExpressionParser implements InstructionParser{
             argumentExpressions.add(ArgumentFactory.createArgument(token));
         }
 
-        boolean optionalParameters = argumentExpressions.isEmpty(); //TODO: Implement optional parameters in the future
+        boolean optionalParameters = !argumentExpressions.isEmpty(); //TODO: Implement optional parameters in the future correctly
         return new CallExpression(identifier, argumentExpressions, optionalParameters, start, end);
     }
 

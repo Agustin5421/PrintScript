@@ -11,7 +11,7 @@ public class Interpreter {
     public VariablesRepository executeProgram(Program program) {
         VariablesRepository variablesRepository = new VariablesRepository();
 
-        for (ASTNode statement : program.getStatements()) {
+        for (ASTNode statement : program.statements()) {
             variablesRepository = evaluateStatement(statement, variablesRepository);
         }
 
@@ -22,7 +22,7 @@ public class Interpreter {
         if (isVariableDeclaration(statement)) {
             VariableDeclaration variableDeclaration = (VariableDeclaration) statement;
 
-            String name = variableDeclaration.identifier().getName();
+            String name = variableDeclaration.identifier().name();
             Literal<?> literal = variableDeclaration.literal();
             Object value = literal.value();
 
@@ -33,14 +33,14 @@ public class Interpreter {
             List<Expression> arguments = callExpression.arguments();
             boolean optionalParameters = callExpression.optionalParameters();
 
-            if (identifier.getName().equals("println")) {
+            if (identifier.name().equals("println")) {
                 for (Expression argument : arguments) {
                     if (argument instanceof StringLiteral stringLiteral) {
                         System.out.print(stringLiteral.value());
                     } else if (argument instanceof NumberLiteral numberLiteral) {
                         System.out.print(numberLiteral.value());
                     } else if (argument instanceof Identifier identifierArgument) {
-                        System.out.print(variablesRepository.getVariable(identifierArgument.getName()));
+                        System.out.print(variablesRepository.getVariable(identifierArgument.name()));
                     }
                 }
                 System.out.println();
