@@ -12,20 +12,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'  # Adjust to your Java version
-
-      - name: Install Google Java Format
-        run: |
-          wget https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar
-          chmod +x google-java-format-1.15.0-all-deps.jar
-        
       - name: Format Java code
-        run: |
-          java -jar google-java-format-1.15.0-all-deps.jar --replace $(find . -name '*.java')
-
-      - name: Check for formatting changes
-        run: |
-          git diff --exit-code
+        uses: axel-op/googlejavaformat-action@v3
+        with:
+          distribution: 'https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar'
+          args: "--skip-sorting-imports --replace"
