@@ -69,9 +69,11 @@ public class ExpressionEvaluator implements Evaluator {
 
     private Expression validateAddOperation(Expression left, Expression right) {
         if (left instanceof StringLiteral || right instanceof StringLiteral) {
-            return new StringLiteral(evaluate(left).toString() + evaluate(right).toString(), defaultPosition, defaultPosition);
+            return new StringLiteral(((Literal<?>) evaluate(left)).value().toString() +
+                    ((Literal<?>) evaluate(right)).value().toString(), defaultPosition, defaultPosition);
         } else {
-            return validateOperation(left, right, (a, b) -> checkIfBothIntegers(a, b) ? a.intValue() + b.intValue() : a.doubleValue() + b.doubleValue());
+            return validateOperation(left, right, (a, b) ->
+                    checkIfBothIntegers(a, b) ? a.intValue() + b.intValue() : a.doubleValue() + b.doubleValue());
         }
     }
 

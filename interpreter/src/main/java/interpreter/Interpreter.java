@@ -50,14 +50,9 @@ public class Interpreter {
 
     private void printlnMethod(VariablesRepository variablesRepository, Identifier identifier, String name, List<Expression> arguments) {
         if (identifier.name().equals(name)) {
+            ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, identifier.start().row());
             for (Expression argument : arguments) {
-                if (argument instanceof StringLiteral stringLiteral) {
-                    System.out.print(stringLiteral.value());
-                } else if (argument instanceof NumberLiteral numberLiteral) {
-                    System.out.print(numberLiteral.value());
-                } else if (argument instanceof Identifier identifierArgument) {
-                    System.out.print(variablesRepository.getVariable(identifierArgument.name()));
-                }
+                System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
             }
             System.out.println();
         }
