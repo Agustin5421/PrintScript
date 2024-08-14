@@ -10,5 +10,8 @@ public enum TokenTagType implements TokenType {
     SEMICOLON,
     DECLARATION,
     SYNTAX,
-    INVALID
+    INVALID,
+    OPEN_PARENTHESIS,
+    CLOSE_PARENTHESIS,
+    COMMA
 }

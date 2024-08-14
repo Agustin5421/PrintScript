@@ -1,14 +1,12 @@
 package ast;
 
-public class Identifier implements Expression {
-    private final String name;
+import ast.records.ASTNodeType;
+import token.Position;
 
-    public Identifier(String name) {
-        this.name = name;
+public record Identifier(String name, Position start, Position end) implements Expression {
+
+    @Override
+    public ASTNodeType getType() {
+        return ASTNodeType.IDENTIFIER;
     }
-
-    public String getName() {
-        return name;
-    }
-
 }

@@ -1,9 +1,16 @@
 import ast.*;
+import ast.literal.NumberLiteral;
+import ast.Program;
+import ast.literal.StringLiteral;
+import ast.VariableDeclaration;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
+import parsers.AssignmentExpressionParser;
+import parsers.CallExpressionParser;
 import parsers.StatementParser;
 import parsers.VariableDeclarationParser;
 import token.Token;
+import token.Position;
 import token.tokenTypeCheckers.*;
 import token.tokenTypes.TokenDataType;
 import token.tokenTypes.TokenTagType;
@@ -21,19 +28,45 @@ public class StatementParserTest {
         Program program2 = getProgram();
 
         // Verifies the program contains 2 statements
-        assertEquals(2, program2.getStatements().size(), "Program should contain 2 statements");
+        assertEquals(3, program2.statements().size(), "Program should contain 2 statements");
 
         // Verifies the first declaration
-        VariableDeclaration firstDeclaration = (VariableDeclaration) program2.getStatements().get(0);
-        assertEquals("myVar", firstDeclaration.identifier().getName(), "First identifier should be 'myVar'");
-        assertInstanceOf(StringLiteral.class, firstDeclaration.expression(), "First literal should be a LiteralString");
-        assertEquals("Hello", (getLiteral(firstDeclaration.expression())).getValue(), "First literal value should be 'Hello'");
+        VariableDeclaration firstDeclaration = (VariableDeclaration) program2.statements().get(0);
+        assertEquals("myVar", firstDeclaration.identifier().name(), "First identifier should be 'myVar'");
+        assertInstanceOf(StringLiteral.class, firstDeclaration.literal(), "First literal should be a LiteralString");
+        assertEquals("Hello", (firstDeclaration.literal()).value(), "First literal value should be 'Hello'");
 
         // Verifies the second declaration
-        VariableDeclaration secondDeclaration = (VariableDeclaration) program2.getStatements().get(1);
-        assertEquals("myNumber", secondDeclaration.identifier().getName(), "Second identifier should be 'myNumber'");
-        assertInstanceOf(NumberLiteral.class, secondDeclaration.expression(), "Second literal should be a LiteralNumber");
-        assertEquals(42, (getLiteral(secondDeclaration.expression())).getValue(), "Second literal value should be 42");
+        VariableDeclaration secondDeclaration = (VariableDeclaration) program2.statements().get(1);
+        assertEquals("myNumber", secondDeclaration.identifier().name(), "Second identifier should be 'myNumber'");
+        assertInstanceOf(NumberLiteral.class, secondDeclaration.literal(), "Second literal should be a LiteralNumber");
+        assertEquals(42, (secondDeclaration.literal()).value(), "Second literal value should be 42");
+
+    }
+
+
+    @Test
+    public void test1() {
+        Parser parser = getParser();
+
+
+        Lexer lexer = initLexer();
+        List<Token>  tokens = lexer.extractTokens("println ('hola');");
+        Program program = parser.parse(tokens);
+
+        System.out.println("done");
+
+    }
+
+    @Test
+    public void checkingProgramString() {
+        Parser parser = getParser();
+
+
+        Lexer lexer = initLexer();
+        List<Token>  tokens = lexer.extractTokens("println (hola);");
+        Program program = parser.parse(tokens);
+        System.out.println(program);
 
     }
 
@@ -47,31 +80,44 @@ public class StatementParserTest {
     }
 
     private static Program getProgram() {
-        VariableDeclarationParser variableDeclarationParser = new VariableDeclarationParser();
-        StatementParser statementParser = new StatementParser(List.of(variableDeclarationParser));
+        Parser parser = getParser();
 
-        Parser parser = new Parser(List.of(statementParser));
-
+        Position position = new Position(0, 0);
 
         List<Token> tokens2 = List.of(
-                new Token(TokenTagType.DECLARATION, "let", 0, 0),
-                new Token(TokenTagType.IDENTIFIER, "myVar", 0, 4),
-                new Token(TokenTagType.SYNTAX, ":", 0, 9),
-                new Token(TokenDataType.STRING_TYPE, "string", 0, 11),
-                new Token(TokenTagType.ASSIGNATION, "=", 0, 18),
-                new Token(TokenValueType.STRING, "Hello", 0, 20),
-                new Token(TokenTagType.SEMICOLON, ";", 0, 27),
+                new Token(TokenTagType.DECLARATION, "let", position, position),
+                new Token(TokenTagType.IDENTIFIER, "myVar", position, position),
+                new Token(TokenTagType.SYNTAX, ":", position, position),
+                new Token(TokenDataType.STRING_TYPE, "string", position, position),
+                new Token(TokenTagType.ASSIGNATION, "=", position, position),
+                new Token(TokenValueType.STRING, "Hello", position, position),
+                new Token(TokenTagType.SEMICOLON, ";", position, position),
 
-                new Token(TokenTagType.DECLARATION, "let", 1, 0),
-                new Token(TokenTagType.IDENTIFIER, "myNumber", 1, 4),
-                new Token(TokenTagType.SYNTAX, ":", 1, 12),
-                new Token(TokenDataType.STRING_TYPE, "number", 1, 14),
-                new Token(TokenTagType.ASSIGNATION, "=", 1, 21),
-                new Token(TokenValueType.NUMBER, "42", 1, 23),
-                new Token(TokenTagType.SEMICOLON, ";", 1, 25))
+                new Token(TokenTagType.DECLARATION, "let", position, position),
+                new Token(TokenTagType.IDENTIFIER, "myNumber", position, position),
+                new Token(TokenTagType.SYNTAX, ":", position, position),
+                new Token(TokenDataType.STRING_TYPE, "number", position, position),
+                new Token(TokenTagType.ASSIGNATION, "=", position, position),
+                new Token(TokenValueType.NUMBER, "42", position, position),
+                new Token(TokenTagType.SEMICOLON, ";", position, position),
+
+                new Token(TokenTagType.IDENTIFIER, "name", position, position),
+                new Token(TokenTagType.ASSIGNATION, "=", position, position),
+                new Token(TokenValueType.STRING, "agustin", position, position),
+                new Token(TokenTagType.SEMICOLON, ";", position, position)
+                )
                 ;
 
         return parser.parse(tokens2);
+    }
+
+    private static Parser getParser() {
+        VariableDeclarationParser variableDeclarationParser = new VariableDeclarationParser();
+        AssignmentExpressionParser assignmentExpressionParser = new AssignmentExpressionParser();
+        CallExpressionParser callExpressionParser = new CallExpressionParser();
+        StatementParser statementParser = new StatementParser(List.of(variableDeclarationParser, assignmentExpressionParser, callExpressionParser));
+
+        return new Parser(List.of(statementParser));
     }
 
 

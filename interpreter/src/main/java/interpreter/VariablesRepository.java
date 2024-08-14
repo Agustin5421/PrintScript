@@ -30,20 +30,14 @@ public class VariablesRepository {
 
     // For tests purposes:
 
-    public String getStringVariable(String name) {
-        if(!stringVars.containsKey(name)) {
-            throw new IllegalArgumentException("Variable " + name + " is not defined as a string");
+    public Object getVariable(String name) {
+        if(stringVars.containsKey(name)) {
+            return stringVars.get(name);
+        } else if(numberVars.containsKey(name)) {
+            return numberVars.get(name);
+        } else {
+            throw new IllegalArgumentException("Variable " + name + " is not defined");
         }
-
-        return stringVars.get(name);
-    }
-
-    public Number getNumberVariable(String name) throws IllegalArgumentException {
-        if(!numberVars.containsKey(name)) {
-            throw new IllegalArgumentException("Variable " + name + " is not defined as a number");
-        }
-
-        return numberVars.get(name);
     }
 
     public VariablesRepository addVariable(String name, Object value) {

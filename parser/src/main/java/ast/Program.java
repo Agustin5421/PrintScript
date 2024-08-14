@@ -1,15 +1,8 @@
 package ast;
 
+import token.Position;
+
 import java.util.List;
 
-public class Program {
-    private final List<ASTNode> statements;
-
-    public Program(List<ASTNode> statements) {
-        this.statements = statements;
-    }
-
-    public List<ASTNode> getStatements() {
-        return statements;
-    }
+public record Program(List<ASTNode> statements, Position start, Position end) {
 }
