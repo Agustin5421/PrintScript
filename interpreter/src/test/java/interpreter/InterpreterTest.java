@@ -85,4 +85,24 @@ public class InterpreterTest {
         assertEquals(0, repository.getStringVars().size());
         assertEquals(0, repository.getNumberVars().size());
     }
+
+    @Test
+    public void testExecuteProgramWithBinaryExpression() {
+        Identifier identifier = new Identifier("x");
+        Literal<Number> literal = new NumberLiteral(42);
+        VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal);
+
+        Identifier identifier2 = new Identifier("y");
+        BinaryExpression binaryExpression = new BinaryExpression(identifier, new NumberLiteral(42), "+");
+        VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, binaryExpression);
+
+        List<ASTNode> statements = List.of(variableDeclaration, variableDeclaration2);
+        Program program = new Program(statements);
+
+        Interpreter interpreter = new Interpreter();
+        VariablesRepository repository =  interpreter.executeProgram(program);
+
+        assertEquals(42, repository.getNumberVariable("x"));
+        assertEquals(84, repository.getNumberVariable("y"));
+    }
 }

@@ -1,7 +1,6 @@
 package interpreter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class VariablesRepository {
@@ -39,7 +38,7 @@ public class VariablesRepository {
         return stringVars.get(name);
     }
 
-    public Number getNumberVariable(String name) {
+    public Number getNumberVariable(String name) throws IllegalArgumentException {
         if(!numberVars.containsKey(name)) {
             throw new IllegalArgumentException("Variable " + name + " is not defined as a number");
         }
@@ -57,7 +56,7 @@ public class VariablesRepository {
         }
     }
 
-    private VariablesRepository addVariable(String name, String value) {
+    private VariablesRepository addVariable(String name, String value) throws IllegalArgumentException {
         if(numberVars.containsKey(name)) {
             throw new IllegalArgumentException("Variable " + name + " is already defined as a number");
         }
@@ -67,7 +66,7 @@ public class VariablesRepository {
         return new VariablesRepository(newStringVars, numberVars);
     }
 
-    private VariablesRepository addVariable(String name, Number value) {
+    private VariablesRepository addVariable(String name, Number value) throws IllegalArgumentException {
         if(stringVars.containsKey(name)) {
             throw new IllegalArgumentException("Variable " + name + " is already defined as a string");
         }
