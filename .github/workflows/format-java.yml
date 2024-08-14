@@ -1,0 +1,35 @@
+name: Format Java Code
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'  
+
+      - name: Install Google Java Format
+        run: |
+          wget https://github.com/google/google-java-format/releases/download/v1.15.0/google-java-format-1.15.0-all-deps.jar
+          chmod +x google-java-format-1.15.0-all-deps.jar
+        
+      - name: Format Java code
+        run: |
+          java -jar google-java-format-1.15.0-all-deps.jar --replace $(find . -name '*.java')
+
+      - name: Check for formatting changes
+        run: |
+          git diff --exit-code
