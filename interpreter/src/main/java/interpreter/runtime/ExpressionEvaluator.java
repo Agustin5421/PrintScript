@@ -1,3 +1,5 @@
+// interpreter/src/main/java/interpreter/runtime/ExpressionEvaluator.java
+
 package interpreter.runtime;
 
 import ast.*;
@@ -34,8 +36,7 @@ public class ExpressionEvaluator implements Evaluator {
                     Object value = variablesRepository.getVariable(((Identifier) statement).name());
                     if (value instanceof String) {
                         return new StringLiteral((String) value, defaultPosition, defaultPosition);
-                    }
-                    else {
+                    } else {
                         return new NumberLiteral((Number) value, defaultPosition, defaultPosition);
                     }
                 } catch (IllegalArgumentException exception) {
@@ -44,8 +45,7 @@ public class ExpressionEvaluator implements Evaluator {
             } else {
                 throw new IllegalArgumentException("Something else went wrong?");
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Trying to perform an invalid arithmetic operation at: " + line + "col: " + column);
         }
     }
@@ -55,30 +55,62 @@ public class ExpressionEvaluator implements Evaluator {
         Expression right = evaluate(statement.right());
         return switch (statement.operator()) {
             case "+" -> validateAddOperation(left, right);
-            case "-" -> new NumberLiteral((getNumberDoubleValue(evaluate(left)) -
-                    getNumberDoubleValue(evaluate(right))), defaultPosition, defaultPosition);
-            case "/" -> new NumberLiteral((getNumberDoubleValue(evaluate(left)) /
-                    getNumberDoubleValue(evaluate(right))), defaultPosition, defaultPosition);
-            case "*" -> new NumberLiteral((getNumberDoubleValue(evaluate(left)) *
-                    getNumberDoubleValue(evaluate(right))), defaultPosition, defaultPosition);
-            case "%" -> new NumberLiteral((getNumberDoubleValue(evaluate(left)) %
-                    getNumberDoubleValue(evaluate(right))), defaultPosition, defaultPosition);
+            case "-" -> validateOperation(left, right, (a, b) -> checkIfBothIntegers(a, b) ? a.intValue() - b.intValue() : a.doubleValue() - b.doubleValue());
+            case "/" -> validateOperation(left, right, (a, b) -> checkIfBothIntegers(a, b) ? a.intValue() / b.intValue() : a.doubleValue() / b.doubleValue());
+            case "*" -> validateOperation(left, right, (a, b) -> checkIfBothIntegers(a, b) ? a.intValue() * b.intValue() : a.doubleValue() * b.doubleValue());
+            case "%" -> validateOperation(left, right, (a, b) -> checkIfBothIntegers(a, b) ? a.intValue() % b.intValue() : a.doubleValue() % b.doubleValue());
             default -> throw new IllegalArgumentException("Not a valid operation");
         };
     }
 
+    private boolean checkIfBothIntegers(Number a, Number b) {
+        return a instanceof Integer && b instanceof Integer;
+    }
+
     private Expression validateAddOperation(Expression left, Expression right) {
         if (left instanceof StringLiteral || right instanceof StringLiteral) {
-            return new StringLiteral((evaluate(left).toString() + evaluate(right).toString()),
-                    defaultPosition, defaultPosition);
-        }
-        else {
-            return new NumberLiteral((getNumberDoubleValue(evaluate(left)) + getNumberDoubleValue(evaluate(right))),
-                    defaultPosition, defaultPosition);
+            return new StringLiteral(evaluate(left).toString() + evaluate(right).toString(), defaultPosition, defaultPosition);
+        } else {
+            return validateOperation(left, right, (a, b) -> checkIfBothIntegers(a, b) ? a.intValue() + b.intValue() : a.doubleValue() + b.doubleValue());
         }
     }
 
-    public double getNumberDoubleValue(Expression numberLiteral) {
-        return ((NumberLiteral) numberLiteral).value().doubleValue();
+    private Expression validateOperation(Expression left, Expression right, NumberBinaryOperator operator) {
+        Number leftValue = getNumberValue(left);
+        Number rightValue = getNumberValue(right);
+        return createNumberLiteral(applyOperation(leftValue, rightValue, operator), left, right);
+    }
+
+    private Number applyOperation(Number left, Number right, NumberBinaryOperator operator) {
+        if (checkIfBothIntegers(left, right)) {
+            return operator.apply(left.intValue(), right.intValue());
+        } else {
+            return operator.apply(left.doubleValue(), right.doubleValue());
+        }
+    }
+
+    private Number getNumberValue(Expression expression) {
+        if (expression instanceof NumberLiteral numberLiteral) {
+            return numberLiteral.value();
+        } else {
+            throw new IllegalArgumentException("Expression is not a NumberLiteral");
+        }
+    }
+
+    private NumberLiteral createNumberLiteral(Number result, Expression left, Expression right) {
+        if (left instanceof NumberLiteral leftLiteral && right instanceof NumberLiteral rightLiteral) {
+            if (checkIfBothIntegers(leftLiteral.value(), rightLiteral.value())) {
+                return new NumberLiteral(result.intValue(), defaultPosition, defaultPosition);
+            } else {
+                return new NumberLiteral(result.doubleValue(), defaultPosition, defaultPosition);
+            }
+        } else {
+            throw new IllegalArgumentException("Both expressions must be NumberLiterals");
+        }
+    }
+
+    @FunctionalInterface
+    interface NumberBinaryOperator {
+        Number apply(Number left, Number right);
     }
 }

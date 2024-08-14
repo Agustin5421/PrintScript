@@ -5,6 +5,10 @@ import token.Position;
 
 public record VariableDeclaration(Identifier identifier, Expression expression, Position start, Position end) implements Statement {
 
+    public VariableDeclaration(Identifier identifier, Expression expression) {
+        this(identifier, expression, identifier.start(), expression.end());
+    }
+
     @Override
     public String toString() {
         return "VariableDeclaration{" +

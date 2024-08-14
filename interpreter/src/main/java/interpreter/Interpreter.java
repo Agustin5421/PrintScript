@@ -4,10 +4,13 @@ import ast.*;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import interpreter.runtime.ExpressionEvaluator;
+
 import java.util.List;
 import static ast.records.StatementValidator.*;
 
 public class Interpreter {
+
     public VariablesRepository executeProgram(Program program) {
         VariablesRepository variablesRepository = new VariablesRepository();
 
@@ -37,10 +40,9 @@ public class Interpreter {
     }
 
     private static VariablesRepository setVariable(VariableDeclaration statement, VariablesRepository variablesRepository) {
-        VariableDeclaration variableDeclaration = statement;
-
-        String name = variableDeclaration.identifier().name();
-        Literal<?> literal = variableDeclaration.literal();
+        String name = statement.identifier().name();
+        ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, statement.start().row());
+        Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
         Object value = literal.value();
 
         return variablesRepository.addVariable(name, value);
