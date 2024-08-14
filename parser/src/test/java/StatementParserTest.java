@@ -57,6 +57,19 @@ public class StatementParserTest {
 
     }
 
+    @Test
+    public void test2() {
+        Parser parser = getParser();
+
+
+        Lexer lexer = initLexer();
+        List<Token>  tokens = lexer.extractTokens("println (hola);");
+        Program program = parser.parse(tokens);
+
+        System.out.println("done");
+
+    }
+
     private static Program getProgram() {
         Parser parser = getParser();
 

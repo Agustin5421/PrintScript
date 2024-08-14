@@ -13,6 +13,8 @@ public class LiteralFactory {
             return new NumberLiteral(Integer.parseInt(token.getValue()), token.getInitialPosition(), token.getFinalPosition());
         }
 
+        //TODO: Add support for identifiers
+
         throw new IllegalArgumentException("Unsupported literal type");
     }
 }
