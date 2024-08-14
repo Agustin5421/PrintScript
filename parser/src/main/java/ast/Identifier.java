@@ -1,5 +1,6 @@
 package ast;
 
+import ast.records.ASTNodeType;
 import token.Position;
 
 public class Identifier implements Expression {
@@ -25,4 +26,8 @@ public class Identifier implements Expression {
         return end;
     }
 
+    @Override
+    public ASTNodeType getType() {
+        return ASTNodeType.IDENTIFIER;
+    }
 }

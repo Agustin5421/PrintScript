@@ -1,5 +1,6 @@
 package ast.literal;
 
+import ast.records.ASTNodeType;
 import token.Position;
 
 public class NumberLiteral implements Literal<Number> {
@@ -30,5 +31,10 @@ public class NumberLiteral implements Literal<Number> {
         return "LiteralNumber{" +
                 "value=" + value +
                 '}';
+    }
+
+    @Override
+    public ASTNodeType getType() {
+        return ASTNodeType.NUMBER_LITERAL;
     }
 }

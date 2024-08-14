@@ -1,5 +1,6 @@
 package ast;
 
+import ast.records.ASTNodeType;
 import token.Position;
 
 public class AssignmentExpression implements Expression{
@@ -38,4 +39,8 @@ public class AssignmentExpression implements Expression{
     }
 
 
+    @Override
+    public ASTNodeType getType() {
+        return ASTNodeType.ASSIGNMENT_EXPRESSION;
+    }
 }
