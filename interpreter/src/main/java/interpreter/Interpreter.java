@@ -20,63 +20,44 @@ public class Interpreter {
 
     private VariablesRepository evaluateStatement(ASTNode statement, VariablesRepository variablesRepository) {
         if (isVariableDeclaration(statement)) {
-            VariableDeclaration variableDeclaration = (VariableDeclaration) statement;
-
-            String name = variableDeclaration.identifier().name();
-            Literal<?> literal = (Literal<?>) variableDeclaration.expression();
-            Object value = literal.value();
-
-            return variablesRepository.addVariable(name, value);
+            return setVariable((VariableDeclaration) statement, variablesRepository);
         } else if (isCallExpression(statement)) {
             CallExpression callExpression = (CallExpression) statement;
             Identifier identifier = callExpression.methodIdentifier();
             List<Expression> arguments = callExpression.arguments();
-            boolean optionalParameters = callExpression.optionalParameters();
+            boolean optionalParameters = callExpression.optionalParameters(); //TODO: how to use this?
 
-            if (identifier.name().equals("println")) {
-                for (Expression argument : arguments) {
-                    if (argument instanceof StringLiteral stringLiteral) {
-                        System.out.print(stringLiteral.value());
-                    } else if (argument instanceof NumberLiteral numberLiteral) {
-                        System.out.print(numberLiteral.value());
-                    } else if (argument instanceof Identifier identifierArgument) {
-                        System.out.print(variablesRepository.getVariable(identifierArgument.name()));
-                    }
-                }
-                System.out.println();
-            }
+            String name = "println"; //TODO: como hacerlo generico? tal vez un enum con todos los tipos pero no se si es buena idea
+            printlnMethod(variablesRepository, identifier, "println", arguments);
 
             return variablesRepository;
         }
-//        else if (isExpressionStatement(statement)) {
-//            ExpressionStatement expressionStatement = (ExpressionStatement) statement;
-//            ExpressionType expressionType = expressionStatement.expressionType();
-//
-//            if (isCallExpression(expressionType)) {
-//                CallExpression callExpression = (CallExpression) expressionType;
-//                Identifier identifier = callExpression.identifier();
-//                List<Expression> arguments = callExpression.arguments();
-//                boolean optionalParameters = callExpression.optionalParameters();
-//
-//                if (identifier.getName().equals("println")) {
-//                    for (Expression argument : arguments) {
-//                        if (argument instanceof StringLiteral) {
-//                            StringLiteral stringLiteral = (StringLiteral) argument;
-//                            System.out.print(stringLiteral.value());
-//                        } else if (argument instanceof NumberLiteral) {
-//                            NumberLiteral numberLiteral = (NumberLiteral) argument;
-//                            System.out.print(numberLiteral.value());
-//                        } else if (argument instanceof Identifier) {
-//                            Identifier identifierArgument = (Identifier) argument;
-//                            System.out.print(variablesRepository.getVariable(identifierArgument.getName()));
-//                        }
-//                    }
-//                    System.out.println();
-//                }
-//
-//                return variablesRepository;
-//            }
-//        }
+
         return variablesRepository;
+    }
+
+    private static VariablesRepository setVariable(VariableDeclaration statement, VariablesRepository variablesRepository) {
+        VariableDeclaration variableDeclaration = statement;
+
+        String name = variableDeclaration.identifier().name();
+        Literal<?> literal = variableDeclaration.literal();
+        Object value = literal.value();
+
+        return variablesRepository.addVariable(name, value);
+    }
+
+    private void printlnMethod(VariablesRepository variablesRepository, Identifier identifier, String name, List<Expression> arguments) {
+        if (identifier.name().equals(name)) {
+            for (Expression argument : arguments) {
+                if (argument instanceof StringLiteral stringLiteral) {
+                    System.out.print(stringLiteral.value());
+                } else if (argument instanceof NumberLiteral numberLiteral) {
+                    System.out.print(numberLiteral.value());
+                } else if (argument instanceof Identifier identifierArgument) {
+                    System.out.print(variablesRepository.getVariable(identifierArgument.name()));
+                }
+            }
+            System.out.println();
+        }
     }
 }

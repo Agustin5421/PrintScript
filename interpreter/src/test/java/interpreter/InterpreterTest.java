@@ -44,13 +44,7 @@ public class InterpreterTest {
     public void testExecuteProgramWithMultipleStatements() {
         Identifier identifier1 = new Identifier("x", new Position(0, 0), new Position(0, 1));
         Literal<String> literal1 = new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
-        VariableDeclaration variableDeclaration1 = new VariableDeclaration(identifier1, literal1, new Position(4, 0), new Position(4, 5));
-
-        Identifier identifier2 = new Identifier("y", new Position(6, 0), new Position(6, 7));
-        Literal<Number> literal2 = new NumberLiteral(42, new Position(8, 0), new Position(8, 9));
-        VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, literal2, new Position(10, 0), new Position(10, 11));
-
-        List<ASTNode> statements = List.of(variableDeclaration1, variableDeclaration2);
+        List<ASTNode> statements = getAstNodes(identifier1, literal1, "y");
         Program program = new Program(statements,new Position(0, 0), new Position(0, 1));
 
         Interpreter interpreter = new Interpreter();
@@ -64,13 +58,7 @@ public class InterpreterTest {
     public void testExecuteProgramWithMultipleStatementsAndVariableUpdate() {
         Identifier identifier1 = new Identifier("x", new Position(0, 0), new Position(0, 1));
         Literal<String> literal1 = new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
-        VariableDeclaration variableDeclaration1 = new VariableDeclaration(identifier1, literal1, new Position(4, 0), new Position(4, 5));
-
-        Identifier identifier2 = new Identifier("x", new Position(6, 0), new Position(6, 7));
-        Literal<Number> literal2 = new NumberLiteral(42, new Position(8, 0), new Position(8, 9));
-        VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, literal2, new Position(10, 0), new Position(10, 11));
-
-        List<ASTNode> statements = List.of(variableDeclaration1, variableDeclaration2);
+        List<ASTNode> statements = getAstNodes(identifier1, literal1, "x");
         Program program = new Program(statements, new Position(0, 0), new Position(0, 1));
 
         Interpreter interpreter = new Interpreter();
@@ -78,6 +66,17 @@ public class InterpreterTest {
         assertThrows(IllegalArgumentException.class, () -> {
             interpreter.executeProgram(program);
         });
+    }
+
+    private static List<ASTNode> getAstNodes(Identifier identifier1, Literal<String> literal1, String x) {
+        VariableDeclaration variableDeclaration1 = new VariableDeclaration(identifier1, literal1, new Position(4, 0), new Position(4, 5));
+
+        Identifier identifier2 = new Identifier(x, new Position(6, 0), new Position(6, 7));
+        Literal<Number> literal2 = new NumberLiteral(42, new Position(8, 0), new Position(8, 9));
+        VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, literal2, new Position(10, 0), new Position(10, 11));
+
+        List<ASTNode> statements = List.of(variableDeclaration1, variableDeclaration2);
+        return statements;
     }
 
     @Test
@@ -89,6 +88,29 @@ public class InterpreterTest {
 
         assertEquals(0, repository.getStringVars().size());
         assertEquals(0, repository.getNumberVars().size());
+    }
+
+    @Test
+    public void testPrinting() {
+        Identifier identifier1 = new Identifier("x", new Position(0, 0), new Position(0, 1));
+        Literal<String> literal1 = new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
+        VariableDeclaration variableDeclaration1 = new VariableDeclaration(identifier1, literal1, new Position(4, 0), new Position(4, 5));
+
+        VariablesRepository repository = getVariablesRepository(variableDeclaration1);
+
+        assertEquals("this is a string", repository.getVariable("x"));
+    }
+
+    private static VariablesRepository getVariablesRepository(VariableDeclaration variableDeclaration1) {
+        Identifier methodName = new Identifier("println", new Position(6, 0), new Position(6, 6));
+        List<Expression> arguments = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
+        CallExpression callExpression = new CallExpression(methodName, arguments, false, new Position(6, 0), new Position(6, 6));
+
+        List<ASTNode> statements = List.of(variableDeclaration1, callExpression);
+        Program program = new Program(statements, new Position(0, 0), new Position(0, 1));
+
+        Interpreter interpreter = new Interpreter();
+        return interpreter.executeProgram(program);
     }
 
     @Test
