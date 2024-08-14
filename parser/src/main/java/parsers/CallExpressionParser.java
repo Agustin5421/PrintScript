@@ -1,6 +1,7 @@
 package parsers;
 
 import ast.*;
+import ast.factory.ArgumentFactory;
 import ast.literal.Literal;
 import ast.literal.LiteralFactory;
 import token.Token;
@@ -27,12 +28,13 @@ public class CallExpressionParser implements InstructionParser{
         List<Token> subList = tokens.subList(1, tokens.size());
         List<Token> arguments =  extractArguments(subList);
 
-        List<Literal> argumentLiterals = new ArrayList<>();
+        List<Expression> argumentExpressions = new ArrayList<>();
         for (Token token : arguments) {
-            argumentLiterals.add(LiteralFactory.createLiteral(token));
+            argumentExpressions.add(ArgumentFactory.createArgument(token));
         }
 
-        return new CallExpression(identifier, argumentLiterals, start, end);
+        boolean optionalParameters = argumentExpressions.isEmpty(); //TODO: Implement optional parameters in the future
+        return new CallExpression(identifier, argumentExpressions, optionalParameters, start, end);
     }
 
     @Override
