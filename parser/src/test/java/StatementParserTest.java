@@ -27,17 +27,17 @@ public class StatementParserTest {
         Program program2 = getProgram();
 
         // Verifies the program contains 2 statements
-        assertEquals(3, program2.getStatements().size(), "Program should contain 2 statements");
+        assertEquals(3, program2.statements().size(), "Program should contain 2 statements");
 
         // Verifies the first declaration
-        VariableDeclaration firstDeclaration = (VariableDeclaration) program2.getStatements().get(0);
-        assertEquals("myVar", firstDeclaration.identifier().getName(), "First identifier should be 'myVar'");
+        VariableDeclaration firstDeclaration = (VariableDeclaration) program2.statements().get(0);
+        assertEquals("myVar", firstDeclaration.identifier().name(), "First identifier should be 'myVar'");
         assertInstanceOf(StringLiteral.class, firstDeclaration.literal(), "First literal should be a LiteralString");
         assertEquals("Hello", (firstDeclaration.literal()).value(), "First literal value should be 'Hello'");
 
         // Verifies the second declaration
-        VariableDeclaration secondDeclaration = (VariableDeclaration) program2.getStatements().get(1);
-        assertEquals("myNumber", secondDeclaration.identifier().getName(), "Second identifier should be 'myNumber'");
+        VariableDeclaration secondDeclaration = (VariableDeclaration) program2.statements().get(1);
+        assertEquals("myNumber", secondDeclaration.identifier().name(), "Second identifier should be 'myNumber'");
         assertInstanceOf(NumberLiteral.class, secondDeclaration.literal(), "Second literal should be a LiteralNumber");
         assertEquals(42, (secondDeclaration.literal()).value(), "Second literal value should be 42");
 
@@ -58,15 +58,14 @@ public class StatementParserTest {
     }
 
     @Test
-    public void test2() {
+    public void checkingProgramString() {
         Parser parser = getParser();
 
 
         Lexer lexer = initLexer();
         List<Token>  tokens = lexer.extractTokens("println (hola);");
         Program program = parser.parse(tokens);
-
-        System.out.println("done");
+        System.out.println(program);
 
     }
 
