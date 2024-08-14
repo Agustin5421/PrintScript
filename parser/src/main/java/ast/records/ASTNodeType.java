@@ -1,4 +1,11 @@
 package ast.records;
 
-public class ASTNodeType {
+public enum ASTNodeType {
+    ASSIGNMENT_EXPRESSION,
+    CALL_EXPRESSION,
+    EXPRESSION_STATEMENT,
+    VARIABLE_DECLARATION,
+    IDENTIFIER,
+    NUMBER_LITERAL,
+    STRING_LITERAL,
 }
