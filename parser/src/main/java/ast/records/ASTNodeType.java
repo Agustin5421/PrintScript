@@ -8,4 +8,5 @@ public enum ASTNodeType {
     IDENTIFIER,
     NUMBER_LITERAL,
     STRING_LITERAL,
+    BINARY_EXPRESSION
 }

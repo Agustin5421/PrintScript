@@ -23,7 +23,7 @@ public class Interpreter {
             VariableDeclaration variableDeclaration = (VariableDeclaration) statement;
 
             String name = variableDeclaration.identifier().name();
-            Literal<?> literal = variableDeclaration.literal();
+            Literal<?> literal = (Literal<?>) variableDeclaration.expression();
             Object value = literal.value();
 
             return variablesRepository.addVariable(name, value);

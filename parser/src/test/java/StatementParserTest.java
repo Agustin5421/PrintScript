@@ -1,4 +1,5 @@
 import ast.*;
+import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.Program;
 import ast.literal.StringLiteral;
@@ -33,14 +34,14 @@ public class StatementParserTest {
         // Verifies the first declaration
         VariableDeclaration firstDeclaration = (VariableDeclaration) program2.statements().get(0);
         assertEquals("myVar", firstDeclaration.identifier().name(), "First identifier should be 'myVar'");
-        assertInstanceOf(StringLiteral.class, firstDeclaration.literal(), "First literal should be a LiteralString");
-        assertEquals("Hello", (firstDeclaration.literal()).value(), "First literal value should be 'Hello'");
+        assertInstanceOf(StringLiteral.class, firstDeclaration.expression(), "First literal should be a LiteralString");
+        assertEquals("Hello", (getLiteral(firstDeclaration.expression())).value(), "First literal value should be 'Hello'");
 
         // Verifies the second declaration
         VariableDeclaration secondDeclaration = (VariableDeclaration) program2.statements().get(1);
         assertEquals("myNumber", secondDeclaration.identifier().name(), "Second identifier should be 'myNumber'");
-        assertInstanceOf(NumberLiteral.class, secondDeclaration.literal(), "Second literal should be a LiteralNumber");
-        assertEquals(42, (secondDeclaration.literal()).value(), "Second literal value should be 42");
+        assertInstanceOf(NumberLiteral.class, secondDeclaration.expression(), "Second literal should be a LiteralNumber");
+        assertEquals(42, (getLiteral(secondDeclaration.expression())).value(), "Second literal value should be 42");
 
     }
 

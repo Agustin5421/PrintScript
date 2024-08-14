@@ -1,10 +1,9 @@
 package ast;
 
-import ast.literal.Literal;
 import ast.records.ASTNodeType;
 import token.Position;
 
-public record VariableDeclaration(Identifier identifier, Literal literal, Position start, Position end) implements Statement {
+public record VariableDeclaration(Identifier identifier, Expression expression, Position start, Position end) implements Statement {
 
     @Override
     public String toString() {

@@ -1,6 +1,5 @@
 package interpreter;
 
-
 import ast.*;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
@@ -12,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class InterpreterTest {
+    private final Position defaultPosition = new Position(0,0);
     @Test
     public void testExecuteProgram() {
         Identifier identifier = new Identifier("x", new Position(0, 0), new Position(0, 1));
@@ -93,21 +93,21 @@ public class InterpreterTest {
 
     @Test
     public void testExecuteProgramWithBinaryExpression() {
-        Identifier identifier = new Identifier("x");
-        Literal<Number> literal = new NumberLiteral(42);
-        VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal);
+        Identifier identifier = new Identifier("x", defaultPosition, defaultPosition);
+        Literal<Number> literal = new NumberLiteral(42, defaultPosition, defaultPosition);
+        VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal, defaultPosition, defaultPosition);
 
-        Identifier identifier2 = new Identifier("y");
-        BinaryExpression binaryExpression = new BinaryExpression(identifier, new NumberLiteral(42), "+");
-        VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, binaryExpression);
+        Identifier identifier2 = new Identifier("y", defaultPosition, defaultPosition);
+        BinaryExpression binaryExpression = new BinaryExpression(identifier, new NumberLiteral(42, defaultPosition, defaultPosition), "+");
+        VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, binaryExpression, defaultPosition, defaultPosition);
 
         List<ASTNode> statements = List.of(variableDeclaration, variableDeclaration2);
-        Program program = new Program(statements);
+        Program program = new Program(statements, defaultPosition, defaultPosition);
 
         Interpreter interpreter = new Interpreter();
         VariablesRepository repository =  interpreter.executeProgram(program);
 
-        assertEquals(42, repository.getNumberVariable("x"));
-        assertEquals(84, repository.getNumberVariable("y"));
+        assertEquals(42, repository.getVariable("x"));
+        assertEquals(84, repository.getVariable("y"));
     }
 }
