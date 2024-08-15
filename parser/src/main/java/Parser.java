@@ -1,6 +1,6 @@
 import ast.ASTNode;
+import ast.ParserProvider;
 import ast.Program;
-import parsers.InstructionParser;
 import token.Position;
 import token.Token;
 import token.tokenTypes.TokenTagType;
@@ -10,24 +10,14 @@ import java.util.List;
 
 
 public class Parser {
-    private final List<InstructionParser> parsers;
-    public Parser (List<InstructionParser> parsers) {
-        this.parsers = parsers;
-    }
-
     public Program parse (List<Token> tokens) {
         List<List<Token>> statements = splitBySemicolon(tokens);
 
         List<ASTNode> astNodes = new ArrayList<>();
 
-
        for (List<Token> statement : statements) {
-            for (InstructionParser parser : parsers) {
-                if (parser.shouldParse(statement)) {
-                    astNodes.add(parser.parse(statement));
-                    break;
-                }
-            }
+            ASTNode astNode = ParserProvider.parse(statement);
+            astNodes.add(astNode);
         }
 
         Position start = tokens.get(0).getInitialPosition();
@@ -37,7 +27,7 @@ public class Parser {
     }
 
 
-    private List<List<Token>> splitBySemicolon(List<Token> tokens) {
+    private static List<List<Token>> splitBySemicolon(List<Token> tokens) {
         List<List<Token>> result = new ArrayList<>();
         List<Token> currentSublist = new ArrayList<>();
 

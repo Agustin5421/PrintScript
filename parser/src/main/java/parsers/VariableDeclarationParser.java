@@ -1,8 +1,6 @@
 package parsers;
 
 import ast.*;
-import ast.literal.Literal;
-import ast.literal.LiteralFactory;
 import token.Token;
 import token.Position;
 
@@ -29,10 +27,10 @@ public class VariableDeclarationParser implements InstructionParser {
         if (!tokens.get(3).getValue().equals("number") && !tokens.get(3).getValue().equals("string")) {
             throw new IllegalArgumentException("Expected 'number' or 'string' at " + tokens.get(3).getInitialPosition().toString() + " but found " + tokens.get(3).getValue() + " instead.");
         }
-        Literal literal = LiteralFactory.createLiteral(tokens.get(5));
 
+        ASTNode value = ParserProvider.parse(tokens.subList(5, tokens.size()));
 
-        return new VariableDeclaration(identifier, literal, start, end);
+        return new VariableDeclaration(identifier, value, start, end);
     }
 
     @Override

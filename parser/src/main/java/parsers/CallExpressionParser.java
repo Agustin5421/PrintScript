@@ -11,7 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CallExpressionParser implements InstructionParser{
-    private final List<String> reservedWords = List.of("println");
+    private final List<String> reservedWords;
+
+    public CallExpressionParser() {
+        reservedWords = List.of("println");
+    }
+
+    public CallExpressionParser(List<String> reservedWords) {
+        this.reservedWords = reservedWords;
+    }
 
     @Override
     public ASTNode parse(List<Token> tokens) {
@@ -26,12 +34,15 @@ public class CallExpressionParser implements InstructionParser{
         List<Token> subList = tokens.subList(1, tokens.size());
         List<Token> arguments =  extractArguments(subList);
 
-        List<Expression> argumentExpressions = new ArrayList<>();
+        List<ASTNode> argumentExpressions = new ArrayList<>();
         for (Token token : arguments) {
-            argumentExpressions.add(ArgumentFactory.createArgument(token));
+            ASTNode argument = ParserProvider.parse(List.of(token));
+            argumentExpressions.add(argument);
         }
 
-        boolean optionalParameters = !argumentExpressions.isEmpty(); //TODO: Implement optional parameters in the future correctly
+        boolean optionalParameters = false; //TODO: Implement optional parameters in the future correctly
+
+
         return new CallExpression(identifier, argumentExpressions, optionalParameters, start, end);
     }
 
