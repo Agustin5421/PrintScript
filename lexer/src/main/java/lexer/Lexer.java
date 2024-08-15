@@ -39,7 +39,6 @@ public class Lexer {
         Pattern pattern = Pattern.compile(TEXT_PATTERNS);
         Matcher matcher = pattern.matcher(code);
 
-//        Position position = new Position(1, 1);
         Position initialPosition = new Position(1, 1);
         int currentIndex = 0;
 
