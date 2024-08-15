@@ -2,8 +2,8 @@ package lexer;
 
 import org.junit.jupiter.api.Test;
 import token.Position;
-import token.tokenTypeCheckers.*;
 import token.Token;
+import token.tokenTypeCheckers.*;
 import token.tokenTypes.TokenTagType;
 import token.tokenTypes.TokenValueType;
 import java.util.List;
