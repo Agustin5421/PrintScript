@@ -5,7 +5,7 @@ import token.Position;
 
 import java.util.List;
 
-public record CallExpression(Identifier methodIdentifier, List<Expression> arguments,
+public record CallExpression(Identifier methodIdentifier, List<ASTNode> arguments,
                              boolean optionalParameters, Position start, Position end) implements Expression {
     @Override
     public ASTNodeType getType() {

@@ -3,9 +3,10 @@ package ast;
 import ast.records.ASTNodeType;
 import token.Position;
 
-public record VariableDeclaration(Identifier identifier, Expression expression, Position start, Position end) implements Statement {
+public record VariableDeclaration(Identifier identifier, ASTNode value, Position start, Position end) implements Statement {
+    private static final ASTNodeType type = ASTNodeType.VARIABLE_DECLARATION;
 
-    public VariableDeclaration(Identifier identifier, Expression expression) {
+    public VariableDeclaration(Identifier identifier, ASTNode expression) {
         this(identifier, expression, identifier.start(), expression.end());
     }
 
@@ -13,7 +14,7 @@ public record VariableDeclaration(Identifier identifier, Expression expression, 
     public String toString() {
         return "VariableDeclaration{" +
                 "identifier=" + identifier +
-                ", expression=" + expression +
+                ", value=" + value +
                 '}';
     }
 
