@@ -112,10 +112,10 @@ public class InterpreterTest {
         VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, binaryExpression);
 
         Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
-        List<Expression> arguments = List.of(new Identifier("y", new Position(8, 0), new Position(8, 1)));
+        List<ASTNode> arguments = List.of(new Identifier("y", new Position(8, 0), new Position(8, 1)));
         CallExpression callExpression = new CallExpression(printName, arguments, false, new Position(6, 0), new Position(6, 6));
 
-        List<Expression> arguments1 = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
+        List<ASTNode> arguments1 = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
         CallExpression callExpression1 = new CallExpression(printName, arguments1, false, new Position(6, 0), new Position(6, 6));
 
 
@@ -183,7 +183,7 @@ public class InterpreterTest {
 
     private VariablesRepository addPrintStatement(VariableDeclaration variableDeclaration) {
         Identifier methodName = new Identifier("println", new Position(6, 0), new Position(6, 6));
-        List<Expression> arguments = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
+        List<ASTNode> arguments = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
         CallExpression callExpression = new CallExpression(methodName, arguments, false, new Position(6, 0), new Position(6, 6));
 
         List<ASTNode> statements = List.of(variableDeclaration, callExpression);
