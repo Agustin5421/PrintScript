@@ -2,6 +2,8 @@ plugins {
     id 'java'
 }
 
+apply plugin: 'checkstyle'
+
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
@@ -17,4 +19,9 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion = '10.17.0'
+    configFile = file("${rootDir}/config/checkstyle/rules.xml")
 }
