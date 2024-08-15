@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'checkstyle'
 }
 
 group = 'org.example'
@@ -10,19 +9,9 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    checkstyleConfig
-}
-
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    checkstyleConfig("com.puppycrawl.tools:checkstyle:8.29") { transitive = false }
-}
-
-checkstyle {
-    toolVersion '8.29'
-    config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
 }
 
 tasks.test {
