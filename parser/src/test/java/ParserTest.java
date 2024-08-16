@@ -1,5 +1,6 @@
 import ast.expressions.BinaryExpression;
 import ast.literal.StringLiteral;
+import ast.root.ASTNode;
 import ast.root.Program;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
@@ -74,6 +75,41 @@ public class ParserTest {
         AssignmentExpression variableDeclaration = (AssignmentExpression) program.statements().get(0);
         assertEquals("myVar", variableDeclaration.left().name(), "Identifier should be 'myVar'");
         assertInstanceOf(BinaryExpression.class, variableDeclaration.right(), "Value should be a BinaryExpression");
+    }
+
+    @Test
+    public void completeTest () {
+        Parser parser = new Parser();
+
+        Lexer lexer = ContextProvider.initLexer();
+        List<Token> tokens = lexer.extractTokens(
+                "let myVar : number = 2 + 3 * 2;" +
+                "println(myVar);" +
+                "myVar = 'Hello World';" +
+                "println(myVar);");
+
+        Program program = parser.parse(tokens);
+
+        assertEquals(4, program.statements().size(), "Program should contain 1 statement");
+
+        ASTNode first = program.statements().get(0);
+        ASTNode second = program.statements().get(1);
+        ASTNode third = program.statements().get(2);
+        ASTNode fourth = program.statements().get(3);
+
+        assertEquals("myVar", ((VariableDeclaration) first).identifier().name(), "Identifier should be 'myVar'");
+        assertInstanceOf(BinaryExpression.class, ((VariableDeclaration) first).value(), "Value should be a BinaryExpression");
+
+        assertEquals("println", ((CallExpression) second).methodIdentifier().name(), "Identifier should be 'println'");
+        assertInstanceOf(CallExpression.class, second, "Value should be a CallExpression");
+
+        assertEquals("myVar", ((AssignmentExpression) third).left().name(), "Identifier should be 'myVar'");
+        assertInstanceOf(StringLiteral.class, ((AssignmentExpression) third).right(), "Value should be a StringLiteral");
+
+        assertEquals("println", ((CallExpression) fourth).methodIdentifier().name(), "Identifier should be 'println'");
+        assertInstanceOf(CallExpression.class, fourth, "Value should be a CallExpression");
+
+
     }
 
 
