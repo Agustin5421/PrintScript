@@ -1,6 +1,6 @@
 package ast.literal;
 
-import ast.Expression;
+import ast.expressions.Expression;
 
 public interface Literal<T> extends Expression {
     T value();

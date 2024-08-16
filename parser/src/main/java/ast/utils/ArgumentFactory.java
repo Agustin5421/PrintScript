@@ -1,7 +1,7 @@
-package ast.factory;
+package ast.utils;
 
-import ast.Expression;
-import ast.Identifier;
+import ast.expressions.Expression;
+import ast.identifier.Identifier;
 import ast.literal.LiteralFactory;
 import token.Token;
 import token.tokenTypes.TokenTagType;

@@ -1,4 +1,4 @@
-package ast.records;
+package ast.root;
 
 public enum ASTNodeType {
     ASSIGNMENT_EXPRESSION,

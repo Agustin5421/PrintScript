@@ -1,15 +1,16 @@
-package parsers;
+package parsers.statements;
 
-import ast.*;
-import ast.literal.Literal;
-import ast.literal.LiteralFactory;
+import ast.identifier.Identifier;
+import ast.root.ASTNode;
+import ast.statements.VariableDeclaration;
+import ast.utils.ExpressionParserProvider;
 import token.Token;
 import token.Position;
 
 import java.util.List;
 import java.util.Objects;
 
-public class VariableDeclarationParser implements InstructionParser {
+public class VariableDeclarationParser implements StatementParser {
     @Override
     public ASTNode parse(List<Token> tokens) {
         if (!shouldParse(tokens)) {
@@ -29,10 +30,10 @@ public class VariableDeclarationParser implements InstructionParser {
         if (!tokens.get(3).getValue().equals("number") && !tokens.get(3).getValue().equals("string")) {
             throw new IllegalArgumentException("Expected 'number' or 'string' at " + tokens.get(3).getInitialPosition().toString() + " but found " + tokens.get(3).getValue() + " instead.");
         }
-        Literal literal = LiteralFactory.createLiteral(tokens.get(5));
 
+        ASTNode value = ExpressionParserProvider.parse(tokens.subList(5, tokens.size()));
 
-        return new VariableDeclaration(identifier, literal, start, end);
+        return new VariableDeclaration(identifier, value, start, end);
     }
 
     @Override

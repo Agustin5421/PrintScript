@@ -1,6 +1,5 @@
-package ast;
+package ast.root;
 
-import ast.records.ASTNodeType;
 import token.Position;
 
 public interface ASTNode {

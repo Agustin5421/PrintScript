@@ -1,13 +1,15 @@
 package interpreter;
 
-import ast.*;
+import ast.identifier.Identifier;
 import ast.literal.Literal;
-import ast.literal.NumberLiteral;
-import ast.literal.StringLiteral;
+import ast.root.ASTNode;
+import ast.root.Program;
+import ast.statements.CallExpression;
+import ast.statements.VariableDeclaration;
 import interpreter.runtime.ExpressionEvaluator;
 
 import java.util.List;
-import static ast.records.StatementValidator.*;
+import static ast.utils.StatementValidator.*;
 
 public class Interpreter {
 
@@ -27,7 +29,7 @@ public class Interpreter {
         } else if (isCallExpression(statement)) {
             CallExpression callExpression = (CallExpression) statement;
             Identifier identifier = callExpression.methodIdentifier();
-            List<Expression> arguments = callExpression.arguments();
+            List<ASTNode> arguments = callExpression.arguments();
             boolean optionalParameters = callExpression.optionalParameters(); //TODO: how to use this?
 
             String name = "println"; //TODO: como hacerlo generico? tal vez un enum con todos los tipos pero no se si es buena idea
@@ -42,16 +44,16 @@ public class Interpreter {
     private static VariablesRepository setVariable(VariableDeclaration statement, VariablesRepository variablesRepository) {
         String name = statement.identifier().name();
         ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, statement.start().row());
-        Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
+        Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.value());
         Object value = literal.value();
 
         return variablesRepository.addVariable(name, value);
     }
 
-    private void printlnMethod(VariablesRepository variablesRepository, Identifier identifier, String name, List<Expression> arguments) {
+    private void printlnMethod(VariablesRepository variablesRepository, Identifier identifier, String name, List<ASTNode> arguments) {
         if (identifier.name().equals(name)) {
             ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, identifier.start().row());
-            for (Expression argument : arguments) {
+            for (ASTNode argument : arguments) {
                 System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
             }
             System.out.println();

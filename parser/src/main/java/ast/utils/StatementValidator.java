@@ -1,8 +1,8 @@
-package ast.records;
+package ast.utils;
 
-import ast.ASTNode;
-import ast.CallExpression;
-import ast.VariableDeclaration;
+import ast.root.ASTNode;
+import ast.statements.CallExpression;
+import ast.statements.VariableDeclaration;
 
 public class StatementValidator {
 

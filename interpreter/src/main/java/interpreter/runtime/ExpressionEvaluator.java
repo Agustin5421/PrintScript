@@ -2,10 +2,12 @@
 
 package interpreter.runtime;
 
-import ast.*;
+import ast.expressions.BinaryExpression;
+import ast.identifier.Identifier;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import ast.root.ASTNode;
 import interpreter.VariablesRepository;
 import token.Position;
 
@@ -25,7 +27,7 @@ public class ExpressionEvaluator implements Evaluator {
     // This should return a Literal at the end of the calling
     // (or else throw an exception if the variable is not defined)
     @Override
-    public Expression evaluate(Expression statement) throws IllegalArgumentException {
+    public ASTNode evaluate(ASTNode statement) throws IllegalArgumentException {
         try {
             if (statement instanceof BinaryExpression) {
                 return handleBinaryOperation((BinaryExpression) statement);
@@ -50,9 +52,9 @@ public class ExpressionEvaluator implements Evaluator {
         }
     }
 
-    private Expression handleBinaryOperation(BinaryExpression statement) {
-        Expression left = evaluate(statement.left());
-        Expression right = evaluate(statement.right());
+    private ASTNode handleBinaryOperation(BinaryExpression statement) {
+        ASTNode left = evaluate(statement.left());
+        ASTNode right = evaluate(statement.right());
         return switch (statement.operator()) {
             case "+" -> validateAddOperation(left, right);
             case "-" -> validateOperation(left, right, (a, b) -> checkIfBothIntegers(a, b) ? a.intValue() - b.intValue() : a.doubleValue() - b.doubleValue());
@@ -67,7 +69,7 @@ public class ExpressionEvaluator implements Evaluator {
         return a instanceof Integer && b instanceof Integer;
     }
 
-    private Expression validateAddOperation(Expression left, Expression right) {
+    private ASTNode validateAddOperation(ASTNode left, ASTNode right) {
         if (left instanceof StringLiteral || right instanceof StringLiteral) {
             return new StringLiteral(((Literal<?>) evaluate(left)).value().toString() +
                     ((Literal<?>) evaluate(right)).value().toString(), defaultPosition, defaultPosition);
@@ -77,7 +79,7 @@ public class ExpressionEvaluator implements Evaluator {
         }
     }
 
-    private Expression validateOperation(Expression left, Expression right, NumberBinaryOperator operator) {
+    private ASTNode validateOperation(ASTNode left, ASTNode right, NumberBinaryOperator operator) {
         Number leftValue = getNumberValue(left);
         Number rightValue = getNumberValue(right);
         return createNumberLiteral(applyOperation(leftValue, rightValue, operator), left, right);
@@ -91,7 +93,7 @@ public class ExpressionEvaluator implements Evaluator {
         }
     }
 
-    private Number getNumberValue(Expression expression) {
+    private Number getNumberValue(ASTNode expression) {
         if (expression instanceof NumberLiteral numberLiteral) {
             return numberLiteral.value();
         } else {
@@ -99,7 +101,7 @@ public class ExpressionEvaluator implements Evaluator {
         }
     }
 
-    private NumberLiteral createNumberLiteral(Number result, Expression left, Expression right) {
+    private NumberLiteral createNumberLiteral(Number result, ASTNode left, ASTNode right) {
         if (left instanceof NumberLiteral leftLiteral && right instanceof NumberLiteral rightLiteral) {
             if (checkIfBothIntegers(leftLiteral.value(), rightLiteral.value())) {
                 return new NumberLiteral(result.intValue(), defaultPosition, defaultPosition);

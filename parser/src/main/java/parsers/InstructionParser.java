@@ -1,7 +1,6 @@
 package parsers;
 
-import ast.ASTNode;
-
+import ast.root.ASTNode;
 import token.Token;
 
 import java.util.List;

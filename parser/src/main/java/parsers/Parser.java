@@ -1,6 +1,11 @@
-import ast.ASTNode;
-import ast.Program;
-import parsers.InstructionParser;
+package parsers;
+
+import ast.root.ASTNode;
+import ast.root.Program;
+import parsers.statements.AssignmentParser;
+import parsers.statements.CallFunctionParser;
+import parsers.statements.StatementParser;
+import parsers.statements.VariableDeclarationParser;
 import token.Position;
 import token.Token;
 import token.tokenTypes.TokenTagType;
@@ -10,9 +15,18 @@ import java.util.List;
 
 
 public class Parser {
-    private final List<InstructionParser> parsers;
-    public Parser (List<InstructionParser> parsers) {
-        this.parsers = parsers;
+    private final List<StatementParser> statementParsers;
+
+    public Parser(List<StatementParser> statementParsers) {
+        this.statementParsers = statementParsers;
+    }
+
+    public Parser() {
+        this.statementParsers = List.of(
+                new CallFunctionParser(),
+                new VariableDeclarationParser(),
+                new AssignmentParser()
+        );
     }
 
     public Program parse (List<Token> tokens) {
@@ -20,16 +34,15 @@ public class Parser {
 
         List<ASTNode> astNodes = new ArrayList<>();
 
-
        for (List<Token> statement : statements) {
-            for (InstructionParser parser : parsers) {
-                if (parser.shouldParse(statement)) {
-                    astNodes.add(parser.parse(statement));
-                    break;
-                }
-            }
-        }
-
+           for (StatementParser statementParser : statementParsers) {
+               if (statementParser.shouldParse(statement)) {
+                   ASTNode astNode = statementParser.parse(statement);
+                   astNodes.add(astNode);
+                   break;
+               }
+           }
+       }
         Position start = tokens.get(0).getInitialPosition();
         Position end = tokens.get(tokens.size() - 1).getFinalPosition();
 
@@ -37,7 +50,7 @@ public class Parser {
     }
 
 
-    private List<List<Token>> splitBySemicolon(List<Token> tokens) {
+    private static List<List<Token>> splitBySemicolon(List<Token> tokens) {
         List<List<Token>> result = new ArrayList<>();
         List<Token> currentSublist = new ArrayList<>();
 

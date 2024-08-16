@@ -1,8 +1,7 @@
 package interpreter.runtime;
 
-import ast.Expression;
-import ast.Statement;
+import ast.root.ASTNode;
 
 public interface Evaluator {
-    Expression evaluate(Expression statement);
+    ASTNode evaluate(ASTNode statement);
 }
