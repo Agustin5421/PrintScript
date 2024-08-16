@@ -1,11 +1,15 @@
 package interpreter;
 
-import ast.*;
+import ast.identifier.Identifier;
 import ast.literal.Literal;
+import ast.root.ASTNode;
+import ast.root.Program;
+import ast.statements.CallExpression;
+import ast.statements.VariableDeclaration;
 import interpreter.runtime.ExpressionEvaluator;
 
 import java.util.List;
-import static ast.records.StatementValidator.*;
+import static ast.utils.StatementValidator.*;
 
 public class Interpreter {
 

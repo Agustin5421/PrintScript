@@ -1,7 +1,9 @@
-package parsers;
+package parsers.statements;
 
-import ast.*;
-import ast.factory.ArgumentFactory;
+import ast.identifier.Identifier;
+import ast.root.ASTNode;
+import ast.statements.CallExpression;
+import ast.utils.ExpressionParserProvider;
 import token.Token;
 import token.Position;
 import token.tokenTypes.TokenTagType;
@@ -10,14 +12,14 @@ import token.tokenTypes.TokenType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CallExpressionParser implements InstructionParser{
+public class CallFunctionParser implements StatementParser {
     private final List<String> reservedWords;
 
-    public CallExpressionParser() {
+    public CallFunctionParser() {
         reservedWords = List.of("println");
     }
 
-    public CallExpressionParser(List<String> reservedWords) {
+    public CallFunctionParser(List<String> reservedWords) {
         this.reservedWords = reservedWords;
     }
 
@@ -36,7 +38,7 @@ public class CallExpressionParser implements InstructionParser{
 
         List<ASTNode> argumentExpressions = new ArrayList<>();
         for (Token token : arguments) {
-            ASTNode argument = ParserProvider.parse(List.of(token));
+            ASTNode argument = ExpressionParserProvider.parse(List.of(token));
             argumentExpressions.add(argument);
         }
 

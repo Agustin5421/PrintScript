@@ -1,4 +1,4 @@
-package ast;
+package ast.root;
 
 import token.Position;
 

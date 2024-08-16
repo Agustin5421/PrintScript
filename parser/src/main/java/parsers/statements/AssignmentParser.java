@@ -1,13 +1,16 @@
-package parsers;
+package parsers.statements;
 
-import ast.*;
+import ast.identifier.Identifier;
+import ast.root.ASTNode;
+import ast.statements.AssignmentExpression;
+import ast.utils.ExpressionParserProvider;
 import token.Token;
 import token.Position;
 import token.tokenTypes.TokenTagType;
 
 import java.util.List;
 
-public class AssignmentExpressionParser implements InstructionParser{
+public class AssignmentParser implements StatementParser {
 
     @Override
     public ASTNode parse(List<Token> tokens) {
@@ -19,7 +22,7 @@ public class AssignmentExpressionParser implements InstructionParser{
         Position rightEnd = tokens.get(2).getFinalPosition();
 
         Identifier left = new Identifier(tokens.get(0).getValue(), leftStart, leftEnd);
-        ASTNode right = ParserProvider.parse(tokens.subList(2, tokens.size()));
+        ASTNode right = ExpressionParserProvider.parse(tokens.subList(2, tokens.size()));
 
         return new AssignmentExpression(left, right, tokens.get(1).getValue(), leftStart, rightEnd);
     }

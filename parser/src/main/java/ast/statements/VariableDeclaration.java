@@ -1,6 +1,8 @@
-package ast;
+package ast.statements;
 
-import ast.records.ASTNodeType;
+import ast.root.ASTNode;
+import ast.identifier.Identifier;
+import ast.root.ASTNodeType;
 import token.Position;
 
 public record VariableDeclaration(Identifier identifier, ASTNode value, Position start, Position end) implements Statement {

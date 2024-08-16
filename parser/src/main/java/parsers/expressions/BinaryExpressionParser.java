@@ -1,6 +1,8 @@
-package parsers;
+package parsers.expressions;
 
-import ast.*;
+import ast.expressions.BinaryExpression;
+import ast.root.ASTNode;
+import ast.utils.ExpressionParserProvider;
 import token.Token;
 import token.tokenTypes.TokenDataType;
 import token.tokenTypes.TokenTagType;
@@ -8,7 +10,7 @@ import token.tokenTypes.TokenTagType;
 
 import java.util.List;
 
-public class BinaryExpressionParser implements InstructionParser{
+public class BinaryExpressionParser implements ExpressionParser {
     @Override
     public ASTNode parse(List<Token> tokens) {
         if (tokens.isEmpty()) {
@@ -25,8 +27,8 @@ public class BinaryExpressionParser implements InstructionParser{
         List<Token> rightTokens = tokens.subList(operatorIndex + 1, tokens.size());
 
         // Recursively parse the left and right expressions.
-        ASTNode left =  ParserProvider.parse(leftTokens);
-        ASTNode right =  ParserProvider.parse(rightTokens);
+        ASTNode left =  ExpressionParserProvider.parse(leftTokens);
+        ASTNode right =  ExpressionParserProvider.parse(rightTokens);
 
         return new BinaryExpression(left, right, operator.getValue());
     }

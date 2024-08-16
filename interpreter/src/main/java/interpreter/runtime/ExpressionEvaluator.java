@@ -2,10 +2,12 @@
 
 package interpreter.runtime;
 
-import ast.*;
+import ast.expressions.BinaryExpression;
+import ast.identifier.Identifier;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import ast.root.ASTNode;
 import interpreter.VariablesRepository;
 import token.Position;
 

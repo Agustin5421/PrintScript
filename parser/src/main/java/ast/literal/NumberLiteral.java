@@ -1,6 +1,6 @@
 package ast.literal;
 
-import ast.records.ASTNodeType;
+import ast.root.ASTNodeType;
 import token.Position;
 
 public record NumberLiteral(Number value, Position start, Position end) implements Literal<Number> {

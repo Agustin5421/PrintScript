@@ -1,6 +1,9 @@
-package ast;
+package ast.statements;
 
-import ast.records.ASTNodeType;
+import ast.root.ASTNode;
+import ast.expressions.Expression;
+import ast.identifier.Identifier;
+import ast.root.ASTNodeType;
 import token.Position;
 
 public record AssignmentExpression(Identifier left, ASTNode right, String operator, Position start,

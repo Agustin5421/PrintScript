@@ -1,6 +1,7 @@
-package ast;
+package ast.identifier;
 
-import ast.records.ASTNodeType;
+import ast.root.ASTNodeType;
+import ast.expressions.Expression;
 import token.Position;
 
 public record Identifier(String name, Position start, Position end) implements Expression {

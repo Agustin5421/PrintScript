@@ -1,7 +1,12 @@
-import ast.*;
+import ast.expressions.BinaryExpression;
 import ast.literal.StringLiteral;
+import ast.root.Program;
+import ast.statements.AssignmentExpression;
+import ast.statements.CallExpression;
+import ast.statements.VariableDeclaration;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
+import parsers.Parser;
 import token.Token;
 
 import java.util.List;

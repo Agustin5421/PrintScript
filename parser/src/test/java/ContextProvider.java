@@ -1,5 +1,9 @@
 import lexer.Lexer;
 import parsers.*;
+import parsers.expressions.BinaryExpressionParser;
+import parsers.statements.AssignmentParser;
+import parsers.statements.CallFunctionParser;
+import parsers.statements.VariableDeclarationParser;
 import token.tokenTypeCheckers.*;
 
 import java.util.List;
@@ -9,8 +13,8 @@ public class ContextProvider {
 
     private static Parser initFullParser() {
         VariableDeclarationParser variableDeclarationParser = new VariableDeclarationParser();
-        AssignmentExpressionParser assignmentExpressionParser = new AssignmentExpressionParser();
-        CallExpressionParser callExpressionParser = new CallExpressionParser();
+        AssignmentParser assignmentExpressionParser = new AssignmentParser();
+        CallFunctionParser callExpressionParser = new CallFunctionParser();
 
         return new Parser();
     }

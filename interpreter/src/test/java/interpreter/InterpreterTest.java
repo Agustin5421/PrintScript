@@ -1,9 +1,14 @@
 package interpreter;
 
-import ast.*;
+import ast.expressions.BinaryExpression;
+import ast.identifier.Identifier;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import ast.root.ASTNode;
+import ast.root.Program;
+import ast.statements.CallExpression;
+import ast.statements.VariableDeclaration;
 import org.junit.jupiter.api.Test;
 import token.Position;
 import java.util.List;

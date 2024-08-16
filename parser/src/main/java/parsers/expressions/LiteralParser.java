@@ -1,13 +1,13 @@
-package parsers;
+package parsers.expressions;
 
-import ast.ASTNode;
+import ast.root.ASTNode;
 import ast.literal.LiteralFactory;
 import token.Token;
 import token.tokenTypes.TokenValueType;
 
 import java.util.List;
 
-public class LiteralParser implements InstructionParser {
+public class LiteralParser implements ExpressionParser {
 
     @Override
     public ASTNode parse(List<Token> tokens) {

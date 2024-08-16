@@ -1,21 +1,21 @@
-package ast;
+package ast.utils;
 
-import parsers.*;
+import ast.root.ASTNode;
+import parsers.expressions.BinaryExpressionParser;
+import parsers.expressions.ExpressionParser;
+import parsers.expressions.LiteralParser;
 import token.Token;
 
 import java.util.List;
 
-public class ParserProvider {
-    private static final List<InstructionParser> parsers = List.of(
-            new CallExpressionParser(),
-            new VariableDeclarationParser(),
-            new AssignmentExpressionParser(),
+public class ExpressionParserProvider {
+    private static final List<ExpressionParser> parsers = List.of(
             new BinaryExpressionParser(),
             new LiteralParser()
     );
 
     public static ASTNode parse(List<Token> statement) {
-        for (InstructionParser parser : parsers) {
+        for (ExpressionParser parser : parsers) {
             if (parser.shouldParse(statement)) {
                 return parser.parse(statement);
             }
