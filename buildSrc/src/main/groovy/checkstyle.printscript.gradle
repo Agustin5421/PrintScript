@@ -6,3 +6,13 @@ checkstyle {
     toolVersion = '10.17.0'
     configFile = file("${rootDir}/config/checkstyle/rules.xml")
 }
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = false
+        html.required = true
+        html {
+            destination = file("${rootDir}/reports/checkstyle/${project.name}.html")
+        }
+    }
+}
