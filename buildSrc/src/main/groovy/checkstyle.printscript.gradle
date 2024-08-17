@@ -1,0 +1,8 @@
+plugins {
+    id 'checkstyle'
+}
+
+checkstyle {
+    toolVersion = '10.17.0'
+    configFile = file("${rootDir}/config/checkstyle/rules.xml")
+}

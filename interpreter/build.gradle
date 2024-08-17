@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'checkstyle'
+//    id 'checkstyle'
 }
 
 group = 'org.example'
@@ -22,10 +22,10 @@ tasks.test {
     useJUnitPlatform()
 }
 
-checkstyle {
-    toolVersion = '10.17.0'
-    configFile = file("${rootDir}/config/checkstyle/rules.xml")
-}
+//checkstyle {
+//    toolVersion = '10.17.0'
+//    configFile = file("${rootDir}/config/checkstyle/rules.xml")
+//}
 
 // For JaCoCo
 jacoco {
