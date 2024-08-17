@@ -8,7 +8,7 @@ public record StringLiteral(String value, Position start, Position end) implemen
     @Override
     public String toString() {
         return "LiteralString{" +
-                "value='" + value + '\'' +
+                "expression='" + value + '\'' +
                 '}';
     }
 

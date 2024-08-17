@@ -28,8 +28,8 @@ public class ParserTest {
 
         VariableDeclaration variableDeclaration = (VariableDeclaration) program.statements().get(0);
         assertEquals("myVar", variableDeclaration.identifier().name(), "Identifier should be 'myVar'");
-        assertInstanceOf(StringLiteral.class, variableDeclaration.value(), "Value should be a StringLiteral");
-        assertEquals("\"Hello\"", ((StringLiteral) variableDeclaration.value()).value(), "Value should be 'Hello'");
+        assertInstanceOf(StringLiteral.class, variableDeclaration.expression(), "Value should be a StringLiteral");
+        assertEquals("\"Hello\"", ((StringLiteral) variableDeclaration.expression()).value(), "Value should be 'Hello'");
     }
 
     @Test
@@ -44,7 +44,7 @@ public class ParserTest {
 
         VariableDeclaration variableDeclaration = (VariableDeclaration) program.statements().get(0);
         assertEquals("myVar", variableDeclaration.identifier().name(), "Identifier should be 'myVar'");
-        assertInstanceOf(BinaryExpression.class, variableDeclaration.value(), "Value should be a BinaryExpression");
+        assertInstanceOf(BinaryExpression.class, variableDeclaration.expression(), "Value should be a BinaryExpression");
     }
 
     @Test
@@ -59,7 +59,7 @@ public class ParserTest {
 
         VariableDeclaration variableDeclaration = (VariableDeclaration) program.statements().get(0);
         assertEquals("myVar", variableDeclaration.identifier().name(), "Identifier should be 'myVar'");
-        assertInstanceOf(BinaryExpression.class, variableDeclaration.value(), "Value should be a BinaryExpression");
+        assertInstanceOf(BinaryExpression.class, variableDeclaration.expression(), "Value should be a BinaryExpression");
     }
 
     @Test
@@ -113,7 +113,7 @@ public class ParserTest {
         ASTNode fourth = program.statements().get(3);
 
         assertEquals("myVar", ((VariableDeclaration) first).identifier().name(), "Identifier should be 'myVar'");
-        assertInstanceOf(BinaryExpression.class, ((VariableDeclaration) first).value(), "Value should be a BinaryExpression");
+        assertInstanceOf(BinaryExpression.class, ((VariableDeclaration) first).expression(), "Value should be a BinaryExpression");
 
         assertEquals("println", ((CallExpression) second).methodIdentifier().name(), "Identifier should be 'println'");
         assertInstanceOf(CallExpression.class, second, "Value should be a CallExpression");

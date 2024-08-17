@@ -1,5 +1,6 @@
 package parsers.statements;
 
+import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.ASTNode;
 import ast.statements.VariableDeclaration;
@@ -31,7 +32,7 @@ public class VariableDeclarationParser implements StatementParser {
             throw new IllegalArgumentException("Expected 'number' or 'string' at " + tokens.get(3).getInitialPosition().toString() + " but found " + tokens.get(3).getValue() + " instead.");
         }
 
-        ASTNode value = ExpressionParserProvider.parse(tokens.subList(5, tokens.size()));
+        Expression value = ExpressionParserProvider.parse(tokens.subList(5, tokens.size()));
 
         return new VariableDeclaration(identifier, value, start, end);
     }

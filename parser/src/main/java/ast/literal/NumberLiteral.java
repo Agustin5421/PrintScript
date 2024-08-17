@@ -9,7 +9,7 @@ public record NumberLiteral(Number value, Position start, Position end) implemen
     @Override
     public String toString() {
         return "LiteralNumber{" +
-                "value=" + value +
+                "expression=" + value +
                 '}';
     }
 
