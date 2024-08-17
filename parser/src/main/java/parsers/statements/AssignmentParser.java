@@ -1,5 +1,6 @@
 package parsers.statements;
 
+import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.ASTNode;
 import ast.statements.AssignmentExpression;
@@ -22,7 +23,7 @@ public class AssignmentParser implements StatementParser {
         Position rightEnd = tokens.get(2).getFinalPosition();
 
         Identifier left = new Identifier(tokens.get(0).getValue(), leftStart, leftEnd);
-        ASTNode right = ExpressionParserProvider.parse(tokens.subList(2, tokens.size()));
+        Expression right = ExpressionParserProvider.parse(tokens.subList(2, tokens.size()));
 
         return new AssignmentExpression(left, right, tokens.get(1).getValue(), leftStart, rightEnd);
     }

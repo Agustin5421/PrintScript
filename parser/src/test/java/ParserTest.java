@@ -48,6 +48,21 @@ public class ParserTest {
     }
 
     @Test
+    public void expressionWithVariablesTest() {
+        Parser parser = ContextProvider.initBinaryExpressionParser();
+
+        Lexer lexer = ContextProvider.initLexer();
+        List<Token> tokens = lexer.extractTokens("let myVar : number = 2 + 3 * A;");
+        Program program = parser.parse(tokens);
+
+        assertEquals(1, program.statements().size(), "Program should contain 1 statement");
+
+        VariableDeclaration variableDeclaration = (VariableDeclaration) program.statements().get(0);
+        assertEquals("myVar", variableDeclaration.identifier().name(), "Identifier should be 'myVar'");
+        assertInstanceOf(BinaryExpression.class, variableDeclaration.value(), "Value should be a BinaryExpression");
+    }
+
+    @Test
     public void testCallExpression () {
         Parser parser = new Parser();
 
@@ -111,7 +126,4 @@ public class ParserTest {
 
 
     }
-
-
-
 }

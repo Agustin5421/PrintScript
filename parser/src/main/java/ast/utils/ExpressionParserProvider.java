@@ -1,7 +1,7 @@
 package ast.utils;
 
+import ast.expressions.Expression;
 import ast.identifier.IdentifierParser;
-import ast.root.ASTNode;
 import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.ExpressionParser;
 import parsers.expressions.LiteralParser;
@@ -16,10 +16,10 @@ public class ExpressionParserProvider {
             new IdentifierParser()
     );
 
-    public static ASTNode parse(List<Token> statement) {
+    public static Expression parse(List<Token> statement) {
         for (ExpressionParser parser : parsers) {
             if (parser.shouldParse(statement)) {
-                return parser.parse(statement);
+                return (Expression) parser.parse(statement);
             }
         }
 
