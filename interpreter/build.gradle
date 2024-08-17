@@ -21,18 +21,3 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
-
-//checkstyle {
-//    reports {
-//        xml.required = false
-//        html {
-//            destination = file("${rootDir}/reports/checkstyle/interpreter/checkstyle.html")
-//        }
-//    }
-//}
-//    toolVersion = '10.17.0'
-//    configFile = file("${rootDir}/config/checkstyle/rules.xml")
-
-jacoco {
-    reportsDirectory = layout.buildDirectory.dir("${rootDir}/reports/jacoco/interpreter")
-}
