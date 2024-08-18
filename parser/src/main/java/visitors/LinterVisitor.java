@@ -11,9 +11,18 @@ public class LinterVisitor implements ASTVisitor {
     private final String report;
     private final String rules;
 
+    public LinterVisitor(String rules) {
+        this.report = "";
+        this.rules = rules;
+    }
+
     public LinterVisitor(String report, String rules) {
         this.report = report;
         this.rules = rules;
+    }
+
+    public String getReport() {
+        return report;
     }
 
     @Override
