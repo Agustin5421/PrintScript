@@ -1,6 +1,6 @@
 package formatter;
 
-import formatter.condition.*;
+import formatter.statement.*;
 
 import java.util.List;
 

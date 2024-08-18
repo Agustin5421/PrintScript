@@ -1,4 +1,4 @@
-package formatter.condition;
+package formatter.statement;
 
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
@@ -25,9 +25,9 @@ public class VariableDeclarationFormatter implements Formatter {
         VariableDeclaration varDeclarationNode = (VariableDeclaration) node;
         StringBuilder formattedCode = new StringBuilder();
         JsonObject colonRules = rules.getAsJsonObject("colonRules");
-        boolean beforeSpace = colonRules.getAsJsonObject("before").getAsBoolean();
-        boolean afterSpace = colonRules.getAsJsonObject("after").getAsBoolean();
-        boolean equalSpace = rules.getAsJsonObject("equalSpace").getAsBoolean();
+        boolean beforeSpace = colonRules.get("before").getAsBoolean();
+        boolean afterSpace = colonRules.get("after").getAsBoolean();
+        boolean equalSpace = rules.get("equalSpaces").getAsBoolean();
 
         formattedCode.append("let ")
                 .append(cleanIdentifier(varDeclarationNode.identifier()))
@@ -36,7 +36,8 @@ public class VariableDeclarationFormatter implements Formatter {
                 .append(afterSpace ? " ": "")
                 .append(getType(varDeclarationNode.expression()))
                 .append(equalSpace ? " = " : "=")
-                .append(expressionFormatter.format(varDeclarationNode.expression(), rules, currentProgram));
+                .append(expressionFormatter.format(varDeclarationNode.expression(), rules, currentProgram))
+                .append(";");
         return  formattedCode.toString();
     }
 

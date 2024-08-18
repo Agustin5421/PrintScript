@@ -1,4 +1,4 @@
-package formatter.condition;
+package formatter.statement;
 
 import ast.root.ASTNode;
 import com.google.gson.JsonObject;

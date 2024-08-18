@@ -2,9 +2,9 @@
   "rules": {
     "colonRules": {
       "before": true,
-      "after": false
+      "after": true
     },
     "equalSpaces": true,
-    "printLineBreak": 1
+    "printLineBreaks": 1
   }
 }

@@ -1,10 +1,9 @@
-package formatter.condition;
+package formatter.statement;
 
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.literal.Literal;
-import ast.literal.StringLiteral;
 import ast.root.ASTNode;
 import com.google.gson.JsonObject;
 
@@ -27,7 +26,7 @@ public class ExpressionFormatter implements Formatter {
         if (expression instanceof BinaryExpression) {
             return handleBinaryExpression((BinaryExpression) expression, formattedCode, rules);
         } else if (expression instanceof Literal<?>) {
-            return formattedCode + getLiteralValue(((Literal<?>) expression));
+            return formattedCode + ((Literal<?>) expression).value();
         } else if (expression instanceof Identifier) {
             return formattedCode + cleanIdentifier(((Identifier) expression));
         } else {
@@ -44,12 +43,5 @@ public class ExpressionFormatter implements Formatter {
     // Removing spaces and line breaks
     private String cleanIdentifier(Identifier identifier) {
         return identifier.name().replaceAll("\\s+", "");
-    }
-
-    private String getLiteralValue(Literal<?> node) {
-        if (node instanceof StringLiteral) {
-            return "\"" + ((StringLiteral) node).value() + "\"";
-        }
-        return node.value().toString();
     }
 }

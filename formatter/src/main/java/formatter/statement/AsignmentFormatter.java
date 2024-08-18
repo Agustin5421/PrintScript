@@ -1,4 +1,4 @@
-package formatter.condition;
+package formatter.statement;
 
 import ast.identifier.Identifier;
 import ast.root.ASTNode;
@@ -21,10 +21,11 @@ public class AsignmentFormatter implements Formatter {
     public String format(ASTNode node, JsonObject rules, String currentProgram) {
         AssignmentExpression assignmentNode = (AssignmentExpression) node;
         StringBuilder formattedCode = new StringBuilder();
-        boolean equalSpace = rules.getAsJsonObject("equalSpace").getAsBoolean();
+        boolean equalSpace = rules.get("equalSpaces").getAsBoolean();
         formattedCode.append(cleanIdentifier(assignmentNode.left()))
                 .append(equalSpace ? " = " : "=")
-                .append(expressionFormatter.format(assignmentNode.right(), rules, currentProgram));
+                .append(expressionFormatter.format(assignmentNode.right(), rules, currentProgram))
+                .append(";");
         return formattedCode.toString();
     }
 
