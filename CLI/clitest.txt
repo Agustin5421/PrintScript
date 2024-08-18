@@ -1,2 +1,2 @@
 let myVar : string = "Hello World!";
-println(myVar)
+println(myVar);

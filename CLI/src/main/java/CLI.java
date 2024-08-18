@@ -55,9 +55,8 @@ public class CLI {
         } catch (Exception e) {
             observer.error(100);
             System.out.println();
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
-
     }
 
     public static void main(String[] args) {
