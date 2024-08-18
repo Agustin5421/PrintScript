@@ -1,0 +1,2 @@
+let myVar : string = "Hello World!";
+println(myVar)
