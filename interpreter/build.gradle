@@ -16,6 +16,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation project(':lexer')
     implementation project(':parser')
+    implementation project(":utils")
 }
 
 tasks.test {
