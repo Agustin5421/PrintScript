@@ -6,21 +6,50 @@ import ast.root.ASTNode;
 import ast.root.Program;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
+import observers.ProgressObserver;
+import observers.Progressable;
 import interpreter.runtime.ExpressionEvaluator;
 
 import java.util.List;
 import static ast.utils.StatementValidator.*;
 
-public class Interpreter {
+public class Interpreter implements Progressable {
+    private final ProgressObserver observer;
+    private int totalStatements;
+    private int completedStatements;
+
+
+
+    public Interpreter(ProgressObserver observer) {
+        this.observer = observer;
+    }
+
+    public Interpreter() {
+        this.observer = null;
+    }
 
     public VariablesRepository executeProgram(Program program) {
         VariablesRepository variablesRepository = new VariablesRepository();
+        totalStatements = program.statements().size();
+        completedStatements = 0;
 
         for (ASTNode statement : program.statements()) {
             variablesRepository = evaluateStatement(statement, variablesRepository);
+            completedStatements++;
+            updateProgress();
         }
 
         return variablesRepository;
+    }
+
+    private void updateProgress() {
+        int progress = (int) (((double) completedStatements / totalStatements) * 100);
+        if (observer != null) observer.update("interpreter", progress);
+    }
+
+    @Override
+    public int getProgress() {
+        return (int) (((double) completedStatements / totalStatements) * 100);
     }
 
     private VariablesRepository evaluateStatement(ASTNode statement, VariablesRepository variablesRepository) {

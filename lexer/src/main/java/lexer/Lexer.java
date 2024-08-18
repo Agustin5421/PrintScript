@@ -1,5 +1,7 @@
 package lexer;
 
+import observers.ProgressObserver;
+import observers.Progressable;
 import token.Token;
 import token.Position;
 import token.tokenTypes.TokenType;
@@ -10,8 +12,17 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Lexer {
+public class Lexer implements Progressable {
     private final TokenTypeChecker tokenTypeGetter;
+    private final ProgressObserver observer;
+    private int totalLength;
+    private int processedLength;
+
+
+    public Lexer(TokenTypeChecker tokenTypeGetter, ProgressObserver observer) {
+        this.tokenTypeGetter = tokenTypeGetter;
+        this.observer = observer;
+    }
 
     private static final String TEXT_PATTERNS =
             "\"[^\"]*\"" +                                     // Text between double quotes
@@ -25,14 +36,10 @@ public class Lexer {
                     "|\\S";                                    // Any other single character (mismatch), excluding spaces
 
 
-
-
-
     public Lexer(TokenTypeChecker tokenTypeGetter) {
         this.tokenTypeGetter = tokenTypeGetter;
+        observer = null;
     }
-
-
 
     public List<Token> extractTokens(String code) {
         List<Token> tokens = new ArrayList<>();
@@ -41,6 +48,10 @@ public class Lexer {
 
         Position initialPosition = new Position(1, 1);
         int currentIndex = 0;
+
+
+        totalLength = code.length();
+        processedLength = 0;
 
         while (matcher.find()) {
             String word = matcher.group();
@@ -59,6 +70,10 @@ public class Lexer {
 
             //Update position
             initialPosition = finalPosition;
+
+            // Update progress
+            processedLength = end;
+            updateProgress();
         }
 
         return tokens;
@@ -78,5 +93,17 @@ public class Lexer {
         }
 
         return new Position(row, col);
+    }
+
+    private void updateProgress() {
+        int progress = getProgress();
+        if (observer != null) {
+            observer.update("lexer", progress);
+        }
+    }
+
+    @Override
+    public int getProgress() {
+        return (int) (((double) processedLength / totalLength) * 100);
     }
 }
