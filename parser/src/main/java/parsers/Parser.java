@@ -52,17 +52,15 @@ public class Parser implements Progressable {
 
         List<ASTNode> astNodes = new ArrayList<>();
 
+        StatementParser parser;
+
         totalStatements = statements.size();
         processedStatements = 0;
 
        for (List<Token> statement : statements) {
-           for (StatementParser statementParser : statementParsers) {
-               if (statementParser.shouldParse(statement)) {
-                   ASTNode astNode = statementParser.parse(statement);
-                   astNodes.add(astNode);
-                   break;
-               }
-           }
+           parser = getValidParser(statement);
+           ASTNode astNode = parser.parse(statement);
+           astNodes.add(astNode);
            processedStatements++;
            updateProgress();
 
@@ -93,6 +91,16 @@ public class Parser implements Progressable {
         }
 
         return result;
+    }
+
+    private StatementParser getValidParser(List<Token> statement) {
+        for (StatementParser statementParser : statementParsers) {
+            if (statementParser.shouldParse(statement)) {
+                return statementParser;
+            }
+        }
+        // TODO find a better way to throw the error
+        throw new IllegalArgumentException("No parser found for this statement");
     }
 
     private void updateProgress() {

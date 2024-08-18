@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'jacoco'
-    id 'checkstyle'
+    id 'checkstyle.printscript'
+    id 'jacoco.printscript'
 }
 
 group = 'org.example'
-version = 'unspecified'
+version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -17,56 +17,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation project(':parser')
     implementation project(':lexer')
+    implementation project(":utils")
 }
 
 tasks.test {
     useJUnitPlatform()
-}
-
-checkstyle {
-    toolVersion = '10.17.0'
-    configFile = file("${rootDir}/config/checkstyle/rules.xml")
-}
-
-// For JaCoCo
-jacoco {
-    toolVersion = "0.8.12"
-    reportsDirectory = layout.buildDirectory.dir("reports/jacoco")
-}
-
-test {
-    finalizedBy jacocoTestReport // Report is always generated after tests run
-}
-
-// Generates the report of the code coverage
-jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
-    reports {
-        xml.required = false
-        csv.required = false
-    }
-}
-
-
-// Verifies the code coverage
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.5 // Sets the acceptable minimum coverage
-            }
-        }
-
-        rule {
-            enabled = false
-            element = 'CLASS'
-            includes = ['org.gradle.*']
-
-            limit {
-                counter = 'LINE'
-                value = 'TOTALCOUNT'
-                maximum = 0.3
-            }
-        }
-    }
 }
