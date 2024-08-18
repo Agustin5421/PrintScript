@@ -9,14 +9,14 @@ import java.util.List;
 
 public class Linter {
     public String linter(Program program, String rules) {
-        LinterVisitor visitor = new LinterVisitor(rules);
+        ASTVisitor visitor = new LinterVisitor(rules);
 
         List<ASTNode> statements = program.statements();
 
         for (ASTNode statement : statements) {
-//            visitor = statement.visit(visitor);
+            visitor = statement.visit(visitor);
         }
 
-        return visitor.getReport();
+        return ((LinterVisitor) visitor).getReport();
     }
 }

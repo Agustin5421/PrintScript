@@ -4,6 +4,7 @@ import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.ASTNodeType;
 import token.Position;
+import visitors.ASTVisitor;
 
 public record VariableDeclaration(Identifier identifier, Expression expression, Position start, Position end) implements Statement {
     private static final ASTNodeType type = ASTNodeType.VARIABLE_DECLARATION;
@@ -23,6 +24,11 @@ public record VariableDeclaration(Identifier identifier, Expression expression, 
     @Override
     public ASTNodeType getType() {
         return ASTNodeType.VARIABLE_DECLARATION;
+    }
+
+    @Override
+    public ASTVisitor visit(ASTVisitor visitor) {
+        return visitor.visitVarDec(identifier, expression);
     }
     // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
 }

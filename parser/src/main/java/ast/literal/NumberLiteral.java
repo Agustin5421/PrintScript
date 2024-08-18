@@ -2,6 +2,7 @@ package ast.literal;
 
 import ast.root.ASTNodeType;
 import token.Position;
+import visitors.ASTVisitor;
 
 public record NumberLiteral(Number value, Position start, Position end) implements Literal<Number> {
 
@@ -16,5 +17,10 @@ public record NumberLiteral(Number value, Position start, Position end) implemen
     @Override
     public ASTNodeType getType() {
         return ASTNodeType.NUMBER_LITERAL;
+    }
+
+    @Override
+    public ASTVisitor visit(ASTVisitor visitor) {
+        return visitor;
     }
 }
