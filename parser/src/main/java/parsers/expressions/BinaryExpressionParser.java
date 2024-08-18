@@ -1,6 +1,7 @@
 package parsers.expressions;
 
 import ast.expressions.BinaryExpression;
+import ast.expressions.Expression;
 import ast.root.ASTNode;
 import ast.utils.ExpressionParserProvider;
 import token.Token;
@@ -27,8 +28,8 @@ public class BinaryExpressionParser implements ExpressionParser {
         List<Token> rightTokens = tokens.subList(operatorIndex + 1, tokens.size());
 
         // Recursively parse the left and right expressions.
-        ASTNode left =  ExpressionParserProvider.parse(leftTokens);
-        ASTNode right =  ExpressionParserProvider.parse(rightTokens);
+        Expression left =  ExpressionParserProvider.parse(leftTokens);
+        Expression right =  ExpressionParserProvider.parse(rightTokens);
 
         return new BinaryExpression(left, right, operator.getValue());
     }

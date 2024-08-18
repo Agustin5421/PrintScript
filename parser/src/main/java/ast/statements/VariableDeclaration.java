@@ -1,14 +1,14 @@
 package ast.statements;
 
-import ast.root.ASTNode;
+import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.ASTNodeType;
 import token.Position;
 
-public record VariableDeclaration(Identifier identifier, ASTNode value, Position start, Position end) implements Statement {
+public record VariableDeclaration(Identifier identifier, Expression expression, Position start, Position end) implements Statement {
     private static final ASTNodeType type = ASTNodeType.VARIABLE_DECLARATION;
 
-    public VariableDeclaration(Identifier identifier, ASTNode expression) {
+    public VariableDeclaration(Identifier identifier, Expression expression) {
         this(identifier, expression, identifier.start(), expression.end());
     }
 
@@ -16,7 +16,7 @@ public record VariableDeclaration(Identifier identifier, ASTNode value, Position
     public String toString() {
         return "VariableDeclaration{" +
                 "identifier=" + identifier +
-                ", value=" + value +
+                ", expression=" + expression +
                 '}';
     }
 

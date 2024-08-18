@@ -4,7 +4,7 @@ import token.Token;
 import token.tokenTypes.TokenValueType;
 
 public class LiteralFactory {
-    public static Literal createLiteral(Token token) {
+    public static Literal<?> createLiteral(Token token) {
         if (token.getType() == TokenValueType.STRING) {
             return new StringLiteral(token.getValue(), token.getInitialPosition(), token.getFinalPosition());
         }

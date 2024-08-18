@@ -73,7 +73,7 @@ public class Interpreter implements Progressable {
     private static VariablesRepository setVariable(VariableDeclaration statement, VariablesRepository variablesRepository) {
         String name = statement.identifier().name();
         ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, statement.start().row());
-        Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.value());
+        Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
         Object value = literal.value();
 
         return variablesRepository.addVariable(name, value);
