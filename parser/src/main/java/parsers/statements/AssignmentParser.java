@@ -40,6 +40,6 @@ public class AssignmentParser implements StatementParser {
 
     @Override
     public boolean shouldParse(List<Token> tokens) {
-        return tokens.get(0).getType() == TokenTagType.IDENTIFIER;
+        return tokens.get(0).getType() == TokenTagType.IDENTIFIER && tokens.size() >= 2;
     }
 }

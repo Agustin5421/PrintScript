@@ -12,8 +12,7 @@ import token.Token;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParserTest {
     @Test
@@ -105,7 +104,7 @@ public class ParserTest {
 
         Program program = parser.parse(tokens);
 
-        assertEquals(4, program.statements().size(), "Program should contain 1 statement");
+        assertEquals(4, program.statements().size(), "Program should contain 4 statement");
 
         ASTNode first = program.statements().get(0);
         ASTNode second = program.statements().get(1);
@@ -125,5 +124,14 @@ public class ParserTest {
         assertInstanceOf(CallExpression.class, fourth, "Value should be a CallExpression");
 
 
+    }
+
+    @Test
+    public void noParserTest() {
+        Parser parser = new Parser();
+
+        Lexer lexer = ContextProvider.initLexer();
+        List<Token> tokens = lexer.extractTokens("null;");
+        assertThrows(IllegalArgumentException.class, () -> parser.parse(tokens));
     }
 }

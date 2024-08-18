@@ -33,20 +33,27 @@ public class Parser {
         List<List<Token>> statements = splitBySemicolon(tokens);
 
         List<ASTNode> astNodes = new ArrayList<>();
+        StatementParser parser;
 
-       for (List<Token> statement : statements) {
-           for (StatementParser statementParser : statementParsers) {
-               if (statementParser.shouldParse(statement)) {
-                   ASTNode astNode = statementParser.parse(statement);
-                   astNodes.add(astNode);
-                   break;
-               }
-           }
-       }
+        for (List<Token> statement : statements) {
+            parser = getValidParser(statement);
+            ASTNode astNode = parser.parse(statement);
+            astNodes.add(astNode);
+        }
         Position start = tokens.get(0).getInitialPosition();
         Position end = tokens.get(tokens.size() - 1).getFinalPosition();
 
         return new Program(astNodes, start, end);
+    }
+
+    private StatementParser getValidParser(List<Token> statement) {
+        for (StatementParser statementParser : statementParsers) {
+            if (statementParser.shouldParse(statement)) {
+                return statementParser;
+            }
+        }
+        // TODO find a better way to throw the error
+        throw new IllegalArgumentException("Error: No parser found for this statement");
     }
 
 
