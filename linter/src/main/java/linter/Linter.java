@@ -22,9 +22,9 @@ public class Linter {
         return report;
     }
 
-    private static String trimLastNewLine(String report) {
+    private String trimLastNewLine(String report) {
         if (!report.isEmpty()) {
-            report = report.substring(0, report.length() - 1);
+            return report.substring(0, report.length() - 1);
         }
         return report;
     }
