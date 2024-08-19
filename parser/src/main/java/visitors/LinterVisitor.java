@@ -28,11 +28,11 @@ public class LinterVisitor implements ASTVisitor {
     @Override
     public ASTVisitor visitVarDec(Identifier identifier, Expression expression) {
         String getIdentifierReport = verifyIdentifier(identifier);
-        if (getIdentifierReport != null) {
-            getIdentifierReport += "\n";
+        String newReport = getReport();
+        if (!getIdentifierReport.isEmpty()) {
+            newReport += getIdentifierReport + "\n";
         }
-
-        return new LinterVisitor(report + getIdentifierReport, rules);
+        return new LinterVisitor(newReport, rules);
     }
 
     @Override
@@ -59,13 +59,13 @@ public class LinterVisitor implements ASTVisitor {
             return verifySnakeCase(identifier);
         }
 
-        return null;
+        return "";
     }
 
     private String verifyCamelCase(Identifier identifier) {
         String identifierName = identifier.name();
         if (Pattern.matches("^[a-z]+([A-Z][a-z]+)*$", identifierName)) {
-            return null;
+            return "";
         }
         return "Warning from " + identifier.start() + " to " + identifier.end() + ": Identifier " + identifierName + " does not follow camelCase convention";
     }
@@ -73,7 +73,7 @@ public class LinterVisitor implements ASTVisitor {
     private String verifySnakeCase(Identifier identifier) {
         String identifierName = identifier.name();
         if (Pattern.matches("^[a-z]+(_[a-z]+)*$", identifierName)) {
-            return null;
+            return "";
         }
         return "Warning from " + identifier.start() + " to " + identifier.end() + ": Identifier " + identifierName + " does not follow snake_case convention";
     }
