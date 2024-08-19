@@ -3,6 +3,8 @@
     "writingConvention": "camelCase"
   },
   "callExpression" : {
+    "acceptIdentifiers": true,
+    "acceptLiterals": true,
     "acceptExpressions": false
   }
 }
