@@ -1,5 +1,5 @@
 package observers;
 
 public interface Progressable {
-    int getProgress();
+  int getProgress();
 }

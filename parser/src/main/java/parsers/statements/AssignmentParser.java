@@ -5,41 +5,40 @@ import ast.identifier.Identifier;
 import ast.root.ASTNode;
 import ast.statements.AssignmentExpression;
 import ast.utils.ExpressionParserProvider;
-import token.Token;
-import token.Position;
-import token.tokenTypes.TokenTagType;
-
 import java.util.List;
+import token.Position;
+import token.Token;
+import token.tokenTypes.TokenTagType;
 
 public class AssignmentParser implements StatementParser {
 
-    @Override
-    public ASTNode parse(List<Token> tokens) {
-        validateSyntax(tokens);
+  @Override
+  public ASTNode parse(List<Token> tokens) {
+    validateSyntax(tokens);
 
-        Position leftStart = tokens.get(0).getInitialPosition();
-        Position leftEnd = tokens.get(0).getFinalPosition();
+    Position leftStart = tokens.get(0).getInitialPosition();
+    Position leftEnd = tokens.get(0).getFinalPosition();
 
-        Position rightEnd = tokens.get(2).getFinalPosition();
+    Position rightEnd = tokens.get(2).getFinalPosition();
 
-        Identifier left = new Identifier(tokens.get(0).getValue(), leftStart, leftEnd);
-        Expression right = ExpressionParserProvider.parse(tokens.subList(2, tokens.size()));
+    Identifier left = new Identifier(tokens.get(0).getValue(), leftStart, leftEnd);
+    Expression right = ExpressionParserProvider.parse(tokens.subList(2, tokens.size()));
 
-        return new AssignmentExpression(left, right, tokens.get(1).getValue(), leftStart, rightEnd);
+    return new AssignmentExpression(left, right, tokens.get(1).getValue(), leftStart, rightEnd);
+  }
+
+  private void validateSyntax(List<Token> tokens) {
+    if (!shouldParse(tokens)) {
+      throw new IllegalArgumentException("Invalid tokens for AssignmentExpression");
     }
 
-    private void validateSyntax(List<Token> tokens) {
-        if (!shouldParse(tokens)) {
-            throw new IllegalArgumentException("Invalid tokens for AssignmentExpression");
-        }
-
-        if (!tokens.get(1).getValue().equals("=")) {
-            throw new IllegalArgumentException("Invalid tokens for AssignmentExpression");
-        }
+    if (!tokens.get(1).getValue().equals("=")) {
+      throw new IllegalArgumentException("Invalid tokens for AssignmentExpression");
     }
+  }
 
-    @Override
-    public boolean shouldParse(List<Token> tokens) {
-        return tokens.get(0).getType() == TokenTagType.IDENTIFIER && tokens.size() >= 2;
-    }
+  @Override
+  public boolean shouldParse(List<Token> tokens) {
+    return tokens.get(0).getType() == TokenTagType.IDENTIFIER && tokens.size() >= 2;
+  }
 }

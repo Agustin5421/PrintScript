@@ -1,6 +1,3 @@
 package token.tokenTypes;
 
-public interface TokenType {
-
-
-}
+public interface TokenType {}
