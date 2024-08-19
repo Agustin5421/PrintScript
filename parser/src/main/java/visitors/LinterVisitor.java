@@ -3,6 +3,8 @@ package visitors;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.ASTNode;
+import ast.root.ASTNodeType;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -37,7 +39,18 @@ public class LinterVisitor implements ASTVisitor {
 
     @Override
     public ASTVisitor visitCallExpression(Identifier identifier, List<ASTNode> arguments) {
-        return null;
+        String getIdentifierReport = verifyIdentifier(identifier);
+        String getArgumentsReport = verifyArguments(arguments);
+
+        String newReport = getReport();
+        if (!getIdentifierReport.isEmpty()) {
+            newReport += getIdentifierReport + "\n";
+        }
+        if (!getArgumentsReport.isEmpty()) {
+            newReport += getArgumentsReport;
+        }
+
+        return new LinterVisitor(newReport, rules);
     }
 
     @Override
@@ -76,5 +89,40 @@ public class LinterVisitor implements ASTVisitor {
             return "";
         }
         return "Warning from " + identifier.start() + " to " + identifier.end() + ": Identifier " + identifierName + " does not follow snake_case convention";
+    }
+
+    public String verifyArguments(List<ASTNode> arguments) {
+        StringBuilder warnings = new StringBuilder();
+        JsonObject callExpressionJsonObject = JsonParser
+                .parseString(rules)
+                .getAsJsonObject()
+                .getAsJsonObject("callExpression");
+        boolean acceptsIdentifiers = callExpressionJsonObject
+                .get("acceptIdentifiers")
+                .getAsBoolean();
+        boolean acceptsLiterals = callExpressionJsonObject
+                .get("acceptLiterals")
+                .getAsBoolean();
+        boolean acceptsExpressions = callExpressionJsonObject
+                .get("acceptExpressions")
+                .getAsBoolean();
+
+        for (ASTNode argument : arguments) {
+            if (argument.getType() == ASTNodeType.IDENTIFIER) {
+                if (!acceptsIdentifiers) {
+                    warnings.append("Warning from ").append(argument.start()).append(" to ").append(argument.end()).append(": Identifier is not allowed as CallExpression argument\n");
+                }
+            } else if (argument.getType() == ASTNodeType.STRING_LITERAL || argument.getType() == ASTNodeType.NUMBER_LITERAL) {
+                if (!acceptsLiterals) {
+                    warnings.append("Warning from ").append(argument.start()).append(" to ").append(argument.end()).append(": Literal is not allowed as CallExpression argument\n");
+                }
+            } else {
+                if (!acceptsExpressions) {
+                    warnings.append("Warning from ").append(argument.start()).append(" to ").append(argument.end()).append(": Expression is not allowed as CallExpression argument\n");
+                }
+            }
+        }
+
+        return warnings.toString();
     }
 }
