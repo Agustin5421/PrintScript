@@ -1,6 +1,6 @@
 package ast.root;
 
-public enum ASTNodeType {
+public enum AstNodeType {
   ASSIGNMENT_EXPRESSION,
   CALL_EXPRESSION,
   EXPRESSION_STATEMENT,

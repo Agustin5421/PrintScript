@@ -1,10 +1,10 @@
 package formatter.statement;
 
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import com.google.gson.JsonObject;
 
 public interface Formatter {
-  boolean shouldFormat(ASTNode statement);
+  boolean shouldFormat(AstNode statement);
 
-  String format(ASTNode node, JsonObject rules, String currentProgram);
+  String format(AstNode node, JsonObject rules, String currentProgram);
 }

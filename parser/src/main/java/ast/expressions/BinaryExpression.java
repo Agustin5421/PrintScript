@@ -1,6 +1,6 @@
 package ast.expressions;
 
-import ast.root.ASTNodeType;
+import ast.root.AstNodeType;
 import token.Position;
 
 public record BinaryExpression(
@@ -11,7 +11,7 @@ public record BinaryExpression(
   }
 
   @Override
-  public ASTNodeType getType() {
-    return ASTNodeType.BINARY_EXPRESSION;
+  public AstNodeType getType() {
+    return AstNodeType.BINARY_EXPRESSION;
   }
 }

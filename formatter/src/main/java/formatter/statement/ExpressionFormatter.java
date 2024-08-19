@@ -4,18 +4,18 @@ import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.literal.Literal;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import com.google.gson.JsonObject;
 
 public class ExpressionFormatter implements Formatter {
   @Override
   // For now, it has private uses
-  public boolean shouldFormat(ASTNode statement) {
+  public boolean shouldFormat(AstNode statement) {
     return false;
   }
 
   @Override
-  public String format(ASTNode node, JsonObject rules, String currentProgram) {
+  public String format(AstNode node, JsonObject rules, String currentProgram) {
     Expression expressionNode = (Expression) node;
     String formattedCode = "";
     formattedCode = evaluate(expressionNode, formattedCode, rules);

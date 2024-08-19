@@ -8,7 +8,7 @@ import ast.identifier.Identifier;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.root.Program;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
@@ -25,7 +25,7 @@ public class InterpreterTest {
     Literal<String> literal =
         new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
     VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal);
-    List<ASTNode> statements = List.of(variableDeclaration);
+    List<AstNode> statements = List.of(variableDeclaration);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -39,7 +39,7 @@ public class InterpreterTest {
     Identifier identifier = new Identifier("x", new Position(0, 0), new Position(0, 1));
     Literal<Number> literal = new NumberLiteral(42, new Position(2, 0), new Position(2, 3));
     VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal);
-    List<ASTNode> statements = List.of(variableDeclaration);
+    List<AstNode> statements = List.of(variableDeclaration);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -53,7 +53,7 @@ public class InterpreterTest {
     Identifier identifier1 = new Identifier("x", new Position(0, 0), new Position(0, 1));
     Literal<String> literal1 =
         new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
-    List<ASTNode> statements = getAstNodes(identifier1, literal1, "y");
+    List<AstNode> statements = getAstNodes(identifier1, literal1, "y");
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -68,7 +68,7 @@ public class InterpreterTest {
     Identifier identifier1 = new Identifier("x", new Position(0, 0), new Position(0, 1));
     Literal<String> literal1 =
         new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
-    List<ASTNode> statements = getAstNodes(identifier1, literal1, "x");
+    List<AstNode> statements = getAstNodes(identifier1, literal1, "x");
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -80,7 +80,7 @@ public class InterpreterTest {
         });
   }
 
-  private static List<ASTNode> getAstNodes(
+  private static List<AstNode> getAstNodes(
       Identifier identifier1, Literal<String> literal1, String x) {
     VariableDeclaration variableDeclaration1 = new VariableDeclaration(identifier1, literal1);
 
@@ -88,7 +88,7 @@ public class InterpreterTest {
     Literal<Number> literal2 = new NumberLiteral(42, new Position(8, 0), new Position(8, 9));
     VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, literal2);
 
-    List<ASTNode> statements = List.of(variableDeclaration1, variableDeclaration2);
+    List<AstNode> statements = List.of(variableDeclaration1, variableDeclaration2);
     return statements;
   }
 
@@ -129,15 +129,15 @@ public class InterpreterTest {
         new VariableDeclaration(identifier2, binaryExpression);
 
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
-    List<ASTNode> arguments = List.of(new Identifier("y", new Position(8, 0), new Position(8, 1)));
+    List<AstNode> arguments = List.of(new Identifier("y", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression =
         new CallExpression(printName, arguments, false, new Position(6, 0), new Position(6, 6));
 
-    List<ASTNode> arguments1 = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
+    List<AstNode> arguments1 = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression1 =
         new CallExpression(printName, arguments1, false, new Position(6, 0), new Position(6, 6));
 
-    List<ASTNode> statements =
+    List<AstNode> statements =
         List.of(variableDeclaration, variableDeclaration2, callExpression, callExpression1);
     Program program = new Program(statements);
 
@@ -162,7 +162,7 @@ public class InterpreterTest {
         new CallExpression(
             printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
 
-    List<ASTNode> statements = List.of(variableDeclaration, callExpression);
+    List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -181,7 +181,7 @@ public class InterpreterTest {
         new CallExpression(
             printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
 
-    List<ASTNode> statements = List.of(callExpression);
+    List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -202,7 +202,7 @@ public class InterpreterTest {
         new CallExpression(
             printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
 
-    List<ASTNode> statements = List.of(variableDeclaration, callExpression);
+    List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -211,11 +211,11 @@ public class InterpreterTest {
 
   private VariablesRepository addPrintStatement(VariableDeclaration variableDeclaration) {
     Identifier methodName = new Identifier("println", new Position(6, 0), new Position(6, 6));
-    List<ASTNode> arguments = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
+    List<AstNode> arguments = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression =
         new CallExpression(methodName, arguments, false, new Position(6, 0), new Position(6, 6));
 
-    List<ASTNode> statements = List.of(variableDeclaration, callExpression);
+    List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
@@ -235,7 +235,7 @@ public class InterpreterTest {
     VariableDeclaration variableDeclaration2 =
         new VariableDeclaration(identifier2, binaryExpression);
 
-    List<ASTNode> statements = List.of(variableDeclaration, variableDeclaration2);
+    List<AstNode> statements = List.of(variableDeclaration, variableDeclaration2);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();

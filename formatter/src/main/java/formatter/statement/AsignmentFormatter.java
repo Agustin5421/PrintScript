@@ -1,7 +1,7 @@
 package formatter.statement;
 
 import ast.identifier.Identifier;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import com.google.gson.JsonObject;
 
@@ -13,12 +13,12 @@ public class AsignmentFormatter implements Formatter {
   }
 
   @Override
-  public boolean shouldFormat(ASTNode statement) {
+  public boolean shouldFormat(AstNode statement) {
     return statement instanceof AssignmentExpression;
   }
 
   @Override
-  public String format(ASTNode node, JsonObject rules, String currentProgram) {
+  public String format(AstNode node, JsonObject rules, String currentProgram) {
     AssignmentExpression assignmentNode = (AssignmentExpression) node;
     StringBuilder formattedCode = new StringBuilder();
     boolean equalSpace = rules.get("equalSpaces").getAsBoolean();

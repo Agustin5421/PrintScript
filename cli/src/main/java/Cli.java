@@ -10,9 +10,13 @@ import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;
 import token.Token;
-import token.tokenTypeCheckers.*;
+import token.tokenTypeCheckers.DataTypeTokenChecker;
+import token.tokenTypeCheckers.IdentifierTypeChecker;
+import token.tokenTypeCheckers.OperationTypeTokenChecker;
+import token.tokenTypeCheckers.TagTypeTokenChecker;
+import token.tokenTypeCheckers.TokenTypeChecker;
 
-public class CLI {
+public class Cli {
   private static final int TOTAL_MODULES = 3;
   private static final int PERCENTAGE_PER_MODULE = 100 / TOTAL_MODULES;
 
@@ -67,7 +71,7 @@ public class CLI {
     } */
 
     String filePath = "CLI/clitest.txt"; // args[0];
-    CLI fileExecutor = new CLI();
+    Cli fileExecutor = new Cli();
     fileExecutor.executeFile(filePath);
   }
 

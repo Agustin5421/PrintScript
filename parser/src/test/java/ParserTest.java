@@ -1,8 +1,10 @@
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ast.expressions.BinaryExpression;
 import ast.literal.StringLiteral;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.root.Program;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
@@ -117,10 +119,7 @@ public class ParserTest {
 
     assertEquals(4, program.statements().size(), "Program should contain 4 statement");
 
-    ASTNode first = program.statements().get(0);
-    ASTNode second = program.statements().get(1);
-    ASTNode third = program.statements().get(2);
-    ASTNode fourth = program.statements().get(3);
+    AstNode first = program.statements().get(0);
 
     assertEquals(
         "myVar", ((VariableDeclaration) first).identifier().name(), "Identifier should be 'myVar'");
@@ -129,11 +128,15 @@ public class ParserTest {
         ((VariableDeclaration) first).expression(),
         "Value should be a BinaryExpression");
 
+    AstNode second = program.statements().get(1);
+
     assertEquals(
         "println",
         ((CallExpression) second).methodIdentifier().name(),
         "Identifier should be 'println'");
     assertInstanceOf(CallExpression.class, second, "Value should be a CallExpression");
+
+    AstNode third = program.statements().get(2);
 
     assertEquals(
         "myVar", ((AssignmentExpression) third).left().name(), "Identifier should be 'myVar'");
@@ -141,6 +144,8 @@ public class ParserTest {
         StringLiteral.class,
         ((AssignmentExpression) third).right(),
         "Value should be a StringLiteral");
+
+    AstNode fourth = program.statements().get(3);
 
     assertEquals(
         "println",

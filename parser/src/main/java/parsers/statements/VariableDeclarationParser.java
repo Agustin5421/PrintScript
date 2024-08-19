@@ -2,7 +2,7 @@ package parsers.statements;
 
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
 import ast.utils.ExpressionParserProvider;
 import java.util.List;
@@ -12,7 +12,7 @@ import token.Token;
 
 public class VariableDeclarationParser implements StatementParser {
   @Override
-  public ASTNode parse(List<Token> tokens) {
+  public AstNode parse(List<Token> tokens) {
     if (!shouldParse(tokens)) {
       throw new IllegalArgumentException("Invalid tokens for VariableDeclarationParser");
     }

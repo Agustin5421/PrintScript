@@ -2,7 +2,7 @@ package parsers.statements;
 
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import ast.utils.ExpressionParserProvider;
 import java.util.List;
@@ -13,7 +13,7 @@ import token.tokenTypes.TokenTagType;
 public class AssignmentParser implements StatementParser {
 
   @Override
-  public ASTNode parse(List<Token> tokens) {
+  public AstNode parse(List<Token> tokens) {
     validateSyntax(tokens);
 
     Position leftStart = tokens.get(0).getInitialPosition();

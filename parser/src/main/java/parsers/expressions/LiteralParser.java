@@ -1,7 +1,7 @@
 package parsers.expressions;
 
 import ast.literal.LiteralFactory;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import java.util.List;
 import token.Token;
 import token.tokenTypes.TokenValueType;
@@ -9,7 +9,7 @@ import token.tokenTypes.TokenValueType;
 public class LiteralParser implements ExpressionParser {
 
   @Override
-  public ASTNode parse(List<Token> tokens) {
+  public AstNode parse(List<Token> tokens) {
     return LiteralFactory.createLiteral(tokens.get(0));
   }
 

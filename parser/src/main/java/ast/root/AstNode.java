@@ -2,8 +2,8 @@ package ast.root;
 
 import token.Position;
 
-public interface ASTNode {
-  ASTNodeType getType();
+public interface AstNode {
+  AstNodeType getType();
 
   Position start();
 

@@ -2,7 +2,7 @@ package parsers.expressions;
 
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.utils.ExpressionParserProvider;
 import java.util.List;
 import token.Token;
@@ -11,7 +11,7 @@ import token.tokenTypes.TokenTagType;
 
 public class BinaryExpressionParser implements ExpressionParser {
   @Override
-  public ASTNode parse(List<Token> tokens) {
+  public AstNode parse(List<Token> tokens) {
     if (tokens.isEmpty()) {
       throw new IllegalArgumentException("Token list cannot be empty");
     }

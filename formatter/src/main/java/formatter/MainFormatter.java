@@ -1,6 +1,6 @@
 package formatter;
 
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.root.Program;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,7 +19,7 @@ public class MainFormatter {
     JsonObject rules = jsonOptions.getAsJsonObject("rules");
     StringBuilder formattedCode = new StringBuilder();
     Formatter formatter;
-    for (ASTNode statement : program.statements()) {
+    for (AstNode statement : program.statements()) {
       formatter = getValidFormatter(statement);
       formattedCode
           .append(formatter.format(statement, rules, formattedCode.toString()))
@@ -28,7 +28,7 @@ public class MainFormatter {
     return formattedCode.toString();
   }
 
-  private Formatter getValidFormatter(ASTNode statement) {
+  private Formatter getValidFormatter(AstNode statement) {
     for (Formatter formatter : formatters) {
       if (formatter.shouldFormat(statement)) {
         return formatter;

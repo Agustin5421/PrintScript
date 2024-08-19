@@ -2,21 +2,21 @@ package ast.statements;
 
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
-import ast.root.ASTNode;
-import ast.root.ASTNodeType;
+import ast.root.AstNode;
+import ast.root.AstNodeType;
 import java.util.List;
 import token.Position;
 
 public record CallExpression(
     Identifier methodIdentifier,
-    List<ASTNode> arguments,
+    List<AstNode> arguments,
     boolean optionalParameters,
     Position start,
     Position end)
     implements Expression {
 
   public CallExpression(
-      Identifier methodIdentifier, List<ASTNode> arguments, boolean optionalParameters) {
+      Identifier methodIdentifier, List<AstNode> arguments, boolean optionalParameters) {
     this(
         methodIdentifier,
         arguments,
@@ -26,7 +26,7 @@ public record CallExpression(
   }
 
   @Override
-  public ASTNodeType getType() {
-    return ASTNodeType.CALL_EXPRESSION;
+  public AstNodeType getType() {
+    return AstNodeType.CALL_EXPRESSION;
   }
 }

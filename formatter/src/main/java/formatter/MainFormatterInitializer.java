@@ -1,6 +1,10 @@
 package formatter;
 
-import formatter.statement.*;
+import formatter.statement.AsignmentFormatter;
+import formatter.statement.ExpressionFormatter;
+import formatter.statement.Formatter;
+import formatter.statement.FunctionCallFormatter;
+import formatter.statement.VariableDeclarationFormatter;
 import java.util.List;
 
 public class MainFormatterInitializer {

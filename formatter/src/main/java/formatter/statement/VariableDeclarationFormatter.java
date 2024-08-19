@@ -4,7 +4,7 @@ import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.literal.StringLiteral;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
 import com.google.gson.JsonObject;
 
@@ -16,12 +16,12 @@ public class VariableDeclarationFormatter implements Formatter {
   }
 
   @Override
-  public boolean shouldFormat(ASTNode statement) {
+  public boolean shouldFormat(AstNode statement) {
     return statement instanceof VariableDeclaration;
   }
 
   @Override
-  public String format(ASTNode node, JsonObject rules, String currentProgram) {
+  public String format(AstNode node, JsonObject rules, String currentProgram) {
     VariableDeclaration varDeclarationNode = (VariableDeclaration) node;
     StringBuilder formattedCode = new StringBuilder();
     JsonObject colonRules = rules.getAsJsonObject("colonRules");

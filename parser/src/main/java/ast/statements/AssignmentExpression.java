@@ -2,7 +2,7 @@ package ast.statements;
 
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
-import ast.root.ASTNodeType;
+import ast.root.AstNodeType;
 import token.Position;
 
 public record AssignmentExpression(
@@ -14,7 +14,7 @@ public record AssignmentExpression(
   }
 
   @Override
-  public ASTNodeType getType() {
-    return ASTNodeType.ASSIGNMENT_EXPRESSION;
+  public AstNodeType getType() {
+    return AstNodeType.ASSIGNMENT_EXPRESSION;
   }
 }

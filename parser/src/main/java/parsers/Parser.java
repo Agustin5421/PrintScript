@@ -1,6 +1,6 @@
 package parsers;
 
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.root.Program;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class Parser implements Progressable {
   public Program parse(List<Token> tokens) {
     List<List<Token>> statements = splitBySemicolon(tokens);
 
-    List<ASTNode> astNodes = new ArrayList<>();
+    List<AstNode> astNodes = new ArrayList<>();
 
     StatementParser parser;
 
@@ -49,7 +49,7 @@ public class Parser implements Progressable {
 
     for (List<Token> statement : statements) {
       parser = getValidParser(statement);
-      ASTNode astNode = parser.parse(statement);
+      AstNode astNode = parser.parse(statement);
       astNodes.add(astNode);
       processedStatements++;
       updateProgress();
@@ -93,7 +93,9 @@ public class Parser implements Progressable {
 
   private void updateProgress() {
     int progress = (int) (((double) processedStatements / totalStatements) * 100);
-    if (observer != null) observer.update("parser", progress);
+    if (observer != null) {
+      observer.update("parser", progress);
+    }
   }
 
   @Override

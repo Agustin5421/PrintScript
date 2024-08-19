@@ -11,11 +11,7 @@ public class DataTypeTokenChecker implements TypeGetter {
       return TokenValueType.STRING;
     } else if (isNumber(value)) {
       return TokenValueType.NUMBER;
-    } /*else if (isFloat(value)) {
-          return TokenValueType.FLOAT;
-      } else if (isBoolean(value)) {
-          return TokenValueType.BOOLEAN;
-      } */ else {
+    } else {
       return null;
     }
   }
@@ -46,10 +42,4 @@ public class DataTypeTokenChecker implements TypeGetter {
       return false;
     }
   }
-
-  /*
-  private static boolean isBoolean(String value) {
-      return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false");
-  }
-  */
 }

@@ -1,7 +1,7 @@
 package formatter.statement;
 
 import ast.identifier.Identifier;
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.statements.CallExpression;
 import com.google.gson.JsonObject;
 
@@ -14,12 +14,12 @@ public class FunctionCallFormatter implements Formatter {
   }
 
   @Override
-  public boolean shouldFormat(ASTNode statement) {
+  public boolean shouldFormat(AstNode statement) {
     return statement instanceof CallExpression;
   }
 
   @Override
-  public String format(ASTNode node, JsonObject rules, String currentProgram) {
+  public String format(AstNode node, JsonObject rules, String currentProgram) {
     CallExpression callExpressionNode = (CallExpression) node;
     StringBuilder formattedCode;
     int linesBreak = rules.get("printLineBreaks").getAsInt() + 1;
@@ -27,7 +27,7 @@ public class FunctionCallFormatter implements Formatter {
     formattedCode = addOrRemoveLineBreaks(currentProgram, linesBreak);
 
     formattedCode.append(cleanIdentifier(callExpressionNode.methodIdentifier())).append("(");
-    for (ASTNode argument : callExpressionNode.arguments()) {
+    for (AstNode argument : callExpressionNode.arguments()) {
       formattedCode.append(expressionFormatter.format(argument, rules, currentProgram));
     }
     formattedCode.append(");");

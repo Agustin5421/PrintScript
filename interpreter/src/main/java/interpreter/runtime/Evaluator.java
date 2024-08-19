@@ -1,7 +1,7 @@
 package interpreter.runtime;
 
-import ast.root.ASTNode;
+import ast.root.AstNode;
 
 public interface Evaluator {
-  ASTNode evaluate(ASTNode statement);
+  AstNode evaluate(AstNode statement);
 }
