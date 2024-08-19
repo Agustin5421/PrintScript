@@ -1,6 +1,6 @@
 package token;
 
-import token.tokenTypes.TokenType;
+import token.types.TokenType;
 
 public class Token {
   private final TokenType type;

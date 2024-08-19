@@ -6,8 +6,8 @@ import ast.root.AstNode;
 import ast.utils.ExpressionParserProvider;
 import java.util.List;
 import token.Token;
-import token.tokenTypes.TokenDataType;
-import token.tokenTypes.TokenTagType;
+import token.types.TokenDataType;
+import token.types.TokenTagType;
 
 public class BinaryExpressionParser implements ExpressionParser {
   @Override

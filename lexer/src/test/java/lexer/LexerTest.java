@@ -6,13 +6,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import token.Position;
 import token.Token;
-import token.tokenTypeCheckers.DataTypeTokenChecker;
-import token.tokenTypeCheckers.IdentifierTypeChecker;
-import token.tokenTypeCheckers.OperationTypeTokenChecker;
-import token.tokenTypeCheckers.TagTypeTokenChecker;
-import token.tokenTypeCheckers.TokenTypeChecker;
-import token.tokenTypes.TokenTagType;
-import token.tokenTypes.TokenValueType;
+import token.types.TokenTagType;
+import token.types.TokenValueType;
+import token.validators.DataTypeTokenChecker;
+import token.validators.IdentifierTypeChecker;
+import token.validators.OperationTypeTokenChecker;
+import token.validators.TagTypeTokenChecker;
+import token.validators.TokenTypeChecker;
 
 public class LexerTest {
 

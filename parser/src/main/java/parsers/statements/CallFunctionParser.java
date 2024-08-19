@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import token.Position;
 import token.Token;
-import token.tokenTypes.TokenTagType;
-import token.tokenTypes.TokenType;
+import token.types.TokenTagType;
+import token.types.TokenType;
 
 public class CallFunctionParser implements StatementParser {
   private final List<String> reservedWords;

@@ -1,7 +1,7 @@
 package ast.literal;
 
 import token.Token;
-import token.tokenTypes.TokenValueType;
+import token.types.TokenValueType;
 
 public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {

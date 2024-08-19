@@ -4,7 +4,7 @@ import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.literal.LiteralFactory;
 import token.Token;
-import token.tokenTypes.TokenTagType;
+import token.types.TokenTagType;
 
 public class ArgumentFactory {
   public static Expression createArgument(Token token) {

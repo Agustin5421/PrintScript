@@ -5,11 +5,11 @@ import parsers.expressions.BinaryExpressionParser;
 import parsers.statements.AssignmentParser;
 import parsers.statements.CallFunctionParser;
 import parsers.statements.VariableDeclarationParser;
-import token.tokenTypeCheckers.DataTypeTokenChecker;
-import token.tokenTypeCheckers.IdentifierTypeChecker;
-import token.tokenTypeCheckers.OperationTypeTokenChecker;
-import token.tokenTypeCheckers.TagTypeTokenChecker;
-import token.tokenTypeCheckers.TokenTypeChecker;
+import token.validators.DataTypeTokenChecker;
+import token.validators.IdentifierTypeChecker;
+import token.validators.OperationTypeTokenChecker;
+import token.validators.TagTypeTokenChecker;
+import token.validators.TokenTypeChecker;
 
 public class ContextProvider {
 

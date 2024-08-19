@@ -1,4 +1,4 @@
-package token.tokenTypes;
+package token.types;
 
 public enum TokenTagType implements TokenType {
   /*

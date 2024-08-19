@@ -8,7 +8,7 @@ import ast.utils.ExpressionParserProvider;
 import java.util.List;
 import token.Position;
 import token.Token;
-import token.tokenTypes.TokenTagType;
+import token.types.TokenTagType;
 
 public class AssignmentParser implements StatementParser {
 

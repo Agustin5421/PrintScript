@@ -1,8 +1,8 @@
-package token.tokenTypeCheckers;
+package token.validators;
 
 import java.util.regex.Pattern;
-import token.tokenTypes.TokenTagType;
-import token.tokenTypes.TokenType;
+import token.types.TokenTagType;
+import token.types.TokenType;
 
 public class IdentifierTypeChecker implements TypeGetter {
 

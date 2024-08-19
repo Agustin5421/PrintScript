@@ -8,8 +8,8 @@ import observers.ProgressObserver;
 import observers.Progressable;
 import token.Position;
 import token.Token;
-import token.tokenTypeCheckers.TokenTypeChecker;
-import token.tokenTypes.TokenType;
+import token.types.TokenType;
+import token.validators.TokenTypeChecker;
 
 public class Lexer implements Progressable {
   private final TokenTypeChecker tokenTypeGetter;

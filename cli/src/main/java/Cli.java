@@ -10,11 +10,11 @@ import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;
 import token.Token;
-import token.tokenTypeCheckers.DataTypeTokenChecker;
-import token.tokenTypeCheckers.IdentifierTypeChecker;
-import token.tokenTypeCheckers.OperationTypeTokenChecker;
-import token.tokenTypeCheckers.TagTypeTokenChecker;
-import token.tokenTypeCheckers.TokenTypeChecker;
+import token.validators.DataTypeTokenChecker;
+import token.validators.IdentifierTypeChecker;
+import token.validators.OperationTypeTokenChecker;
+import token.validators.TagTypeTokenChecker;
+import token.validators.TokenTypeChecker;
 
 public class Cli {
   private static final int TOTAL_MODULES = 3;

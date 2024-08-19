@@ -1,7 +1,7 @@
-package token.tokenTypeCheckers;
+package token.validators;
 
-import token.tokenTypes.TokenType;
-import token.tokenTypes.TokenValueType;
+import token.types.TokenType;
+import token.types.TokenValueType;
 
 public class DataTypeTokenChecker implements TypeGetter {
 

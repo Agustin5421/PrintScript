@@ -4,7 +4,7 @@ import ast.root.AstNode;
 import java.util.List;
 import parsers.expressions.ExpressionParser;
 import token.Token;
-import token.tokenTypes.TokenTagType;
+import token.types.TokenTagType;
 
 public class IdentifierParser implements ExpressionParser {
   @Override

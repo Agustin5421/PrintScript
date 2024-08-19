@@ -4,7 +4,7 @@ import ast.literal.LiteralFactory;
 import ast.root.AstNode;
 import java.util.List;
 import token.Token;
-import token.tokenTypes.TokenValueType;
+import token.types.TokenValueType;
 
 public class LiteralParser implements ExpressionParser {
 

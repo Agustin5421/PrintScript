@@ -1,6 +1,6 @@
-package token.tokenTypeCheckers;
+package token.validators;
 
-import token.tokenTypes.TokenType;
+import token.types.TokenType;
 
 public interface TypeGetter {
   TokenType getType(String word);

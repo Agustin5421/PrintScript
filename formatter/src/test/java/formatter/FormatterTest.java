@@ -16,11 +16,11 @@ import org.junit.jupiter.api.Test;
 import parsers.Parser;
 import token.Position;
 import token.Token;
-import token.tokenTypeCheckers.DataTypeTokenChecker;
-import token.tokenTypeCheckers.IdentifierTypeChecker;
-import token.tokenTypeCheckers.OperationTypeTokenChecker;
-import token.tokenTypeCheckers.TagTypeTokenChecker;
-import token.tokenTypeCheckers.TokenTypeChecker;
+import token.validators.DataTypeTokenChecker;
+import token.validators.IdentifierTypeChecker;
+import token.validators.OperationTypeTokenChecker;
+import token.validators.TagTypeTokenChecker;
+import token.validators.TokenTypeChecker;
 
 public class FormatterTest {
   private final MainFormatter formatter = MainFormatterInitializer.init();

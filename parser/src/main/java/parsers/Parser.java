@@ -12,7 +12,7 @@ import parsers.statements.StatementParser;
 import parsers.statements.VariableDeclarationParser;
 import token.Position;
 import token.Token;
-import token.tokenTypes.TokenTagType;
+import token.types.TokenTagType;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;

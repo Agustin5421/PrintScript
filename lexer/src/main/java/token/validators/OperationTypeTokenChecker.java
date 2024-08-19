@@ -1,9 +1,9 @@
-package token.tokenTypeCheckers;
+package token.validators;
 
 import java.util.HashMap;
 import java.util.Map;
-import token.tokenTypes.TokenDataType;
-import token.tokenTypes.TokenType;
+import token.types.TokenDataType;
+import token.types.TokenType;
 
 public class OperationTypeTokenChecker implements TypeGetter {
   private static final Map<String, TokenType> operationsMap;
