@@ -17,6 +17,15 @@ public class Linter {
             visitor = statement.visit(visitor);
         }
 
-        return ((LinterVisitor) visitor).getReport();
+        String report = ((LinterVisitor) visitor).getReport();
+        report = trimLastNewLine(report);
+        return report;
+    }
+
+    private static String trimLastNewLine(String report) {
+        if (!report.isEmpty()) {
+            report = report.substring(0, report.length() - 1);
+        }
+        return report;
     }
 }
