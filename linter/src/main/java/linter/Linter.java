@@ -24,7 +24,10 @@ public class Linter {
 
     private String trimLastNewLine(String report) {
         if (!report.isEmpty()) {
-            return report.substring(0, report.length() - 1);
+            if (report.charAt(report.length() - 1) == '\n') {
+                String newReport = report.substring(0, report.length() - 1);
+                return trimLastNewLine(newReport);
+            }
         }
         return report;
     }
