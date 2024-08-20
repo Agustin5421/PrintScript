@@ -5,8 +5,8 @@ import printer.ProgressType;
 public class ProgressPrinter {
   private static final int BAR_WIDTH = 50;
 
-  public void printProgress(int progress, ProgressType type) {
-    int completedWidth = (progress * BAR_WIDTH) / 100;
+  public void printProgress(float progress, ProgressType type) {
+    float completedWidth = (progress * BAR_WIDTH) / 100;
     StringBuilder sb = new StringBuilder();
     String color = type.getColorCode();
 

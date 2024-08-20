@@ -4,6 +4,8 @@ import ast.root.AstNode;
 import ast.root.Program;
 import java.util.ArrayList;
 import java.util.List;
+
+import observers.Observer;
 import observers.ProgressObserver;
 import observers.Progressable;
 import parsers.statements.AssignmentParser;
@@ -16,25 +18,21 @@ import token.types.TokenTagType;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
-  private final ProgressObserver observer;
+  private List<Observer> observers;
   private int totalStatements;
   private int processedStatements;
 
-  public Parser(List<StatementParser> statementParsers) {
-    this.statementParsers = statementParsers;
-    this.observer = null;
-  }
 
-  public Parser(ProgressObserver observer) {
+  public Parser(List<Observer> observers) {
     this.statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
-    this.observer = observer;
+    this.observers = observers;
   }
 
   public Parser() {
     this.statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
-    this.observer = null;
+    this.observers = null;
   }
 
   public Program parse(List<Token> tokens) {
@@ -92,14 +90,30 @@ public class Parser implements Progressable {
   }
 
   private void updateProgress() {
-    int progress = (int) (((double) processedStatements / totalStatements) * 100);
-    if (observer != null) {
-      observer.update("parser", progress);
+    if (observers != null) {
+      notifyObservers();
     }
   }
 
   @Override
   public int getProgress() {
     return (int) (((double) processedStatements / totalStatements) * 100);
+  }
+
+  @Override
+  public void addObserver(Observer observer) {
+    observers.add(observer);
+  }
+
+  @Override
+  public void removeObserver(Observer observer) {
+    observers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for (Observer observer : observers) {
+      observer.update(this);
+    }
   }
 }

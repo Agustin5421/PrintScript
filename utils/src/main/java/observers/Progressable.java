@@ -1,5 +1,5 @@
 package observers;
 
-public interface Progressable {
+public interface Progressable extends Observable {
   int getProgress();
 }

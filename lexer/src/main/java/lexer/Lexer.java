@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import observers.ProgressObserver;
+
+import observers.Observer;
 import observers.Progressable;
 import token.Position;
 import token.Token;
@@ -13,13 +14,12 @@ import token.validators.TokenTypeChecker;
 
 public class Lexer implements Progressable {
   private final TokenTypeChecker tokenTypeGetter;
-  private final ProgressObserver observer;
+  private List<Observer> observers = new ArrayList<>();
   private int totalLength;
-  private int processedLength;
 
-  public Lexer(TokenTypeChecker tokenTypeGetter, ProgressObserver observer) {
+  public Lexer(TokenTypeChecker tokenTypeGetter, List<Observer> observers) {
     this.tokenTypeGetter = tokenTypeGetter;
-    this.observer = observer;
+    this.observers = observers;
   }
 
   private static final String TEXT_PATTERNS =
@@ -43,7 +43,7 @@ public class Lexer implements Progressable {
 
   public Lexer(TokenTypeChecker tokenTypeGetter) {
     this.tokenTypeGetter = tokenTypeGetter;
-    observer = null;
+    observers = null;
   }
 
   public List<Token> extractTokens(String code) {
@@ -54,32 +54,38 @@ public class Lexer implements Progressable {
     Position initialPosition = new Position(1, 1);
     int currentIndex = 0;
 
-    totalLength = code.length();
-    processedLength = 0;
+
+    List<String> words = new ArrayList<>();
+    List<int[]> positions = new ArrayList<>();
 
     while (matcher.find()) {
       String word = matcher.group();
-      int start = matcher.start();
-      int end = matcher.end();
+      words.add(word);
+      positions.add(new int[]{matcher.start(), matcher.end()});
+    }
+
+    totalLength = words.size();
+
+    for (int i = 0; i < words.size(); i++) {
+      String word = words.get(i);
+      int start = positions.get(i)[0];
+      int end = positions.get(i)[1];
 
       initialPosition = updatePosition(code, currentIndex, start, initialPosition);
       Position finalPosition = updatePosition(code, start, end, initialPosition);
 
       currentIndex = end;
 
-      // Create Token
       TokenType type = tokenTypeGetter.getType(word);
       Token token = new Token(type, word, initialPosition, finalPosition);
       tokens.add(token);
 
-      // Update position
       initialPosition = finalPosition;
 
-      // Update progress
-      processedLength = end;
       updateProgress();
     }
 
+    updateProgress();
     return tokens;
   }
 
@@ -101,14 +107,36 @@ public class Lexer implements Progressable {
   }
 
   private void updateProgress() {
-    int progress = getProgress();
-    if (observer != null) {
-      observer.update("lexer", progress);
+    if (observers != null) {
+      notifyObservers();
+    }
+  }
+
+  // Progress should be calculated over the total words in the code
+  @Override
+  public int getProgress() {
+    return (int) (((double) 1 /  totalLength) * 100);
+  }
+
+  @Override
+  public void addObserver(Observer observer) {
+    observers.add(observer);
+  }
+
+  @Override
+  public void removeObserver(Observer observer) {
+    for (Observer obs : observers) {
+      if (obs.equals(observer)) {
+        observers.remove(observer);
+        break;
+      }
     }
   }
 
   @Override
-  public int getProgress() {
-    return (int) (((double) processedLength / totalLength) * 100);
+  public void notifyObservers() {
+    for (Observer observer : observers) {
+      observer.update(this);
+    }
   }
 }

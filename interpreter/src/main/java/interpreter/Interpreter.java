@@ -11,20 +11,24 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
+
+import observers.Observer;
 import observers.ProgressObserver;
+import observers.ProgressPrinter;
 import observers.Progressable;
 
 public class Interpreter implements Progressable {
-  private final ProgressObserver observer;
+  private final List<Observer> observers;
   private int totalStatements;
   private int completedStatements;
 
-  public Interpreter(ProgressObserver observer) {
-    this.observer = observer;
+  public Interpreter(List<Observer> observers) {
+    this.observers = observers;
   }
 
+  // This constructor is created in order to make the tests pass
   public Interpreter() {
-    this.observer = null;
+    this.observers = List.of(new ProgressObserver(new ProgressPrinter()));
   }
 
   public VariablesRepository executeProgram(Program program) {
@@ -42,9 +46,9 @@ public class Interpreter implements Progressable {
   }
 
   private void updateProgress() {
-    int progress = (int) (((double) completedStatements / totalStatements) * 100);
-    if (observer != null) {
-      observer.update("interpreter", progress);
+      assert observers != null;
+      if (!observers.isEmpty()) {
+      notifyObservers();
     }
   }
 
@@ -96,6 +100,23 @@ public class Interpreter implements Progressable {
         System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
       }
       System.out.println();
+    }
+  }
+
+  @Override
+  public void addObserver(Observer observer) {
+    observers.add(observer);
+  }
+
+  @Override
+  public void removeObserver(Observer observer) {
+    observers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for (Observer observer : observers) {
+      observer.update(this);
     }
   }
 }
