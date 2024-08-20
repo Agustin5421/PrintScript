@@ -4,9 +4,7 @@ import ast.root.AstNode;
 import ast.root.Program;
 import java.util.ArrayList;
 import java.util.List;
-
 import observers.Observer;
-import observers.ProgressObserver;
 import observers.Progressable;
 import parsers.statements.AssignmentParser;
 import parsers.statements.CallFunctionParser;
@@ -21,7 +19,6 @@ public class Parser implements Progressable {
   private List<Observer> observers;
   private int totalStatements;
   private int processedStatements;
-
 
   public Parser(List<Observer> observers) {
     this.statementParsers =

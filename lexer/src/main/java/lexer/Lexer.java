@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import observers.Observer;
 import observers.Progressable;
 import token.Position;
@@ -54,14 +53,13 @@ public class Lexer implements Progressable {
     Position initialPosition = new Position(1, 1);
     int currentIndex = 0;
 
-
     List<String> words = new ArrayList<>();
     List<int[]> positions = new ArrayList<>();
 
     while (matcher.find()) {
       String word = matcher.group();
       words.add(word);
-      positions.add(new int[]{matcher.start(), matcher.end()});
+      positions.add(new int[] {matcher.start(), matcher.end()});
     }
 
     totalLength = words.size();
@@ -115,7 +113,7 @@ public class Lexer implements Progressable {
   // Progress should be calculated over the total words in the code
   @Override
   public int getProgress() {
-    return (int) (((double) 1 /  totalLength) * 100);
+    return (int) (((double) 1 / totalLength) * 100);
   }
 
   @Override
