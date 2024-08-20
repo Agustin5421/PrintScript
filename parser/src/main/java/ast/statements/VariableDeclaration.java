@@ -3,6 +3,7 @@ package ast.statements;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.AstNodeType;
+import ast.visitor.NodeVisitor;
 import token.Position;
 
 public record VariableDeclaration(
@@ -22,6 +23,11 @@ public record VariableDeclaration(
   @Override
   public AstNodeType getType() {
     return AstNodeType.VARIABLE_DECLARATION;
+  }
+
+  @Override
+  public void accept(NodeVisitor visitor) {
+    visitor.visit(this);
   }
   // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
 }
