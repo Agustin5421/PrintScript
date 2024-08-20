@@ -14,7 +14,7 @@ public class Linter {
         List<ASTNode> statements = program.statements();
 
         for (ASTNode statement : statements) {
-            visitor = statement.visit(visitor);
+            visitor = statement.accept(visitor);
         }
 
         String report = ((LinterVisitor) visitor).getReport();

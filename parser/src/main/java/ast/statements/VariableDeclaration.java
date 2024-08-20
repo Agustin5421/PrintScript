@@ -27,8 +27,11 @@ public record VariableDeclaration(Identifier identifier, Expression expression, 
     }
 
     @Override
-    public ASTVisitor visit(ASTVisitor visitor) {
-        return visitor.visitVarDec(identifier, expression);
+    public ASTVisitor accept(ASTVisitor visitor) {
+        visitor = visitor.visitVarDec(this);
+        visitor = identifier().accept(visitor);
+        visitor = expression().accept(visitor);
+        return visitor;
     }
     // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
 }

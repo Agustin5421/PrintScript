@@ -13,7 +13,7 @@ public record Identifier(String name, Position start, Position end) implements E
     }
 
     @Override
-    public ASTVisitor visit(ASTVisitor visitor) {
-        return visitor;
+    public ASTVisitor accept(ASTVisitor visitor) {
+        return visitor.visitIdentifier(this);
     }
 }

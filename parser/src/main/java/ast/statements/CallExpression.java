@@ -22,7 +22,12 @@ public record CallExpression(Identifier methodIdentifier, List<ASTNode> argument
     }
 
     @Override
-    public ASTVisitor visit(ASTVisitor visitor) {
-        return visitor.visitCallExpression(methodIdentifier, arguments);
+    public ASTVisitor accept(ASTVisitor visitor) {
+        visitor = visitor.visitCallExpression(this);
+        visitor = methodIdentifier().accept(visitor);
+        for (ASTNode childNode : arguments()) {
+            visitor = childNode.accept(visitor);
+        }
+        return visitor;
     }
 }

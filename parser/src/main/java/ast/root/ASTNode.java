@@ -7,5 +7,5 @@ public interface ASTNode {
     ASTNodeType getType();
     Position start();
     Position end();
-    ASTVisitor visit(ASTVisitor visitor);
+    ASTVisitor accept(ASTVisitor visitor);
 }

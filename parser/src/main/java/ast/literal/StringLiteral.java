@@ -19,7 +19,7 @@ public record StringLiteral(String value, Position start, Position end) implemen
     }
 
     @Override
-    public ASTVisitor visit(ASTVisitor visitor) {
-        return visitor;
+    public ASTVisitor accept(ASTVisitor visitor) {
+        return visitor.visitLiteral(this);
     }
 }

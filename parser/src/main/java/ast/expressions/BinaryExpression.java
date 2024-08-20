@@ -15,7 +15,7 @@ public record BinaryExpression(Expression left, Expression right, String operato
     }
 
     @Override
-    public ASTVisitor visit(ASTVisitor visitor) {
+    public ASTVisitor accept(ASTVisitor visitor) {
         return visitor;
     }
 }

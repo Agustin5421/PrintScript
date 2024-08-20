@@ -1,9 +1,12 @@
 package visitors;
 
-import ast.expressions.Expression;
 import ast.identifier.Identifier;
+import ast.literal.Literal;
 import ast.root.ASTNode;
 import ast.root.ASTNodeType;
+import ast.statements.AssignmentExpression;
+import ast.statements.CallExpression;
+import ast.statements.VariableDeclaration;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.util.List;
@@ -28,7 +31,9 @@ public class LinterVisitor implements ASTVisitor {
     }
 
     @Override
-    public ASTVisitor visitVarDec(Identifier identifier, Expression expression) {
+    public ASTVisitor visitVarDec(VariableDeclaration node) {
+        Identifier identifier = node.identifier();
+
         String getIdentifierReport = verifyIdentifier(identifier);
         String newReport = getReport();
         if (!getIdentifierReport.isEmpty()) {
@@ -38,7 +43,10 @@ public class LinterVisitor implements ASTVisitor {
     }
 
     @Override
-    public ASTVisitor visitCallExpression(Identifier identifier, List<ASTNode> arguments) {
+    public ASTVisitor visitCallExpression(CallExpression node) {
+        Identifier identifier = node.methodIdentifier();
+        List<ASTNode> arguments = node.arguments();
+
         String getIdentifierReport = verifyIdentifier(identifier);
         String getArgumentsReport = verifyArguments(arguments);
 
@@ -54,8 +62,18 @@ public class LinterVisitor implements ASTVisitor {
     }
 
     @Override
-    public ASTVisitor visitAssignmentExpression(Identifier identifier, String operator, Expression expression) {
-        return null;
+    public ASTVisitor visitAssignmentExpression(AssignmentExpression node) {
+        return this;
+    }
+
+    @Override
+    public ASTVisitor visitIdentifier(Identifier node) {
+        return this;
+    }
+
+    @Override
+    public ASTVisitor visitLiteral(Literal<?> node) {
+        return this;
     }
 
     private String verifyIdentifier(Identifier identifier) {
@@ -108,11 +126,12 @@ public class LinterVisitor implements ASTVisitor {
                 .getAsBoolean();
 
         for (ASTNode argument : arguments) {
-            if (argument.getType() == ASTNodeType.IDENTIFIER) {
+            ASTNodeType nodeType = argument.getType();
+            if (nodeType == ASTNodeType.IDENTIFIER) {
                 if (!acceptsIdentifiers) {
                     warnings.append("Warning from ").append(argument.start()).append(" to ").append(argument.end()).append(": Identifier is not allowed as CallExpression argument\n");
                 }
-            } else if (argument.getType() == ASTNodeType.STRING_LITERAL || argument.getType() == ASTNodeType.NUMBER_LITERAL) {
+            } else if (nodeType == ASTNodeType.STRING_LITERAL || nodeType == ASTNodeType.NUMBER_LITERAL) {
                 if (!acceptsLiterals) {
                     warnings.append("Warning from ").append(argument.start()).append(" to ").append(argument.end()).append(": Literal is not allowed as CallExpression argument\n");
                 }

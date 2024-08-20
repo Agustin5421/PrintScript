@@ -1,6 +1,5 @@
 package ast.statements;
 
-import ast.root.ASTNode;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.ASTNodeType;
@@ -20,7 +19,11 @@ public record AssignmentExpression(Identifier left, Expression right, String ope
     }
 
     @Override
-    public ASTVisitor visit(ASTVisitor visitor) {
-        return visitor.visitAssignmentExpression(left, operator, right);
+    public ASTVisitor accept(ASTVisitor visitor) {
+        visitor = visitor.visitAssignmentExpression(this);
+        visitor = left().accept(visitor);
+        visitor = right().accept(visitor);
+
+        return visitor;
     }
 }
