@@ -32,32 +32,14 @@ public class LinterVisitor implements ASTVisitor {
 
     @Override
     public ASTVisitor visitVarDec(VariableDeclaration node) {
-        Identifier identifier = node.identifier();
-
-        String getIdentifierReport = verifyIdentifier(identifier);
-        String newReport = getReport();
-        if (!getIdentifierReport.isEmpty()) {
-            newReport += getIdentifierReport + "\n";
-        }
-        return new LinterVisitor(newReport, rules);
+        return this;
     }
 
     @Override
     public ASTVisitor visitCallExpression(CallExpression node) {
-        Identifier identifier = node.methodIdentifier();
         List<ASTNode> arguments = node.arguments();
-
-        String getIdentifierReport = verifyIdentifier(identifier);
         String getArgumentsReport = verifyArguments(arguments);
-
-        String newReport = getReport();
-        if (!getIdentifierReport.isEmpty()) {
-            newReport += getIdentifierReport + "\n";
-        }
-        if (!getArgumentsReport.isEmpty()) {
-            newReport += getArgumentsReport;
-        }
-
+        String newReport = getNewReport(getArgumentsReport);
         return new LinterVisitor(newReport, rules);
     }
 
@@ -68,7 +50,17 @@ public class LinterVisitor implements ASTVisitor {
 
     @Override
     public ASTVisitor visitIdentifier(Identifier node) {
-        return this;
+        String getIdentifierReport = verifyIdentifier(node);
+        String newReport = getNewReport(getIdentifierReport);
+        return new LinterVisitor(newReport, rules);
+    }
+
+    private String getNewReport(String currentReport) {
+        String newReport = getReport();
+        if (!currentReport.isEmpty()) {
+            newReport += currentReport + "\n";
+        }
+        return newReport;
     }
 
     @Override
