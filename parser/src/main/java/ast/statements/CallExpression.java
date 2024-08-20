@@ -6,7 +6,6 @@ import ast.identifier.Identifier;
 import ast.root.ASTNodeType;
 import token.Position;
 import visitors.ASTVisitor;
-
 import java.util.List;
 
 public record CallExpression(Identifier methodIdentifier, List<ASTNode> arguments,

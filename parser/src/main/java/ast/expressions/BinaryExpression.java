@@ -1,6 +1,5 @@
 package ast.expressions;
 
-import ast.root.ASTNode;
 import ast.root.ASTNodeType;
 import token.Position;
 import visitors.ASTVisitor;

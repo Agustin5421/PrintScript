@@ -4,7 +4,6 @@ import ast.root.ASTNode;
 import ast.root.Program;
 import visitors.ASTVisitor;
 import visitors.LinterVisitor;
-
 import java.util.List;
 
 public class Linter {
