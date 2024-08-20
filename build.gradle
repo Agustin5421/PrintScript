@@ -23,6 +23,8 @@ subprojects {
 
     dependencies {
         implementation 'com.google.googlejavaformat:google-java-format:1.15.0'
+        implementation 'org.codehaus.groovy:groovy-all:3.0.9'  // Ensure Groovy is compatible with Java 17
+
     }
 
     spotless {

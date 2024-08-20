@@ -11,7 +11,6 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
-
 import observers.Observer;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
@@ -46,8 +45,8 @@ public class Interpreter implements Progressable {
   }
 
   private void updateProgress() {
-      assert observers != null;
-      if (!observers.isEmpty()) {
+    assert observers != null;
+    if (!observers.isEmpty()) {
       notifyObservers();
     }
   }
