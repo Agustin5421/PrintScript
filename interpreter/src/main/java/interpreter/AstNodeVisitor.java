@@ -55,21 +55,20 @@ public class AstNodeVisitor implements NodeVisitor {
   @Override
   public NodeVisitor visit(NumberLiteral numberLiteral) {
     System.out.println("NumberLiteral: " + numberLiteral.value());
-    variablesRepository.addVariable(numberLiteral.value().toString(), numberLiteral.value());
+    variablesRepository.addVariable("numberLiteral", numberLiteral.value());
     return this;
   }
 
   @Override
   public NodeVisitor visit(StringLiteral stringLiteral) {
     System.out.println("StringLiteral: " + stringLiteral.value());
-    variablesRepository.addVariable(stringLiteral.value(), stringLiteral.value());
+    variablesRepository.addVariable("stringLiteral", stringLiteral.value());
     return this;
   }
 
   @Override
   public NodeVisitor visit(Identifier identifier) {
     System.out.println("Identifier: " + identifier.name());
-    variablesRepository.addVariable((String) variablesRepository.getVariable(identifier.name()), variablesRepository.getVariable(identifier.name()));
     return this;
   }
 
