@@ -11,7 +11,6 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
-
 import observers.Observer;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
@@ -20,7 +19,7 @@ import observers.Progressable;
 public class Interpreter implements Progressable {
   private final List<Observer> observers;
   private int totalStatements;
-  private int completedStatements;
+
 
   public Interpreter(List<Observer> observers) {
     this.observers = observers;
@@ -34,28 +33,16 @@ public class Interpreter implements Progressable {
   public VariablesRepository executeProgram(Program program) {
     VariablesRepository variablesRepository = new VariablesRepository();
     totalStatements = program.statements().size();
-    completedStatements = 0;
 
     for (AstNode statement : program.statements()) {
       variablesRepository = evaluateStatement(statement, variablesRepository);
-      completedStatements++;
       updateProgress();
     }
 
     return variablesRepository;
   }
 
-  private void updateProgress() {
-      assert observers != null;
-      if (!observers.isEmpty()) {
-      notifyObservers();
-    }
-  }
 
-  @Override
-  public int getProgress() {
-    return (int) (((double) completedStatements / totalStatements) * 100);
-  }
 
   private VariablesRepository evaluateStatement(
       AstNode statement, VariablesRepository variablesRepository) {
@@ -119,4 +106,14 @@ public class Interpreter implements Progressable {
       observer.update(this);
     }
   }
+
+  private void updateProgress() {
+    notifyObservers();
+  }
+
+  @Override
+  public float getProgress() {
+    return ((float) 1 / totalStatements) * 100;
+  }
+
 }

@@ -18,7 +18,6 @@ import token.validators.TokenTypeChecker;
 
 public class Cli {
 
-
   public void executeFile(String filePath) {
     File file = new File(filePath);
 

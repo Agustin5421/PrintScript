@@ -4,9 +4,7 @@ import ast.root.AstNode;
 import ast.root.Program;
 import java.util.ArrayList;
 import java.util.List;
-
 import observers.Observer;
-import observers.ProgressObserver;
 import observers.Progressable;
 import parsers.statements.AssignmentParser;
 import parsers.statements.CallFunctionParser;
@@ -20,8 +18,6 @@ public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
   private List<Observer> observers;
   private int totalStatements;
-  private int processedStatements;
-
 
   public Parser(List<Observer> observers) {
     this.statementParsers =
@@ -43,13 +39,11 @@ public class Parser implements Progressable {
     StatementParser parser;
 
     totalStatements = statements.size();
-    processedStatements = 0;
 
     for (List<Token> statement : statements) {
       parser = getValidParser(statement);
       AstNode astNode = parser.parse(statement);
       astNodes.add(astNode);
-      processedStatements++;
       updateProgress();
     }
     Position start = tokens.get(0).getInitialPosition();
@@ -96,8 +90,8 @@ public class Parser implements Progressable {
   }
 
   @Override
-  public int getProgress() {
-    return (int) (((double) processedStatements / totalStatements) * 100);
+  public float getProgress() {
+    return ((float) 1 / totalStatements) * 100;
   }
 
   @Override
