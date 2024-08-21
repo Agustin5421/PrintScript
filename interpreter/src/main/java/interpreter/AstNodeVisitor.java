@@ -1,0 +1,92 @@
+package interpreter;
+
+import ast.expressions.BinaryExpression;
+import ast.identifier.Identifier;
+import ast.literal.Literal;
+import ast.literal.NumberLiteral;
+import ast.literal.StringLiteral;
+import ast.root.AstNode;
+import ast.statements.AssignmentExpression;
+import ast.statements.CallExpression;
+import ast.statements.VariableDeclaration;
+import ast.visitor.NodeVisitor;
+import interpreter.runtime.ExpressionEvaluator;
+
+import java.util.List;
+
+public class AstNodeVisitor implements NodeVisitor {
+  private final VariablesRepository variablesRepository;
+
+  public AstNodeVisitor(VariablesRepository variablesRepository) {
+    this.variablesRepository = variablesRepository;
+  }
+
+  @Override
+  public void visit(CallExpression callExpression) {
+    Identifier identifier = callExpression.methodIdentifier();
+    List<AstNode> arguments = callExpression.arguments();
+    boolean optionalParameters = callExpression.optionalParameters(); // TODO: how to use this?
+
+    String name = "println";
+
+    printlnMethod(identifier, name, arguments);
+  }
+
+  @Override
+  public void visit(AssignmentExpression assignmentExpression) {
+    Identifier left = assignmentExpression.left();
+    AstNode right = assignmentExpression.right();
+    String operator = assignmentExpression.operator();
+
+    ExpressionEvaluator evaluator = new ExpressionEvaluator(variablesRepository, left.start().row());
+    Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
+
+    variablesRepository.addVariable(left.name(), evaluatedRight.value());
+  }
+
+  @Override
+  public void visit(VariableDeclaration variableDeclaration) {
+    setVariable(variableDeclaration);
+  }
+
+  @Override
+  public void visit(NumberLiteral numberLiteral) {
+    System.out.println("NumberLiteral: " + numberLiteral.value());
+  }
+
+  @Override
+  public void visit(StringLiteral stringLiteral) {
+    System.out.println("StringLiteral: " + stringLiteral.value());
+  }
+
+  @Override
+  public void visit(Identifier identifier) {
+    System.out.println("Identifier: " + identifier.name());
+  }
+
+  @Override
+  public void visit(BinaryExpression binaryExpression) {
+    ExpressionEvaluator evaluator = new ExpressionEvaluator(variablesRepository, binaryExpression.start().row());
+    AstNode result = evaluator.evaluate(binaryExpression);
+    System.out.println("BinaryExpression result: " + ((Literal<?>) result).value());
+  }
+
+  private void setVariable(VariableDeclaration statement) {
+    String name = statement.identifier().name();
+    ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, statement.start().row());
+    Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
+    Object value = literal.value();
+
+    variablesRepository.addVariable(name, value);
+  }
+
+  private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
+    if (identifier.name().equals(name)) {
+      ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, identifier.start().row());
+      for (AstNode argument : arguments) {
+        System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
+      }
+      System.out.println();
+    }
+  }
+}
