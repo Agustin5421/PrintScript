@@ -2,16 +2,11 @@ package interpreter;
 
 import ast.root.AstNode;
 import ast.root.Program;
-import ast.statements.CallExpression;
-import ast.statements.VariableDeclaration;
-import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
 import observers.Observer;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import observers.Progressable;
-
-import java.util.List;
 
 public class Interpreter implements Progressable {
   private final List<Observer> observers;
