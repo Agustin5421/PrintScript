@@ -2,8 +2,7 @@ package parsers;
 
 import ast.root.AstNode;
 import ast.root.Program;
-import java.util.ArrayList;
-import java.util.List;
+import exceptions.parser.UnsupportedStatementException;
 import observers.Observer;
 import observers.Progressable;
 import parsers.statements.AssignmentParser;
@@ -13,6 +12,11 @@ import parsers.statements.VariableDeclarationParser;
 import token.Position;
 import token.Token;
 import token.types.TokenTagType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
@@ -79,9 +83,12 @@ public class Parser implements Progressable {
         return statementParser;
       }
     }
-    // TODO find a better way to throw the error
-    throw new IllegalArgumentException("No parser found for this statement");
+
+    String exceptionMessage = getExceptionMessage(statement);
+    throw new UnsupportedStatementException(exceptionMessage);
   }
+
+
 
   private void updateProgress() {
     if (observers != null) {

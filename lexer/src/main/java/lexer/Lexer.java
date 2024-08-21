@@ -1,24 +1,34 @@
 package lexer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import exceptions.lexer.UnsupportedCharacter;
 import observers.Observer;
 import observers.Progressable;
 import token.Position;
 import token.Token;
+import token.types.TokenTagType;
 import token.types.TokenType;
 import token.validators.TokenTypeChecker;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 public class Lexer implements Progressable {
   private final TokenTypeChecker tokenTypeGetter;
-  private List<Observer> observers = new ArrayList<>();
+  private List<Observer> observers;
   private int totalLength;
 
   public Lexer(TokenTypeChecker tokenTypeGetter, List<Observer> observers) {
     this.tokenTypeGetter = tokenTypeGetter;
     this.observers = observers;
+  }
+
+  public Lexer(TokenTypeChecker tokenTypeGetter) {
+    this.tokenTypeGetter = tokenTypeGetter;
+    observers = List.of();
   }
 
   private static final String TEXT_PATTERNS =
@@ -39,11 +49,6 @@ public class Lexer implements Progressable {
           "|[.]"
           + // Period (for decimal for decimal points or standalone)
           "|\\S"; // Any other single character (mismatch), excluding spaces
-
-  public Lexer(TokenTypeChecker tokenTypeGetter) {
-    this.tokenTypeGetter = tokenTypeGetter;
-    observers = null;
-  }
 
   public List<Token> extractTokens(String code) {
     List<Token> tokens = new ArrayList<>();
@@ -83,8 +88,18 @@ public class Lexer implements Progressable {
       updateProgress();
     }
 
-    updateProgress();
+    validateTokens(tokens);
+
     return tokens;
+  }
+
+  private static void validateTokens(List<Token> tokens) {
+    for (Token token : tokens) {
+      if (token.getType() == TokenTagType.INVALID) {
+        String message = getExceptionMessage(List.of(token));
+        throw new UnsupportedCharacter(message);
+      }
+    }
   }
 
   private Position updatePosition(

@@ -23,5 +23,4 @@ public record VariableDeclaration(
   public AstNodeType getType() {
     return AstNodeType.VARIABLE_DECLARATION;
   }
-  // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
 }
