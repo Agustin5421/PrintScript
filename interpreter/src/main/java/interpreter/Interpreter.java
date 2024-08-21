@@ -64,11 +64,10 @@ public class Interpreter implements Progressable {
       notifyObservers();
     }
   }
+//  private void updateProgress() {
+//    notifyObservers();
+//  }
 
-  @Override
-  public int getProgress() {
-    return (int) (((double) completedStatements / totalStatements) * 100);
-  }
 
   @Override
   public void addObserver(Observer observer) {
@@ -87,10 +86,11 @@ public class Interpreter implements Progressable {
     }
   }
 
-  private void updateProgress() {
-    notifyObservers();
-  }
 
+//  @Override
+//  public int getProgress() {
+//    return (int) (((double) completedStatements / totalStatements) * 100);
+//  }
   @Override
   public float getProgress() {
     return ((float) 1 / totalStatements) * 100;
