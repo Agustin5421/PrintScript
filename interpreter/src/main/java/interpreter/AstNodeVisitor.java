@@ -11,7 +11,6 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import interpreter.runtime.ExpressionEvaluator;
-
 import java.util.List;
 
 public class AstNodeVisitor implements NodeVisitor {
@@ -39,7 +38,8 @@ public class AstNodeVisitor implements NodeVisitor {
     AstNode right = assignmentExpression.right();
     String operator = assignmentExpression.operator();
 
-    ExpressionEvaluator evaluator = new ExpressionEvaluator(variablesRepository, left.start().row());
+    ExpressionEvaluator evaluator =
+        new ExpressionEvaluator(variablesRepository, left.start().row());
     Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
 
     variablesRepository = variablesRepository.addVariable(left.name(), evaluatedRight.value());
@@ -74,7 +74,8 @@ public class AstNodeVisitor implements NodeVisitor {
 
   @Override
   public NodeVisitor visit(BinaryExpression binaryExpression) {
-    ExpressionEvaluator evaluator = new ExpressionEvaluator(variablesRepository, binaryExpression.start().row());
+    ExpressionEvaluator evaluator =
+        new ExpressionEvaluator(variablesRepository, binaryExpression.start().row());
     AstNode result = evaluator.evaluate(binaryExpression);
     System.out.println("BinaryExpression result: " + ((Literal<?>) result).value());
     return this;
@@ -82,7 +83,8 @@ public class AstNodeVisitor implements NodeVisitor {
 
   private void setVariable(VariableDeclaration statement) {
     String name = statement.identifier().name();
-    ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, statement.start().row());
+    ExpressionEvaluator expressionEvaluator =
+        new ExpressionEvaluator(variablesRepository, statement.start().row());
     Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
     Object value = literal.value();
 
@@ -91,7 +93,8 @@ public class AstNodeVisitor implements NodeVisitor {
 
   private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
     if (identifier.name().equals(name)) {
-      ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, identifier.start().row());
+      ExpressionEvaluator expressionEvaluator =
+          new ExpressionEvaluator(variablesRepository, identifier.start().row());
       for (AstNode argument : arguments) {
         System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
       }

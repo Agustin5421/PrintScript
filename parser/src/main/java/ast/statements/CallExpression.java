@@ -4,9 +4,8 @@ import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
-import java.util.List;
-
 import ast.visitor.NodeVisitor;
+import java.util.List;
 import token.Position;
 
 public record CallExpression(

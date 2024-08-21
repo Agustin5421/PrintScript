@@ -3,8 +3,6 @@ package ast.literal;
 import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import exceptions.parser.UnsupportedDataType;
-import java.util.List;
-
 import token.Position;
 import token.Token;
 import token.types.TokenType;

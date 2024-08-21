@@ -19,8 +19,6 @@ public class ExceptionMessageBuilder {
   }
 
   public static String getExceptionMessage(String statement, int row, int col) {
-      return "'" + statement + "' " +
-            "at row: " + row +
-            ", column: " + col;
+    return "'" + statement + "' " + "at row: " + row + ", column: " + col;
   }
 }
