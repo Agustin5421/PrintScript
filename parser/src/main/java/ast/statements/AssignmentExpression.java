@@ -3,6 +3,7 @@ package ast.statements;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.AstNodeType;
+import ast.visitor.NodeVisitor;
 import token.Position;
 
 public record AssignmentExpression(
@@ -16,5 +17,13 @@ public record AssignmentExpression(
   @Override
   public AstNodeType getType() {
     return AstNodeType.ASSIGNMENT_EXPRESSION;
+  }
+
+  @Override
+  public NodeVisitor accept(NodeVisitor visitor) {
+    visitor = visitor.visit(this);
+    left.accept(visitor);
+    right.accept(visitor);
+    return visitor;
   }
 }

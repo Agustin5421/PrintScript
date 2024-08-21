@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.root.AstNodeType;
+import ast.visitor.NodeVisitor;
 import token.Position;
 
 public record BinaryExpression(
@@ -13,5 +14,13 @@ public record BinaryExpression(
   @Override
   public AstNodeType getType() {
     return AstNodeType.BINARY_EXPRESSION;
+  }
+
+  @Override
+  public NodeVisitor accept(NodeVisitor visitor) {
+    visitor = visitor.visit(this);
+    visitor = left().accept(visitor);
+    visitor = right().accept(visitor);
+    return visitor;
   }
 }

@@ -22,6 +22,8 @@ public class Parser implements Progressable {
   private List<Observer> observers;
   private int totalStatements;
 
+  private int processedStatements;
+
   public Parser(List<Observer> observers) {
     this.statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());

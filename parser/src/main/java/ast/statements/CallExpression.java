@@ -5,6 +5,8 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import java.util.List;
+
+import ast.visitor.NodeVisitor;
 import token.Position;
 
 public record CallExpression(
@@ -28,5 +30,15 @@ public record CallExpression(
   @Override
   public AstNodeType getType() {
     return AstNodeType.CALL_EXPRESSION;
+  }
+
+  @Override
+  public NodeVisitor accept(NodeVisitor visitor) {
+    visitor = visitor.visit(this);
+    visitor = methodIdentifier().accept(visitor);
+    for (AstNode argument : arguments()) {
+      visitor = argument.accept(visitor);
+    }
+    return visitor;
   }
 }
