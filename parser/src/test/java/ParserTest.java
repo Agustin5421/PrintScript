@@ -10,6 +10,8 @@ import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import java.util.List;
+
+import exceptions.parser.UnsupportedStatementException;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
 import parsers.Parser;
@@ -160,6 +162,6 @@ public class ParserTest {
 
     Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.extractTokens("null;");
-    assertThrows(IllegalArgumentException.class, () -> parser.parse(tokens));
+    assertThrows(UnsupportedStatementException.class, () -> parser.parse(tokens));
   }
 }
