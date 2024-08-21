@@ -15,7 +15,7 @@ import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
 
 public class AstNodeVisitor implements NodeVisitor {
-  private final VariablesRepository variablesRepository;
+  VariablesRepository variablesRepository;
 
   public AstNodeVisitor(VariablesRepository variablesRepository) {
     this.variablesRepository = variablesRepository;
@@ -42,7 +42,7 @@ public class AstNodeVisitor implements NodeVisitor {
     ExpressionEvaluator evaluator = new ExpressionEvaluator(variablesRepository, left.start().row());
     Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
 
-    variablesRepository.addVariable(left.name(), evaluatedRight.value());
+    variablesRepository = variablesRepository.addVariable(left.name(), evaluatedRight.value());
     return this;
   }
 
@@ -55,14 +55,14 @@ public class AstNodeVisitor implements NodeVisitor {
   @Override
   public NodeVisitor visit(NumberLiteral numberLiteral) {
     System.out.println("NumberLiteral: " + numberLiteral.value());
-    variablesRepository.addVariable("numberLiteral", numberLiteral.value());
+    variablesRepository = variablesRepository.addVariable("numberLiteral", numberLiteral.value());
     return this;
   }
 
   @Override
   public NodeVisitor visit(StringLiteral stringLiteral) {
     System.out.println("StringLiteral: " + stringLiteral.value());
-    variablesRepository.addVariable("stringLiteral", stringLiteral.value());
+    variablesRepository = variablesRepository.addVariable("stringLiteral", stringLiteral.value());
     return this;
   }
 
@@ -86,7 +86,7 @@ public class AstNodeVisitor implements NodeVisitor {
     Literal<?> literal = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
     Object value = literal.value();
 
-    variablesRepository.addVariable(name, value);
+    variablesRepository = variablesRepository.addVariable(name, value);
   }
 
   private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
