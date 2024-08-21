@@ -26,8 +26,11 @@ public record VariableDeclaration(
   }
 
   @Override
-  public void accept(NodeVisitor visitor) {
-    visitor.visit(this);
+  public NodeVisitor accept(NodeVisitor visitor) {
+    visitor = visitor.visit(this);
+    visitor = identifier().accept(visitor);
+    visitor = expression().accept(visitor);
+    return visitor;
   }
   // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
 }

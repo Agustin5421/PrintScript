@@ -10,5 +10,5 @@ public interface AstNode {
 
   Position end();
 
-  void accept(NodeVisitor visitor);
+  NodeVisitor accept(NodeVisitor visitor);
 }

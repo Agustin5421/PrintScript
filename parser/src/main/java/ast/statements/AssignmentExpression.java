@@ -20,7 +20,10 @@ public record AssignmentExpression(
   }
 
   @Override
-  public void accept(NodeVisitor visitor) {
-    visitor.visit(this);
+  public NodeVisitor accept(NodeVisitor visitor) {
+    visitor = visitor.visit(this);
+    left.accept(visitor);
+    right.accept(visitor);
+    return visitor;
   }
 }

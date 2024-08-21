@@ -33,7 +33,12 @@ public record CallExpression(
   }
 
   @Override
-  public void accept(NodeVisitor visitor) {
-    visitor.visit(this);
+  public NodeVisitor accept(NodeVisitor visitor) {
+    visitor = visitor.visit(this);
+    visitor = methodIdentifier().accept(visitor);
+    for (AstNode argument : arguments()) {
+      visitor = argument.accept(visitor);
+    }
+    return visitor;
   }
 }

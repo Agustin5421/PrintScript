@@ -13,7 +13,7 @@ public record Identifier(String name, Position start, Position end) implements E
   }
 
   @Override
-  public void accept(NodeVisitor visitor) {
-    visitor.visit(this);
+  public NodeVisitor accept(NodeVisitor visitor) {
+    return visitor.visit(this);
   }
 }

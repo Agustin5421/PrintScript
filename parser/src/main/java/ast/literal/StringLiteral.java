@@ -17,7 +17,7 @@ public record StringLiteral(String value, Position start, Position end) implemen
   }
 
   @Override
-  public void accept(NodeVisitor visitor) {
-    visitor.visit(this);
+  public NodeVisitor accept(NodeVisitor visitor) {
+    return visitor.visit(this);
   }
 }

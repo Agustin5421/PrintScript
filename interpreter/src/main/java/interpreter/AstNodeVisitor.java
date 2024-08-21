@@ -55,17 +55,22 @@ public class AstNodeVisitor implements NodeVisitor {
   @Override
   public NodeVisitor visit(NumberLiteral numberLiteral) {
     System.out.println("NumberLiteral: " + numberLiteral.value());
-    variablesRepository.addVariable("it", numberLiteral.value());
+    variablesRepository.addVariable(numberLiteral.value().toString(), numberLiteral.value());
+    return this;
   }
 
   @Override
   public NodeVisitor visit(StringLiteral stringLiteral) {
     System.out.println("StringLiteral: " + stringLiteral.value());
+    variablesRepository.addVariable(stringLiteral.value(), stringLiteral.value());
+    return this;
   }
 
   @Override
   public NodeVisitor visit(Identifier identifier) {
     System.out.println("Identifier: " + identifier.name());
+    variablesRepository.addVariable((String) variablesRepository.getVariable(identifier.name()), variablesRepository.getVariable(identifier.name()));
+    return this;
   }
 
   @Override
@@ -73,6 +78,7 @@ public class AstNodeVisitor implements NodeVisitor {
     ExpressionEvaluator evaluator = new ExpressionEvaluator(variablesRepository, binaryExpression.start().row());
     AstNode result = evaluator.evaluate(binaryExpression);
     System.out.println("BinaryExpression result: " + ((Literal<?>) result).value());
+    return this;
   }
 
   private void setVariable(VariableDeclaration statement) {
@@ -88,7 +94,6 @@ public class AstNodeVisitor implements NodeVisitor {
     if (identifier.name().equals(name)) {
       ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, identifier.start().row());
       for (AstNode argument : arguments) {
-        //variablesRepository.addVariable("it", expressionEvaluator.evaluate(argument)).value());
         System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
       }
       System.out.println();
