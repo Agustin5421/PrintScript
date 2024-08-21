@@ -55,17 +55,17 @@ public class LinterVisitor implements ASTVisitor {
         return new LinterVisitor(newReport, rules);
     }
 
+    @Override
+    public ASTVisitor visitLiteral(Literal<?> node) {
+        return this;
+    }
+
     private String getNewReport(String currentReport) {
         String newReport = getReport();
         if (!currentReport.isEmpty()) {
             newReport += currentReport + "\n";
         }
         return newReport;
-    }
-
-    @Override
-    public ASTVisitor visitLiteral(Literal<?> node) {
-        return this;
     }
 
     private String verifyIdentifier(Identifier identifier) {
