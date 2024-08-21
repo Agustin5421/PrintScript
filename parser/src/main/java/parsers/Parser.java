@@ -1,8 +1,12 @@
 package parsers;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import ast.root.AstNode;
 import ast.root.Program;
 import exceptions.parser.UnsupportedStatementException;
+import java.util.ArrayList;
+import java.util.List;
 import observers.Observer;
 import observers.Progressable;
 import parsers.statements.AssignmentParser;
@@ -12,11 +16,6 @@ import parsers.statements.VariableDeclarationParser;
 import token.Position;
 import token.Token;
 import token.types.TokenTagType;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
@@ -87,8 +86,6 @@ public class Parser implements Progressable {
     String exceptionMessage = getExceptionMessage(statement);
     throw new UnsupportedStatementException(exceptionMessage);
   }
-
-
 
   private void updateProgress() {
     if (observers != null) {

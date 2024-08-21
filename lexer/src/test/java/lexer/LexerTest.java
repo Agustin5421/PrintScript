@@ -3,9 +3,8 @@ package lexer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.List;
-
 import exceptions.lexer.UnsupportedCharacter;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import token.Position;
 import token.Token;
@@ -45,9 +44,7 @@ public class LexerTest {
     Lexer lexer = initLexer();
 
     // Define the test cases
-    String[] testCases = {
-      "name = 2", "\"Hello World\" + 3.14", "\n abc", "'string' true 45"
-    };
+    String[] testCases = {"name = 2", "\"Hello World\" + 3.14", "\n abc", "'string' true 45"};
 
     // Run the test cases
     for (String testCase : testCases) {
@@ -97,7 +94,7 @@ public class LexerTest {
     //        });
 
     assertThrows(
-            UnsupportedCharacter.class,
+        UnsupportedCharacter.class,
         () -> {
           lexer.extractTokens(code);
         });

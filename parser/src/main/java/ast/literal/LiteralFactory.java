@@ -1,13 +1,12 @@
 package ast.literal;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import exceptions.parser.UnsupportedDataType;
+import java.util.List;
 import token.Token;
 import token.types.TokenType;
 import token.types.TokenValueType;
-
-import java.util.List;
-
-import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {

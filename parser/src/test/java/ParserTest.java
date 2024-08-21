@@ -9,9 +9,8 @@ import ast.root.Program;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
-import java.util.List;
-
 import exceptions.parser.UnsupportedStatementException;
+import java.util.List;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
 import parsers.Parser;

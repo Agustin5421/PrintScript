@@ -20,7 +20,6 @@ public class Interpreter implements Progressable {
   private final List<Observer> observers;
   private int totalStatements;
 
-
   public Interpreter(List<Observer> observers) {
     this.observers = observers;
   }
@@ -41,8 +40,6 @@ public class Interpreter implements Progressable {
 
     return variablesRepository;
   }
-
-
 
   private VariablesRepository evaluateStatement(
       AstNode statement, VariablesRepository variablesRepository) {
@@ -115,5 +112,4 @@ public class Interpreter implements Progressable {
   public float getProgress() {
     return ((float) 1 / totalStatements) * 100;
   }
-
 }

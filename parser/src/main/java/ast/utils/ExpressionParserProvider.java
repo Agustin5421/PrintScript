@@ -1,16 +1,15 @@
 package ast.utils;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import ast.expressions.Expression;
 import ast.identifier.IdentifierParser;
 import exceptions.parser.UnsupportedExpressionException;
+import java.util.List;
 import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.ExpressionParser;
 import parsers.expressions.LiteralParser;
 import token.Token;
-
-import java.util.List;
-
-import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 public class ExpressionParserProvider {
   private static final List<ExpressionParser> parsers =

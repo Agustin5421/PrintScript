@@ -1,6 +1,12 @@
 package lexer;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import exceptions.lexer.UnsupportedCharacter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import observers.Observer;
 import observers.Progressable;
 import token.Position;
@@ -8,13 +14,6 @@ import token.Token;
 import token.types.TokenTagType;
 import token.types.TokenType;
 import token.validators.TokenTypeChecker;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 public class Lexer implements Progressable {
   private final TokenTypeChecker tokenTypeGetter;
@@ -120,7 +119,7 @@ public class Lexer implements Progressable {
   }
 
   private void updateProgress() {
-      notifyObservers();
+    notifyObservers();
   }
 
   // Progress should be calculated over the total words in the code
