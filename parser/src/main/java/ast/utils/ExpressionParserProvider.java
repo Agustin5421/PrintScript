@@ -9,6 +9,7 @@ import java.util.List;
 import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.ExpressionParser;
 import parsers.expressions.LiteralParser;
+import token.Position;
 import token.Token;
 
 public class ExpressionParserProvider {
@@ -22,7 +23,9 @@ public class ExpressionParserProvider {
       }
     }
 
-    String exceptionMessage = getExceptionMessage(statement);
+    Token token = statement.get(0);
+    Position position = token.getInitialPosition();
+    String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
     throw new UnsupportedExpressionException(exceptionMessage);
   }
 }

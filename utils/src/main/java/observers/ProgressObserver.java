@@ -1,5 +1,6 @@
 package observers;
 
+
 import printer.ProgressType;
 
 public class ProgressObserver implements Observer {

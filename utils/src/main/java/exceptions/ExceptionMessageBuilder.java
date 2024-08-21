@@ -1,23 +1,26 @@
 package exceptions;
 
 import java.util.List;
-import token.Position;
-import token.Token;
 
 public class ExceptionMessageBuilder {
-  public static String getExceptionMessage(List<Token> statement) {
+  public static String getExceptionMessage(List<String> statement, int row, int col) {
     StringBuilder statementString = new StringBuilder();
 
     statementString.append("'");
-    for (Token token : statement) {
-      statementString.append(token.getValue());
+    for (String value : statement) {
+      statementString.append(value);
     }
 
     statementString.append("' ");
 
-    Position position = statement.get(0).getInitialPosition();
-    statementString.append("at row: ").append(position.row());
-    statementString.append(", column: ").append(position.col());
+    statementString.append("at row: ").append(row);
+    statementString.append(", column: ").append(col);
     return statementString.toString();
+  }
+
+  public static String getExceptionMessage(String statement, int row, int col) {
+      return "'" + statement + "' " +
+            "at row: " + row +
+            ", column: " + col;
   }
 }

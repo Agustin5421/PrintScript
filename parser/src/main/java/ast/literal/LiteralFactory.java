@@ -4,6 +4,8 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import exceptions.parser.UnsupportedDataType;
 import java.util.List;
+
+import token.Position;
 import token.Token;
 import token.types.TokenType;
 import token.types.TokenValueType;
@@ -23,7 +25,8 @@ public class LiteralFactory {
 
     // TODO: Add support for identifiers
 
-    String exceptionMessage = getExceptionMessage(List.of(token));
+    Position position = token.getInitialPosition();
+    String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
 
     throw new UnsupportedDataType(exceptionMessage);
   }

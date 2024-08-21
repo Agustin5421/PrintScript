@@ -95,7 +95,8 @@ public class Lexer implements Progressable {
   private static void validateTokens(List<Token> tokens) {
     for (Token token : tokens) {
       if (token.getType() == TokenTagType.INVALID) {
-        String message = getExceptionMessage(List.of(token));
+        Position position = token.getInitialPosition();
+        String message = getExceptionMessage(token.getValue(), position.row(), position.col());
         throw new UnsupportedCharacter(message);
       }
     }
