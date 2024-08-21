@@ -22,18 +22,19 @@ public class AstNodeVisitor implements NodeVisitor {
   }
 
   @Override
-  public void visit(CallExpression callExpression) {
-    Identifier identifier = callExpression.methodIdentifier();
+  public NodeVisitor visit(CallExpression callExpression) {
     List<AstNode> arguments = callExpression.arguments();
+    Identifier identifier = callExpression.methodIdentifier();
     boolean optionalParameters = callExpression.optionalParameters(); // TODO: how to use this?
 
     String name = "println";
 
     printlnMethod(identifier, name, arguments);
+    return this;
   }
 
   @Override
-  public void visit(AssignmentExpression assignmentExpression) {
+  public NodeVisitor visit(AssignmentExpression assignmentExpression) {
     Identifier left = assignmentExpression.left();
     AstNode right = assignmentExpression.right();
     String operator = assignmentExpression.operator();
@@ -42,30 +43,33 @@ public class AstNodeVisitor implements NodeVisitor {
     Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
 
     variablesRepository.addVariable(left.name(), evaluatedRight.value());
+    return this;
   }
 
   @Override
-  public void visit(VariableDeclaration variableDeclaration) {
+  public NodeVisitor visit(VariableDeclaration variableDeclaration) {
     setVariable(variableDeclaration);
+    return this;
   }
 
   @Override
-  public void visit(NumberLiteral numberLiteral) {
+  public NodeVisitor visit(NumberLiteral numberLiteral) {
     System.out.println("NumberLiteral: " + numberLiteral.value());
+    variablesRepository.addVariable("it", numberLiteral.value());
   }
 
   @Override
-  public void visit(StringLiteral stringLiteral) {
+  public NodeVisitor visit(StringLiteral stringLiteral) {
     System.out.println("StringLiteral: " + stringLiteral.value());
   }
 
   @Override
-  public void visit(Identifier identifier) {
+  public NodeVisitor visit(Identifier identifier) {
     System.out.println("Identifier: " + identifier.name());
   }
 
   @Override
-  public void visit(BinaryExpression binaryExpression) {
+  public NodeVisitor visit(BinaryExpression binaryExpression) {
     ExpressionEvaluator evaluator = new ExpressionEvaluator(variablesRepository, binaryExpression.start().row());
     AstNode result = evaluator.evaluate(binaryExpression);
     System.out.println("BinaryExpression result: " + ((Literal<?>) result).value());
@@ -84,6 +88,7 @@ public class AstNodeVisitor implements NodeVisitor {
     if (identifier.name().equals(name)) {
       ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator(variablesRepository, identifier.start().row());
       for (AstNode argument : arguments) {
+        //variablesRepository.addVariable("it", expressionEvaluator.evaluate(argument)).value());
         System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
       }
       System.out.println();
