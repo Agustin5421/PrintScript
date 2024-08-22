@@ -17,7 +17,7 @@ import token.validators.TagTypeTokenChecker;
 import token.validators.TokenTypeChecker;
 
 public class Cli {
-
+  // Testing githooks
   public void executeFile(String filePath) {
     File file = new File(filePath);
 
