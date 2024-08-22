@@ -58,21 +58,22 @@ public class Cli {
         return;
     } */
 
-    String operation = "Formatting";       // args[0];
-    String filePath = "CLI/clitest.txt";  // args[1];
+    String operation = "Formatting"; // args[0];
+    String filePath = "CLI/clitest.txt"; // args[1];
 
     String code = getCode(filePath);
 
     switch (operation) {
-        case "Validation" -> validateFile(code);
-        case "Execution" ->  executeFile(code);
-        case "Analyzing" ->  {
-          String options = "{}";  // args[2];
-          Program program = validateFile(code);
-          analyzeFile(program, options);
-        }
-        case "Formatting" -> {
-          String options = """
+      case "Validation" -> validateFile(code);
+      case "Execution" -> executeFile(code);
+      case "Analyzing" -> {
+        String options = "{}"; // args[2];
+        Program program = validateFile(code);
+        analyzeFile(program, options);
+      }
+      case "Formatting" -> {
+        String options =
+            """
                   {
                     "rules": {
                       "colonRules": {
@@ -82,11 +83,11 @@ public class Cli {
                       "equalSpaces": true,
                       "printLineBreaks": 1
                     }
-                  }""";  // args[2];
-          Program program = validateFile(code);
-          formatFile(program, options);
-        }
-        default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
+                  }"""; // args[2];
+        Program program = validateFile(code);
+        formatFile(program, options);
+      }
+      default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
     }
   }
 
@@ -94,7 +95,7 @@ public class Cli {
     MainFormatter formatter = MainFormatterInitializer.init();
     String formattedCode = formatter.format(code, options);
 
-    //TODO: Write formatted code to file
+    // TODO: Write formatted code to file
   }
 
   private static void analyzeFile(Program code, String options) {
