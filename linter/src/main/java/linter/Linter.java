@@ -1,33 +1,33 @@
 package linter;
 
-import ast.root.ASTNode;
+import ast.root.AstNode;
 import ast.root.Program;
-import visitors.ASTVisitor;
-import visitors.LinterVisitor;
+import ast.visitor.NodeVisitor;
 import java.util.List;
+import visitors.LinterVisitor;
 
 public class Linter {
-    public String linter(Program program, String rules) {
-        ASTVisitor visitor = new LinterVisitor(rules);
+  public String linter(Program program, String rules) {
+    NodeVisitor visitor = new LinterVisitor(rules);
 
-        List<ASTNode> statements = program.statements();
+    List<AstNode> statements = program.statements();
 
-        for (ASTNode statement : statements) {
-            visitor = statement.accept(visitor);
-        }
-
-        String report = ((LinterVisitor) visitor).getReport();
-        report = trimLastNewLine(report);
-        return report;
+    for (AstNode statement : statements) {
+      visitor = statement.accept(visitor);
     }
 
-    private String trimLastNewLine(String report) {
-        if (!report.isEmpty()) {
-            if (report.charAt(report.length() - 1) == '\n') {
-                String newReport = report.substring(0, report.length() - 1);
-                return trimLastNewLine(newReport);
-            }
-        }
-        return report;
+    String report = ((LinterVisitor) visitor).getReport();
+    report = trimLastNewLine(report);
+    return report;
+  }
+
+  private String trimLastNewLine(String report) {
+    if (!report.isEmpty()) {
+      if (report.charAt(report.length() - 1) == '\n') {
+        String newReport = report.substring(0, report.length() - 1);
+        return trimLastNewLine(newReport);
+      }
     }
+    return report;
+  }
 }

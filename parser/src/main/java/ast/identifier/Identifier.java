@@ -14,6 +14,6 @@ public record Identifier(String name, Position start, Position end) implements E
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitIdentifier(this);
   }
 }

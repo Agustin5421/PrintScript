@@ -5,10 +5,8 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
-import ast.root.ASTNodeType;
-import token.Position;
-import visitors.ASTVisitor;
 import java.util.List;
+import token.Position;
 
 public record CallExpression(
     Identifier methodIdentifier,
@@ -35,7 +33,7 @@ public record CallExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    visitor = visitor.visit(this);
+    visitor = visitor.visitCallExpression(this);
     visitor = methodIdentifier().accept(visitor);
     for (AstNode argument : arguments()) {
       visitor = argument.accept(visitor);

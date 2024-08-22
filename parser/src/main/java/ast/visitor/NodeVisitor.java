@@ -9,17 +9,17 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 
 public interface NodeVisitor {
-  NodeVisitor visit(CallExpression callExpression);
+  NodeVisitor visitCallExpression(CallExpression callExpression);
 
-  NodeVisitor visit(AssignmentExpression assignmentExpression);
+  NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression);
 
-  NodeVisitor visit(VariableDeclaration variableDeclaration);
+  NodeVisitor visitVarDec(VariableDeclaration variableDeclaration);
 
-  NodeVisitor visit(NumberLiteral numberLiteral);
+  NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral);
 
-  NodeVisitor visit(StringLiteral stringLiteral);
+  NodeVisitor visitStringLiteral(StringLiteral stringLiteral);
 
-  NodeVisitor visit(Identifier identifier);
+  NodeVisitor visitIdentifier(Identifier identifier);
 
-  NodeVisitor visit(BinaryExpression binaryExpression);
+  NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression);
 }

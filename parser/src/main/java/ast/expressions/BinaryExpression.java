@@ -3,7 +3,6 @@ package ast.expressions;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import token.Position;
-import visitors.ASTVisitor;
 
 public record BinaryExpression(
     Expression left, Expression right, String operator, Position start, Position end)
@@ -19,7 +18,7 @@ public record BinaryExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    visitor = visitor.visit(this);
+    visitor = visitor.visitBinaryExpression(this);
     visitor = left().accept(visitor);
     visitor = right().accept(visitor);
     return visitor;
