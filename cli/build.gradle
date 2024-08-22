@@ -19,6 +19,8 @@ dependencies {
     implementation project(':parser')
     implementation project(':interpreter')
     implementation project(":utils")
+    implementation project(":formatter")
+    implementation project(":linter")
 }
 
 tasks.test {

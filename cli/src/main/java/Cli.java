@@ -1,11 +1,14 @@
 import ast.root.Program;
+import formatter.MainFormatter;
+import formatter.MainFormatterInitializer;
 import interpreter.Interpreter;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import lexer.Lexer;
+import linter.Linter;
+import linter.LinterInitializer;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;
@@ -17,13 +20,7 @@ import token.validators.TagTypeTokenChecker;
 import token.validators.TokenTypeChecker;
 
 public class Cli {
-  public void executeFile(String filePath) {
-    File file = new File(filePath);
-
-    validateFile(filePath, file);
-
-    String content = getCode(filePath);
-
+  public static void executeFile(String code) {
     ProgressPrinter progressPrinter = new ProgressPrinter();
     ProgressObserver observer = new ProgressObserver(progressPrinter);
 
@@ -31,8 +28,7 @@ public class Cli {
     Parser parser = new Parser(List.of(observer));
     Interpreter interpreter = new Interpreter(List.of(observer));
 
-    executeProgram(lexer, content, observer, parser, interpreter);
-    System.out.println();
+    executeProgram(lexer, code, observer, parser, interpreter);
   }
 
   private static void executeProgram(
@@ -58,18 +54,70 @@ public class Cli {
 
   public static void main(String[] args) {
     /* if (args.length == 0) {
-        System.out.println("Please enter a file.");
+        System.out.println("Please enter a valid instruction");
         return;
     } */
 
-    String filePath = "CLI/clitest.txt"; // args[0];
-    Cli fileExecutor = new Cli();
-    fileExecutor.executeFile(filePath);
+    String operation = "Formatting";       // args[0];
+    String filePath = "CLI/clitest.txt";  // args[1];
+
+    String code = getCode(filePath);
+
+    switch (operation) {
+        case "Validation" -> validateFile(code);
+        case "Execution" ->  executeFile(code);
+        case "Analyzing" ->  {
+          String options = "{}";  // args[2];
+          Program program = validateFile(code);
+          analyzeFile(program, options);
+        }
+        case "Formatting" -> {
+          String options = """
+                  {
+                    "rules": {
+                      "colonRules": {
+                        "before": true,
+                        "after": true
+                      },
+                      "equalSpaces": true,
+                      "printLineBreaks": 1
+                    }
+                  }""";  // args[2];
+          Program program = validateFile(code);
+          formatFile(program, options);
+        }
+        default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
+    }
   }
 
-  private static void validateFile(String filePath, File file) {
-    if (!file.exists()) {
-      System.out.println("File does not exist: " + filePath);
+  private static void formatFile(Program code, String options) {
+    MainFormatter formatter = MainFormatterInitializer.init();
+    String formattedCode = formatter.format(code, options);
+
+    //TODO: Write formatted code to file
+  }
+
+  private static void analyzeFile(Program code, String options) {
+    Linter linter = LinterInitializer.initLinter();
+    try {
+      linter.linter(code, options);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  private static Program validateFile(String code) {
+    ProgressPrinter progressPrinter = new ProgressPrinter();
+    ProgressObserver observer = new ProgressObserver(progressPrinter);
+
+    Lexer lexer = initLexer(observer);
+    Parser parser = new Parser(List.of(observer));
+
+    try {
+      return parser.parse(lexer.extractTokens(code));
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      return null;
     }
   }
 
