@@ -7,8 +7,8 @@ import java.util.List;
 import visitors.LinterVisitor;
 
 public class Linter {
-  public String linter(Program program, String rules) {
-    NodeVisitor visitor = new LinterVisitor(rules);
+  public String linter(Program program, String geda) {
+    NodeVisitor visitor = new LinterVisitor(geda);
 
     List<AstNode> statements = program.statements();
 
