@@ -1,12 +1,14 @@
 package parsers;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import ast.root.AstNode;
 import ast.root.Program;
+import exceptions.SyntaxException;
+import exceptions.UnsupportedStatementException;
 import java.util.ArrayList;
 import java.util.List;
-
 import observers.Observer;
-import observers.ProgressObserver;
 import observers.Progressable;
 import parsers.statements.AssignmentParser;
 import parsers.statements.CallFunctionParser;
@@ -18,10 +20,8 @@ import token.types.TokenTagType;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
-  private List<Observer> observers;
+  private final List<Observer> observers;
   private int totalStatements;
-  private int processedStatements;
-
 
   public Parser(List<Observer> observers) {
     this.statementParsers =
@@ -32,7 +32,7 @@ public class Parser implements Progressable {
   public Parser() {
     this.statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
-    this.observers = null;
+    this.observers = List.of();
   }
 
   public Program parse(List<Token> tokens) {
@@ -43,13 +43,11 @@ public class Parser implements Progressable {
     StatementParser parser;
 
     totalStatements = statements.size();
-    processedStatements = 0;
 
     for (List<Token> statement : statements) {
       parser = getValidParser(statement);
       AstNode astNode = parser.parse(statement);
       astNodes.add(astNode);
-      processedStatements++;
       updateProgress();
     }
     Position start = tokens.get(0).getInitialPosition();
@@ -72,8 +70,11 @@ public class Parser implements Progressable {
     }
 
     // Checks if the statement ends with a semicolon
-    if (!tokens.isEmpty() && tokens.get(tokens.size() - 1).getType() != TokenTagType.SEMICOLON) {
-      throw new IllegalArgumentException("Error: Statement does not end with a semicolon");
+    Token lastToken = tokens.get(tokens.size() - 1);
+
+    if (lastToken.getType() != TokenTagType.SEMICOLON) {
+      String message = getExceptionMessage(lastToken.getValue(), tokens.size(), 1);
+      throw new SyntaxException("expected ';' but got: " + message);
     }
 
     return result;
@@ -85,8 +86,11 @@ public class Parser implements Progressable {
         return statementParser;
       }
     }
-    // TODO find a better way to throw the error
-    throw new IllegalArgumentException("No parser found for this statement");
+
+    Token token = statement.get(0);
+    Position position = token.getInitialPosition();
+    String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
+    throw new UnsupportedStatementException(exceptionMessage);
   }
 
   private void updateProgress() {
@@ -96,8 +100,8 @@ public class Parser implements Progressable {
   }
 
   @Override
-  public int getProgress() {
-    return (int) (((double) processedStatements / totalStatements) * 100);
+  public float getProgress() {
+    return ((float) 1 / totalStatements) * 100;
   }
 
   @Override

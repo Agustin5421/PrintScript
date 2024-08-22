@@ -1,11 +1,15 @@
 package ast.utils;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import ast.expressions.Expression;
 import ast.identifier.IdentifierParser;
+import exceptions.UnsupportedExpressionException;
 import java.util.List;
 import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.ExpressionParser;
 import parsers.expressions.LiteralParser;
+import token.Position;
 import token.Token;
 
 public class ExpressionParserProvider {
@@ -19,6 +23,9 @@ public class ExpressionParserProvider {
       }
     }
 
-    throw new IllegalArgumentException("Error: No parser found for statement");
+    Token token = statement.get(0);
+    Position position = token.getInitialPosition();
+    String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
+    throw new UnsupportedExpressionException(exceptionMessage);
   }
 }

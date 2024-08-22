@@ -1,5 +1,6 @@
 package ast.root;
 
+import ast.visitor.NodeVisitor;
 import token.Position;
 
 public interface AstNode {
@@ -8,4 +9,6 @@ public interface AstNode {
   Position start();
 
   Position end();
+
+  NodeVisitor accept(NodeVisitor visitor);
 }

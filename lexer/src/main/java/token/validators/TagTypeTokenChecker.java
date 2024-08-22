@@ -12,13 +12,8 @@ public class TagTypeTokenChecker implements TypeGetter {
 
   static {
     reservedWords = new HashMap<>();
-
-    // reservedWords.put("final", TokenTagType.FINAL_KEYWORD);
-    // reservedWords.put("public", TokenTagType.PUBLIC_KEYWORD);
     reservedWords.put("string", TokenDataType.STRING_TYPE);
     reservedWords.put("number", TokenDataType.NUMBER_TYPE);
-    // reservedWords.put("float", TokenDataType.FLOAT_TYPE);
-    // reservedWords.put("boolean", TokenDataType.BOOLEAN_TYPE);
     reservedWords.put("=", TokenTagType.ASSIGNATION);
     reservedWords.put(";", TokenTagType.SEMICOLON);
     reservedWords.put("let", TokenTagType.DECLARATION);

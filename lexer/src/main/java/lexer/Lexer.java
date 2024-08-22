@@ -1,25 +1,33 @@
 package lexer;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
+import exceptions.UnsupportedCharacter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import observers.Observer;
 import observers.Progressable;
 import token.Position;
 import token.Token;
+import token.types.TokenTagType;
 import token.types.TokenType;
 import token.validators.TokenTypeChecker;
 
 public class Lexer implements Progressable {
   private final TokenTypeChecker tokenTypeGetter;
-  private List<Observer> observers = new ArrayList<>();
+  private final List<Observer> observers;
   private int totalLength;
 
   public Lexer(TokenTypeChecker tokenTypeGetter, List<Observer> observers) {
     this.tokenTypeGetter = tokenTypeGetter;
     this.observers = observers;
+  }
+
+  public Lexer(TokenTypeChecker tokenTypeGetter) {
+    this.tokenTypeGetter = tokenTypeGetter;
+    observers = List.of();
   }
 
   private static final String TEXT_PATTERNS =
@@ -41,11 +49,6 @@ public class Lexer implements Progressable {
           + // Period (for decimal for decimal points or standalone)
           "|\\S"; // Any other single character (mismatch), excluding spaces
 
-  public Lexer(TokenTypeChecker tokenTypeGetter) {
-    this.tokenTypeGetter = tokenTypeGetter;
-    observers = null;
-  }
-
   public List<Token> extractTokens(String code) {
     List<Token> tokens = new ArrayList<>();
     Pattern pattern = Pattern.compile(TEXT_PATTERNS);
@@ -54,14 +57,13 @@ public class Lexer implements Progressable {
     Position initialPosition = new Position(1, 1);
     int currentIndex = 0;
 
-
     List<String> words = new ArrayList<>();
     List<int[]> positions = new ArrayList<>();
 
     while (matcher.find()) {
       String word = matcher.group();
       words.add(word);
-      positions.add(new int[]{matcher.start(), matcher.end()});
+      positions.add(new int[] {matcher.start(), matcher.end()});
     }
 
     totalLength = words.size();
@@ -85,8 +87,19 @@ public class Lexer implements Progressable {
       updateProgress();
     }
 
-    updateProgress();
+    validateTokens(tokens);
+
     return tokens;
+  }
+
+  private static void validateTokens(List<Token> tokens) {
+    for (Token token : tokens) {
+      if (token.getType() == TokenTagType.INVALID) {
+        Position position = token.getInitialPosition();
+        String message = getExceptionMessage(token.getValue(), position.row(), position.col());
+        throw new UnsupportedCharacter(message);
+      }
+    }
   }
 
   private Position updatePosition(
@@ -107,15 +120,13 @@ public class Lexer implements Progressable {
   }
 
   private void updateProgress() {
-    if (observers != null) {
-      notifyObservers();
-    }
+    notifyObservers();
   }
 
   // Progress should be calculated over the total words in the code
   @Override
-  public int getProgress() {
-    return (int) (((double) 1 /  totalLength) * 100);
+  public float getProgress() {
+    return (((float) 1 / totalLength) * 100);
   }
 
   @Override
@@ -125,12 +136,7 @@ public class Lexer implements Progressable {
 
   @Override
   public void removeObserver(Observer observer) {
-    for (Observer obs : observers) {
-      if (obs.equals(observer)) {
-        observers.remove(observer);
-        break;
-      }
-    }
+    observers.remove(observer);
   }
 
   @Override

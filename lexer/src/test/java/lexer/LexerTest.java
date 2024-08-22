@@ -1,7 +1,9 @@
 package lexer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import exceptions.UnsupportedCharacter;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import token.Position;
@@ -42,9 +44,7 @@ public class LexerTest {
     Lexer lexer = initLexer();
 
     // Define the test cases
-    String[] testCases = {
-      "2a = 'test' * 2.5", "name = 2", "\"Hello World\" + 3.14", "\n abc", "'string' true 45"
-    };
+    String[] testCases = {"name = 2", "\"Hello World\" + 3.14", "\n abc", "'string' true 45"};
 
     // Run the test cases
     for (String testCase : testCases) {
@@ -93,8 +93,11 @@ public class LexerTest {
     //            lexer.extractTokens(code);
     //        });
 
-    List<Token> tokens = lexer.extractTokens(code);
-    assertEquals(tokens.get(0).getType(), TokenTagType.INVALID);
+    assertThrows(
+        UnsupportedCharacter.class,
+        () -> {
+          lexer.extractTokens(code);
+        });
   }
 
   @Test

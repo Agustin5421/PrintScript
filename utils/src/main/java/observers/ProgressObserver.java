@@ -2,11 +2,10 @@ package observers;
 
 import printer.ProgressType;
 
-public class ProgressObserver implements Observer{
+public class ProgressObserver implements Observer {
   private final ProgressPrinter progressPrinter;
   private float totalProgress;
   private static final int TOTAL_MODULES = 3;
-  private static final int PERCENTAGE_PER_MODULE = 100 / TOTAL_MODULES;
 
   public ProgressObserver(ProgressPrinter progressPrinter) {
     this.progressPrinter = progressPrinter;
@@ -23,11 +22,10 @@ public class ProgressObserver implements Observer{
   @Override
   public void update(Observable observable) {
     Progressable progressable = (Progressable) observable;
-    float progress =  progressable.getProgress();
+    float progress = progressable.getProgress();
 
     totalProgress += progress / TOTAL_MODULES;
 
     progressPrinter.printProgress(totalProgress, ProgressType.IN_PROGRESS);
-
   }
 }
