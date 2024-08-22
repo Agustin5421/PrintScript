@@ -1,18 +1,16 @@
 package parsers.expressions;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.root.AstNode;
 import ast.utils.ExpressionParserProvider;
 import java.util.List;
-
-import exceptions.SyntaxException;
 import token.Position;
 import token.Token;
 import token.types.TokenDataType;
 import token.types.TokenTagType;
-
-import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 public class BinaryExpressionParser implements ExpressionParser {
   @Override
