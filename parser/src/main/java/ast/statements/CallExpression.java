@@ -5,8 +5,10 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
-import java.util.List;
+import ast.root.ASTNodeType;
 import token.Position;
+import visitors.ASTVisitor;
+import java.util.List;
 
 public record CallExpression(
     Identifier methodIdentifier,

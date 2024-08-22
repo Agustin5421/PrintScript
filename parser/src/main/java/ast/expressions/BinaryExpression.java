@@ -3,6 +3,7 @@ package ast.expressions;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import token.Position;
+import visitors.ASTVisitor;
 
 public record BinaryExpression(
     Expression left, Expression right, String operator, Position start, Position end)
