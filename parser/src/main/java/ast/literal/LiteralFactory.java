@@ -21,8 +21,6 @@ public class LiteralFactory {
           Integer.parseInt(token.getValue()), token.getInitialPosition(), token.getFinalPosition());
     }
 
-    // TODO: Add support for identifiers
-
     Position position = token.getInitialPosition();
     String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
 

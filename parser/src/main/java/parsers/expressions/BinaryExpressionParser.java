@@ -1,10 +1,13 @@
 package parsers.expressions;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.root.AstNode;
 import ast.utils.ExpressionParserProvider;
 import java.util.List;
+import token.Position;
 import token.Token;
 import token.types.TokenDataType;
 import token.types.TokenTagType;
@@ -46,7 +49,16 @@ public class BinaryExpressionParser implements ExpressionParser {
         return i; // Found top-level operator.
       }
     }
-    throw new IllegalArgumentException("No valid operator found in tokens");
+    StringBuilder statementString = new StringBuilder();
+    for (Token token : tokens) {
+      statementString.append(token.getValue());
+    }
+
+    Position first = tokens.get(0).getInitialPosition();
+
+    String message = getExceptionMessage(statementString.toString(), first.row(), first.col());
+
+    throw new UnsupportedOperationException("no valid operator found in:" + message);
   }
 
   private boolean isOperator(Token token) {
