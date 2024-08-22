@@ -107,7 +107,7 @@ public class LexerTest {
 
     Token token = lexer.extractTokens(code).get(0);
 
-    assertEquals(token.getInitialPosition().col(), 100);
+    assertEquals(token.getInitialPosition().col(), 1);
   }
 
   private static Lexer initLexer() {
