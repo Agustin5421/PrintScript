@@ -4,7 +4,7 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import ast.expressions.Expression;
 import ast.identifier.IdentifierParser;
-import exceptions.parser.UnsupportedExpressionException;
+import exceptions.UnsupportedExpressionException;
 import java.util.List;
 import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.ExpressionParser;

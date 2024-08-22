@@ -1,10 +1,13 @@
 package parsers.statements;
 
+import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
+
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import ast.utils.ExpressionParserProvider;
+import exceptions.SyntaxException;
 import java.util.List;
 import token.Position;
 import token.Token;
@@ -28,12 +31,10 @@ public class AssignmentParser implements StatementParser {
   }
 
   private void validateSyntax(List<Token> tokens) {
-    if (!shouldParse(tokens)) {
-      throw new IllegalArgumentException("Invalid tokens for AssignmentExpression");
-    }
-
-    if (!tokens.get(1).getValue().equals("=")) {
-      throw new IllegalArgumentException("Invalid tokens for AssignmentExpression");
+    Token token = tokens.get(1);
+    if (!token.getValue().equals("=")) {
+      String message = getExceptionMessage(token.getValue(), tokens.size(), 1);
+      throw new SyntaxException("expected '=' but got: " + message);
     }
   }
 

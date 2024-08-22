@@ -1,4 +1,4 @@
-package exceptions.parser;
+package exceptions;
 
 public class UnsupportedStatementException extends RuntimeException {
   public UnsupportedStatementException(String message) {

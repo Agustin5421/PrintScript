@@ -9,7 +9,10 @@ import ast.root.Program;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
-import exceptions.parser.UnsupportedStatementException;
+import exceptions.SyntaxException;
+import exceptions.UnsupportedDataType;
+import exceptions.UnsupportedExpressionException;
+import exceptions.UnsupportedStatementException;
 import java.util.List;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
@@ -156,11 +159,39 @@ public class ParserTest {
   }
 
   @Test
-  public void noParserTest() {
+  public void unsupportedStatementExceptionTest() {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.extractTokens("null;");
     assertThrows(UnsupportedStatementException.class, () -> parser.parse(tokens));
+  }
+
+  @Test
+  public void unsupportedExpressionExceptionTest() {
+    Parser parser = new Parser();
+
+    Lexer lexer = ContextProvider.initLexer();
+    List<Token> tokens = lexer.extractTokens("myVar = hello he * 2;");
+    assertThrows(UnsupportedExpressionException.class, () -> parser.parse(tokens));
+  }
+
+  @Test
+  public void syntaxExceptionTest() {
+    // syntax exception
+    Parser parser = new Parser();
+
+    Lexer lexer = ContextProvider.initLexer();
+    List<Token> tokens = lexer.extractTokens("let myVar : number = 2 + 3 * 2");
+    assertThrows(SyntaxException.class, () -> parser.parse(tokens));
+  }
+
+  @Test
+  public void unsupportedDataTypeExceptionTest() {
+    Parser parser = new Parser();
+
+    Lexer lexer = ContextProvider.initLexer();
+    List<Token> tokens = lexer.extractTokens("let myVar : boolean = 2 + 3 * 2;");
+    assertThrows(UnsupportedDataType.class, () -> parser.parse(tokens));
   }
 }

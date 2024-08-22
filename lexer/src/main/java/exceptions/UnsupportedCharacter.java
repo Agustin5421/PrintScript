@@ -1,4 +1,4 @@
-package exceptions.lexer;
+package exceptions;
 
 public class UnsupportedCharacter extends RuntimeException {
   public UnsupportedCharacter(String message) {

@@ -2,7 +2,7 @@ package lexer;
 
 import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
-import exceptions.lexer.UnsupportedCharacter;
+import exceptions.UnsupportedCharacter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,7 +17,7 @@ import token.validators.TokenTypeChecker;
 
 public class Lexer implements Progressable {
   private final TokenTypeChecker tokenTypeGetter;
-  private List<Observer> observers;
+  private final List<Observer> observers;
   private int totalLength;
 
   public Lexer(TokenTypeChecker tokenTypeGetter, List<Observer> observers) {

@@ -2,7 +2,7 @@ package ast.literal;
 
 import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
-import exceptions.parser.UnsupportedDataType;
+import exceptions.UnsupportedDataType;
 import token.Position;
 import token.Token;
 import token.types.TokenType;

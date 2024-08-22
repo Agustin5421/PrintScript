@@ -3,7 +3,7 @@ package lexer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import exceptions.lexer.UnsupportedCharacter;
+import exceptions.UnsupportedCharacter;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import token.Position;

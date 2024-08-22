@@ -4,7 +4,8 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import ast.root.AstNode;
 import ast.root.Program;
-import exceptions.parser.UnsupportedStatementException;
+import exceptions.SyntaxException;
+import exceptions.UnsupportedStatementException;
 import java.util.ArrayList;
 import java.util.List;
 import observers.Observer;
@@ -19,10 +20,8 @@ import token.types.TokenTagType;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
-  private List<Observer> observers;
+  private final List<Observer> observers;
   private int totalStatements;
-
-  private int processedStatements;
 
   public Parser(List<Observer> observers) {
     this.statementParsers =
@@ -33,7 +32,7 @@ public class Parser implements Progressable {
   public Parser() {
     this.statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
-    this.observers = null;
+    this.observers = List.of();
   }
 
   public Program parse(List<Token> tokens) {
@@ -71,8 +70,11 @@ public class Parser implements Progressable {
     }
 
     // Checks if the statement ends with a semicolon
-    if (!tokens.isEmpty() && tokens.get(tokens.size() - 1).getType() != TokenTagType.SEMICOLON) {
-      throw new IllegalArgumentException("Error: Statement does not end with a semicolon");
+    Token lastToken = tokens.get(tokens.size() - 1);
+
+    if (lastToken.getType() != TokenTagType.SEMICOLON) {
+      String message = getExceptionMessage(lastToken.getValue(), tokens.size(), 1);
+      throw new SyntaxException("expected ';' but got: " + message);
     }
 
     return result;
