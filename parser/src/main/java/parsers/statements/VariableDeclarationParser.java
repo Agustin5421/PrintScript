@@ -15,10 +15,6 @@ import token.Token;
 public class VariableDeclarationParser implements StatementParser {
   @Override
   public AstNode parse(List<Token> tokens) {
-    if (!shouldParse(tokens)) {
-      throw new IllegalArgumentException("Invalid tokens for VariableDeclarationParser");
-    }
-
     Position start = tokens.get(0).getInitialPosition();
     Position end = tokens.get(tokens.size() - 1).getFinalPosition();
 
@@ -33,7 +29,6 @@ public class VariableDeclarationParser implements StatementParser {
               + "' instead.");
     }
 
-    // TODO create an exception for this
     if (!tokens.get(3).getValue().equals("number") && !tokens.get(3).getValue().equals("string")) {
       throw new UnsupportedDataType(
           "Expected 'number' or 'string' at "
