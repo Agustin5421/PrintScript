@@ -1,4 +1,4 @@
-package visitors;
+package linter;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
