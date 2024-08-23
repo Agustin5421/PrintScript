@@ -1,6 +1,5 @@
 plugins {
     id 'common-conventions.printscript'
-    id 'test.printscript'
     id 'application'
 }
 
