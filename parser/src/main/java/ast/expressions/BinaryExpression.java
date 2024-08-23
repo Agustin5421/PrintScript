@@ -18,9 +18,6 @@ public record BinaryExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    visitor = visitor.visitBinaryExpression(this);
-    visitor = left().accept(visitor);
-    visitor = right().accept(visitor);
-    return visitor;
+    return visitor.visitBinaryExpression(this);
   }
 }

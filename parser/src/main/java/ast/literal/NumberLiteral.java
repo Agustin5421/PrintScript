@@ -18,7 +18,6 @@ public record NumberLiteral(Number value, Position start, Position end) implemen
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    visitor = visitor.visitNumberLiteral(this);
-    return visitor;
+    return visitor.visitNumberLiteral(this);
   }
 }
