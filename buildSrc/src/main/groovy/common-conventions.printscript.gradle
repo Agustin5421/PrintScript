@@ -1,0 +1,11 @@
+plugins {
+    id 'java.printscript'
+    id 'spotless.printscript'
+    id 'checkstyle.printscript'
+    id 'jacoco.printscript'
+}
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
