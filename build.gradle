@@ -7,9 +7,3 @@ buildscript {
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:6.21.0'  // Include the Spotless plugin classpath
     }
 }
-
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
