@@ -1,14 +1,9 @@
 plugins {
-    id 'java.printscript'
-    id 'spotless.printscript'
+    id 'common-conventions.printscript'
 }
 
 group = 'org.example'
 version = 'unspecified'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
