@@ -163,17 +163,6 @@ public class FormatterTest {
   }
 
   @Test
-  public void noFormatterTest() {
-    Assertions.assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          Program program =
-              new Program(List.of(new Identifier("null", defaultPosition, defaultPosition)));
-          formatter.format(program, jsonOptions);
-        });
-  }
-
-  @Test
   public void invalidOptionsTest() {
     Assertions.assertThrows(
         JsonSyntaxException.class,

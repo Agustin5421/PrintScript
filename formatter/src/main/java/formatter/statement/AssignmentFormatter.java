@@ -5,10 +5,10 @@ import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import com.google.gson.JsonObject;
 
-public class AsignmentFormatter implements Formatter {
+public class AssignmentFormatter implements Formatter {
   private final ExpressionFormatter expressionFormatter;
 
-  public AsignmentFormatter(ExpressionFormatter expressionFormatter) {
+  public AssignmentFormatter(ExpressionFormatter expressionFormatter) {
     this.expressionFormatter = expressionFormatter;
   }
 

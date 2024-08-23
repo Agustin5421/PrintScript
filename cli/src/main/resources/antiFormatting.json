@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "colonRules": {
+      "before": false,
+      "after": false
+    },
+    "equalSpaces": false,
+    "printLineBreaks": 2
+  }
+}
