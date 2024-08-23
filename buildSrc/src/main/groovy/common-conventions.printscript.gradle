@@ -3,6 +3,7 @@ plugins {
     id 'spotless.printscript'
     id 'checkstyle.printscript'
     id 'jacoco.printscript'
+    id 'test.printscript'
 }
 
 repositories {
