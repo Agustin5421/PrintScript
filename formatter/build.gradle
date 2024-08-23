@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+//    id 'java'
     id 'checkstyle.printscript'
     id 'jacoco.printscript'
 }
