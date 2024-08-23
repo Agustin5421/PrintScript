@@ -13,13 +13,3 @@ allprojects {
         mavenCentral()
     }
 }
-
-subprojects {
-    apply plugin: 'java.printscript'
-    apply plugin: 'spotless.printscript'  // Apply the Spotless plugin
-
-    dependencies {
-        implementation 'org.codehaus.groovy:groovy-all:3.0.9'  // Ensure Groovy is compatible with Java 17
-
-    }
-}

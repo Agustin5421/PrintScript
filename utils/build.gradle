@@ -1,6 +1,7 @@
-//plugins {
-//    id 'java'
-//}
+plugins {
+    id 'java.printscript'
+    id 'spotless.printscript'
+}
 
 group = 'org.example'
 version = 'unspecified'
