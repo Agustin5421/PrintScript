@@ -16,18 +16,10 @@ allprojects {
 
 subprojects {
     apply plugin: 'java.printscript'
-    apply plugin: 'com.diffplug.spotless'  // Apply the Spotless plugin
+    apply plugin: 'spotless.printscript'  // Apply the Spotless plugin
 
     dependencies {
-        implementation 'com.google.googlejavaformat:google-java-format:1.15.0'
         implementation 'org.codehaus.groovy:groovy-all:3.0.9'  // Ensure Groovy is compatible with Java 17
 
-    }
-
-    spotless {
-        java {
-            googleJavaFormat('1.15.0')
-            target 'src/**/*.java'
-        }
     }
 }
