@@ -1,0 +1,14 @@
+plugins {
+    id 'com.diffplug.spotless'
+}
+
+dependencies {
+    implementation 'com.google.googlejavaformat:google-java-format:1.15.0'
+}
+
+spotless {
+    java {
+        googleJavaFormat('1.15.0')
+        target 'src/**/*.java'
+    }
+}
