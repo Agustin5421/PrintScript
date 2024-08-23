@@ -3,12 +3,15 @@ import formatter.MainFormatter;
 import formatter.MainFormatterInitializer;
 import interpreter.Interpreter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lexer.Lexer;
 import linter.Linter;
-import linter.LinterInitializer;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;
@@ -20,9 +23,11 @@ import token.validators.TagTypeTokenChecker;
 import token.validators.TokenTypeChecker;
 
 public class Cli {
-  public static void executeFile(String code) {
+  private static final Logger logger = Logger.getLogger(Cli.class.getName());
+
+  private static void executeFile(String code) {
     ProgressPrinter progressPrinter = new ProgressPrinter();
-    ProgressObserver observer = new ProgressObserver(progressPrinter);
+    ProgressObserver observer = new ProgressObserver(progressPrinter, 3);
 
     Lexer lexer = initLexer(observer);
     Parser parser = new Parser(List.of(observer));
@@ -52,65 +57,66 @@ public class Cli {
     }
   }
 
+  // .\gradlew :cli:run --args="Validation src/main/resources/clitest.txt"
+  // .\gradlew :cli:run --args="Execution src/main/resources/clitest.txt"
+  // .\gradlew :cli:run --args="Formatter src/main/resources/clitest.txt
+  // src/main/resources/formatterOptionsTest.json"
+  // .\gradlew :cli:run --args="Analyzing src/main/resources/clitest.txt
+  // src/main/resources/linterOptionsTest.json"
   public static void main(String[] args) {
-    /* if (args.length == 0) {
-        System.out.println("Please enter a valid instruction");
-        return;
-    } */
+    if (args.length == 0) {
+      System.out.println("Please enter a valid instruction");
+      return;
+    }
 
-    String operation = "Formatting"; // args[0];
-    String filePath = "CLI/clitest.txt"; // args[1];
+    String operation = args[0];
+    String codeFilePath = args[1];
 
-    String code = getCode(filePath);
+    String code = getText(codeFilePath);
 
     switch (operation) {
-      case "Validation" -> validateFile(code);
+      case "Validation" -> validateFile(code, new ProgressObserver(new ProgressPrinter(), 2));
       case "Execution" -> executeFile(code);
-      case "Analyzing" -> {
-        String options = "{}"; // args[2];
-        Program program = validateFile(code);
-        analyzeFile(program, options);
-      }
-      case "Formatting" -> {
-        String options =
-            """
-                  {
-                    "rules": {
-                      "colonRules": {
-                        "before": true,
-                        "after": true
-                      },
-                      "equalSpaces": true,
-                      "printLineBreaks": 1
-                    }
-                  }"""; // args[2];
-        Program program = validateFile(code);
-        formatFile(program, options);
-      }
+      case "Analyzing" -> analyzeFile(code, args[2]);
+      case "Formatting" -> formatFile(codeFilePath, args[2]);
       default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
     }
   }
 
-  private static void formatFile(Program code, String options) {
-    MainFormatter formatter = MainFormatterInitializer.init();
-    String formattedCode = formatter.format(code, options);
+  private static void formatFile(String codeFilePath, String optionsFilePath) {
+    String code = getText(codeFilePath);
+    String options = getText(optionsFilePath);
 
-    // TODO: Write formatted code to file
+    ProgressObserver observer = new ProgressObserver(new ProgressPrinter(), 3);
+
+    MainFormatter formatter = MainFormatterInitializer.init(observer);
+
+    Program program = validateFile(code, observer);
+
+    assert program != null;
+    String formattedCode = formatter.format(program, options);
+    writeToFile(formattedCode, codeFilePath);
+    observer.finish();
   }
 
-  private static void analyzeFile(Program code, String options) {
-    Linter linter = LinterInitializer.initLinter();
+  private static void analyzeFile(String code, String filepath) {
+    ProgressObserver observer = new ProgressObserver(new ProgressPrinter(), 3);
+
+    String options = getText(filepath);
+    Program program = validateFile(code, observer);
+
+    Linter linter = new Linter(List.of(observer));
     try {
-      linter.linter(code, options);
+      assert program != null;
+      linter.linter(program, options);
+      observer.finish();
     } catch (Exception e) {
       System.out.println(e.getMessage());
+      observer.error();
     }
   }
 
-  private static Program validateFile(String code) {
-    ProgressPrinter progressPrinter = new ProgressPrinter();
-    ProgressObserver observer = new ProgressObserver(progressPrinter);
-
+  private static Program validateFile(String code, ProgressObserver observer) {
     Lexer lexer = initLexer(observer);
     Parser parser = new Parser(List.of(observer));
 
@@ -122,7 +128,7 @@ public class Cli {
     }
   }
 
-  private static String getCode(String filePath) {
+  private static String getText(String filePath) {
     StringBuilder content = new StringBuilder();
 
     try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -147,5 +153,13 @@ public class Cli {
             List.of(tagTypeChecker, operationTypeChecker, dataTypeChecker, identifierTypeChecker));
 
     return new Lexer(tokenTypeChecker, List.of(observer));
+  }
+
+  private static void writeToFile(String text, String filepath) {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
+      writer.write(text);
+    } catch (IOException e) {
+      logger.log(Level.SEVERE, "Failed to write to file: " + filepath, e);
+    }
   }
 }

@@ -5,10 +5,11 @@ import printer.ProgressType;
 public class ProgressObserver implements Observer {
   private final ProgressPrinter progressPrinter;
   private float totalProgress;
-  private static final int TOTAL_MODULES = 3;
+  private final int TOTAL_MODULES;
 
-  public ProgressObserver(ProgressPrinter progressPrinter) {
+  public ProgressObserver(ProgressPrinter progressPrinter, int totalModules) {
     this.progressPrinter = progressPrinter;
+    TOTAL_MODULES = totalModules;
   }
 
   public void finish() {

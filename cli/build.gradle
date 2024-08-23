@@ -28,5 +28,5 @@ tasks.test {
 }
 
 application {
-    mainClass = 'cli'
+    mainClass = 'Cli'
 }
