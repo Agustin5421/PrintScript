@@ -4,26 +4,12 @@ plugins {
     id 'maven-publish'
 }
 
-
 repositories {
-    // Use Maven Central for resolving dependencies.
-    mavenCentral()
+    // Use the plugin portal to apply community plugins in convention plugins.
+    gradlePluginPortal()
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Agustin5421/PrintScript")
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
-        }
-    }
+dependencies {
+    implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.21.0'
 }
+
