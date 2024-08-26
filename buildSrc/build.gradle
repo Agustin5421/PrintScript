@@ -4,6 +4,12 @@ plugins {
     id 'maven-publish'
 }
 
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
 publishing {
     repositories {
         maven {
@@ -15,13 +21,9 @@ publishing {
             }
         }
     }
-
     publications {
-        maven(MavenPublication) {
-            groupId = 'com.ingsis.jcli'
-            artifactId = "${project.name}"
-            version = '1.0.0'
-            from components.java
+        gpr(MavenPublication) {
+            from(components.java)
         }
     }
 }
