@@ -6,7 +6,6 @@ import ast.visitor.NodeVisitor;
 import java.util.List;
 import observers.Observer;
 import observers.Progressable;
-import visitors.LinterVisitor;
 
 public class Linter implements Progressable {
   private final List<Observer> observers;

@@ -28,17 +28,22 @@ public class MainFormatter implements Progressable {
     JsonObject jsonOptions = JsonParser.parseString(options).getAsJsonObject();
     JsonObject rules = jsonOptions.getAsJsonObject("rules");
     StringBuilder formattedCode = new StringBuilder();
-    Formatter formatter;
+    FormatterVisitor formatterVisitor;
     totalSteps = program.statements().size();
     for (AstNode statement : program.statements()) {
-      formatter = getValidFormatter(statement);
+      // Initialize the formatterVisitor with the current program
+      formatterVisitor = new FormatterVisitor(rules, formattedCode.toString());
+      // Changing the current program
+      formatterVisitor = (FormatterVisitor) statement.accept(formatterVisitor);
       formattedCode
-          .append(formatter.format(statement, rules, formattedCode.toString()))
+          .append(formatterVisitor.getCurrentCode())
+          // Entering a new line after each statement
           .append("\n");
     }
     return formattedCode.toString();
   }
 
+  /*
   private Formatter getValidFormatter(AstNode statement) {
     for (Formatter formatter : formatters) {
       if (formatter.shouldFormat(statement)) {
@@ -47,6 +52,8 @@ public class MainFormatter implements Progressable {
     }
     throw new IllegalArgumentException("No formatter found for this statement");
   }
+
+   */
 
   @Override
   public float getProgress() {

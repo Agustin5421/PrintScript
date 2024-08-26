@@ -15,6 +15,7 @@ public record VariableDeclaration(
     this(identifier, expression, identifier.start(), expression.end());
   }
 
+  // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
   @Override
   public String toString() {
     return "VariableDeclaration{" + "identifier=" + identifier + ", expression=" + expression + '}';
@@ -27,10 +28,6 @@ public record VariableDeclaration(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    visitor = visitor.visitVarDec(this);
-    visitor = identifier().accept(visitor);
-    visitor = expression().accept(visitor);
-    return visitor;
+    return visitor.visitVarDec(this);
   }
-  // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
 }

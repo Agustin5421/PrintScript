@@ -1,6 +1,6 @@
 package formatter;
 
-import formatter.statement.AsignmentFormatter;
+import formatter.statement.AssignmentFormatter;
 import formatter.statement.ExpressionFormatter;
 import formatter.statement.Formatter;
 import formatter.statement.FunctionCallFormatter;
@@ -14,7 +14,7 @@ public class MainFormatterInitializer {
     List<Formatter> formatters =
         List.of(
             new VariableDeclarationFormatter(expressionFormatter),
-            new AsignmentFormatter(expressionFormatter),
+            new AssignmentFormatter(expressionFormatter),
             new FunctionCallFormatter(expressionFormatter));
     return new MainFormatter(formatters);
   }
@@ -24,7 +24,7 @@ public class MainFormatterInitializer {
     List<Formatter> formatters =
         List.of(
             new VariableDeclarationFormatter(expressionFormatter),
-            new AsignmentFormatter(expressionFormatter),
+            new AssignmentFormatter(expressionFormatter),
             new FunctionCallFormatter(expressionFormatter));
     return new MainFormatter(formatters, List.of(observer));
   }
