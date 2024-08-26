@@ -5,7 +5,8 @@ plugins {
     id 'jacoco.printscript'
     id 'test.printscript'
     id 'maven-publish'
-    id 'java-library'}
+    id 'java-library'
+}
 
 repositories {
     mavenCentral()
