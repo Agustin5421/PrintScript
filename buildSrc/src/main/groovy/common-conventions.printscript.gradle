@@ -24,7 +24,7 @@ publishing {
     }
     publications {
         maven(MavenPublication) {
-            groupId = 'com.ingsis.jcli'
+            groupId = 'com.ingsis'
             artifactId = "${project.name}"
             version = '1.0.0'
             from components.java
