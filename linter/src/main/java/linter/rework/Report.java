@@ -1,4 +1,4 @@
-package linter;
+package linter.rework;
 
 import token.Position;
 

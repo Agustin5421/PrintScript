@@ -1,4 +1,4 @@
-package linter;
+package linter.rework;
 
 import java.util.ArrayList;
 import java.util.List;
