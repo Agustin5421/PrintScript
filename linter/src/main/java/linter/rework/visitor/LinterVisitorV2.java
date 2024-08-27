@@ -4,6 +4,7 @@ import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import ast.root.AstNodeType;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
@@ -14,15 +15,23 @@ import linter.rework.visitor.strategy.LintingStrategy;
 
 public class LinterVisitorV2 implements NodeVisitor {
   private final FullReport fullReport;
-  private final Map<Class<?>, LintingStrategy<?>> nodesStrategies;
+  private final Map<AstNodeType, LintingStrategy> nodesStrategies;
 
-  public LinterVisitorV2(Map<Class<?>, LintingStrategy<?>> nodesStrategies) {
+  public LinterVisitorV2(Map<AstNodeType, LintingStrategy> nodesStrategies) {
     this(new FullReport(), nodesStrategies);
   }
 
-  public LinterVisitorV2(FullReport fullReport, Map<Class<?>, LintingStrategy<?>> nodesStrategies) {
+  public LinterVisitorV2(FullReport fullReport, Map<AstNodeType, LintingStrategy> nodesStrategies) {
     this.fullReport = fullReport;
     this.nodesStrategies = nodesStrategies;
+  }
+
+  public FullReport getFullReport() {
+    return fullReport;
+  }
+
+  public Map<AstNodeType, LintingStrategy> getNodesStrategies() {
+    return nodesStrategies;
   }
 
   @Override
@@ -52,7 +61,14 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    return null;
+    LintingStrategy strategy = nodesStrategies.get(identifier.getType());
+
+    if (strategy != null) {
+      FullReport newReport = strategy.apply(identifier, getFullReport());
+      return new LinterVisitorV2(newReport, nodesStrategies);
+    }
+
+    return this;
   }
 
   @Override

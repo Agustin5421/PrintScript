@@ -17,7 +17,7 @@ public class CamelCaseTest {
     Position end = new Position(0, 8);
     Identifier identifier = new Identifier("testName", start, end);
 
-    LintingStrategy<Identifier> camelCaseIdentifier = new CamelCaseIdentifier();
+    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
     FullReport fullReport = new FullReport();
     fullReport = camelCaseIdentifier.apply(identifier, fullReport);
 
@@ -30,7 +30,7 @@ public class CamelCaseTest {
     Position end = new Position(0, 8);
     Identifier identifier = new Identifier("test_name", start, end);
 
-    LintingStrategy<Identifier> camelCaseIdentifier = new CamelCaseIdentifier();
+    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
     FullReport fullReport = new FullReport();
     fullReport = camelCaseIdentifier.apply(identifier, fullReport);
 

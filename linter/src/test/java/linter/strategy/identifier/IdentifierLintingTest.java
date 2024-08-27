@@ -29,10 +29,8 @@ public class IdentifierLintingTest {
   public void severalIdentifiersCamelCaseTest() {
     List<Identifier> identifiers = getIdentifiers();
 
-    LintingStrategy<Identifier> camelCaseIdentifier = new CamelCaseIdentifier();
-    //    LintingStrategy<Identifier> snakeCaseIdentifier = new SnakeCaseIdentifier();
-    LintingStrategy<Identifier> mainIdLinting =
-        new IdentifierLintingStrategy(List.of(camelCaseIdentifier));
+    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
+    LintingStrategy mainIdLinting = new IdentifierLintingStrategy(List.of(camelCaseIdentifier));
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {
@@ -46,10 +44,8 @@ public class IdentifierLintingTest {
   public void severalIdentifiersSnakeCaseTest() {
     List<Identifier> identifiers = getIdentifiers();
 
-    //    LintingStrategy<Identifier> camelCaseIdentifier = new CamelCaseIdentifier();
-    LintingStrategy<Identifier> snakeCaseIdentifier = new SnakeCaseIdentifier();
-    LintingStrategy<Identifier> mainIdLinting =
-        new IdentifierLintingStrategy(List.of(snakeCaseIdentifier));
+    LintingStrategy snakeCaseIdentifier = new SnakeCaseIdentifier();
+    LintingStrategy mainIdLinting = new IdentifierLintingStrategy(List.of(snakeCaseIdentifier));
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {
@@ -63,9 +59,9 @@ public class IdentifierLintingTest {
   public void severalIdentifiersBothCaseTest() {
     List<Identifier> identifiers = getIdentifiers();
 
-    LintingStrategy<Identifier> camelCaseIdentifier = new CamelCaseIdentifier();
-    LintingStrategy<Identifier> snakeCaseIdentifier = new SnakeCaseIdentifier();
-    LintingStrategy<Identifier> mainIdLinting =
+    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
+    LintingStrategy snakeCaseIdentifier = new SnakeCaseIdentifier();
+    LintingStrategy mainIdLinting =
         new IdentifierLintingStrategy(List.of(camelCaseIdentifier, snakeCaseIdentifier));
 
     FullReport fullReport = new FullReport();

@@ -1,7 +1,10 @@
 package linter.rework.visitor.strategy;
 
+import ast.root.AstNode;
 import linter.rework.report.FullReport;
 
-public interface LintingStrategy<T> {
-  FullReport apply(T node, FullReport fullReport);
+public interface LintingStrategy {
+  FullReport apply(AstNode node, FullReport fullReport);
+
+  boolean shouldApply(AstNode node);
 }
