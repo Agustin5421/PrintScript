@@ -20,7 +20,7 @@ import token.types.TokenTagType;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
-  private final List<Observer> observers;
+  private final List<Observer>  observers;
   private int totalStatements;
 
   public Parser(List<Observer> observers) {
@@ -104,15 +104,6 @@ public class Parser implements Progressable {
     return ((float) 1 / totalStatements) * 100;
   }
 
-  @Override
-  public void addObserver(Observer observer) {
-    observers.add(observer);
-  }
-
-  @Override
-  public void removeObserver(Observer observer) {
-    observers.remove(observer);
-  }
 
   @Override
   public void notifyObservers() {
