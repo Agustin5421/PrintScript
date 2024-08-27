@@ -8,17 +8,21 @@ import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
+import java.util.Map;
 import linter.rework.report.FullReport;
+import linter.rework.visitor.strategy.LintingStrategy;
 
 public class LinterVisitorV2 implements NodeVisitor {
   private final FullReport fullReport;
+  private final Map<Class<?>, LintingStrategy<?>> nodesStrategies;
 
-  public LinterVisitorV2() {
-    this(new FullReport());
+  public LinterVisitorV2(Map<Class<?>, LintingStrategy<?>> nodesStrategies) {
+    this(new FullReport(), nodesStrategies);
   }
 
-  public LinterVisitorV2(FullReport fullReport) {
+  public LinterVisitorV2(FullReport fullReport, Map<Class<?>, LintingStrategy<?>> nodesStrategies) {
     this.fullReport = fullReport;
+    this.nodesStrategies = nodesStrategies;
   }
 
   @Override
