@@ -45,7 +45,7 @@ public class ParserTest {
     Parser parser = ContextProvider.initBinaryExpressionParser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : number = 2 + 3 * 2;");
+    List<Token> tokens = lexer.extractTokens("let myVar : number = (2+2) * (2/2) + 2;");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
