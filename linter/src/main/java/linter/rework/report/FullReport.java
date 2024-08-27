@@ -1,10 +1,14 @@
-package linter.rework;
+package linter.rework.report;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FullReport {
   private final List<Report> reports;
+
+  public FullReport() {
+    this(List.of());
+  }
 
   public FullReport(List<Report> reports) {
     this.reports = reports;
