@@ -6,6 +6,8 @@ import ast.statements.CallExpression;
 import ast.utils.ExpressionParserProvider;
 import java.util.ArrayList;
 import java.util.List;
+
+import exceptions.SyntaxException;
 import token.Position;
 import token.Token;
 import token.types.TokenTagType;
@@ -16,10 +18,6 @@ public class CallFunctionParser implements StatementParser {
 
   public CallFunctionParser() {
     reservedWords = List.of("println");
-  }
-
-  public CallFunctionParser(List<String> reservedWords) {
-    this.reservedWords = reservedWords;
   }
 
   @Override
@@ -52,11 +50,6 @@ public class CallFunctionParser implements StatementParser {
     return reservedWords.contains(tokens.get(0).getValue());
   }
 
-  static class InvalidSyntaxException extends RuntimeException {
-    public InvalidSyntaxException(String message) {
-      super(message);
-    }
-  }
 
   public static List<Token> extractArguments(List<Token> tokens) {
     List<Token> argumentTokens = new ArrayList<>();
@@ -69,7 +62,7 @@ public class CallFunctionParser implements StatementParser {
 
       if (type == TokenTagType.OPEN_PARENTHESIS) {
         if (inArguments) {
-          throw new InvalidSyntaxException("Unexpected '(' while already inside arguments.");
+          throw new SyntaxException("Unexpected '(' while already inside arguments.");
         }
         inArguments = true;
         openParentheses++;
@@ -78,10 +71,10 @@ public class CallFunctionParser implements StatementParser {
 
       if (type == TokenTagType.CLOSE_PARENTHESIS) {
         if (!inArguments) {
-          throw new InvalidSyntaxException("Unexpected ')' outside of arguments.");
+          throw new SyntaxException("Unexpected ')' outside of arguments.");
         }
         if (openParentheses == 0) {
-          throw new InvalidSyntaxException("Unmatched ')' encountered.");
+          throw new SyntaxException("Unmatched ')' encountered.");
         }
         inArguments = false;
         openParentheses--;
@@ -95,7 +88,7 @@ public class CallFunctionParser implements StatementParser {
       if (inArguments) {
         if (type == TokenTagType.COMMA) {
           if (currentArgument.isEmpty()) {
-            throw new InvalidSyntaxException("Comma without preceding argument.");
+            throw new SyntaxException("Comma without preceding argument.");
           }
           argumentTokens.addAll(currentArgument);
           currentArgument.clear();
@@ -106,7 +99,7 @@ public class CallFunctionParser implements StatementParser {
     }
 
     if (openParentheses != 0) {
-      throw new InvalidSyntaxException("Unmatched '(' encountered.");
+      throw new SyntaxException("Unmatched '(' encountered.");
     }
 
     if (!currentArgument.isEmpty()) {
