@@ -4,10 +4,9 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.utils.ExpressionParserProvider;
+import exceptions.SyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
-import exceptions.SyntaxException;
 import token.Position;
 import token.Token;
 import token.types.TokenTagType;
@@ -49,7 +48,6 @@ public class CallFunctionParser implements StatementParser {
   public boolean shouldParse(List<Token> tokens) {
     return reservedWords.contains(tokens.get(0).getValue());
   }
-
 
   public static List<Token> extractArguments(List<Token> tokens) {
     List<Token> argumentTokens = new ArrayList<>();

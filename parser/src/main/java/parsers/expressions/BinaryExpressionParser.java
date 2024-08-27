@@ -41,9 +41,9 @@ public class BinaryExpressionParser implements ExpressionParser {
 
   private List<Token> removeUnnecessaryParentheses(List<Token> tokens) {
     // Eliminate surrounding parentheses only if they wrap the entire expression
-    while (tokens.size() > 2 &&
-            tokens.get(0).getType() == TokenTagType.OPEN_PARENTHESIS &&
-            tokens.get(tokens.size() - 1).getType() == TokenTagType.CLOSE_PARENTHESIS) {
+    while (tokens.size() > 2
+        && tokens.get(0).getType() == TokenTagType.OPEN_PARENTHESIS
+        && tokens.get(tokens.size() - 1).getType() == TokenTagType.CLOSE_PARENTHESIS) {
 
       int level = 0;
       boolean valid = true;
@@ -88,7 +88,8 @@ public class BinaryExpressionParser implements ExpressionParser {
         int currentPrecedence = getPrecedence(token);
 
         // Choose the operator with the lowest precedence (leftmost if same precedence)
-        if (currentPrecedence < precedence || (currentPrecedence == precedence && operatorIndex == -1)) {
+        if (currentPrecedence < precedence
+            || (currentPrecedence == precedence && operatorIndex == -1)) {
           precedence = currentPrecedence;
           operatorIndex = i;
         }
@@ -117,11 +118,11 @@ public class BinaryExpressionParser implements ExpressionParser {
 
   private int getPrecedence(Token token) {
     // Define precedence for different operators
-      return switch (token.getValue()) {
-          case "*", "/" -> 2;
-          case "+", "-" -> 1;
-          default -> 0;
-      };
+    return switch (token.getValue()) {
+      case "*", "/" -> 2;
+      case "+", "-" -> 1;
+      default -> 0;
+    };
   }
 
   @Override
