@@ -15,12 +15,6 @@ public record VariableDeclaration(
     this(identifier, expression, identifier.start(), expression.end());
   }
 
-  // el record tiene de por si un toString pero es con [] y no {} por eso lo overridee
-  @Override
-  public String toString() {
-    return "VariableDeclaration{" + "identifier=" + identifier + ", expression=" + expression + '}';
-  }
-
   @Override
   public AstNodeType getType() {
     return AstNodeType.VARIABLE_DECLARATION;
