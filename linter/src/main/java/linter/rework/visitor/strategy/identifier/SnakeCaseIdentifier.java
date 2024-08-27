@@ -9,9 +9,10 @@ public class SnakeCaseIdentifier implements LintingStrategy<Identifier> {
   @Override
   public FullReport apply(Identifier node, FullReport fullReport) {
     if (!node.name().matches("^[a-z][a-z0-9_]*$")) {
-      fullReport.addReport(
-          new Report(
-              node.start(), node.end(), "Identifier " + node.name() + " is not in snake_case"));
+      fullReport =
+          fullReport.addReport(
+              new Report(
+                  node.start(), node.end(), "Identifier " + node.name() + " is not in snake_case"));
     }
     return fullReport;
   }
