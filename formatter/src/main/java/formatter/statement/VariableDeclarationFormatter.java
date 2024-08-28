@@ -16,11 +16,6 @@ public class VariableDeclarationFormatter implements Formatter {
   }
 
   @Override
-  public boolean shouldFormat(AstNode statement) {
-    return statement instanceof VariableDeclaration;
-  }
-
-  @Override
   public String format(AstNode node, JsonObject rules, String currentProgram) {
     VariableDeclaration varDeclarationNode = (VariableDeclaration) node;
     StringBuilder formattedCode = new StringBuilder();

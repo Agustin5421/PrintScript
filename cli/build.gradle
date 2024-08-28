@@ -1,18 +1,30 @@
 plugins {
-    id 'common-conventions.printscript'
+    id 'java'
     id 'application'
+    id 'checkstyle.printscript'
+    id 'jacoco.printscript'
 }
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation project(':lexer')
     implementation project(':parser')
     implementation project(':interpreter')
     implementation project(":utils")
     implementation project(":formatter")
     implementation project(":linter")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 application {

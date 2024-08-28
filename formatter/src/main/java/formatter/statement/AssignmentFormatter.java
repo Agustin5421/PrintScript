@@ -13,11 +13,6 @@ public class AssignmentFormatter implements Formatter {
   }
 
   @Override
-  public boolean shouldFormat(AstNode statement) {
-    return statement instanceof AssignmentExpression;
-  }
-
-  @Override
   public String format(AstNode node, JsonObject rules, String currentProgram) {
     AssignmentExpression assignmentNode = (AssignmentExpression) node;
     StringBuilder formattedCode = new StringBuilder();

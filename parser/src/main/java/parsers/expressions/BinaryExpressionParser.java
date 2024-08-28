@@ -13,30 +13,69 @@ import token.types.TokenDataType;
 import token.types.TokenTagType;
 
 public class BinaryExpressionParser implements ExpressionParser {
+
   @Override
   public AstNode parse(List<Token> tokens) {
     if (tokens.isEmpty()) {
       throw new IllegalArgumentException("Token list cannot be empty");
     }
 
-    // Find the top-level operator in the expression.
-    int operatorIndex = findTopLevelOperator(tokens);
+    // Remove unnecessary parentheses
+    tokens = removeUnnecessaryParentheses(tokens);
+
+    // Find the top-level operator based on precedence
+    int operatorIndex = findOperatorByPrecedence(tokens);
 
     Token operator = tokens.get(operatorIndex);
 
-    // Divide the tokens into left and right expressions.
+    // Divide the tokens into left and right expressions
     List<Token> leftTokens = tokens.subList(0, operatorIndex);
     List<Token> rightTokens = tokens.subList(operatorIndex + 1, tokens.size());
 
-    // Recursively parse the left and right expressions.
+    // Recursively parse the left and right expressions
     Expression left = ExpressionParserProvider.parse(leftTokens);
     Expression right = ExpressionParserProvider.parse(rightTokens);
 
     return new BinaryExpression(left, right, operator.getValue());
   }
 
-  private int findTopLevelOperator(List<Token> tokens) {
+  private List<Token> removeUnnecessaryParentheses(List<Token> tokens) {
+    // Eliminate surrounding parentheses only if they wrap the entire expression
+    while (tokens.size() > 2
+        && tokens.get(0).getType() == TokenTagType.OPEN_PARENTHESIS
+        && tokens.get(tokens.size() - 1).getType() == TokenTagType.CLOSE_PARENTHESIS) {
+
+      int level = 0;
+      boolean valid = true;
+
+      for (int i = 0; i < tokens.size(); i++) {
+        Token token = tokens.get(i);
+        if (token.getType() == TokenTagType.OPEN_PARENTHESIS) {
+          level++;
+        } else if (token.getType() == TokenTagType.CLOSE_PARENTHESIS) {
+          level--;
+        }
+
+        // If we close all parentheses before the end, they aren't just wrapping
+        if (level == 0 && i < tokens.size() - 1) {
+          valid = false;
+          break;
+        }
+      }
+
+      if (valid && level == 0) {
+        tokens = tokens.subList(1, tokens.size() - 1);
+      } else {
+        break;
+      }
+    }
+    return tokens;
+  }
+
+  private int findOperatorByPrecedence(List<Token> tokens) {
     int level = 0;
+    int operatorIndex = -1;
+    int precedence = Integer.MAX_VALUE;
 
     for (int i = 0; i < tokens.size(); i++) {
       Token token = tokens.get(i);
@@ -46,23 +85,44 @@ public class BinaryExpressionParser implements ExpressionParser {
       } else if (token.getType() == TokenTagType.CLOSE_PARENTHESIS) {
         level--;
       } else if (level == 0 && isOperator(token)) {
-        return i; // Found top-level operator.
+        int currentPrecedence = getPrecedence(token);
+
+        // Choose the operator with the lowest precedence (leftmost if same precedence)
+        if (currentPrecedence < precedence
+            || (currentPrecedence == precedence && operatorIndex == -1)) {
+          precedence = currentPrecedence;
+          operatorIndex = i;
+        }
       }
     }
-    StringBuilder statementString = new StringBuilder();
-    for (Token token : tokens) {
-      statementString.append(token.getValue());
+
+    if (operatorIndex == -1) {
+      StringBuilder statementString = new StringBuilder();
+      for (Token token : tokens) {
+        statementString.append(token.getValue());
+      }
+
+      Position first = tokens.get(0).getInitialPosition();
+
+      String message = getExceptionMessage(statementString.toString(), first.row(), first.col());
+
+      throw new UnsupportedOperationException("No valid operator found in: " + message);
     }
 
-    Position first = tokens.get(0).getInitialPosition();
-
-    String message = getExceptionMessage(statementString.toString(), first.row(), first.col());
-
-    throw new UnsupportedOperationException("no valid operator found in:" + message);
+    return operatorIndex;
   }
 
   private boolean isOperator(Token token) {
     return token.getType() == TokenDataType.OPERAND;
+  }
+
+  private int getPrecedence(Token token) {
+    // Define precedence for different operators
+    return switch (token.getValue()) {
+      case "*", "/" -> 2;
+      case "+", "-" -> 1;
+      default -> 0;
+    };
   }
 
   @Override

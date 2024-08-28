@@ -2,9 +2,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ast.expressions.BinaryExpression;
-import ast.literal.StringLiteral;
+import ast.literal.NumberLiteral;
 import ast.root.AstNode;
+import ast.root.AstNodeType;
 import ast.root.Program;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
@@ -25,19 +25,23 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : string = \"Hello\";");
+    List<Token> tokens = lexer.extractTokens("let myVar : string = 2;");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
 
     VariableDeclaration variableDeclaration = (VariableDeclaration) program.statements().get(0);
     assertEquals("myVar", variableDeclaration.identifier().name(), "Identifier should be 'myVar'");
-    assertInstanceOf(
-        StringLiteral.class, variableDeclaration.expression(), "Value should be a StringLiteral");
     assertEquals(
-        "\"Hello\"",
-        ((StringLiteral) variableDeclaration.expression()).value(),
-        "Value should be 'Hello'");
+        AstNodeType.VARIABLE_DECLARATION,
+        variableDeclaration.getType(),
+        "Type should be VariableDeclaration");
+    assertInstanceOf(
+        NumberLiteral.class, variableDeclaration.expression(), "Value should be a StringLiteral");
+    assertEquals(
+        AstNodeType.NUMBER_LITERAL,
+        (variableDeclaration.expression().getType()),
+        "Expression should be NumberLiteral");
   }
 
   @Test
@@ -45,16 +49,16 @@ public class ParserTest {
     Parser parser = ContextProvider.initBinaryExpressionParser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : number = 2 + 3 * 2;");
+    List<Token> tokens = lexer.extractTokens("let myVar : number = (2+2) * (2/2) + 2;");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
 
     VariableDeclaration variableDeclaration = (VariableDeclaration) program.statements().get(0);
     assertEquals("myVar", variableDeclaration.identifier().name(), "Identifier should be 'myVar'");
-    assertInstanceOf(
-        BinaryExpression.class,
-        variableDeclaration.expression(),
+    assertEquals(
+        AstNodeType.BINARY_EXPRESSION,
+        variableDeclaration.expression().getType(),
         "Value should be a BinaryExpression");
   }
 
@@ -70,10 +74,10 @@ public class ParserTest {
 
     VariableDeclaration variableDeclaration = (VariableDeclaration) program.statements().get(0);
     assertEquals("myVar", variableDeclaration.identifier().name(), "Identifier should be 'myVar'");
-    assertInstanceOf(
-        BinaryExpression.class,
-        variableDeclaration.expression(),
-        "Value should be a BinaryExpression");
+    assertEquals(
+        AstNodeType.BINARY_EXPRESSION,
+        variableDeclaration.expression().getType(),
+        "Type should be a BinaryExpression");
   }
 
   @Test
@@ -88,7 +92,8 @@ public class ParserTest {
 
     CallExpression callFunc = (CallExpression) program.statements().get(0);
     assertEquals("println", callFunc.methodIdentifier().name(), "Identifier should be 'println'");
-    assertInstanceOf(CallExpression.class, callFunc, "Value should be a CallExpression");
+    assertEquals(
+        AstNodeType.CALL_EXPRESSION, callFunc.getType(), "Type should be a CallExpression");
   }
 
   @Test
@@ -103,8 +108,18 @@ public class ParserTest {
 
     AssignmentExpression variableDeclaration = (AssignmentExpression) program.statements().get(0);
     assertEquals("myVar", variableDeclaration.left().name(), "Identifier should be 'myVar'");
-    assertInstanceOf(
-        BinaryExpression.class, variableDeclaration.right(), "Value should be a BinaryExpression");
+    assertEquals(
+        AstNodeType.ASSIGNMENT_EXPRESSION,
+        variableDeclaration.getType(),
+        "Type should be a Assignment Expression");
+    assertEquals(
+        AstNodeType.IDENTIFIER,
+        variableDeclaration.left().getType(),
+        "Type should be a Identifier");
+    assertEquals(
+        AstNodeType.BINARY_EXPRESSION,
+        variableDeclaration.right().getType(),
+        "Type should be a BinaryExpression");
   }
 
   @Test
@@ -127,9 +142,9 @@ public class ParserTest {
 
     assertEquals(
         "myVar", ((VariableDeclaration) first).identifier().name(), "Identifier should be 'myVar'");
-    assertInstanceOf(
-        BinaryExpression.class,
-        ((VariableDeclaration) first).expression(),
+    assertEquals(
+        AstNodeType.BINARY_EXPRESSION,
+        ((VariableDeclaration) first).expression().getType(),
         "Value should be a BinaryExpression");
 
     AstNode second = program.statements().get(1);
@@ -138,15 +153,18 @@ public class ParserTest {
         "println",
         ((CallExpression) second).methodIdentifier().name(),
         "Identifier should be 'println'");
-    assertInstanceOf(CallExpression.class, second, "Value should be a CallExpression");
+    assertEquals(AstNodeType.CALL_EXPRESSION, second.getType(), "Value should be a CallExpression");
 
     AstNode third = program.statements().get(2);
 
     assertEquals(
         "myVar", ((AssignmentExpression) third).left().name(), "Identifier should be 'myVar'");
-    assertInstanceOf(
-        StringLiteral.class,
-        ((AssignmentExpression) third).right(),
+    assertEquals(
+        AstNodeType.ASSIGNMENT_EXPRESSION, (third.getType()), "Value should be a StringLiteral");
+
+    assertEquals(
+        AstNodeType.STRING_LITERAL,
+        ((AssignmentExpression) third).right().getType(),
         "Value should be a StringLiteral");
 
     AstNode fourth = program.statements().get(3);
