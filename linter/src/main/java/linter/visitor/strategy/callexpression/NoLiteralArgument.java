@@ -1,9 +1,9 @@
-package linter.rework.visitor.strategy.callexpression;
+package linter.visitor.strategy.callexpression;
 
 import ast.root.AstNode;
-import linter.rework.report.FullReport;
-import linter.rework.report.Report;
-import linter.rework.visitor.strategy.LintingStrategy;
+import linter.report.FullReport;
+import linter.report.Report;
+import linter.visitor.strategy.LintingStrategy;
 
 public class NoLiteralArgument implements LintingStrategy {
   @Override

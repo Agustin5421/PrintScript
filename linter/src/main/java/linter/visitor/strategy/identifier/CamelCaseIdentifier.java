@@ -1,11 +1,11 @@
-package linter.rework.visitor.strategy.identifier;
+package linter.visitor.strategy.identifier;
 
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
-import linter.rework.report.FullReport;
-import linter.rework.report.Report;
-import linter.rework.visitor.strategy.LintingStrategy;
+import linter.report.FullReport;
+import linter.report.Report;
+import linter.visitor.strategy.LintingStrategy;
 
 public class CamelCaseIdentifier implements LintingStrategy {
   @Override

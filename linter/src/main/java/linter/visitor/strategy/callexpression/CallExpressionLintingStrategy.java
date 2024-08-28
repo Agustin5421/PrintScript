@@ -1,11 +1,11 @@
-package linter.rework.visitor.strategy.callexpression;
+package linter.visitor.strategy.callexpression;
 
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
-import linter.rework.report.FullReport;
-import linter.rework.visitor.strategy.LintingStrategy;
+import linter.report.FullReport;
+import linter.visitor.strategy.LintingStrategy;
 
 public class CallExpressionLintingStrategy implements LintingStrategy {
   private final List<LintingStrategy> argumentStrategies;

@@ -1,12 +1,12 @@
-package linter.rework;
+package linter;
 
 import ast.root.AstNode;
 import ast.root.Program;
 import ast.visitor.NodeVisitor;
 import java.util.List;
-import linter.rework.report.FullReport;
-import linter.rework.visitor.LinterVisitorFactory;
-import linter.rework.visitor.LinterVisitorV2;
+import linter.report.FullReport;
+import linter.visitor.LinterVisitorFactory;
+import linter.visitor.LinterVisitorV2;
 import observers.Observer;
 import observers.Progressable;
 

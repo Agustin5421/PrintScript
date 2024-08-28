@@ -1,4 +1,4 @@
-package linter.rework.visitor;
+package linter.visitor;
 
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
@@ -12,8 +12,8 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import java.util.Map;
-import linter.rework.report.FullReport;
-import linter.rework.visitor.strategy.LintingStrategy;
+import linter.report.FullReport;
+import linter.visitor.strategy.LintingStrategy;
 
 public class LinterVisitorV2 implements NodeVisitor {
   private final FullReport fullReport;

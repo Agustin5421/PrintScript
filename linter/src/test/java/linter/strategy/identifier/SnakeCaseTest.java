@@ -3,10 +3,10 @@ package linter.strategy.identifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.identifier.Identifier;
-import linter.rework.report.FullReport;
-import linter.rework.report.Report;
-import linter.rework.visitor.strategy.LintingStrategy;
-import linter.rework.visitor.strategy.identifier.SnakeCaseIdentifier;
+import linter.report.FullReport;
+import linter.report.Report;
+import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.identifier.SnakeCaseIdentifier;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

@@ -8,10 +8,9 @@ import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
 import java.util.Map;
-import linter.rework.visitor.LinterVisitorV2;
-import linter.rework.visitor.strategy.LintingStrategy;
-import linter.rework.visitor.strategy.identifier.CamelCaseIdentifier;
-import linter.rework.visitor.strategy.identifier.IdentifierLintingStrategy;
+import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.identifier.CamelCaseIdentifier;
+import linter.visitor.strategy.identifier.IdentifierLintingStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

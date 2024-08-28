@@ -1,10 +1,10 @@
-package linter.rework.visitor.strategy.identifier;
+package linter.visitor.strategy.identifier;
 
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import java.util.List;
-import linter.rework.report.FullReport;
-import linter.rework.visitor.strategy.LintingStrategy;
+import linter.report.FullReport;
+import linter.visitor.strategy.LintingStrategy;
 
 public class IdentifierLintingStrategy implements LintingStrategy {
   private final List<LintingStrategy> strategies;

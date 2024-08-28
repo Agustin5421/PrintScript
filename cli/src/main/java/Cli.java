@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lexer.Lexer;
-import linter.rework.LinterV2;
+import linter.LinterV2;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;

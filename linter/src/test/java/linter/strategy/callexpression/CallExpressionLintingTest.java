@@ -11,11 +11,11 @@ import ast.statements.CallExpression;
 import ast.visitor.NodeVisitor;
 import java.util.List;
 import java.util.Map;
-import linter.rework.visitor.LinterVisitorV2;
-import linter.rework.visitor.strategy.LintingStrategy;
-import linter.rework.visitor.strategy.callexpression.CallExpressionLintingStrategy;
-import linter.rework.visitor.strategy.callexpression.NoExpressionArgument;
-import linter.rework.visitor.strategy.callexpression.NoLiteralArgument;
+import linter.visitor.LinterVisitorV2;
+import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.callexpression.CallExpressionLintingStrategy;
+import linter.visitor.strategy.callexpression.NoExpressionArgument;
+import linter.visitor.strategy.callexpression.NoLiteralArgument;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

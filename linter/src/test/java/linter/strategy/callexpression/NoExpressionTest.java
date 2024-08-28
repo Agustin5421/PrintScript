@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
 import ast.literal.NumberLiteral;
-import linter.rework.report.FullReport;
-import linter.rework.visitor.strategy.LintingStrategy;
-import linter.rework.visitor.strategy.callexpression.NoExpressionArgument;
+import linter.report.FullReport;
+import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.callexpression.NoExpressionArgument;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

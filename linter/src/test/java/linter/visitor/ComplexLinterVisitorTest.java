@@ -9,9 +9,9 @@ import ast.root.Program;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import java.util.List;
+import linter.LinterV2;
 import linter.TestUtils;
-import linter.rework.LinterV2;
-import linter.rework.report.FullReport;
+import linter.report.FullReport;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

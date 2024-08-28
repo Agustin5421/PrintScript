@@ -1,7 +1,7 @@
-package linter.rework.visitor.strategy;
+package linter.visitor.strategy;
 
 import ast.root.AstNode;
-import linter.rework.report.FullReport;
+import linter.report.FullReport;
 
 public interface LintingStrategy {
   FullReport apply(AstNode node, FullReport fullReport);

@@ -1,4 +1,4 @@
-package linter.rework.visitor;
+package linter.visitor;
 
 import ast.root.AstNodeType;
 import com.google.gson.JsonObject;
@@ -6,13 +6,13 @@ import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import linter.rework.visitor.strategy.LintingStrategy;
-import linter.rework.visitor.strategy.callexpression.CallExpressionLintingStrategy;
-import linter.rework.visitor.strategy.callexpression.NoExpressionArgument;
-import linter.rework.visitor.strategy.callexpression.NoLiteralArgument;
-import linter.rework.visitor.strategy.identifier.CamelCaseIdentifier;
-import linter.rework.visitor.strategy.identifier.IdentifierLintingStrategy;
-import linter.rework.visitor.strategy.identifier.SnakeCaseIdentifier;
+import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.callexpression.CallExpressionLintingStrategy;
+import linter.visitor.strategy.callexpression.NoExpressionArgument;
+import linter.visitor.strategy.callexpression.NoLiteralArgument;
+import linter.visitor.strategy.identifier.CamelCaseIdentifier;
+import linter.visitor.strategy.identifier.IdentifierLintingStrategy;
+import linter.visitor.strategy.identifier.SnakeCaseIdentifier;
 
 public class LinterVisitorFactory {
   public LinterVisitorV2 createLinterVisitor(String rules) {
