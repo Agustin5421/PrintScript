@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lexer.Lexer;
-import linter.Linter;
+import linter.rework.LinterV2;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;
@@ -105,10 +105,10 @@ public class Cli {
     String options = getText(filepath);
     Program program = validateFile(code, observer);
 
-    Linter linter = new Linter(List.of(observer));
+    LinterV2 linterV2 = new LinterV2(List.of(observer));
     try {
       assert program != null;
-      linter.linter(program, options);
+      linterV2.lint(program, options);
       observer.finish();
     } catch (Exception e) {
       System.out.println(e.getMessage());
