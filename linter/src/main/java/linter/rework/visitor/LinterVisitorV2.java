@@ -4,6 +4,7 @@ import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
@@ -36,7 +37,22 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
-    return null;
+    Identifier methodIdentifier = callExpression.methodIdentifier();
+    NodeVisitor visitor = methodIdentifier.accept(this);
+
+    for (AstNode argument : callExpression.arguments()) {
+      visitor = argument.accept(visitor);
+    }
+
+    FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
+
+    LintingStrategy strategy = nodesStrategies.get(callExpression.getType());
+
+    if (strategy != null) {
+      newReport = strategy.apply(callExpression, newReport);
+    }
+
+    return new LinterVisitorV2(newReport, nodesStrategies);
   }
 
   @Override
