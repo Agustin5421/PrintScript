@@ -67,11 +67,25 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
+    LintingStrategy strategy = getNodesStrategies().get(numberLiteral.getType());
+
+    if (strategy != null) {
+      FullReport newReport = strategy.apply(numberLiteral, getFullReport());
+      return new LinterVisitorV2(newReport, getNodesStrategies());
+    }
+
     return this;
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
+    LintingStrategy strategy = getNodesStrategies().get(stringLiteral.getType());
+
+    if (strategy != null) {
+      FullReport newReport = strategy.apply(stringLiteral, getFullReport());
+      return new LinterVisitorV2(newReport, getNodesStrategies());
+    }
+
     return this;
   }
 
