@@ -1,0 +1,9 @@
+{
+  "identifier": {
+    "writingConvention": "snakeCase"
+  },
+  "callExpression" : {
+    "acceptLiterals": false,
+    "acceptExpressions": true
+  }
+}
