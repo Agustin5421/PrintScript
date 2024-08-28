@@ -8,10 +8,14 @@ import ast.literal.StringLiteral;
 import ast.root.Program;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
+import java.util.ArrayList;
 import java.util.List;
 import linter.LinterV2;
 import linter.TestUtils;
 import linter.report.FullReport;
+import observers.Observer;
+import observers.ProgressObserver;
+import observers.ProgressPrinter;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -29,6 +33,14 @@ public class ComplexLinterVisitorTest {
     return new Program(List.of(variableDeclaration, callExpression));
   }
 
+  private LinterV2 getLinter() {
+    Observer observer = new ProgressObserver(new ProgressPrinter(), 3);
+    LinterV2 linterV2 = new LinterV2(new ArrayList<>(List.of(observer)));
+    linterV2.removeObserver(observer);
+    linterV2.addObserver(observer);
+    return linterV2;
+  }
+
   @Test
   public void noViolationsTest() {
     Program program = getProgram();
@@ -36,7 +48,7 @@ public class ComplexLinterVisitorTest {
     String rules = TestUtils.readResourceFile("linterRulesExample.json");
     assertNotNull(rules);
 
-    LinterV2 linter = new LinterV2();
+    LinterV2 linter = getLinter();
     FullReport report = linter.lint(program, rules);
 
     assertEquals(0, report.getReports().size());
@@ -49,7 +61,7 @@ public class ComplexLinterVisitorTest {
     String rules = TestUtils.readResourceFile("anotherLinterRulesExample.json");
     assertNotNull(rules);
 
-    LinterV2 linter = new LinterV2();
+    LinterV2 linter = getLinter();
     FullReport report = linter.lint(program, rules);
 
     assertEquals(4, report.getReports().size());

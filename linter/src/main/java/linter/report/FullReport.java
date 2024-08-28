@@ -24,12 +24,6 @@ public class FullReport {
     return new FullReport(newReports);
   }
 
-  public FullReport addReports(List<Report> newReports) {
-    List<Report> reports = new ArrayList<>(List.copyOf(this.reports));
-    reports.addAll(newReports);
-    return new FullReport(reports);
-  }
-
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
