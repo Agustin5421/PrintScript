@@ -15,14 +15,17 @@ public class IdentifierLintingStrategy implements LintingStrategy {
 
   @Override
   public FullReport apply(AstNode node, FullReport fullReport) {
+    if (!shouldApply(node)) {
+      return fullReport;
+    }
+
     for (LintingStrategy strategy : strategies) {
       fullReport = strategy.apply(node, fullReport);
     }
     return fullReport;
   }
 
-  @Override
-  public boolean shouldApply(AstNode node) {
+  private boolean shouldApply(AstNode node) {
     return node.getType().equals(AstNodeType.IDENTIFIER);
   }
 }

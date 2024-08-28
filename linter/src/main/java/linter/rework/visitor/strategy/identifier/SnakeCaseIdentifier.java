@@ -27,8 +27,7 @@ public class SnakeCaseIdentifier implements LintingStrategy {
     return fullReport;
   }
 
-  @Override
-  public boolean shouldApply(AstNode node) {
+  private boolean shouldApply(AstNode node) {
     return node.getType().equals(AstNodeType.IDENTIFIER);
   }
 }
