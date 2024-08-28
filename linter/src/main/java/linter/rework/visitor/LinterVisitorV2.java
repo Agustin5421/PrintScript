@@ -57,22 +57,22 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
-    return null;
+    return this;
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    return null;
+    return this;
   }
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    return null;
+    return this;
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return null;
+    return this;
   }
 
   @Override
@@ -89,6 +89,6 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    return null;
+    return this;
   }
 }
