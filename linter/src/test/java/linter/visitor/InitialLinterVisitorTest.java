@@ -15,7 +15,7 @@ import linter.rework.visitor.strategy.identifier.IdentifierLintingStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
-public class NewLinterVisitorTest {
+public class InitialLinterVisitorTest {
   private LinterVisitorV2 getLinterVisitorV2() {
     LintingStrategy idStrategy = new CamelCaseIdentifier();
     LintingStrategy mainIdStrategy = new IdentifierLintingStrategy(List.of(idStrategy));
