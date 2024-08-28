@@ -35,10 +35,7 @@ public class ComplexLinterVisitorTest {
 
   private LinterV2 getLinter() {
     Observer observer = new ProgressObserver(new ProgressPrinter(), 3);
-    LinterV2 linterV2 = new LinterV2(new ArrayList<>(List.of(observer)));
-    linterV2.removeObserver(observer);
-    linterV2.addObserver(observer);
-    return linterV2;
+    return new LinterV2(new ArrayList<>(List.of(observer)));
   }
 
   @Test
