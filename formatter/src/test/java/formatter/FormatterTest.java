@@ -35,7 +35,8 @@ public class FormatterTest {
                 "equalSpaces": true,
                 "printLineBreaks": 1
               }
-            }""";
+            }
+            """;
   private final Position defaultPosition = new Position(0, 0);
 
   @Test

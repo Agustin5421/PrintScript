@@ -9,12 +9,6 @@ import com.google.gson.JsonObject;
 
 public class ExpressionFormatter implements Formatter {
   @Override
-  // For now, it has private uses
-  public boolean shouldFormat(AstNode statement) {
-    return false;
-  }
-
-  @Override
   public String format(AstNode node, JsonObject rules, String currentProgram) {
     Expression expressionNode = (Expression) node;
     String formattedCode = "";

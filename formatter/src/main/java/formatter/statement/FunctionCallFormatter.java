@@ -14,11 +14,6 @@ public class FunctionCallFormatter implements Formatter {
   }
 
   @Override
-  public boolean shouldFormat(AstNode statement) {
-    return statement instanceof CallExpression;
-  }
-
-  @Override
   public String format(AstNode node, JsonObject rules, String currentProgram) {
     CallExpression callExpressionNode = (CallExpression) node;
     StringBuilder formattedCode;

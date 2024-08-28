@@ -3,30 +3,22 @@ package formatter;
 import ast.root.AstNode;
 import ast.root.Program;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import formatter.statement.Formatter;
 import java.util.List;
 import observers.Observer;
 import observers.Progressable;
 
 public class MainFormatter implements Progressable {
-  private final List<Formatter> formatters;
   private final List<Observer> observers;
+  private final OptionsChecker optionsChecker;
   private int totalSteps;
 
-  public MainFormatter(List<Formatter> formatters, List<Observer> observers) {
-    this.formatters = formatters;
+  public MainFormatter(List<Observer> observers) {
     this.observers = observers;
-  }
-
-  public MainFormatter(List<Formatter> formatters) {
-    this.formatters = formatters;
-    this.observers = List.of();
+    this.optionsChecker = new OptionsChecker();
   }
 
   public String format(Program program, String options) {
-    JsonObject jsonOptions = JsonParser.parseString(options).getAsJsonObject();
-    JsonObject rules = jsonOptions.getAsJsonObject("rules");
+    JsonObject rules = optionsChecker.checkAndReturn(options);
     StringBuilder formattedCode = new StringBuilder();
     FormatterVisitor formatterVisitor;
     totalSteps = program.statements().size();
@@ -39,21 +31,10 @@ public class MainFormatter implements Progressable {
           .append(formatterVisitor.getCurrentCode())
           // Entering a new line after each statement
           .append("\n");
+      notifyObservers();
     }
     return formattedCode.toString();
   }
-
-  /*
-  private Formatter getValidFormatter(AstNode statement) {
-    for (Formatter formatter : formatters) {
-      if (formatter.shouldFormat(statement)) {
-        return formatter;
-      }
-    }
-    throw new IllegalArgumentException("No formatter found for this statement");
-  }
-
-   */
 
   @Override
   public float getProgress() {

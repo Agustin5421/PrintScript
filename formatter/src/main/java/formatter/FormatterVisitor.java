@@ -23,11 +23,6 @@ public class FormatterVisitor implements NodeVisitor {
     this.options = options;
   }
 
-  public FormatterVisitor(JsonObject options) {
-    this.options = options;
-    this.formattedCode = "";
-  }
-
   @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     FunctionCallFormatter formatter = new FunctionCallFormatter(new ExpressionFormatter());
