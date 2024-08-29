@@ -31,8 +31,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter();
     VariablesRepository repository = interpreter.executeProgram(program);
 
-    assertEquals(literal, repository.getVariable("x"));
-    assertEquals("this is a string", repository.getVariable("x").value());
+    assertEquals("this is a string", repository.getVariable(identifier).value());
   }
 
   @Test
@@ -46,8 +45,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter();
     VariablesRepository repository = interpreter.executeProgram(program);
 
-    assertEquals(literal, repository.getVariable("x"));
-    assertEquals(42, repository.getVariable("x").value());
+    assertEquals(42, repository.getVariable(identifier).value());
   }
 
   @Test
@@ -55,14 +53,21 @@ public class InterpreterTest {
     Identifier identifier1 = new Identifier("x", new Position(0, 0), new Position(0, 1));
     Literal<String> literal1 =
         new StringLiteral("this is a string", new Position(2, 0), new Position(2, 3));
-    List<AstNode> statements = getAstNodes(identifier1, literal1, "y");
+
+    VariableDeclaration variableDeclaration1 = new VariableDeclaration(identifier1, literal1);
+
+    Identifier identifier2 = new Identifier("y", new Position(6, 0), new Position(6, 7));
+    Literal<Number> literal2 = new NumberLiteral(42, new Position(8, 0), new Position(8, 9));
+    VariableDeclaration variableDeclaration2 = new VariableDeclaration(identifier2, literal2);
+
+    List<AstNode> statements = List.of(variableDeclaration1, variableDeclaration2);
     Program program = new Program(statements);
 
     Interpreter interpreter = new Interpreter();
     VariablesRepository repository = interpreter.executeProgram(program);
 
-    assertEquals("this is a string", repository.getVariable("x").value());
-    assertEquals(42, repository.getVariable("y").value());
+    assertEquals("this is a string", repository.getVariable(identifier1).value());
+    assertEquals(42, repository.getVariable(identifier2).value());
   }
 
   @Test
@@ -113,7 +118,7 @@ public class InterpreterTest {
 
     VariablesRepository repository = addPrintStatement(variableDeclaration1);
 
-    assertEquals("this is a string", repository.getVariable("x").value());
+    assertEquals("this is a string", repository.getVariable(identifier1).value());
   }
 
   @Test
@@ -145,8 +150,8 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter();
     VariablesRepository repository = interpreter.executeProgram(program);
 
-    assertEquals(42.5, repository.getVariable("x").value());
-    assertEquals(85.0, repository.getVariable("y").value());
+    assertEquals(42.5, repository.getVariable(identifier).value());
+    assertEquals(85.0, repository.getVariable(identifier2).value());
   }
 
   @Test
@@ -242,7 +247,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter();
     VariablesRepository repository = interpreter.executeProgram(program);
 
-    assertEquals(42.5, repository.getVariable("x").value());
-    assertEquals(85.0, repository.getVariable("y").value());
+    assertEquals(42.5, repository.getVariable(identifier).value());
+    assertEquals(85.0, repository.getVariable(identifier2).value());
   }
 }

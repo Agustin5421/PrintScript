@@ -34,7 +34,7 @@ public class ExpressionEvaluator implements Evaluator {
         return statement;
       } else if (statement instanceof Identifier) {
         try {
-          Literal<?> literal = variablesRepository.getVariable(((Identifier) statement).name());
+          Literal<?> literal = variablesRepository.getVariable((Identifier) statement);
           Object value = literal.value();
           if (value instanceof String) {
             return new StringLiteral((String) value, defaultPosition, defaultPosition);
@@ -50,7 +50,7 @@ public class ExpressionEvaluator implements Evaluator {
       }
     } catch (Exception e) {
       throw new IllegalArgumentException(
-          "Trying to perform an invalid arithmetic operation at: " + line + "col: " + column);
+          "Trying to perform an invalid arithmetic operation at line: " + line + " col: " + column);
     }
   }
 

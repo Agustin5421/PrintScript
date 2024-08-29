@@ -47,7 +47,7 @@ public class AstNodeVisitor implements NodeVisitor {
     Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
 
     VariablesRepository newVariablesRepository =
-        variablesRepository.addVariable(left.name(), evaluatedRight);
+        variablesRepository.addVariable(left, evaluatedRight);
     return new AstNodeVisitor(newVariablesRepository);
   }
 
@@ -82,7 +82,7 @@ public class AstNodeVisitor implements NodeVisitor {
   }
 
   private NodeVisitor setVariable(VariableDeclaration statement) {
-    String name = statement.identifier().name();
+    Identifier name = statement.identifier();
 
     if (variablesRepository.getVariables().containsKey(name)) {
       throw new IllegalArgumentException("Variable " + name + " is already defined");
