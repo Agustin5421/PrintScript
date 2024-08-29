@@ -25,8 +25,8 @@ public class Interpreter implements Progressable {
     totalStatements = program.statements().size();
 
     for (AstNode statement : program.statements()) {
-      statement.accept(nodeVisitor);
-      variablesRepository = nodeVisitor.variablesRepository;
+      nodeVisitor = (AstNodeVisitor) statement.accept(nodeVisitor);
+      variablesRepository = nodeVisitor.getVariablesRepository();
       updateProgress();
     }
 

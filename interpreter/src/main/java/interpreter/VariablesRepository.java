@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VariablesRepository {
-  // TODO: Manage more than just string and number variables.
-
   // Single map to store all variables
   private final Map<String, Literal<?>> variables;
 
