@@ -1,0 +1,102 @@
+@startuml
+class linter.visitor.strategy.callexpression.NoExpressionArgument {
++ FullReport apply(AstNode,FullReport)
+- boolean shouldApply(AstNode)
+}
+
+class linter.visitor.LinterVisitorFactory {
++ LinterVisitorV2 createLinterVisitor(String)
+- LintingStrategy getIdentifierLintingStrategies(String)
+- List<LintingStrategy> getIdentifierWritingConventions(JsonObject)
+- LintingStrategy getCallExpressionLintingStrategies(String)
+- List<LintingStrategy> getArgumentsStrategies(JsonObject)
+}
+
+class linter.visitor.strategy.callexpression.CallExpressionLintingStrategy {
+- List<LintingStrategy> argumentStrategies
++ FullReport apply(AstNode,FullReport)
+- boolean shouldApply(AstNode)
+}
+
+
+class linter.visitor.strategy.identifier.SnakeCaseIdentifier {
++ FullReport apply(AstNode,FullReport)
+- boolean shouldApply(AstNode)
+}
+
+class linter.visitor.strategy.callexpression.NoLiteralArgument {
++ FullReport apply(AstNode,FullReport)
+- boolean shouldApply(AstNode)
+}
+
+class linter.visitor.LinterVisitorV2 {
+- FullReport fullReport
+- Map<AstNodeType,LintingStrategy> nodesStrategies
++ FullReport getFullReport()
++ Map<AstNodeType,LintingStrategy> getNodesStrategies()
++ NodeVisitor visitVarDec(VariableDeclaration)
++ NodeVisitor visitCallExpression(CallExpression)
++ NodeVisitor visitAssignmentExpression(AssignmentExpression)
++ NodeVisitor visitBinaryExpression(BinaryExpression)
++ NodeVisitor visitNumberLiteral(NumberLiteral)
++ NodeVisitor visitStringLiteral(StringLiteral)
++ NodeVisitor visitIdentifier(Identifier)
+}
+
+
+interface linter.visitor.strategy.LintingStrategy {
+~ FullReport apply(AstNode,FullReport)
+}
+
+class linter.report.Report {
+- Position start
+- Position end
+- String message
++ String toString()
++ String message()
++ Position start()
++ Position end()
+}
+
+
+class linter.report.FullReport {
+- List<Report> reports
++ List<Report> getReports()
++ FullReport addReport(Report)
++ String toString()
+}
+
+
+class linter.LinterV2 {
+- LinterVisitorFactory linterVisitorFactory
+- List<Observer> observers
+- int totalSteps
++ FullReport lint(Program,String)
++ float getProgress()
++ void notifyObservers()
+}
+
+
+class linter.visitor.strategy.identifier.IdentifierLintingStrategy {
+- List<LintingStrategy> strategies
++ FullReport apply(AstNode,FullReport)
+- boolean shouldApply(AstNode)
+}
+
+
+class linter.visitor.strategy.identifier.CamelCaseIdentifier {
++ FullReport apply(AstNode,FullReport)
+- boolean shouldApply(AstNode)
+}
+
+linter.LinterV2 --> linter.visitor.LinterVisitorFactory
+
+linter.visitor.strategy.LintingStrategy <|.. linter.visitor.strategy.callexpression.NoExpressionArgument
+linter.visitor.strategy.LintingStrategy <|.. linter.visitor.strategy.callexpression.CallExpressionLintingStrategy
+linter.visitor.strategy.LintingStrategy <|.. linter.visitor.strategy.identifier.SnakeCaseIdentifier
+linter.visitor.strategy.LintingStrategy <|.. linter.visitor.strategy.callexpression.NoLiteralArgument
+ast.visitor.NodeVisitor <|.. linter.visitor.LinterVisitorV2
+observers.Progressable <|.. linter.LinterV2
+linter.visitor.strategy.LintingStrategy <|.. linter.visitor.strategy.identifier.IdentifierLintingStrategy
+linter.visitor.strategy.LintingStrategy <|.. linter.visitor.strategy.identifier.CamelCaseIdentifier
+@enduml

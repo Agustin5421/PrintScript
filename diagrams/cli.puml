@@ -1,0 +1,16 @@
+@startuml
+class Cli {
+- {static} Logger logger
+- {static} void executeFile(String)
+- {static} void executeProgram(Lexer,String,ProgressObserver,Parser,Interpreter)
++ {static} void main(String[])
+- {static} void formatFile(String,String)
+- {static} void analyzeFile(String,String)
+- {static} Program validateFile(String,ProgressObserver)
+- {static} String getText(String)
+- {static} Lexer initLexer(ProgressObserver)
+- {static} void writeToFile(String,String)
+}
+
+
+@enduml

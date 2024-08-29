@@ -1,0 +1,243 @@
+@startuml
+interface parsers.statements.StatementParser {
+}
+class ast.root.Program {
+- List<AstNode> statements
+- Position start
+- Position end
++ List<AstNode> statements()
++ Position start()
++ Position end()
+}
+
+
+class exceptions.SyntaxException {
+}
+class ast.literal.LiteralFactory {
++ {static} Literal<?> createLiteral(Token)
+}
+
+class parsers.statements.AssignmentParser {
++ AstNode parse(List<Token>)
+- void validateSyntax(List<Token>)
++ boolean shouldParse(List<Token>)
+}
+
+interface ast.literal.Literal {
+~ T value()
+}
+
+enum ast.root.AstNodeType {
++  ASSIGNMENT_EXPRESSION
++  CALL_EXPRESSION
++  EXPRESSION_STATEMENT
++  VARIABLE_DECLARATION
++  IDENTIFIER
++  NUMBER_LITERAL
++  STRING_LITERAL
++  BINARY_EXPRESSION
+}
+
+class exceptions.UnsupportedExpressionException {
+}
+class parsers.statements.CallFunctionParser {
+- List<String> reservedWords
++ AstNode parse(List<Token>)
++ boolean shouldParse(List<Token>)
++ {static} List<Token> extractArguments(List<Token>)
+}
+
+
+class parsers.expressions.LiteralParser {
++ AstNode parse(List<Token>)
++ boolean shouldParse(List<Token>)
+}
+
+class exceptions.UnsupportedStatementException {
+}
+class ast.statements.AssignmentExpression {
+- Identifier left
+- Expression right
+- String operator
+- Position start
+- Position end
++ AstNodeType getType()
++ NodeVisitor accept(NodeVisitor)
++ Identifier left()
++ Expression right()
++ String operator()
++ Position start()
++ Position end()
+}
+
+
+class parsers.Parser {
+- List<StatementParser> statementParsers
+- List<Observer> observers
+- int totalStatements
++ Program parse(List<Token>)
+- {static} List<List<Token>> splitBySemicolon(List<Token>)
+- StatementParser getValidParser(List<Token>)
+- void updateProgress()
++ float getProgress()
++ void notifyObservers()
+}
+
+
+class parsers.expressions.BinaryExpressionParser {
++ AstNode parse(List<Token>)
+- List<Token> removeUnnecessaryParentheses(List<Token>)
+- int findOperatorByPrecedence(List<Token>)
+- boolean isOperator(Token)
+- int getPrecedence(Token)
++ boolean shouldParse(List<Token>)
+}
+
+class exceptions.UnsupportedDataType {
+}
+class ast.utils.ExpressionParserProvider {
+- {static} List<ExpressionParser> parsers
++ {static} Expression parse(List<Token>)
+}
+
+
+class ast.statements.VariableDeclaration {
+- Identifier identifier
+- Expression expression
+- Position start
+- Position end
+- {static} AstNodeType type
++ AstNodeType getType()
++ NodeVisitor accept(NodeVisitor)
++ Identifier identifier()
++ Expression expression()
++ Position start()
++ Position end()
+}
+
+
+interface parsers.InstructionParser {
+~ AstNode parse(List<Token>)
+~ boolean shouldParse(List<Token>)
+}
+
+class parsers.statements.VariableDeclarationParser {
++ AstNode parse(List<Token>)
++ boolean shouldParse(List<Token>)
+}
+
+class ast.identifier.IdentifierParser {
++ AstNode parse(List<Token>)
++ boolean shouldParse(List<Token>)
+}
+
+class ast.statements.CallExpression {
+- Identifier methodIdentifier
+- List<AstNode> arguments
+- boolean optionalParameters
+- Position start
+- Position end
++ AstNodeType getType()
++ NodeVisitor accept(NodeVisitor)
++ List<AstNode> arguments()
++ Identifier methodIdentifier()
++ boolean optionalParameters()
++ Position start()
++ Position end()
+}
+
+
+interface ast.visitor.NodeVisitor {
+~ NodeVisitor visitCallExpression(CallExpression)
+~ NodeVisitor visitAssignmentExpression(AssignmentExpression)
+~ NodeVisitor visitVarDec(VariableDeclaration)
+~ NodeVisitor visitNumberLiteral(NumberLiteral)
+~ NodeVisitor visitStringLiteral(StringLiteral)
+~ NodeVisitor visitIdentifier(Identifier)
+~ NodeVisitor visitBinaryExpression(BinaryExpression)
+}
+
+class ast.expressions.BinaryExpression {
+- Expression left
+- Expression right
+- String operator
+- Position start
+- Position end
++ AstNodeType getType()
++ NodeVisitor accept(NodeVisitor)
++ Expression right()
++ String operator()
++ Position start()
++ Position end()
++ Expression left()
+}
+
+
+interface parsers.expressions.ExpressionParser {
+}
+interface ast.root.AstNode {
+~ AstNodeType getType()
+~ Position start()
+~ Position end()
+~ NodeVisitor accept(NodeVisitor)
+}
+
+interface ast.statements.Statement {
+}
+class ast.literal.StringLiteral {
+- String value
+- Position start
+- Position end
++ AstNodeType getType()
++ NodeVisitor accept(NodeVisitor)
++ String value()
++ Position start()
++ Position end()
+}
+
+
+interface ast.expressions.Expression {
+}
+class ast.literal.NumberLiteral {
+- Number value
+- Position start
+- Position end
++ AstNodeType getType()
++ NodeVisitor accept(NodeVisitor)
++ Position start()
++ Position end()
++ Number value()
+}
+
+
+class ast.identifier.Identifier {
+- String name
+- Position start
+- Position end
++ AstNodeType getType()
++ NodeVisitor accept(NodeVisitor)
++ Position start()
++ Position end()
++ String name()
+}
+
+
+
+
+parsers.InstructionParser <|-- parsers.statements.StatementParser
+exceptions.RuntimeException <|-- exceptions.SyntaxException
+parsers.statements.StatementParser <|.. parsers.statements.AssignmentParser
+ast.expressions.Expression <|-- ast.literal.Literal
+exceptions.RuntimeException <|-- exceptions.UnsupportedExpressionException
+parsers.statements.StatementParser <|.. parsers.statements.CallFunctionParser
+parsers.expressions.ExpressionParser <|.. parsers.expressions.LiteralParser
+exceptions.RuntimeException <|-- exceptions.UnsupportedStatementException
+observers.Progressable <|.. parsers.Parser
+parsers.expressions.ExpressionParser <|.. parsers.expressions.BinaryExpressionParser
+exceptions.RuntimeException <|-- exceptions.UnsupportedDataType
+parsers.statements.StatementParser <|.. parsers.statements.VariableDeclarationParser
+parsers.expressions.ExpressionParser <|.. ast.identifier.IdentifierParser
+parsers.InstructionParser <|-- parsers.expressions.ExpressionParser
+ast.root.AstNode <|-- ast.statements.Statement
+ast.root.AstNode <|-- ast.expressions.Expression
+@enduml

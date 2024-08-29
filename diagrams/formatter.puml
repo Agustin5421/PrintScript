@@ -1,0 +1,78 @@
+@startuml
+interface formatter.statement.Formatter {
+~ String format(AstNode,JsonObject,String)
+}
+
+class formatter.MainFormatter {
+- List<Observer> observers
+- OptionsChecker optionsChecker
+- int totalSteps
++ String format(Program,String)
++ float getProgress()
++ void notifyObservers()
+}
+
+
+class formatter.statement.AssignmentFormatter {
+- ExpressionFormatter expressionFormatter
++ String format(AstNode,JsonObject,String)
+- String cleanIdentifier(Identifier)
+}
+
+
+class formatter.statement.VariableDeclarationFormatter {
+- ExpressionFormatter expressionFormatter
++ String format(AstNode,JsonObject,String)
+- String cleanIdentifier(Identifier)
+- String getType(Expression)
+- boolean containsStringLiteral(Expression)
+}
+
+
+class formatter.statement.FunctionCallFormatter {
+- ExpressionFormatter expressionFormatter
++ String format(AstNode,JsonObject,String)
+- StringBuilder addOrRemoveLineBreaks(String,int)
+- String cleanIdentifier(Identifier)
+}
+
+
+class formatter.FormatterVisitor {
+- String formattedCode
+- JsonObject options
++ NodeVisitor visitCallExpression(CallExpression)
++ NodeVisitor visitAssignmentExpression(AssignmentExpression)
++ NodeVisitor visitVarDec(VariableDeclaration)
++ NodeVisitor visitNumberLiteral(NumberLiteral)
++ NodeVisitor visitStringLiteral(StringLiteral)
++ NodeVisitor visitIdentifier(Identifier)
++ NodeVisitor visitBinaryExpression(BinaryExpression)
++ String getCurrentCode()
+}
+
+
+class formatter.statement.ExpressionFormatter {
++ String format(AstNode,JsonObject,String)
+- String evaluate(Expression,String,JsonObject)
+- String handleBinaryExpression(BinaryExpression,String,JsonObject)
+- String cleanIdentifier(Identifier)
+}
+
+class formatter.OptionsChecker {
++ JsonObject checkAndReturn(String)
+}
+
+class formatter.MainFormatterInitializer {
++ {static} MainFormatter init()
++ {static} MainFormatter init(Observer)
+}
+
+
+
+observers.Progressable <|.. formatter.MainFormatter
+formatter.statement.Formatter <|.. formatter.statement.AssignmentFormatter
+formatter.statement.Formatter <|.. formatter.statement.VariableDeclarationFormatter
+formatter.statement.Formatter <|.. formatter.statement.FunctionCallFormatter
+ast.visitor.NodeVisitor <|.. formatter.FormatterVisitor
+formatter.statement.Formatter <|.. formatter.statement.ExpressionFormatter
+@enduml

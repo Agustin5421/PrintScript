@@ -1,0 +1,64 @@
+@startuml
+class interpreter.Interpreter {
+- List<Observer> observers
+- int totalStatements
++ VariablesRepository executeProgram(Program)
+- void updateProgress()
++ void notifyObservers()
++ float getProgress()
+}
+
+
+class interpreter.VariablesRepository {
+- Map<String,Literal<?>> variables
++ Map<String,Literal<?>> getVariables()
++ Literal<T> getVariable(String)
++ VariablesRepository addVariable(String,Literal<?>)
+}
+
+
+interface interpreter.runtime.Evaluator {
+~ AstNode evaluate(AstNode)
+}
+
+class interpreter.runtime.ExpressionEvaluator {
+- VariablesRepository variablesRepository
+- int line
+- int column
+- Position defaultPosition
++ AstNode evaluate(AstNode)
+- AstNode handleBinaryOperation(BinaryExpression)
+- boolean checkIfBothIntegers(Number,Number)
+- AstNode validateAddOperation(AstNode,AstNode)
+- AstNode validateOperation(AstNode,AstNode,NumberBinaryOperator)
+- Number applyOperation(Number,Number,NumberBinaryOperator)
+- Number getNumberValue(AstNode)
+- NumberLiteral createNumberLiteral(Number,AstNode,AstNode)
+}
+
+
+interface interpreter.runtime.ExpressionEvaluator$NumberBinaryOperator {
+~ Number apply(Number,Number)
+}
+
+class interpreter.AstNodeVisitor {
+~ VariablesRepository variablesRepository
++ NodeVisitor visitCallExpression(CallExpression)
++ NodeVisitor visitAssignmentExpression(AssignmentExpression)
++ NodeVisitor visitVarDec(VariableDeclaration)
++ NodeVisitor visitNumberLiteral(NumberLiteral)
++ NodeVisitor visitStringLiteral(StringLiteral)
++ NodeVisitor visitIdentifier(Identifier)
++ NodeVisitor visitBinaryExpression(BinaryExpression)
+- void setVariable(VariableDeclaration)
+- void printlnMethod(Identifier,String,List<AstNode>)
+}
+
+
+
+
+observers.Progressable <|.. interpreter.Interpreter
+interpreter.runtime.Evaluator <|.. interpreter.runtime.ExpressionEvaluator
+interpreter.runtime.ExpressionEvaluator +.. interpreter.runtime.ExpressionEvaluator$NumberBinaryOperator
+ast.visitor.NodeVisitor <|.. interpreter.AstNodeVisitor
+@enduml
