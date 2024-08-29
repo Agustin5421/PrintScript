@@ -14,10 +14,14 @@ import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
 
 public class AstNodeVisitor implements NodeVisitor {
-  VariablesRepository variablesRepository;
+  private final VariablesRepository variablesRepository;
 
   public AstNodeVisitor(VariablesRepository variablesRepository) {
     this.variablesRepository = variablesRepository;
+  }
+
+  public VariablesRepository getVariablesRepository() {
+    return variablesRepository;
   }
 
   @Override
@@ -42,16 +46,17 @@ public class AstNodeVisitor implements NodeVisitor {
         new ExpressionEvaluator(variablesRepository, left.start().row());
     Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
 
-    variablesRepository = variablesRepository.addVariable(left.name(), evaluatedRight);
-    return this;
+    VariablesRepository newVariablesRepository =
+        variablesRepository.addVariable(left.name(), evaluatedRight);
+    return new AstNodeVisitor(newVariablesRepository);
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    setVariable(variableDeclaration);
-    return this;
+    return setVariable(variableDeclaration);
   }
 
+  // que tire excepcion  estos q no deberian de llegar
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
     return this;
@@ -76,19 +81,20 @@ public class AstNodeVisitor implements NodeVisitor {
     return this;
   }
 
-  private void setVariable(VariableDeclaration statement) {
+  private NodeVisitor setVariable(VariableDeclaration statement) {
     String name = statement.identifier().name();
 
     if (variablesRepository.getVariables().containsKey(name)) {
       throw new IllegalArgumentException("Variable " + name + " is already defined");
-    }
+    } // cambiar a una excepcion mas concreta de variable ya definida
 
     ExpressionEvaluator expressionEvaluator =
         new ExpressionEvaluator(variablesRepository, statement.start().row());
     Literal<?> value = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
     // Object value = literal.value();
 
-    variablesRepository = variablesRepository.addVariable(name, value);
+    VariablesRepository newVariablesRepository = variablesRepository.addVariable(name, value);
+    return new AstNodeVisitor(newVariablesRepository);
   }
 
   private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
