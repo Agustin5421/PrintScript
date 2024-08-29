@@ -39,7 +39,7 @@ public class AstNodeVisitor implements NodeVisitor {
     String operator = assignmentExpression.operator();
 
     ExpressionEvaluator evaluator =
-            new ExpressionEvaluator(variablesRepository, left.start().row());
+        new ExpressionEvaluator(variablesRepository, left.start().row());
     Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
 
     variablesRepository = variablesRepository.addVariable(left.name(), evaluatedRight);
@@ -84,7 +84,7 @@ public class AstNodeVisitor implements NodeVisitor {
     }
 
     ExpressionEvaluator expressionEvaluator =
-            new ExpressionEvaluator(variablesRepository, statement.start().row());
+        new ExpressionEvaluator(variablesRepository, statement.start().row());
     Literal<?> value = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
     // Object value = literal.value();
 
@@ -94,7 +94,7 @@ public class AstNodeVisitor implements NodeVisitor {
   private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
     if (identifier.name().equals(name)) {
       ExpressionEvaluator expressionEvaluator =
-              new ExpressionEvaluator(variablesRepository, identifier.start().row());
+          new ExpressionEvaluator(variablesRepository, identifier.start().row());
       for (AstNode argument : arguments) {
         System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
       }
