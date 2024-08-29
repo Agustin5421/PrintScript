@@ -27,8 +27,7 @@ public class AstNodeVisitor implements NodeVisitor {
     boolean optionalParameters = callExpression.optionalParameters(); // TODO: how to use this?
 
     String name = "println";
-
-    printlnMethod(identifier, name, arguments);
+    printlnMethod(identifier, "println", arguments);
     return this;
   }
 
