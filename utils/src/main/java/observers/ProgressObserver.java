@@ -5,11 +5,11 @@ import printer.ProgressType;
 public class ProgressObserver implements Observer {
   private final ProgressPrinter progressPrinter;
   private float totalProgress;
-  private final int TOTAL_MODULES;
+  private final int totalModules;
 
   public ProgressObserver(ProgressPrinter progressPrinter, int totalModules) {
     this.progressPrinter = progressPrinter;
-    TOTAL_MODULES = totalModules;
+    this.totalModules = totalModules;
   }
 
   public void finish() {
@@ -25,7 +25,7 @@ public class ProgressObserver implements Observer {
     Progressable progressable = (Progressable) observable;
     float progress = progressable.getProgress();
 
-    totalProgress += progress / TOTAL_MODULES;
+    totalProgress += progress / totalModules;
 
     progressPrinter.printProgress(totalProgress, ProgressType.IN_PROGRESS);
   }

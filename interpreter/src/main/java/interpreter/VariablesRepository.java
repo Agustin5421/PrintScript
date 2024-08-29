@@ -1,5 +1,6 @@
 package interpreter;
 
+import ast.literal.Literal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,62 +8,33 @@ import java.util.Map;
 public class VariablesRepository {
   // TODO: Manage more than just string and number variables.
 
-  private final Map<String, String> stringVars;
-  private final Map<String, Number> numberVars;
+  // Single map to store all variables
+  private final Map<String, Literal<?>> variables;
 
   public VariablesRepository() {
-    this.stringVars = new HashMap<>();
-    this.numberVars = new HashMap<>();
+    this.variables = new HashMap<>();
   }
 
-  private VariablesRepository(Map<String, String> stringVars, Map<String, Number> numberVars) {
-    this.stringVars = Collections.unmodifiableMap(new HashMap<>(stringVars));
-    this.numberVars = Collections.unmodifiableMap(new HashMap<>(numberVars));
+  private VariablesRepository(Map<String, Literal<?>> variables) {
+    this.variables = Collections.unmodifiableMap(new HashMap<>(variables));
   }
 
-  public Map<String, Number> getNumberVars() {
-    return new HashMap<>(numberVars);
+  public Map<String, Literal<?>> getVariables() {
+    return new HashMap<>(variables);
   }
 
-  public Map<String, String> getStringVars() {
-    return new HashMap<>(stringVars);
-  }
-
-  public Object getVariable(String name) {
-    if (stringVars.containsKey(name)) {
-      return stringVars.get(name);
-    } else if (numberVars.containsKey(name)) {
-      return numberVars.get(name);
+  @SuppressWarnings("unchecked")
+  public <T> Literal<T> getVariable(String name) {
+    if (variables.containsKey(name)) {
+      return (Literal<T>) variables.get(name);
     } else {
       throw new IllegalArgumentException("Variable " + name + " is not defined");
     }
   }
 
-  public VariablesRepository addVariable(String name, Object value) {
-    if (value instanceof String) {
-      return addVariable(name, (String) value);
-    } else if (value instanceof Number) {
-      return addVariable(name, (Number) value);
-    } else {
-      throw new IllegalArgumentException("Unknown literal type");
-    }
-  }
-
-  private VariablesRepository addVariable(String name, String value) {
-    if (numberVars.containsKey(name)) {
-      throw new IllegalArgumentException("Variable " + name + " is already defined as a number");
-    }
-    Map<String, String> newStringVars = new HashMap<>(stringVars);
-    newStringVars.put(name, value);
-    return new VariablesRepository(newStringVars, numberVars);
-  }
-
-  private VariablesRepository addVariable(String name, Number value) {
-    if (stringVars.containsKey(name)) {
-      throw new IllegalArgumentException("Variable " + name + " is already defined as a string");
-    }
-    Map<String, Number> newNumberVars = new HashMap<>(numberVars);
-    newNumberVars.put(name, value);
-    return new VariablesRepository(stringVars, newNumberVars);
+  public VariablesRepository addVariable(String name, Literal<?> value) {
+    Map<String, Literal<?>> newVariables = new HashMap<>(variables);
+    newVariables.put(name, value);
+    return new VariablesRepository(newVariables);
   }
 }

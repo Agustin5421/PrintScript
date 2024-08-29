@@ -16,6 +16,7 @@ public class ExpressionEvaluator implements Evaluator {
   private final int line;
   private int column;
   // TODO handle the position of each literal created
+
   private final Position defaultPosition;
 
   public ExpressionEvaluator(VariablesRepository variablesRepository, int line) {
@@ -24,8 +25,6 @@ public class ExpressionEvaluator implements Evaluator {
     this.defaultPosition = new Position(line, 0);
   }
 
-  // This should return a Literal at the end of the calling
-  // (or else throw an exception if the variable is not defined)
   @Override
   public AstNode evaluate(AstNode statement) throws IllegalArgumentException {
     try {
@@ -35,7 +34,8 @@ public class ExpressionEvaluator implements Evaluator {
         return statement;
       } else if (statement instanceof Identifier) {
         try {
-          Object value = variablesRepository.getVariable(((Identifier) statement).name());
+          Literal<?> literal = variablesRepository.getVariable(((Identifier) statement).name());
+          Object value = literal.value();
           if (value instanceof String) {
             return new StringLiteral((String) value, defaultPosition, defaultPosition);
           } else {
@@ -43,14 +43,14 @@ public class ExpressionEvaluator implements Evaluator {
           }
         } catch (IllegalArgumentException exception) {
           throw new IllegalArgumentException(
-              "Trying to perform an invalid arithmetic operation at: " + line + "col: " + column);
+                  "Trying to perform an invalid arithmetic operation at: " + line + "col: " + column);
         }
       } else {
         throw new IllegalArgumentException("Something else went wrong?");
       }
     } catch (Exception e) {
       throw new IllegalArgumentException(
-          "Trying to perform an invalid arithmetic operation at: " + line + "col: " + column);
+              "Trying to perform an invalid arithmetic operation at: " + line + "col: " + column);
     }
   }
 
@@ -60,33 +60,33 @@ public class ExpressionEvaluator implements Evaluator {
     return switch (statement.operator()) {
       case "+" -> validateAddOperation(left, right);
       case "-" -> validateOperation(
-          left,
-          right,
-          (a, b) ->
-              checkIfBothIntegers(a, b)
-                  ? a.intValue() - b.intValue()
-                  : a.doubleValue() - b.doubleValue());
+              left,
+              right,
+              (a, b) ->
+                      checkIfBothIntegers(a, b)
+                              ? a.intValue() - b.intValue()
+                              : a.doubleValue() - b.doubleValue());
       case "/" -> validateOperation(
-          left,
-          right,
-          (a, b) ->
-              checkIfBothIntegers(a, b)
-                  ? a.intValue() / b.intValue()
-                  : a.doubleValue() / b.doubleValue());
+              left,
+              right,
+              (a, b) ->
+                      checkIfBothIntegers(a, b)
+                              ? a.intValue() / b.intValue()
+                              : a.doubleValue() / b.doubleValue());
       case "*" -> validateOperation(
-          left,
-          right,
-          (a, b) ->
-              checkIfBothIntegers(a, b)
-                  ? a.intValue() * b.intValue()
-                  : a.doubleValue() * b.doubleValue());
+              left,
+              right,
+              (a, b) ->
+                      checkIfBothIntegers(a, b)
+                              ? a.intValue() * b.intValue()
+                              : a.doubleValue() * b.doubleValue());
       case "%" -> validateOperation(
-          left,
-          right,
-          (a, b) ->
-              checkIfBothIntegers(a, b)
-                  ? a.intValue() % b.intValue()
-                  : a.doubleValue() % b.doubleValue());
+              left,
+              right,
+              (a, b) ->
+                      checkIfBothIntegers(a, b)
+                              ? a.intValue() % b.intValue()
+                              : a.doubleValue() % b.doubleValue());
       default -> throw new IllegalArgumentException("Not a valid operation");
     };
   }
@@ -98,18 +98,18 @@ public class ExpressionEvaluator implements Evaluator {
   private AstNode validateAddOperation(AstNode left, AstNode right) {
     if (left instanceof StringLiteral || right instanceof StringLiteral) {
       return new StringLiteral(
-          ((Literal<?>) evaluate(left)).value().toString()
-              + ((Literal<?>) evaluate(right)).value().toString(),
-          defaultPosition,
-          defaultPosition);
+              ((Literal<?>) evaluate(left)).value().toString()
+                      + ((Literal<?>) evaluate(right)).value().toString(),
+              defaultPosition,
+              defaultPosition);
     } else {
       return validateOperation(
-          left,
-          right,
-          (a, b) ->
-              checkIfBothIntegers(a, b)
-                  ? a.intValue() + b.intValue()
-                  : a.doubleValue() + b.doubleValue());
+              left,
+              right,
+              (a, b) ->
+                      checkIfBothIntegers(a, b)
+                              ? a.intValue() + b.intValue()
+                              : a.doubleValue() + b.doubleValue());
     }
   }
 
