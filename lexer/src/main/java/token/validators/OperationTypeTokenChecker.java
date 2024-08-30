@@ -14,8 +14,6 @@ public class OperationTypeTokenChecker implements TypeGetter {
     operationsMap.put("-", TokenDataType.OPERAND);
     operationsMap.put("*", TokenDataType.OPERAND);
     operationsMap.put("/", TokenDataType.OPERAND);
-    operationsMap.put("<", TokenDataType.OPERAND);
-    operationsMap.put(">", TokenDataType.OPERAND);
   }
 
   @Override

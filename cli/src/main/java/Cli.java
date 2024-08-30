@@ -16,11 +16,8 @@ import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;
 import token.Token;
-import token.validators.DataTypeTokenChecker;
-import token.validators.IdentifierTypeChecker;
-import token.validators.OperationTypeTokenChecker;
-import token.validators.TagTypeTokenChecker;
-import token.validators.TokenTypeChecker;
+import token.validators.*;
+import token.validators.SyntaxTokenChecker;
 
 public class Cli {
   private static final Logger logger = Logger.getLogger(Cli.class.getName());
@@ -143,7 +140,7 @@ public class Cli {
   }
 
   private static Lexer initLexer(ProgressObserver observer) {
-    TagTypeTokenChecker tagTypeChecker = new TagTypeTokenChecker();
+    SyntaxTokenChecker tagTypeChecker = new SyntaxTokenChecker();
     OperationTypeTokenChecker operationTypeChecker = new OperationTypeTokenChecker();
     DataTypeTokenChecker dataTypeChecker = new DataTypeTokenChecker();
     IdentifierTypeChecker identifierTypeChecker = new IdentifierTypeChecker();

@@ -16,11 +16,8 @@ import org.junit.jupiter.api.Test;
 import parsers.Parser;
 import token.Position;
 import token.Token;
-import token.validators.DataTypeTokenChecker;
-import token.validators.IdentifierTypeChecker;
-import token.validators.OperationTypeTokenChecker;
-import token.validators.TagTypeTokenChecker;
-import token.validators.TokenTypeChecker;
+import token.validators.*;
+import token.validators.SyntaxTokenChecker;
 
 public class FormatterTest {
   private final MainFormatter formatter = MainFormatterInitializer.init();
@@ -174,7 +171,7 @@ public class FormatterTest {
   }
 
   private static Lexer initLexer() {
-    TagTypeTokenChecker tagTypeChecker = new TagTypeTokenChecker();
+    SyntaxTokenChecker tagTypeChecker = new SyntaxTokenChecker();
     OperationTypeTokenChecker operationTypeChecker = new OperationTypeTokenChecker();
     DataTypeTokenChecker dataTypeChecker = new DataTypeTokenChecker();
     IdentifierTypeChecker identifierTypeChecker = new IdentifierTypeChecker();

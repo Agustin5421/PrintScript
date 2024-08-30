@@ -1,17 +1,16 @@
 package token.types;
 
 public enum TokenTagType implements TokenType {
-  /*
-  PUBLIC_KEYWORD,
-  FINAL_KEYWORD,
-   */
   IDENTIFIER,
   ASSIGNATION,
   SEMICOLON,
   DECLARATION,
-  SYNTAX,
+  COLON,
   INVALID,
   OPEN_PARENTHESIS,
   CLOSE_PARENTHESIS,
+  OPEN_BRACES,
+  CLOSE_BRACES,
+  IF,
   COMMA
 }

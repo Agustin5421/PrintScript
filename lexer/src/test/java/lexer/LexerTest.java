@@ -13,7 +13,7 @@ import token.types.TokenValueType;
 import token.validators.DataTypeTokenChecker;
 import token.validators.IdentifierTypeChecker;
 import token.validators.OperationTypeTokenChecker;
-import token.validators.TagTypeTokenChecker;
+import token.validators.SyntaxTokenChecker;
 import token.validators.TokenTypeChecker;
 
 public class LexerTest {
@@ -110,8 +110,16 @@ public class LexerTest {
     assertEquals(token.getInitialPosition().col(), 1);
   }
 
+  @Test
+  public void testIfCase() {
+    Lexer lexer = initLexer();
+    String code = "if (a) { let a = 2; }";
+    List<Token> tokens = lexer.extractTokens(code);
+    assertEquals(11, tokens.size());
+  }
+
   private static Lexer initLexer() {
-    TagTypeTokenChecker tagTypeChecker = new TagTypeTokenChecker();
+    SyntaxTokenChecker tagTypeChecker = new SyntaxTokenChecker();
     OperationTypeTokenChecker operationTypeChecker = new OperationTypeTokenChecker();
     DataTypeTokenChecker dataTypeChecker = new DataTypeTokenChecker();
     IdentifierTypeChecker identifierTypeChecker = new IdentifierTypeChecker();
