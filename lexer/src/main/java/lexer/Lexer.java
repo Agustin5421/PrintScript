@@ -5,8 +5,6 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 import exceptions.UnsupportedCharacter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import observers.Observer;
 import observers.Progressable;
 import token.Position;
@@ -17,54 +15,42 @@ import token.validators.TokenTypeChecker;
 
 public class Lexer implements Progressable {
   private final TokenTypeChecker tokenTypeGetter;
+  private final PatternHandler patternHandler;
   private final List<Observer> observers;
   private int totalLength;
 
-  public Lexer(TokenTypeChecker tokenTypeGetter, List<Observer> observers) {
-    this.tokenTypeGetter = tokenTypeGetter;
-    this.observers = observers;
-  }
-
   public Lexer(TokenTypeChecker tokenTypeGetter) {
     this.tokenTypeGetter = tokenTypeGetter;
-    observers = List.of();
+    this.patternHandler = new PatternHandler();
+    this.observers = List.of();
   }
 
-  private static final String TEXT_PATTERNS =
-      "\"[^\"]*\""
-          + // Text between double quotes
-          "|'[^']*'"
-          + // Text between single quotes
-          "|\\d+(\\.\\d+)?[a-zA-Z_]*"
-          + // Numbers with optional decimal part and units (with letters)
-          "|\\b[a-zA-Z_][a-zA-Z\\d_]*\\b"
-          + // Identifiers and keywords
-          "|[=;:]"
-          + // Equal, semicolon, and colon
-          "|[+\\-*/%]"
-          + // Arithmetic operands
-          "|[()<>{},]"
-          + // Parentheses, angle brackets, curly braces, comma
-          "|[.]"
-          + // Period (for decimal for decimal points or standalone)
-          "|\\S"; // Any other single character (mismatch), excluding spaces
+  public Lexer(TokenTypeChecker tokenTypeGetter, List<Observer> observers) {
+    this.tokenTypeGetter = tokenTypeGetter;
+    this.patternHandler = new PatternHandler();
+    this.observers = List.of();
+  }
+
+  public Lexer(
+          TokenTypeChecker tokenTypeGetter, List<Observer> observers, PatternHandler patternHandler) {
+    this.tokenTypeGetter = tokenTypeGetter;
+    this.observers = observers;
+    this.patternHandler = patternHandler;
+  }
+
+  public Lexer(TokenTypeChecker tokenTypeGetter, PatternHandler patternHandler) {
+    this.tokenTypeGetter = tokenTypeGetter;
+    this.patternHandler = patternHandler;
+    this.observers = List.of();
+  }
 
   public List<Token> extractTokens(String code) {
     List<Token> tokens = new ArrayList<>();
-    Pattern pattern = Pattern.compile(TEXT_PATTERNS);
-    Matcher matcher = pattern.matcher(code);
+    List<String> words = patternHandler.extractWords(code);
+    List<int[]> positions = patternHandler.extractPositions(code);
 
     Position initialPosition = new Position(1, 1);
     int currentIndex = 0;
-
-    List<String> words = new ArrayList<>();
-    List<int[]> positions = new ArrayList<>();
-
-    while (matcher.find()) {
-      String word = matcher.group();
-      words.add(word);
-      positions.add(new int[] {matcher.start(), matcher.end()});
-    }
 
     totalLength = words.size();
 
@@ -123,7 +109,6 @@ public class Lexer implements Progressable {
     notifyObservers();
   }
 
-  // Progress should be calculated over the total words in the code
   @Override
   public float getProgress() {
     return (((float) 1 / totalLength) * 100);
