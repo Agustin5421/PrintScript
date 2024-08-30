@@ -32,7 +32,7 @@ public class Lexer implements Progressable {
   }
 
   public Lexer(
-          TokenTypeChecker tokenTypeGetter, List<Observer> observers, PatternHandler patternHandler) {
+      TokenTypeChecker tokenTypeGetter, List<Observer> observers, PatternHandler patternHandler) {
     this.tokenTypeGetter = tokenTypeGetter;
     this.observers = observers;
     this.patternHandler = patternHandler;
