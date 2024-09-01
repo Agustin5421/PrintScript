@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import exceptions.UnsupportedCharacter;
 import java.util.List;
-import org.junit.jupiter.api.Test;
 import token.Token;
 import token.types.TokenDataType;
 import token.types.TokenSyntaxType;
@@ -41,7 +40,6 @@ public class LexerTest {
   }
 
   // Tests for version 1.0
-  @Test
   public void testVarDeclaration() {
     String input = "let myVar string : x = 5;";
     List<Token> tokens = lexer.tokenize(input);
@@ -53,50 +51,42 @@ public class LexerTest {
     assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(4).type());
   }
 
-  @Test
   public void testFunctionDeclaration() {
     String input = "function add(a) { return a + b; }";
     List<Token> tokens = lexer.tokenize(input);
     assertEquals(12, tokens.size());
   }
 
-  @Test
   public void testPrint() {
     String input = "println(\"Hello, world!\");";
     List<Token> tokens = lexer.tokenize(input);
     assertEquals(5, tokens.size());
   }
 
-  @Test
   public void testStringLiteral() {
     String input = "let greeting = \"Hello, world!\";";
     List<Token> tokens = lexer.tokenize(input);
     assertEquals(5, tokens.size());
   }
 
-  @Test
   public void testNumberLiteral() {
     String input = "let greeting = 5;";
     List<Token> tokens = lexer.tokenize(input);
     assertEquals(5, tokens.size());
   }
 
-  @Test
   public void testBinaryOperation() {
     String input = "let greeting = 5 + 5;";
     List<Token> tokens = lexer.tokenize(input);
     assertEquals(7, tokens.size());
   }
 
-  @Test
   public void testUnsupportedChar() {
     String input = "let greeting = a,;";
     assertThrows(UnsupportedCharacter.class, () -> lexer.tokenize(input));
   }
 
-
   // Tests for version 1.1
-  @Test
   public void testIfStatement() {
     String input = "if (a) { return a; } else { return b; }";
     List<Token> tokens = lexer.tokenize(input);

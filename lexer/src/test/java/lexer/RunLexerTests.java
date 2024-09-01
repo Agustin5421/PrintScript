@@ -7,7 +7,7 @@ public class RunLexerTests {
 
   // Tests for version 1.0
   @Test
-  public void RunTestsV1() {
+  public void runTestsV1() {
     Lexer lexer = LexerFactory.getLexer("1.0");
     LexerTest tests = new LexerTest(lexer);
 
@@ -16,7 +16,7 @@ public class RunLexerTests {
 
   // Tests for version 1.1
   @Test
-  public void RunTestsV2() {
+  public void runTestsV2() {
     Lexer lexer = LexerFactory.getLexer("1.1");
     LexerTest tests = new LexerTest(lexer);
 
