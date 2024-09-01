@@ -10,19 +10,18 @@ import token.types.TokenValueType;
 
 public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {
-    TokenType tokenType = token.getType();
+    TokenType tokenType = token.type();
     if (tokenType == TokenValueType.STRING) {
-      return new StringLiteral(
-          token.getValue(), token.getInitialPosition(), token.getFinalPosition());
+      return new StringLiteral(token.value(), token.initialPosition(), token.finalPosition());
     }
 
     if (tokenType == TokenValueType.NUMBER) {
       return new NumberLiteral(
-          Integer.parseInt(token.getValue()), token.getInitialPosition(), token.getFinalPosition());
+          Integer.parseInt(token.value()), token.initialPosition(), token.finalPosition());
     }
 
-    Position position = token.getInitialPosition();
-    String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
+    Position position = token.initialPosition();
+    String exceptionMessage = getExceptionMessage(token.value(), position.row(), position.col());
 
     throw new UnsupportedDataType(exceptionMessage);
   }

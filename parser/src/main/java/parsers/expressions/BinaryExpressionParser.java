@@ -10,7 +10,7 @@ import java.util.List;
 import token.Position;
 import token.Token;
 import token.types.TokenDataType;
-import token.types.TokenTagType;
+import token.types.TokenSyntaxType;
 
 public class BinaryExpressionParser implements ExpressionParser {
 
@@ -36,23 +36,23 @@ public class BinaryExpressionParser implements ExpressionParser {
     Expression left = ExpressionParserProvider.parse(leftTokens);
     Expression right = ExpressionParserProvider.parse(rightTokens);
 
-    return new BinaryExpression(left, right, operator.getValue());
+    return new BinaryExpression(left, right, operator.value());
   }
 
   private List<Token> removeUnnecessaryParentheses(List<Token> tokens) {
     // Eliminate surrounding parentheses only if they wrap the entire expression
     while (tokens.size() > 2
-        && tokens.get(0).getType() == TokenTagType.OPEN_PARENTHESIS
-        && tokens.get(tokens.size() - 1).getType() == TokenTagType.CLOSE_PARENTHESIS) {
+        && tokens.get(0).type() == TokenSyntaxType.OPEN_PARENTHESIS
+        && tokens.get(tokens.size() - 1).type() == TokenSyntaxType.CLOSE_PARENTHESIS) {
 
       int level = 0;
       boolean valid = true;
 
       for (int i = 0; i < tokens.size(); i++) {
         Token token = tokens.get(i);
-        if (token.getType() == TokenTagType.OPEN_PARENTHESIS) {
+        if (token.type() == TokenSyntaxType.OPEN_PARENTHESIS) {
           level++;
-        } else if (token.getType() == TokenTagType.CLOSE_PARENTHESIS) {
+        } else if (token.type() == TokenSyntaxType.CLOSE_PARENTHESIS) {
           level--;
         }
 
@@ -80,9 +80,9 @@ public class BinaryExpressionParser implements ExpressionParser {
     for (int i = 0; i < tokens.size(); i++) {
       Token token = tokens.get(i);
 
-      if (token.getType() == TokenTagType.OPEN_PARENTHESIS) {
+      if (token.type() == TokenSyntaxType.OPEN_PARENTHESIS) {
         level++;
-      } else if (token.getType() == TokenTagType.CLOSE_PARENTHESIS) {
+      } else if (token.type() == TokenSyntaxType.CLOSE_PARENTHESIS) {
         level--;
       } else if (level == 0 && isOperator(token)) {
         int currentPrecedence = getPrecedence(token);
@@ -99,10 +99,10 @@ public class BinaryExpressionParser implements ExpressionParser {
     if (operatorIndex == -1) {
       StringBuilder statementString = new StringBuilder();
       for (Token token : tokens) {
-        statementString.append(token.getValue());
+        statementString.append(token.value());
       }
 
-      Position first = tokens.get(0).getInitialPosition();
+      Position first = tokens.get(0).initialPosition();
 
       String message = getExceptionMessage(statementString.toString(), first.row(), first.col());
 
@@ -113,12 +113,12 @@ public class BinaryExpressionParser implements ExpressionParser {
   }
 
   private boolean isOperator(Token token) {
-    return token.getType() == TokenDataType.OPERAND;
+    return token.type() == TokenDataType.OPERAND;
   }
 
   private int getPrecedence(Token token) {
     // Define precedence for different operators
-    return switch (token.getValue()) {
+    return switch (token.value()) {
       case "*", "/" -> 2;
       case "+", "-" -> 1;
       default -> 0;
