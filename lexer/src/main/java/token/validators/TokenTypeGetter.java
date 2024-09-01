@@ -1,14 +1,14 @@
 package token.validators;
 
 import java.util.List;
-import token.types.TokenTagType;
+import token.types.TokenSyntaxType;
 import token.types.TokenType;
 
-public class TokenTypeChecker implements TypeGetter {
+public class TokenTypeGetter implements TypeGetter {
 
   private final List<TypeGetter> validators;
 
-  public TokenTypeChecker(List<TypeGetter> validators) {
+  public TokenTypeGetter(List<TypeGetter> validators) {
     this.validators = validators;
   }
 
@@ -19,6 +19,6 @@ public class TokenTypeChecker implements TypeGetter {
         return type;
       }
     }
-    return TokenTagType.INVALID;
+    return TokenSyntaxType.INVALID;
   }
 }

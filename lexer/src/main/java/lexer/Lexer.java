@@ -11,67 +11,34 @@ import observers.Observer;
 import observers.Progressable;
 import token.Position;
 import token.Token;
-import token.types.TokenTagType;
+import token.types.TokenSyntaxType;
 import token.types.TokenType;
-import token.validators.TokenTypeChecker;
+import token.validators.TokenTypeGetter;
 
 public class Lexer implements Progressable {
-  private final TokenTypeChecker tokenTypeGetter;
+  private final TokenTypeGetter tokenTypeGetter;
   private final List<Observer> observers;
   private int totalLength;
+  private final PatternProvider patternProvider;
 
-  public Lexer(TokenTypeChecker tokenTypeGetter, List<Observer> observers) {
-    this.tokenTypeGetter = tokenTypeGetter;
-    this.observers = observers;
-  }
-
-  public Lexer(TokenTypeChecker tokenTypeGetter) {
+  public Lexer(TokenTypeGetter tokenTypeGetter) {
     this.tokenTypeGetter = tokenTypeGetter;
     observers = List.of();
+    patternProvider = new PatternProvider();
   }
 
-  private static final String TEXT_PATTERNS =
-      "\"[^\"]*\""
-          + // Text between double quotes
-          "|'[^']*'"
-          + // Text between single quotes
-          "|\\d+(\\.\\d+)?[a-zA-Z_]*"
-          + // Numbers with optional decimal part and units (with letters)
-          "|\\b[a-zA-Z_][a-zA-Z\\d_]*\\b"
-          + // Identifiers and keywords
-          "|[=;:]"
-          + // Equal, semicolon, and colon
-          "|[+\\-*/%]"
-          + // Arithmetic operands
-          "|[()<>{},]"
-          + // Parentheses, angle brackets, curly braces, comma
-          "|[.]"
-          + // Period (for decimal for decimal points or standalone)
-          "|\\S"; // Any other single character (mismatch), excluding spaces
-
-  public List<Token> extractTokens(String code) {
+  public List<Token> tokenize(String code) {
     List<Token> tokens = new ArrayList<>();
-    Pattern pattern = Pattern.compile(TEXT_PATTERNS);
+    Pattern pattern = patternProvider.getPattern();
     Matcher matcher = pattern.matcher(code);
 
     Position initialPosition = new Position(1, 1);
     int currentIndex = 0;
 
-    List<String> words = new ArrayList<>();
-    List<int[]> positions = new ArrayList<>();
-
     while (matcher.find()) {
       String word = matcher.group();
-      words.add(word);
-      positions.add(new int[] {matcher.start(), matcher.end()});
-    }
-
-    totalLength = words.size();
-
-    for (int i = 0; i < words.size(); i++) {
-      String word = words.get(i);
-      int start = positions.get(i)[0];
-      int end = positions.get(i)[1];
+      int start = matcher.start();
+      int end = matcher.end();
 
       initialPosition = updatePosition(code, currentIndex, start, initialPosition);
       Position finalPosition = updatePosition(code, start, end, initialPosition);
@@ -94,7 +61,7 @@ public class Lexer implements Progressable {
 
   private static void validateTokens(List<Token> tokens) {
     for (Token token : tokens) {
-      if (token.getType() == TokenTagType.INVALID) {
+      if (token.getType() == TokenSyntaxType.INVALID) {
         Position position = token.getInitialPosition();
         String message = getExceptionMessage(token.getValue(), position.row(), position.col());
         throw new UnsupportedCharacter(message);
