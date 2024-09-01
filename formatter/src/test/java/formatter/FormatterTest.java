@@ -9,6 +9,7 @@ import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import com.google.gson.JsonSyntaxException;
+import factory.LexerFactory;
 import java.util.List;
 import lexer.Lexer;
 import org.junit.jupiter.api.Assertions;
@@ -16,11 +17,6 @@ import org.junit.jupiter.api.Test;
 import parsers.Parser;
 import token.Position;
 import token.Token;
-import token.validators.DataTypeTokenChecker;
-import token.validators.IdentifierTypeChecker;
-import token.validators.OperationTypeTokenChecker;
-import token.validators.TagTypeTokenChecker;
-import token.validators.TokenTypeChecker;
 
 public class FormatterTest {
   private final MainFormatter formatter = MainFormatterInitializer.init();
@@ -98,7 +94,7 @@ public class FormatterTest {
 
     Lexer lexer = initLexer();
     List<Token> tokens =
-        lexer.extractTokens(
+        lexer.tokenize(
             """
                         let myVar     : number
                           = 2 + 3 * 2;
@@ -140,7 +136,7 @@ public class FormatterTest {
 
     Lexer lexer = initLexer();
     List<Token> tokens =
-        lexer.extractTokens(
+        lexer.tokenize(
             """
                         let myVar : number = 2 + 3 * 2;
                         println(myVar);
@@ -175,15 +171,6 @@ public class FormatterTest {
   }
 
   private static Lexer initLexer() {
-    TagTypeTokenChecker tagTypeChecker = new TagTypeTokenChecker();
-    OperationTypeTokenChecker operationTypeChecker = new OperationTypeTokenChecker();
-    DataTypeTokenChecker dataTypeChecker = new DataTypeTokenChecker();
-    IdentifierTypeChecker identifierTypeChecker = new IdentifierTypeChecker();
-
-    TokenTypeChecker tokenTypeChecker =
-        new TokenTypeChecker(
-            List.of(tagTypeChecker, operationTypeChecker, dataTypeChecker, identifierTypeChecker));
-
-    return new Lexer(tokenTypeChecker);
+    return LexerFactory.getLexer("1.0");
   }
 }

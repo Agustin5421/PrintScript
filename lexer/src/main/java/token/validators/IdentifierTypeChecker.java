@@ -1,25 +1,26 @@
 package token.validators;
 
 import java.util.regex.Pattern;
-import token.types.TokenTagType;
+import token.types.TokenSyntaxType;
 import token.types.TokenType;
 
 public class IdentifierTypeChecker implements TypeGetter {
 
-  private static final Pattern PRINTSCRIPT_IDENTIFIER_PATTERN =
-      Pattern.compile("^[a-zA-Z_][a-zA-Z\\d_]*$");
+  private final Pattern identifierPattern;
+
+  public IdentifierTypeChecker(Pattern identifierPattern) {
+    this.identifierPattern = identifierPattern;
+  }
 
   @Override
   public TokenType getType(String word) {
     if (isValidIdentifier(word)) {
-      return TokenTagType.IDENTIFIER;
+      return TokenSyntaxType.IDENTIFIER;
     }
-    return TokenTagType.INVALID;
+    return null;
   }
 
   private boolean isValidIdentifier(String word) {
-    return word != null
-        && !word.isEmpty()
-        && PRINTSCRIPT_IDENTIFIER_PATTERN.matcher(word).matches();
+    return word != null && !word.isEmpty() && identifierPattern.matcher(word).matches();
   }
 }

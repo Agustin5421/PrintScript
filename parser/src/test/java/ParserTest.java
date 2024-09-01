@@ -25,7 +25,7 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : string = 2;");
+    List<Token> tokens = lexer.tokenize("let myVar : string = 2;");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
@@ -49,7 +49,7 @@ public class ParserTest {
     Parser parser = ContextProvider.initBinaryExpressionParser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : number = (2+2) * (2/2) + 2;");
+    List<Token> tokens = lexer.tokenize("let myVar : number = (2+2) * (2/2) + 2;");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
@@ -67,7 +67,7 @@ public class ParserTest {
     Parser parser = ContextProvider.initBinaryExpressionParser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : number = 2 + 3 * A;");
+    List<Token> tokens = lexer.tokenize("let myVar : number = 2 + 3 * A;");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
@@ -85,7 +85,7 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("println('hello world');");
+    List<Token> tokens = lexer.tokenize("println('hello world');");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
@@ -101,7 +101,7 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("myVar = 2 + 3 * 2;");
+    List<Token> tokens = lexer.tokenize("myVar = 2 + 3 * 2;");
     Program program = parser.parse(tokens);
 
     assertEquals(1, program.statements().size(), "Program should contain 1 statement");
@@ -128,7 +128,7 @@ public class ParserTest {
 
     Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens =
-        lexer.extractTokens(
+        lexer.tokenize(
             "let myVar : number = 2 + 3 * 2;"
                 + "println(myVar);"
                 + "myVar = 'Hello World';"
@@ -181,7 +181,7 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("null;");
+    List<Token> tokens = lexer.tokenize("null;");
     assertThrows(UnsupportedStatementException.class, () -> parser.parse(tokens));
   }
 
@@ -190,7 +190,7 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("myVar = hello he * 2;");
+    List<Token> tokens = lexer.tokenize("myVar = hello he * 2;");
     assertThrows(UnsupportedExpressionException.class, () -> parser.parse(tokens));
   }
 
@@ -200,7 +200,7 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : number = 2 + 3 * 2");
+    List<Token> tokens = lexer.tokenize("let myVar : number = 2 + 3 * 2");
     assertThrows(SyntaxException.class, () -> parser.parse(tokens));
   }
 
@@ -209,7 +209,21 @@ public class ParserTest {
     Parser parser = new Parser();
 
     Lexer lexer = ContextProvider.initLexer();
-    List<Token> tokens = lexer.extractTokens("let myVar : boolean = 2 + 3 * 2;");
+    List<Token> tokens = lexer.tokenize("let myVar : boolean = 2 + 3 * 2;");
     assertThrows(UnsupportedDataType.class, () -> parser.parse(tokens));
   }
+
+  /*
+  @Test
+  public void testIfStatement() {
+    Parser parser = new Parser();
+
+    Lexer lexer = ContextProvider.initLexer();
+    List<Token> tokens =
+        lexer.tokenize("if (true) { println('hello world'); } else { println('goodbye world'); }");
+
+    assertThrows(UnsupportedStatementException.class, () -> parser.parse(tokens));
+  }
+
+   */
 }

@@ -1,7 +1,15 @@
 import ast.root.Program;
+import factory.LexerFactory;
 import formatter.MainFormatter;
 import formatter.MainFormatterInitializer;
 import interpreter.Interpreter;
+import lexer.Lexer;
+import linter.LinterV2;
+import observers.ProgressObserver;
+import observers.ProgressPrinter;
+import parsers.Parser;
+import token.Token;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -10,17 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lexer.Lexer;
-import linter.LinterV2;
-import observers.ProgressObserver;
-import observers.ProgressPrinter;
-import parsers.Parser;
-import token.Token;
-import token.validators.DataTypeTokenChecker;
-import token.validators.IdentifierTypeChecker;
-import token.validators.OperationTypeTokenChecker;
-import token.validators.TagTypeTokenChecker;
-import token.validators.TokenTypeChecker;
 
 public class Cli {
   private static final Logger logger = Logger.getLogger(Cli.class.getName());
@@ -43,7 +40,7 @@ public class Cli {
       Parser parser,
       Interpreter interpreter) {
     try {
-      List<Token> tokens = lexer.extractTokens(content);
+      List<Token> tokens = lexer.tokenize(content);
 
       Program program = parser.parse(tokens);
 
@@ -121,7 +118,7 @@ public class Cli {
     Parser parser = new Parser(List.of(observer));
 
     try {
-      return parser.parse(lexer.extractTokens(code));
+      return parser.parse(lexer.tokenize(code));
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return null;
@@ -143,16 +140,7 @@ public class Cli {
   }
 
   private static Lexer initLexer(ProgressObserver observer) {
-    TagTypeTokenChecker tagTypeChecker = new TagTypeTokenChecker();
-    OperationTypeTokenChecker operationTypeChecker = new OperationTypeTokenChecker();
-    DataTypeTokenChecker dataTypeChecker = new DataTypeTokenChecker();
-    IdentifierTypeChecker identifierTypeChecker = new IdentifierTypeChecker();
-
-    TokenTypeChecker tokenTypeChecker =
-        new TokenTypeChecker(
-            List.of(tagTypeChecker, operationTypeChecker, dataTypeChecker, identifierTypeChecker));
-
-    return new Lexer(tokenTypeChecker, List.of(observer));
+    return LexerFactory.getLexer("1.1");
   }
 
   private static void writeToFile(String text, String filepath) {

@@ -4,7 +4,7 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import ast.root.AstNode;
 import ast.root.Program;
-import exceptions.SyntaxException;
+import ast.splitters.StatementSplitter;
 import exceptions.UnsupportedStatementException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,27 +16,29 @@ import parsers.statements.StatementParser;
 import parsers.statements.VariableDeclarationParser;
 import token.Position;
 import token.Token;
-import token.types.TokenTagType;
 
 public class Parser implements Progressable {
   private final List<StatementParser> statementParsers;
   private final List<Observer> observers;
+  private final StatementSplitter statementSplitter;
   private int totalStatements;
 
   public Parser(List<Observer> observers) {
     this.statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
     this.observers = observers;
+    this.statementSplitter = new StatementSplitter();
   }
 
   public Parser() {
     this.statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
     this.observers = List.of();
+    this.statementSplitter = new StatementSplitter();
   }
 
   public Program parse(List<Token> tokens) {
-    List<List<Token>> statements = splitBySemicolon(tokens);
+    List<List<Token>> statements = statementSplitter.split(tokens);
 
     List<AstNode> astNodes = new ArrayList<>();
 
@@ -50,34 +52,10 @@ public class Parser implements Progressable {
       astNodes.add(astNode);
       updateProgress();
     }
-    Position start = tokens.get(0).getInitialPosition();
-    Position end = tokens.get(tokens.size() - 1).getFinalPosition();
+    Position start = tokens.get(0).initialPosition();
+    Position end = tokens.get(tokens.size() - 1).finalPosition();
 
     return new Program(astNodes, start, end);
-  }
-
-  private static List<List<Token>> splitBySemicolon(List<Token> tokens) {
-    List<List<Token>> result = new ArrayList<>();
-    List<Token> currentSublist = new ArrayList<>();
-
-    for (Token token : tokens) {
-      if (token.getType() == TokenTagType.SEMICOLON) {
-        result.add(new ArrayList<>(currentSublist));
-        currentSublist.clear();
-      } else {
-        currentSublist.add(token);
-      }
-    }
-
-    // Checks if the statement ends with a semicolon
-    Token lastToken = tokens.get(tokens.size() - 1);
-
-    if (lastToken.getType() != TokenTagType.SEMICOLON) {
-      String message = getExceptionMessage(lastToken.getValue(), tokens.size(), 1);
-      throw new SyntaxException("expected ';' but got: " + message);
-    }
-
-    return result;
   }
 
   private StatementParser getValidParser(List<Token> statement) {
@@ -88,8 +66,8 @@ public class Parser implements Progressable {
     }
 
     Token token = statement.get(0);
-    Position position = token.getInitialPosition();
-    String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
+    Position position = token.initialPosition();
+    String exceptionMessage = getExceptionMessage(token.value(), position.row(), position.col());
     throw new UnsupportedStatementException(exceptionMessage);
   }
 

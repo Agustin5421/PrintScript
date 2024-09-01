@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import token.Position;
 import token.Token;
-import token.types.TokenTagType;
+import token.types.TokenSyntaxType;
 import token.types.TokenType;
 
 public class CallFunctionParser implements StatementParser {
@@ -21,9 +21,9 @@ public class CallFunctionParser implements StatementParser {
 
   @Override
   public AstNode parse(List<Token> tokens) {
-    String functionName = tokens.get(0).getValue();
-    Position start = tokens.get(0).getInitialPosition();
-    Position end = tokens.get(tokens.size() - 1).getFinalPosition();
+    String functionName = tokens.get(0).value();
+    Position start = tokens.get(0).initialPosition();
+    Position end = tokens.get(tokens.size() - 1).finalPosition();
 
     // Function name
     Identifier identifier = new Identifier(functionName, start, end);
@@ -46,7 +46,7 @@ public class CallFunctionParser implements StatementParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return reservedWords.contains(tokens.get(0).getValue());
+    return reservedWords.contains(tokens.get(0).value());
   }
 
   public static List<Token> extractArguments(List<Token> tokens) {
@@ -56,9 +56,9 @@ public class CallFunctionParser implements StatementParser {
     int openParentheses = 0;
 
     for (Token token : tokens) {
-      TokenType type = token.getType();
+      TokenType type = token.type();
 
-      if (type == TokenTagType.OPEN_PARENTHESIS) {
+      if (type == TokenSyntaxType.OPEN_PARENTHESIS) {
         if (inArguments) {
           throw new SyntaxException("Unexpected '(' while already inside arguments.");
         }
@@ -67,7 +67,7 @@ public class CallFunctionParser implements StatementParser {
         continue;
       }
 
-      if (type == TokenTagType.CLOSE_PARENTHESIS) {
+      if (type == TokenSyntaxType.CLOSE_PARENTHESIS) {
         if (!inArguments) {
           throw new SyntaxException("Unexpected ')' outside of arguments.");
         }
@@ -84,7 +84,7 @@ public class CallFunctionParser implements StatementParser {
       }
 
       if (inArguments) {
-        if (type == TokenTagType.COMMA) {
+        if (type == TokenSyntaxType.COMMA) {
           if (currentArgument.isEmpty()) {
             throw new SyntaxException("Comma without preceding argument.");
           }

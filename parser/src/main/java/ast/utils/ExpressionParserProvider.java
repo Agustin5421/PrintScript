@@ -24,8 +24,8 @@ public class ExpressionParserProvider {
     }
 
     Token token = statement.get(0);
-    Position position = token.getInitialPosition();
-    String exceptionMessage = getExceptionMessage(token.getValue(), position.row(), position.col());
+    Position position = token.initialPosition();
+    String exceptionMessage = getExceptionMessage(token.value(), position.row(), position.col());
     throw new UnsupportedExpressionException(exceptionMessage);
   }
 }

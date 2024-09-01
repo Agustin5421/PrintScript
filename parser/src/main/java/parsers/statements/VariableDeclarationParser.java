@@ -15,26 +15,26 @@ import token.Token;
 public class VariableDeclarationParser implements StatementParser {
   @Override
   public AstNode parse(List<Token> tokens) {
-    Position start = tokens.get(0).getInitialPosition();
-    Position end = tokens.get(tokens.size() - 1).getFinalPosition();
+    Position start = tokens.get(0).initialPosition();
+    Position end = tokens.get(tokens.size() - 1).finalPosition();
 
-    Identifier identifier = new Identifier(tokens.get(1).getValue(), start, end);
+    Identifier identifier = new Identifier(tokens.get(1).value(), start, end);
 
-    if (!tokens.get(2).getValue().equals(":")) {
+    if (!tokens.get(2).value().equals(":")) {
       throw new SyntaxException(
           "expected ':' at "
-              + tokens.get(2).getInitialPosition().toString()
+              + tokens.get(2).initialPosition().toString()
               + " but found '"
-              + tokens.get(2).getValue()
+              + tokens.get(2).value()
               + "' instead.");
     }
 
-    if (!tokens.get(3).getValue().equals("number") && !tokens.get(3).getValue().equals("string")) {
+    if (!tokens.get(3).value().equals("number") && !tokens.get(3).value().equals("string")) {
       throw new UnsupportedDataType(
           "Expected 'number' or 'string' at "
-              + tokens.get(3).getInitialPosition().toString()
+              + tokens.get(3).initialPosition().toString()
               + " but found "
-              + tokens.get(3).getValue()
+              + tokens.get(3).value()
               + " instead.");
     }
 
@@ -45,6 +45,6 @@ public class VariableDeclarationParser implements StatementParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return Objects.equals(tokens.get(0).getValue(), "let");
+    return Objects.equals(tokens.get(0).value(), "let");
   }
 }
