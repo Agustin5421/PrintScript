@@ -17,16 +17,40 @@ public class LexerTest {
     this.lexer = lexer;
   }
 
+  public void runAllTests(String version) {
+    switch (version) {
+      case "1.0" -> runAllTestsV1();
+      case "1.1" -> runAllTestsV2();
+      default -> throw new IllegalArgumentException("Invalid version");
+    }
+  }
+
+  private void runAllTestsV2() {
+    runAllTestsV1();
+    testIfStatement();
+  }
+
+  private void runAllTestsV1() {
+    testVarDeclaration();
+    testFunctionDeclaration();
+    testPrint();
+    testStringLiteral();
+    testNumberLiteral();
+    testBinaryOperation();
+    testUnsupportedChar();
+  }
+
+  // Tests for version 1.0
   @Test
   public void testVarDeclaration() {
     String input = "let myVar string : x = 5;";
     List<Token> tokens = lexer.tokenize(input);
     assertEquals(8, tokens.size());
-    assertEquals(TokenSyntaxType.DECLARATION, tokens.get(0).getType());
-    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(1).getType());
-    assertEquals(TokenDataType.STRING_TYPE, tokens.get(2).getType());
-    assertEquals(TokenSyntaxType.COLON, tokens.get(3).getType());
-    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(4).getType());
+    assertEquals(TokenSyntaxType.DECLARATION, tokens.get(0).type());
+    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(1).type());
+    assertEquals(TokenDataType.STRING_TYPE, tokens.get(2).type());
+    assertEquals(TokenSyntaxType.COLON, tokens.get(3).type());
+    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(4).type());
   }
 
   @Test
@@ -70,14 +94,12 @@ public class LexerTest {
     assertThrows(UnsupportedCharacter.class, () -> lexer.tokenize(input));
   }
 
+
+  // Tests for version 1.1
   @Test
-  public void runAllTests() {
-    testVarDeclaration();
-    testFunctionDeclaration();
-    testPrint();
-    testStringLiteral();
-    testNumberLiteral();
-    testBinaryOperation();
-    testUnsupportedChar();
+  public void testIfStatement() {
+    String input = "if (a) { return a; } else { return b; }";
+    List<Token> tokens = lexer.tokenize(input);
+    assertEquals(15, tokens.size());
   }
 }

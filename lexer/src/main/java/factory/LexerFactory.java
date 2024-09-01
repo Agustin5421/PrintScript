@@ -15,11 +15,13 @@ import token.validators.literal.StringTypePatternChecker;
 public class LexerFactory {
   public static Lexer getLexer(String version) {
     return switch (version) {
-      case "1.0" -> getLexer1();
+      case "1.0" -> getLexerV1();
       case "1.1" -> getLexerV2();
       default -> throw new IllegalArgumentException("Invalid version");
     };
   }
+
+  // TODO: move constructors to its own class
 
   private static Lexer getLexerV2() {
     IdentifierTypeChecker identifierTypeChecker =
@@ -43,7 +45,9 @@ public class LexerFactory {
                 "}", TokenSyntaxType.CLOSE_BRACES,
                 ";", TokenSyntaxType.SEMICOLON,
                 ":", TokenSyntaxType.COLON,
-                "=", TokenSyntaxType.ASSIGNATION));
+                "=", TokenSyntaxType.ASSIGNATION,
+                "if", TokenSyntaxType.IF,
+                "else", TokenSyntaxType.ELSE));
 
     DataTypePatternChecker dataTypePatternChecker =
         new DataTypePatternChecker(
@@ -71,7 +75,7 @@ public class LexerFactory {
     return new Lexer(tokenTypeGetter);
   }
 
-  private static Lexer getLexer1() {
+  private static Lexer getLexerV1() {
     IdentifierTypeChecker identifierTypeChecker =
         new IdentifierTypeChecker(Pattern.compile("^[a-zA-Z_][a-zA-Z\\d_]*$"));
 

@@ -11,4 +11,7 @@ public enum TokenSyntaxType implements TokenType {
   OPEN_BRACES,
   CLOSE_BRACES,
   INVALID,
+  IF,
+  ELSE,
+  COMMA,
 }
