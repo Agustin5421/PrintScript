@@ -22,6 +22,32 @@ import java.util.logging.Logger;
 public class Cli {
   private static final Logger logger = Logger.getLogger(Cli.class.getName());
 
+  // .\gradlew :cli:run --args="Validation src/main/resources/clitest.txt"
+  // .\gradlew :cli:run --args="Execution src/main/resources/clitest.txt"
+  // .\gradlew :cli:run --args="Formatter src/main/resources/clitest.txt
+  // src/main/resources/formatterOptionsTest.json"
+  // .\gradlew :cli:run --args="Analyzing src/main/resources/clitest.txt
+  // src/main/resources/linterOptionsTest.json"
+  public static void main(String[] args) {
+    if (args.length == 0) {
+      System.out.println("Please enter a valid instruction");
+      return;
+    }
+
+    String operation = args[0];
+    String codeFilePath = args[1];
+
+    String code = getText(codeFilePath);
+
+    switch (operation) {
+      case "Validation" -> validateFile(code, new ProgressObserver(new ProgressPrinter(), 2));
+      case "Execution" -> executeFile(code);
+      case "Analyzing" -> analyzeFile(code, args[2]);
+      case "Formatting" -> formatFile(codeFilePath, args[2]);
+      default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
+    }
+  }
+
   private static void executeFile(String code) {
     ProgressPrinter progressPrinter = new ProgressPrinter();
     ProgressObserver observer = new ProgressObserver(progressPrinter, 3);
@@ -54,31 +80,7 @@ public class Cli {
     }
   }
 
-  // .\gradlew :cli:run --args="Validation src/main/resources/clitest.txt"
-  // .\gradlew :cli:run --args="Execution src/main/resources/clitest.txt"
-  // .\gradlew :cli:run --args="Formatter src/main/resources/clitest.txt
-  // src/main/resources/formatterOptionsTest.json"
-  // .\gradlew :cli:run --args="Analyzing src/main/resources/clitest.txt
-  // src/main/resources/linterOptionsTest.json"
-  public static void main(String[] args) {
-    if (args.length == 0) {
-      System.out.println("Please enter a valid instruction");
-      return;
-    }
 
-    String operation = args[0];
-    String codeFilePath = args[1];
-
-    String code = getText(codeFilePath);
-
-    switch (operation) {
-      case "Validation" -> validateFile(code, new ProgressObserver(new ProgressPrinter(), 2));
-      case "Execution" -> executeFile(code);
-      case "Analyzing" -> analyzeFile(code, args[2]);
-      case "Formatting" -> formatFile(codeFilePath, args[2]);
-      default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
-    }
-  }
 
   private static void formatFile(String codeFilePath, String optionsFilePath) {
     String code = getText(codeFilePath);

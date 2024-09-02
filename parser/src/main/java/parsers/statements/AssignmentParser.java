@@ -4,11 +4,11 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
-import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
-import ast.utils.ExpressionParserProvider;
+import ast.statements.Statement;
 import exceptions.SyntaxException;
 import java.util.List;
+import parsers.Parser;
 import token.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
@@ -16,7 +16,7 @@ import token.types.TokenSyntaxType;
 public class AssignmentParser implements StatementParser {
 
   @Override
-  public AstNode parse(List<Token> tokens) {
+  public Statement parse(Parser parser, List<Token> tokens) {
     validateSyntax(tokens);
 
     Position leftStart = tokens.get(0).initialPosition();
@@ -25,7 +25,7 @@ public class AssignmentParser implements StatementParser {
     Position rightEnd = tokens.get(2).finalPosition();
 
     Identifier left = new Identifier(tokens.get(0).value(), leftStart, leftEnd);
-    Expression right = ExpressionParserProvider.parse(tokens.subList(2, tokens.size()));
+    Expression right = parser.parseExpression(tokens.subList(2, tokens.size()));
 
     return new AssignmentExpression(left, right, tokens.get(1).value(), leftStart, rightEnd);
   }

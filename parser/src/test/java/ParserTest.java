@@ -15,16 +15,44 @@ import exceptions.UnsupportedExpressionException;
 import exceptions.UnsupportedStatementException;
 import java.util.List;
 import lexer.Lexer;
-import org.junit.jupiter.api.Test;
 import parsers.Parser;
 import token.Token;
 
 public class ParserTest {
-  @Test
-  public void testVariableDeclaration() {
-    Parser parser = new Parser();
+  private final Parser parser;
+  private final Lexer lexer;
 
-    Lexer lexer = ContextProvider.initLexer();
+  public ParserTest(Parser parser, Lexer lexer) {
+    this.parser = parser;
+    this.lexer = lexer;
+  }
+
+  public void runAllTests(String version) {
+    switch (version) {
+      case "1.0" -> testV1();
+      case "1.1" -> testV2();
+      default -> throw new IllegalArgumentException("Invalid version");
+    }
+  }
+
+  public void testV1() {
+    testVariableDeclaration();
+    testBinaryExpression();
+    expressionWithVariablesTest();
+    testCallExpression();
+    testAssignmentExpression();
+    completeTest();
+    unsupportedStatementExceptionTest();
+    unsupportedExpressionExceptionTest();
+    syntaxExceptionTest();
+    unsupportedDataTypeExceptionTest();
+  }
+
+  public void testV2() {
+    testV1();
+  }
+
+  public void testVariableDeclaration() {
     List<Token> tokens = lexer.tokenize("let myVar : string = 2;");
     Program program = parser.parse(tokens);
 
@@ -44,11 +72,7 @@ public class ParserTest {
         "Expression should be NumberLiteral");
   }
 
-  @Test
   public void testBinaryExpression() {
-    Parser parser = ContextProvider.initBinaryExpressionParser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("let myVar : number = (2+2) * (2/2) + 2;");
     Program program = parser.parse(tokens);
 
@@ -62,11 +86,7 @@ public class ParserTest {
         "Value should be a BinaryExpression");
   }
 
-  @Test
   public void expressionWithVariablesTest() {
-    Parser parser = ContextProvider.initBinaryExpressionParser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("let myVar : number = 2 + 3 * A;");
     Program program = parser.parse(tokens);
 
@@ -80,11 +100,7 @@ public class ParserTest {
         "Type should be a BinaryExpression");
   }
 
-  @Test
   public void testCallExpression() {
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("println('hello world');");
     Program program = parser.parse(tokens);
 
@@ -96,11 +112,7 @@ public class ParserTest {
         AstNodeType.CALL_EXPRESSION, callFunc.getType(), "Type should be a CallExpression");
   }
 
-  @Test
   public void testAssignmentExpression() {
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("myVar = 2 + 3 * 2;");
     Program program = parser.parse(tokens);
 
@@ -122,11 +134,7 @@ public class ParserTest {
         "Type should be a BinaryExpression");
   }
 
-  @Test
   public void completeTest() {
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens =
         lexer.tokenize(
             "let myVar : number = 2 + 3 * 2;"
@@ -176,39 +184,22 @@ public class ParserTest {
     assertInstanceOf(CallExpression.class, fourth, "Value should be a CallExpression");
   }
 
-  @Test
   public void unsupportedStatementExceptionTest() {
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("null;");
     assertThrows(UnsupportedStatementException.class, () -> parser.parse(tokens));
   }
 
-  @Test
   public void unsupportedExpressionExceptionTest() {
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("myVar = hello he * 2;");
     assertThrows(UnsupportedExpressionException.class, () -> parser.parse(tokens));
   }
 
-  @Test
   public void syntaxExceptionTest() {
-    // syntax exception
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("let myVar : number = 2 + 3 * 2");
     assertThrows(SyntaxException.class, () -> parser.parse(tokens));
   }
 
-  @Test
   public void unsupportedDataTypeExceptionTest() {
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens = lexer.tokenize("let myVar : boolean = 2 + 3 * 2;");
     assertThrows(UnsupportedDataType.class, () -> parser.parse(tokens));
   }
@@ -216,14 +207,11 @@ public class ParserTest {
   /*
   @Test
   public void testIfStatement() {
-    Parser parser = new Parser();
-
-    Lexer lexer = ContextProvider.initLexer();
     List<Token> tokens =
         lexer.tokenize("if (true) { println('hello world'); } else { println('goodbye world'); }");
 
     assertThrows(UnsupportedStatementException.class, () -> parser.parse(tokens));
   }
-
    */
+
 }

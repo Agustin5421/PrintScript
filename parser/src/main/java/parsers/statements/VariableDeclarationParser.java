@@ -2,24 +2,25 @@ package parsers.statements;
 
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
-import ast.root.AstNode;
+import ast.statements.Statement;
 import ast.statements.VariableDeclaration;
-import ast.utils.ExpressionParserProvider;
 import exceptions.SyntaxException;
 import exceptions.UnsupportedDataType;
 import java.util.List;
 import java.util.Objects;
+import parsers.Parser;
 import token.Position;
 import token.Token;
 
 public class VariableDeclarationParser implements StatementParser {
   @Override
-  public AstNode parse(List<Token> tokens) {
+  public Statement parse(Parser parser, List<Token> tokens) {
     Position start = tokens.get(0).initialPosition();
     Position end = tokens.get(tokens.size() - 1).finalPosition();
 
     Identifier identifier = new Identifier(tokens.get(1).value(), start, end);
 
+    // TODO: improve exception messages
     if (!tokens.get(2).value().equals(":")) {
       throw new SyntaxException(
           "expected ':' at "
@@ -38,7 +39,7 @@ public class VariableDeclarationParser implements StatementParser {
               + " instead.");
     }
 
-    Expression value = ExpressionParserProvider.parse(tokens.subList(5, tokens.size()));
+    Expression value = parser.parseExpression(tokens.subList(5, tokens.size()));
 
     return new VariableDeclaration(identifier, value, start, end);
   }

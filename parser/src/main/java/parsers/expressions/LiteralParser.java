@@ -1,15 +1,17 @@
 package parsers.expressions;
 
+import ast.expressions.Expression;
 import ast.literal.LiteralFactory;
-import ast.root.AstNode;
 import java.util.List;
+import parsers.Parser;
 import token.Token;
 import token.types.TokenValueType;
 
 public class LiteralParser implements ExpressionParser {
 
+  // TODO: Implement a Literal parser for each type of literal
   @Override
-  public AstNode parse(List<Token> tokens) {
+  public Expression parse(Parser parser, List<Token> tokens) {
     return LiteralFactory.createLiteral(tokens.get(0));
   }
 

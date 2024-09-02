@@ -10,6 +10,7 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import com.google.gson.JsonSyntaxException;
 import factory.LexerFactory;
+import factory.ParserFactory;
 import java.util.List;
 import lexer.Lexer;
 import org.junit.jupiter.api.Assertions;
@@ -90,9 +91,8 @@ public class FormatterTest {
 
   @Test
   public void completeFormattingTest() {
-    Parser parser = new Parser();
-
-    Lexer lexer = initLexer();
+    Parser parser = ParserFactory.getParser("1.0");
+    Lexer lexer = LexerFactory.getLexer("1.0");
     List<Token> tokens =
         lexer.tokenize(
             """
@@ -132,9 +132,9 @@ public class FormatterTest {
                 }
                 """;
 
-    Parser parser = new Parser();
+    Parser parser = ParserFactory.getParser("1.0");
+    Lexer lexer = LexerFactory.getLexer("1.0");
 
-    Lexer lexer = initLexer();
     List<Token> tokens =
         lexer.tokenize(
             """

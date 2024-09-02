@@ -1,6 +1,5 @@
 package ast.statements;
 
-import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
@@ -14,7 +13,7 @@ public record CallExpression(
     boolean optionalParameters,
     Position start,
     Position end)
-    implements Expression {
+    implements Statement {
 
   public CallExpression(
       Identifier methodIdentifier, List<AstNode> arguments, boolean optionalParameters) {

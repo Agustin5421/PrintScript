@@ -3,10 +3,11 @@ package parsers.statements;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
-import ast.utils.ExpressionParserProvider;
+import ast.statements.Statement;
 import exceptions.SyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import parsers.Parser;
 import token.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
@@ -20,7 +21,7 @@ public class CallFunctionParser implements StatementParser {
   }
 
   @Override
-  public AstNode parse(List<Token> tokens) {
+  public Statement parse(Parser parser, List<Token> tokens) {
     String functionName = tokens.get(0).value();
     Position start = tokens.get(0).initialPosition();
     Position end = tokens.get(tokens.size() - 1).finalPosition();
@@ -34,7 +35,7 @@ public class CallFunctionParser implements StatementParser {
 
     List<AstNode> argumentExpressions = new ArrayList<>();
     for (Token token : arguments) {
-      AstNode argument = ExpressionParserProvider.parse(List.of(token));
+      AstNode argument = parser.parseExpression(List.of(token));
       argumentExpressions.add(argument);
     }
 

@@ -4,9 +4,8 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
-import ast.root.AstNode;
-import ast.utils.ExpressionParserProvider;
 import java.util.List;
+import parsers.Parser;
 import token.Position;
 import token.Token;
 import token.types.TokenDataType;
@@ -15,7 +14,7 @@ import token.types.TokenSyntaxType;
 public class BinaryExpressionParser implements ExpressionParser {
 
   @Override
-  public AstNode parse(List<Token> tokens) {
+  public Expression parse(Parser parser, List<Token> tokens) {
     if (tokens.isEmpty()) {
       throw new IllegalArgumentException("Token list cannot be empty");
     }
@@ -33,8 +32,8 @@ public class BinaryExpressionParser implements ExpressionParser {
     List<Token> rightTokens = tokens.subList(operatorIndex + 1, tokens.size());
 
     // Recursively parse the left and right expressions
-    Expression left = ExpressionParserProvider.parse(leftTokens);
-    Expression right = ExpressionParserProvider.parse(rightTokens);
+    Expression left = parser.parseExpression(leftTokens);
+    Expression right = parser.parseExpression(rightTokens);
 
     return new BinaryExpression(left, right, operator.value());
   }
