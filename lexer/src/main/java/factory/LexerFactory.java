@@ -76,7 +76,7 @@ public class LexerFactory {
                 literalTypeTokenChecker,
                 identifierTypeChecker));
 
-    return new Lexer(tokenTypeGetter);
+    return new Lexer("", tokenTypeGetter);
   }
 
   private static Lexer getLexerV1() {
@@ -97,8 +97,6 @@ public class LexerFactory {
                 "let", TokenSyntaxType.DECLARATION,
                 "(", TokenSyntaxType.OPEN_PARENTHESIS,
                 ")", TokenSyntaxType.CLOSE_PARENTHESIS,
-                "{", TokenSyntaxType.OPEN_BRACES,
-                "}", TokenSyntaxType.CLOSE_BRACES,
                 ";", TokenSyntaxType.SEMICOLON,
                 ":", TokenSyntaxType.COLON,
                 "=", TokenSyntaxType.ASSIGNATION));
@@ -121,6 +119,6 @@ public class LexerFactory {
                 dataTypePatternChecker,
                 literalTypeTokenChecker,
                 identifierTypeChecker));
-    return new Lexer(tokenTypeGetter);
+    return new Lexer("", tokenTypeGetter);
   }
 }
