@@ -4,6 +4,7 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import exceptions.UnsupportedCharacter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,58 +16,91 @@ import token.types.TokenSyntaxType;
 import token.types.TokenType;
 import token.validators.TokenTypeGetter;
 
-public class Lexer implements Progressable {
+public class Lexer implements Progressable, Iterator<Token> {
   private final TokenTypeGetter tokenTypeGetter;
   private final List<Observer> observers;
-  private int totalLength;
-  private final PatternProvider patternProvider;
+  private final Pattern pattern;
+  private Matcher matcher;
+  private final String code;
+  private Position currentPosition;
+  private int currentIndex;
+  private final int totalLength;
 
-  public Lexer(TokenTypeGetter tokenTypeGetter) {
+  public Lexer(String code, TokenTypeGetter tokenTypeGetter) {
+    this.code = code;
     this.tokenTypeGetter = tokenTypeGetter;
-    observers = List.of();
-    patternProvider = new PatternProvider();
+    this.observers = List.of();
+    this.pattern = new PatternProvider().getPattern();
+    resetMatcher();
+    this.currentPosition = new Position(1, 1);
+    this.currentIndex = 0;
+    this.totalLength = code.length();
+  }
+
+  public Lexer(String code, Lexer lexer) {
+    this.code = code;
+    this.tokenTypeGetter = lexer.tokenTypeGetter;
+    this.observers = List.of();
+    this.pattern = lexer.pattern;
+    resetMatcher();
+    this.currentPosition = new Position(1, 1);
+    this.currentIndex = 0;
+    this.totalLength = code.length();
+  }
+
+  private void resetMatcher() {
+    this.matcher = pattern.matcher(code);
   }
 
   public List<Token> tokenize(String code) {
+    Lexer lexer = new Lexer(code, this);
+
     List<Token> tokens = new ArrayList<>();
-    Pattern pattern = patternProvider.getPattern();
-    Matcher matcher = pattern.matcher(code);
 
-    Position initialPosition = new Position(1, 1);
-    int currentIndex = 0;
-
-    while (matcher.find()) {
-      String word = matcher.group();
-      int start = matcher.start();
-      int end = matcher.end();
-
-      initialPosition = updatePosition(code, currentIndex, start, initialPosition);
-      Position finalPosition = updatePosition(code, start, end, initialPosition);
-
-      currentIndex = end;
-
-      TokenType type = tokenTypeGetter.getType(word);
-      Token token = new Token(type, word, initialPosition, finalPosition);
-      tokens.add(token);
-
-      initialPosition = finalPosition;
-
-      updateProgress();
+    while (lexer.hasNext()) {
+      tokens.add(lexer.next());
     }
-
-    validateTokens(tokens);
-
     return tokens;
   }
 
-  private static void validateTokens(List<Token> tokens) {
-    for (Token token : tokens) {
-      if (token.type() == TokenSyntaxType.INVALID) {
-        Position position = token.initialPosition();
-        String message = getExceptionMessage(token.value(), position.row(), position.col());
-        throw new UnsupportedCharacter(message);
-      }
+  public Lexer setInput(String code) {
+    return new Lexer(code, this);
+  }
+
+  @Override
+  public boolean hasNext() {
+    matcher.region(currentIndex, totalLength);
+    return matcher.find();
+  }
+
+  @Override
+  public Token next() {
+    if (!hasNext()) {
+      throw new IllegalStateException("No more tokens available");
     }
+
+    String word = matcher.group();
+    int start = matcher.start();
+    int end = matcher.end();
+
+    currentPosition = updatePosition(code, currentIndex, start, currentPosition);
+    Position finalPosition = updatePosition(code, start, end, currentPosition);
+
+    currentIndex = end;
+
+    TokenType type = tokenTypeGetter.getType(word);
+    Token token = new Token(type, word, currentPosition, finalPosition);
+
+    currentPosition = finalPosition;
+
+    if (token.type() == TokenSyntaxType.INVALID) {
+      String message =
+          getExceptionMessage(token.value(), currentPosition.row(), currentPosition.col());
+      throw new UnsupportedCharacter(message);
+    }
+
+    updateProgress();
+    return token;
   }
 
   private Position updatePosition(
@@ -90,10 +124,9 @@ public class Lexer implements Progressable {
     notifyObservers();
   }
 
-  // Progress should be calculated over the total words in the code
   @Override
   public float getProgress() {
-    return (((float) 1 / totalLength) * 100);
+    return (((float) currentIndex / totalLength) * 100);
   }
 
   @Override
