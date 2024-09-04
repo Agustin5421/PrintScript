@@ -26,7 +26,7 @@ public abstract class CommonLexerTests {
     }
 
     assertEquals(8, tokens.size());
-    assertEquals(TokenSyntaxType.DECLARATION, tokens.get(0).type());
+    assertEquals(TokenSyntaxType.LET_DECLARATION, tokens.get(0).type());
     assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(1).type());
     assertEquals(TokenDataType.STRING_TYPE, tokens.get(2).type());
     assertEquals(TokenSyntaxType.COLON, tokens.get(3).type());
