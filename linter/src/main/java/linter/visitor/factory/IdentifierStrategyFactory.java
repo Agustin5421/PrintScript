@@ -23,8 +23,8 @@ public class IdentifierStrategyFactory implements StrategyFactory {
   private LintingStrategy getIdentifierWritingConvention(JsonObject jsonObject) {
     try {
       JsonObject convention = jsonObject.get("writingConvention").getAsJsonObject();
-      String conventionName = convention.get("name").getAsString();
-      String conventionPattern = convention.get("pattern").getAsString();
+      String conventionName = convention.get("conventionName").getAsString();
+      String conventionPattern = convention.get("conventionPattern").getAsString();
 
       return new WritingConventionStrategy(conventionName, conventionPattern);
     } catch (Exception e) {
