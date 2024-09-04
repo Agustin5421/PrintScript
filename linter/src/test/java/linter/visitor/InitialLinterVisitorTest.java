@@ -15,19 +15,19 @@ import org.junit.jupiter.api.Test;
 import token.Position;
 
 public class InitialLinterVisitorTest {
-  private LinterVisitorV2 getLinterVisitorV2() {
+  private LinterVisitor getLinterVisitorV2() {
     LintingStrategy idStrategy = new CamelCaseIdentifier();
     LintingStrategy mainIdStrategy = new IdentifierLintingStrategy(List.of(idStrategy));
 
     Map<AstNodeType, LintingStrategy> nodesStrategies =
         Map.of(AstNodeType.IDENTIFIER, mainIdStrategy);
 
-    return new LinterVisitorV2(nodesStrategies);
+    return new LinterVisitor(nodesStrategies);
   }
 
   @Test
   public void testImmutability() {
-    LinterVisitorV2 visitor = getLinterVisitorV2();
+    LinterVisitor visitor = getLinterVisitorV2();
 
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("test_name", position, position);
@@ -35,7 +35,7 @@ public class InitialLinterVisitorTest {
     NodeVisitor newVisitor = identifier.accept(visitor);
 
     FullReport oldReport = visitor.getFullReport();
-    FullReport report = ((LinterVisitorV2) newVisitor).getFullReport();
+    FullReport report = ((LinterVisitor) newVisitor).getFullReport();
 
     assertEquals(0, oldReport.getReports().size());
     assertEquals(1, report.getReports().size());
@@ -43,21 +43,21 @@ public class InitialLinterVisitorTest {
 
   @Test
   public void testNoViolations() {
-    LinterVisitorV2 visitor = getLinterVisitorV2();
+    LinterVisitor visitor = getLinterVisitorV2();
 
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("testName", position, position);
 
     NodeVisitor newVisitor = identifier.accept(visitor);
 
-    FullReport report = ((LinterVisitorV2) newVisitor).getFullReport();
+    FullReport report = ((LinterVisitor) newVisitor).getFullReport();
 
     assertEquals(0, report.getReports().size());
   }
 
   @Test
   public void testMultipleViolations() {
-    LinterVisitorV2 visitor = getLinterVisitorV2();
+    LinterVisitor visitor = getLinterVisitorV2();
 
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("test_name", position, position);
@@ -65,7 +65,7 @@ public class InitialLinterVisitorTest {
     NodeVisitor newVisitor = identifier.accept(visitor);
     NodeVisitor newVisitor2 = identifier.accept(newVisitor);
 
-    FullReport report = ((LinterVisitorV2) newVisitor2).getFullReport();
+    FullReport report = ((LinterVisitor) newVisitor2).getFullReport();
 
     assertEquals(2, report.getReports().size());
   }

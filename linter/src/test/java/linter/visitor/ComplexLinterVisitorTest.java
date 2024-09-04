@@ -10,7 +10,7 @@ import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import java.util.ArrayList;
 import java.util.List;
-import linter.LinterV2;
+import linter.Linter;
 import linter.TestUtils;
 import linter.report.FullReport;
 import observers.Observer;
@@ -33,9 +33,9 @@ public class ComplexLinterVisitorTest {
     return new Program(List.of(variableDeclaration, callExpression));
   }
 
-  private LinterV2 getLinter() {
+  private Linter getLinter() {
     Observer observer = new ProgressObserver(new ProgressPrinter(), 3);
-    return new LinterV2(new ArrayList<>(List.of(observer)));
+    return new Linter(new ArrayList<>(List.of(observer)));
   }
 
   @Test
@@ -45,7 +45,7 @@ public class ComplexLinterVisitorTest {
     String rules = TestUtils.readResourceFile("linterRulesExample.json");
     assertNotNull(rules);
 
-    LinterV2 linter = getLinter();
+    Linter linter = getLinter();
     FullReport report = linter.lint(program, rules);
 
     assertEquals(0, report.getReports().size());
@@ -58,7 +58,7 @@ public class ComplexLinterVisitorTest {
     String rules = TestUtils.readResourceFile("anotherLinterRulesExample.json");
     assertNotNull(rules);
 
-    LinterV2 linter = getLinter();
+    Linter linter = getLinter();
     FullReport report = linter.lint(program, rules);
 
     assertEquals(4, report.getReports().size());

@@ -11,7 +11,7 @@ import ast.statements.CallExpression;
 import ast.visitor.NodeVisitor;
 import java.util.List;
 import java.util.Map;
-import linter.visitor.LinterVisitorV2;
+import linter.visitor.LinterVisitor;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.callexpression.CallExpressionLintingStrategy;
 import linter.visitor.strategy.callexpression.NoExpressionArgument;
@@ -20,14 +20,14 @@ import org.junit.jupiter.api.Test;
 import token.Position;
 
 public class CallExpressionLintingTest {
-  private LinterVisitorV2 getLinterVisitorV2() {
+  private LinterVisitor getLinterVisitorV2() {
     LintingStrategy strategy = new NoExpressionArgument();
     LintingStrategy mainCallExpressionStrategy =
         new CallExpressionLintingStrategy(List.of(strategy));
     Map<AstNodeType, LintingStrategy> nodesStrategies =
         Map.of(AstNodeType.CALL_EXPRESSION, mainCallExpressionStrategy);
 
-    return new LinterVisitorV2(nodesStrategies);
+    return new LinterVisitor(nodesStrategies);
   }
 
   @Test
@@ -39,9 +39,9 @@ public class CallExpressionLintingTest {
     Identifier identifier = new Identifier("methodName", position, position);
     CallExpression callExpression = new CallExpression(identifier, List.of(binaryExpression), true);
 
-    LinterVisitorV2 visitor = getLinterVisitorV2();
+    LinterVisitor visitor = getLinterVisitorV2();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);
-    LinterVisitorV2 newLinterVisitor = (LinterVisitorV2) newVisitor;
+    LinterVisitor newLinterVisitor = (LinterVisitor) newVisitor;
 
     assertEquals(1, newLinterVisitor.getFullReport().getReports().size());
   }
@@ -59,9 +59,9 @@ public class CallExpressionLintingTest {
             List.of(binaryExpression, binaryExpression, binaryExpression, binaryExpression),
             true);
 
-    LinterVisitorV2 visitor = getLinterVisitorV2();
+    LinterVisitor visitor = getLinterVisitorV2();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);
-    LinterVisitorV2 newLinterVisitor = (LinterVisitorV2) newVisitor;
+    LinterVisitor newLinterVisitor = (LinterVisitor) newVisitor;
 
     assertEquals(4, newLinterVisitor.getFullReport().getReports().size());
   }
@@ -79,14 +79,14 @@ public class CallExpressionLintingTest {
             List.of(binaryExpression, identifier, binaryExpression, binaryExpression, identifier),
             true);
 
-    LinterVisitorV2 visitor = getLinterVisitorV2();
+    LinterVisitor visitor = getLinterVisitorV2();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);
-    LinterVisitorV2 newLinterVisitor = (LinterVisitorV2) newVisitor;
+    LinterVisitor newLinterVisitor = (LinterVisitor) newVisitor;
 
     assertEquals(3, newLinterVisitor.getFullReport().getReports().size());
   }
 
-  private LinterVisitorV2 getLinterVisitorStrictArguments() {
+  private LinterVisitor getLinterVisitorStrictArguments() {
     LintingStrategy strategy1 = new NoExpressionArgument();
     LintingStrategy strategy2 = new NoLiteralArgument();
     LintingStrategy mainCallExpressionStrategy =
@@ -94,7 +94,7 @@ public class CallExpressionLintingTest {
     Map<AstNodeType, LintingStrategy> nodesStrategies =
         Map.of(AstNodeType.CALL_EXPRESSION, mainCallExpressionStrategy);
 
-    return new LinterVisitorV2(nodesStrategies);
+    return new LinterVisitor(nodesStrategies);
   }
 
   @Test
@@ -108,9 +108,9 @@ public class CallExpressionLintingTest {
         new CallExpression(
             identifier, List.of(binaryExpression, one, two, binaryExpression, identifier), true);
 
-    LinterVisitorV2 visitor = getLinterVisitorStrictArguments();
+    LinterVisitor visitor = getLinterVisitorStrictArguments();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);
-    LinterVisitorV2 newLinterVisitor = (LinterVisitorV2) newVisitor;
+    LinterVisitor newLinterVisitor = (LinterVisitor) newVisitor;
 
     assertEquals(4, newLinterVisitor.getFullReport().getReports().size());
   }

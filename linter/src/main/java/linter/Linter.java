@@ -5,21 +5,21 @@ import ast.root.Program;
 import ast.visitor.NodeVisitor;
 import java.util.List;
 import linter.report.FullReport;
-import linter.visitor.LinterVisitorFactory;
-import linter.visitor.LinterVisitorV2;
+import linter.visitor.LinterVisitor;
+import linter.visitor.factory.LinterVisitorFactory;
 import observers.Observer;
 import observers.Progressable;
 
-public class LinterV2 implements Progressable {
+public class Linter implements Progressable {
   private final LinterVisitorFactory linterVisitorFactory = new LinterVisitorFactory();
   private final List<Observer> observers;
   private int totalSteps;
 
-  public LinterV2() {
+  public Linter() {
     this.observers = List.of();
   }
 
-  public LinterV2(List<Observer> observer) {
+  public Linter(List<Observer> observer) {
     this.observers = observer;
   }
 
@@ -34,7 +34,7 @@ public class LinterV2 implements Progressable {
       notifyObservers();
     }
 
-    return ((LinterVisitorV2) linterVisitor).getFullReport();
+    return ((LinterVisitor) linterVisitor).getFullReport();
   }
 
   @Override

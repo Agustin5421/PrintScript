@@ -15,15 +15,15 @@ import java.util.Map;
 import linter.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
 
-public class LinterVisitorV2 implements NodeVisitor {
+public class LinterVisitor implements NodeVisitor {
   private final FullReport fullReport;
   private final Map<AstNodeType, LintingStrategy> nodesStrategies;
 
-  public LinterVisitorV2(Map<AstNodeType, LintingStrategy> nodesStrategies) {
+  public LinterVisitor(Map<AstNodeType, LintingStrategy> nodesStrategies) {
     this(new FullReport(), nodesStrategies);
   }
 
-  public LinterVisitorV2(FullReport fullReport, Map<AstNodeType, LintingStrategy> nodesStrategies) {
+  public LinterVisitor(FullReport fullReport, Map<AstNodeType, LintingStrategy> nodesStrategies) {
     this.fullReport = fullReport;
     this.nodesStrategies = nodesStrategies;
   }
@@ -44,13 +44,13 @@ public class LinterVisitorV2 implements NodeVisitor {
     Expression expression = variableDeclaration.expression();
     visitor = expression.accept(visitor);
 
-    FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(variableDeclaration.getType());
     if (strategy != null) {
       newReport = strategy.apply(variableDeclaration, newReport);
     }
 
-    return new LinterVisitorV2(newReport, getNodesStrategies());
+    return new LinterVisitor(newReport, getNodesStrategies());
   }
 
   @Override
@@ -62,13 +62,13 @@ public class LinterVisitorV2 implements NodeVisitor {
       visitor = argument.accept(visitor);
     }
 
-    FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(callExpression.getType());
     if (strategy != null) {
       newReport = strategy.apply(callExpression, newReport);
     }
 
-    return new LinterVisitorV2(newReport, getNodesStrategies());
+    return new LinterVisitor(newReport, getNodesStrategies());
   }
 
   @Override
@@ -79,13 +79,13 @@ public class LinterVisitorV2 implements NodeVisitor {
     Expression right = assignmentExpression.right();
     visitor = right.accept(visitor);
 
-    FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(assignmentExpression.getType());
     if (strategy != null) {
       newReport = strategy.apply(assignmentExpression, newReport);
     }
 
-    return new LinterVisitorV2(newReport, getNodesStrategies());
+    return new LinterVisitor(newReport, getNodesStrategies());
   }
 
   @Override
@@ -96,13 +96,13 @@ public class LinterVisitorV2 implements NodeVisitor {
     Expression right = binaryExpression.right();
     visitor = right.accept(visitor);
 
-    FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(binaryExpression.getType());
     if (strategy != null) {
       newReport = strategy.apply(binaryExpression, newReport);
     }
 
-    return new LinterVisitorV2(newReport, getNodesStrategies());
+    return new LinterVisitor(newReport, getNodesStrategies());
   }
 
   @Override
@@ -111,7 +111,7 @@ public class LinterVisitorV2 implements NodeVisitor {
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(numberLiteral, getFullReport());
-      return new LinterVisitorV2(newReport, getNodesStrategies());
+      return new LinterVisitor(newReport, getNodesStrategies());
     }
 
     return this;
@@ -123,7 +123,7 @@ public class LinterVisitorV2 implements NodeVisitor {
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(stringLiteral, getFullReport());
-      return new LinterVisitorV2(newReport, getNodesStrategies());
+      return new LinterVisitor(newReport, getNodesStrategies());
     }
 
     return this;
@@ -135,7 +135,7 @@ public class LinterVisitorV2 implements NodeVisitor {
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(identifier, getFullReport());
-      return new LinterVisitorV2(newReport, getNodesStrategies());
+      return new LinterVisitor(newReport, getNodesStrategies());
     }
 
     return this;
