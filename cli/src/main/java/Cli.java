@@ -4,7 +4,7 @@ import formatter.MainFormatter;
 import formatter.MainFormatterInitializer;
 import interpreter.Interpreter;
 import lexer.Lexer;
-import linter.LinterV2;
+import linter.Linter;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import parsers.Parser;
@@ -104,10 +104,10 @@ public class Cli {
     String options = getText(filepath);
     Program program = validateFile(code, observer);
 
-    LinterV2 linterV2 = new LinterV2(List.of(observer));
+    Linter linter = new Linter(List.of(observer));
     try {
       assert program != null;
-      linterV2.lint(program, options);
+      linter.lint(program, options);
       observer.finish();
     } catch (Exception e) {
       System.out.println(e.getMessage());
