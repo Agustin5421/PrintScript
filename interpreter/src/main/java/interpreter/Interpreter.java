@@ -23,11 +23,11 @@ public class Interpreter implements Progressable {
 
   public VariablesRepository executeProgram(Program program) {
     VariablesRepository variablesRepository = new VariablesRepository();
-    AstNodeVisitor nodeVisitor = new AstNodeVisitor(variablesRepository);
+    interpreterVisitorV1 nodeVisitor = new interpreterVisitorV1(variablesRepository);
     totalStatements = program.statements().size();
 
     for (AstNode statement : program.statements()) {
-      nodeVisitor = (AstNodeVisitor) statement.accept(nodeVisitor);
+      nodeVisitor = (interpreterVisitorV1) statement.accept(nodeVisitor);
       variablesRepository = nodeVisitor.getVariablesRepository();
       updateProgress();
     }
