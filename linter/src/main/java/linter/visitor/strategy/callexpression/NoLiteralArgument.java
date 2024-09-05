@@ -19,7 +19,7 @@ public class NoLiteralArgument implements LintingStrategy {
   }
 
   private boolean shouldApply(AstNode node) {
-    return switch (node.getType()) {
+    return switch (node.getNodeType()) {
       case STRING_LITERAL, NUMBER_LITERAL -> true;
       default -> false;
     };

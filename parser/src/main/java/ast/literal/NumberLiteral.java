@@ -6,7 +6,7 @@ import token.Position;
 
 public record NumberLiteral(Number value, Position start, Position end) implements Literal<Number> {
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.NUMBER_LITERAL;
   }
 

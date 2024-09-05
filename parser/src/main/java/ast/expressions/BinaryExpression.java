@@ -12,7 +12,7 @@ public record BinaryExpression(
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.BINARY_EXPRESSION;
   }
 

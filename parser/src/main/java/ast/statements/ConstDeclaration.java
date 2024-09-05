@@ -16,7 +16,7 @@ public record ConstDeclaration(
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.VARIABLE_DECLARATION;
   }
 

@@ -27,7 +27,7 @@ public class IfStatement implements Statement {
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.IF_STATEMENT;
   }
 

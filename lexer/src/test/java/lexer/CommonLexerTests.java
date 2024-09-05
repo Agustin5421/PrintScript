@@ -26,13 +26,13 @@ public abstract class CommonLexerTests {
     }
 
     assertEquals(8, tokens.size());
-    assertEquals(TokenSyntaxType.LET_DECLARATION, tokens.get(0).type());
-    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(1).type());
-    assertEquals(TokenDataType.STRING_TYPE, tokens.get(2).type());
-    assertEquals(TokenSyntaxType.COLON, tokens.get(3).type());
-    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(4).type());
-    assertEquals(TokenSyntaxType.ASSIGNATION, tokens.get(5).type());
-    assertEquals(TokenValueType.NUMBER, tokens.get(6).type());
+    assertEquals(TokenSyntaxType.LET_DECLARATION, tokens.get(0).nodeType());
+    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(1).nodeType());
+    assertEquals(TokenDataType.STRING_TYPE, tokens.get(2).nodeType());
+    assertEquals(TokenSyntaxType.COLON, tokens.get(3).nodeType());
+    assertEquals(TokenSyntaxType.IDENTIFIER, tokens.get(4).nodeType());
+    assertEquals(TokenSyntaxType.ASSIGNATION, tokens.get(5).nodeType());
+    assertEquals(TokenValueType.NUMBER, tokens.get(6).nodeType());
   }
 
   @Test
@@ -69,7 +69,7 @@ public abstract class CommonLexerTests {
     }
 
     assertEquals(5, tokens.size());
-    assertEquals(TokenValueType.STRING, tokens.get(3).type());
+    assertEquals(TokenValueType.STRING, tokens.get(3).nodeType());
   }
 
   @Test
@@ -83,7 +83,7 @@ public abstract class CommonLexerTests {
     }
 
     assertEquals(5, tokens.size());
-    assertEquals(TokenValueType.NUMBER, tokens.get(3).type());
+    assertEquals(TokenValueType.NUMBER, tokens.get(3).nodeType());
   }
 
   @Test
@@ -97,6 +97,6 @@ public abstract class CommonLexerTests {
     }
 
     assertEquals(7, tokens.size());
-    assertEquals(TokenDataType.OPERAND, tokens.get(4).type());
+    assertEquals(TokenDataType.OPERAND, tokens.get(4).nodeType());
   }
 }

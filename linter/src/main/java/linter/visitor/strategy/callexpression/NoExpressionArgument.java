@@ -20,7 +20,7 @@ public class NoExpressionArgument implements LintingStrategy {
   }
 
   private boolean shouldApply(AstNode node) {
-    return switch (node.getType()) {
+    return switch (node.getNodeType()) {
       case ASSIGNMENT_EXPRESSION, CALL_EXPRESSION, BINARY_EXPRESSION -> true;
       default -> false;
     };

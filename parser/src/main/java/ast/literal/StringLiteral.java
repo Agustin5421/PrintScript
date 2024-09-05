@@ -7,7 +7,7 @@ import token.Position;
 public record StringLiteral(String value, Position start, Position end) implements Literal<String> {
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.STRING_LITERAL;
   }
 

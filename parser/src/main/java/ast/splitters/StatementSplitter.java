@@ -20,18 +20,18 @@ public class StatementSplitter {
     }
 
     for (Token token : tokens) {
-      if (token.type() != TokenSyntaxType.SEMICOLON) {
+      if (token.nodeType() != TokenSyntaxType.SEMICOLON) {
         currentSublist.add(token);
       }
 
-      if (token.type() == TokenSyntaxType.CLOSE_BRACES) {
+      if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
         inIfStatement = true;
       }
 
       if (inIfStatement) {
-        if (token.type() == TokenSyntaxType.OPEN_BRACES) {
+        if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
           braceCount++;
-        } else if (token.type() == TokenSyntaxType.CLOSE_BRACES) {
+        } else if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
           braceCount--;
           if (braceCount == 0) {
             inIfStatement = false;
@@ -39,7 +39,7 @@ public class StatementSplitter {
             currentSublist.clear();
           }
         }
-      } else if (token.type() == TokenSyntaxType.SEMICOLON) {
+      } else if (token.nodeType() == TokenSyntaxType.SEMICOLON) {
         result.add(new ArrayList<>(currentSublist));
         currentSublist.clear();
       }
@@ -48,7 +48,7 @@ public class StatementSplitter {
     // Checks if the statement ends with a semicolon or a complete if-else block
     if (!currentSublist.isEmpty()) {
       Token lastToken = tokens.get(tokens.size() - 1);
-      if (lastToken.type() != TokenSyntaxType.SEMICOLON) {
+      if (lastToken.nodeType() != TokenSyntaxType.SEMICOLON) {
         String message = getExceptionMessage(lastToken.value(), tokens.size(), 1);
         throw new SyntaxException("expected ';' or complete if-else block but got: " + message);
       }

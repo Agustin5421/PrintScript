@@ -32,9 +32,9 @@ public class IfParser implements StatementParser {
 
     for (int i = 4; i < tokens.size(); i++) {
       Token token = tokens.get(i);
-      if (token.type() == TokenSyntaxType.OPEN_BRACES) {
+      if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
         braceCount++;
-      } else if (token.type() == TokenSyntaxType.CLOSE_BRACES) {
+      } else if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
         braceCount--;
         if (braceCount == 0) {
           break;
@@ -52,13 +52,13 @@ public class IfParser implements StatementParser {
 
     for (int i = 4; i < tokens.size(); i++) {
       Token token = tokens.get(i);
-      if (token.type() == TokenSyntaxType.ELSE) {
+      if (token.nodeType() == TokenSyntaxType.ELSE) {
         continue;
       }
 
-      if (token.type() == TokenSyntaxType.OPEN_BRACES) {
+      if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
         braceCount++;
-      } else if (token.type() == TokenSyntaxType.CLOSE_BRACES) {
+      } else if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
         braceCount--;
         if (braceCount == 0) {
           break;
@@ -75,6 +75,6 @@ public class IfParser implements StatementParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return tokens.get(0).type() == TokenSyntaxType.IF;
+    return tokens.get(0).nodeType() == TokenSyntaxType.IF;
   }
 }

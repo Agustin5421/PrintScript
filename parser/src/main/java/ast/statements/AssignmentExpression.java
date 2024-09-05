@@ -15,7 +15,7 @@ public record AssignmentExpression(
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.ASSIGNMENT_EXPRESSION;
   }
 
