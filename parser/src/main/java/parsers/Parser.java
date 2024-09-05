@@ -2,16 +2,15 @@ package parsers;
 
 import ast.expressions.Expression;
 import ast.root.AstNode;
-import splitters.MainStatementValidator;
 import ast.statements.Statement;
 import exceptions.UnsupportedExpressionException;
 import exceptions.UnsupportedStatementException;
-
 import java.util.Iterator;
 import java.util.List;
 import lexer.Lexer;
 import parsers.expressions.ExpressionParser;
 import parsers.statements.StatementParser;
+import splitters.MainStatementValidator;
 import token.Token;
 
 public class Parser implements Iterator<AstNode> {
@@ -57,13 +56,13 @@ public class Parser implements Iterator<AstNode> {
   }
 
   public List<Statement> parseBlock(List<Token> tokens) {
-    //TODO: Implement block parsing
+    // TODO: Implement block parsing
     throw new RuntimeException("Not implemented");
   }
 
   @Override
   public boolean hasNext() {
-    //TODO: Implement hasNext correctly
+    // TODO: Implement hasNext correctly
     return lexer.hasNext();
   }
 

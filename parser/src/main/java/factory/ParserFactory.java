@@ -1,7 +1,6 @@
 package factory;
 
 import ast.identifier.IdentifierParser;
-import splitters.MainStatementValidator;
 import java.util.List;
 import lexer.Lexer;
 import parsers.Parser;
@@ -13,6 +12,7 @@ import parsers.statements.CallFunctionParser;
 import parsers.statements.IfParser;
 import parsers.statements.StatementParser;
 import parsers.statements.VariableDeclarationParser;
+import splitters.MainStatementValidator;
 
 public class ParserFactory {
   public static Parser getParser(String version) {

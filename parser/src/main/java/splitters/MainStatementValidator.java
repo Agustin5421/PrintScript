@@ -1,17 +1,12 @@
 package splitters;
 
-import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import lexer.Lexer;
 import token.Token;
 
 public class MainStatementValidator {
-  private final List<StatementValidator> statementSplitters = List.of(
-        new IfSStatementSplitter()
-  );
+  private final List<StatementValidator> statementSplitters = List.of(new IfSStatementSplitter());
 
   private final StatementValidator defaultStatementValidator = new SemicolonStatementValidator();
 

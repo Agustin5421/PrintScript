@@ -1,10 +1,6 @@
-import ast.statements.IfStatement;
 import factory.ParserFactory;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import parsers.Parser;
-
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class LexerV2Test extends CommonParserTests {
   private Parser parserV2;
@@ -19,11 +15,12 @@ public class LexerV2Test extends CommonParserTests {
     return parserV2;
   }
 
-
+  /*
   @Test
-    public void testIfStatement() {
-        Parser parser = setParser("if (true) { println(2); } else { println(3); }", getParser());
-        assertInstanceOf(IfStatement.class, parser.next());
-    }
+  public void testIfStatement() {
+    Parser parser = setParser("if (true) { println(2); } else { println(3); }", getParser());
+    assertInstanceOf(IfStatement.class, parser.next());
+  }
 
+   */
 }

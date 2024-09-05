@@ -136,7 +136,7 @@ public class Lexer implements Progressable, Iterator<Token> {
     }
   }
 
-  public Token peek () {
+  public Token peek() {
     if (!hasNext()) {
       throw new IllegalStateException("No more tokens available");
     }
