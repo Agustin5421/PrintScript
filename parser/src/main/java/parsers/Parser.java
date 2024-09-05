@@ -2,11 +2,11 @@ package parsers;
 
 import ast.expressions.Expression;
 import ast.root.AstNode;
-import ast.splitters.StatementSplitter;
+import splitters.MainStatementValidator;
 import ast.statements.Statement;
 import exceptions.UnsupportedExpressionException;
 import exceptions.UnsupportedStatementException;
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 import lexer.Lexer;
@@ -17,18 +17,18 @@ import token.Token;
 public class Parser implements Iterator<AstNode> {
   private final List<StatementParser> statementParsers;
   private final List<ExpressionParser> expressionParsers;
-  private final StatementSplitter statementSplitter;
+  private final MainStatementValidator mainStatementValidator;
   private final Lexer lexer;
 
   public Parser(
       Lexer lexer,
       List<StatementParser> statementParsers,
       List<ExpressionParser> expressionParsers,
-      StatementSplitter statementSplitter) {
+      MainStatementValidator statementSplitter) {
     this.lexer = lexer;
     this.statementParsers = statementParsers;
     this.expressionParsers = expressionParsers;
-    this.statementSplitter = statementSplitter;
+    this.mainStatementValidator = statementSplitter;
   }
 
   public AstNode parse(List<Token> tokens) {
@@ -57,47 +57,38 @@ public class Parser implements Iterator<AstNode> {
   }
 
   public List<Statement> parseBlock(List<Token> tokens) {
-    List<List<Token>> statements = statementSplitter.split(tokens);
-    List<Statement> astNodes = new ArrayList<>();
-
-    for (List<Token> statement : statements) {
-      astNodes.add(parseStatement(statement));
-    }
-
-    return astNodes;
+    //TODO: Implement block parsing
+    throw new RuntimeException("Not implemented");
   }
 
   @Override
   public boolean hasNext() {
-    return false;
+    //TODO: Implement hasNext correctly
+    return lexer.hasNext();
   }
 
   @Override
   public AstNode next() {
-    List<Token> tokens = new ArrayList<>();
-
-    while (!isStatement(tokens)) {
-      if (lexer.hasNext()) {
-        tokens.add(lexer.next());
-      } else {
-        throw new UnsupportedStatementException(tokens.toString());
-      }
+    if (!hasNext()) {
+      throw new RuntimeException("No more tokens to parse");
     }
 
-    return parseStatement(tokens);
+    List<Token> statement = getNextStatement();
+    return parseStatement(statement);
   }
 
-  private boolean isStatement(List<Token> tokens) {
-    try {
-      statementSplitter.split(tokens);
-      return true;
-    } catch (Exception e) {
-      return false;
+  private List<Token> getNextStatement() {
+    List<Token> statement = mainStatementValidator.getNextStatement(lexer);
+
+    if (statement.isEmpty()) {
+      throw new RuntimeException("No statement found");
     }
+
+    return statement;
   }
 
   public Parser setLexer(Lexer lexer) {
-    return new Parser(lexer, statementParsers, expressionParsers, statementSplitter);
+    return new Parser(lexer, statementParsers, expressionParsers, mainStatementValidator);
   }
 
   public Lexer getLexer() {
