@@ -48,7 +48,7 @@ public class NoExpressionTest {
                 AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
     FullReport fullReport = new FullReport();
 
-    FullReport newReport = strategy.apply(identifier, fullReport);
+    FullReport newReport = strategy.apply(callExpression, fullReport);
 
     assertEquals(0, newReport.getReports().size());
   }
