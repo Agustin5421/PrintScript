@@ -6,6 +6,7 @@
     }
   },
   "callExpression": {
-    "arguments": ["identifier", "literal", "expression"]
+    "arguments": ["IDENTIFIER",
+      "ASSIGNMENT_EXPRESSION", "CALL_EXPRESSION", "BINARY_EXPRESSION"]
   }
 }

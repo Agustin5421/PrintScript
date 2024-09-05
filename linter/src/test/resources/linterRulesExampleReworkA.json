@@ -6,6 +6,6 @@
     }
   },
   "callExpression": {
-    "arguments": ["identifier", "literal"]
+    "arguments": ["IDENTIFIER", "STRING_LITERAL", "NUMBER_LITERAL"]
   }
 }
