@@ -20,7 +20,7 @@ public record Identifier(String name, Position start, Position end, TokenDataTyp
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visitIdentifier(this);
+    return visitor.visit(this);
   }
 
   @Override

@@ -32,6 +32,6 @@ public record CallExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visitCallExpression(this);
+    return visitor.visit(this);
   }
 }

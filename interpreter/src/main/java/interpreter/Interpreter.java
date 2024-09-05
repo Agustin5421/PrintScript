@@ -3,6 +3,8 @@ package interpreter;
 import ast.root.AstNode;
 import ast.root.Program;
 import java.util.List;
+
+import interpreter.visitor.InterpreterVisitorV1;
 import observers.Observer;
 import observers.Progressable;
 
@@ -23,11 +25,11 @@ public class Interpreter implements Progressable {
 
   public VariablesRepository executeProgram(Program program) {
     VariablesRepository variablesRepository = new VariablesRepository();
-    interpreterVisitorV1 nodeVisitor = new interpreterVisitorV1(variablesRepository);
+    InterpreterVisitorV1 nodeVisitor = new InterpreterVisitorV1(variablesRepository);
     totalStatements = program.statements().size();
 
     for (AstNode statement : program.statements()) {
-      nodeVisitor = (interpreterVisitorV1) statement.accept(nodeVisitor);
+      nodeVisitor = (InterpreterVisitorV1) statement.accept(nodeVisitor);
       variablesRepository = nodeVisitor.getVariablesRepository();
       updateProgress();
     }

@@ -22,6 +22,6 @@ public record VariableDeclaration(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visitVarDec(this);
+    return visitor.visit(this);
   }
 }
