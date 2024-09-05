@@ -42,7 +42,7 @@ public class ComplexLinterVisitorTest {
   public void noViolationsTest() {
     Program program = getProgram();
 
-    String rules = TestUtils.readResourceFile("linterRulesExample.json");
+    String rules = TestUtils.readResourceFile("linterRulesExampleReworkA.json");
     assertNotNull(rules);
 
     Linter linter = getLinter();
@@ -55,7 +55,7 @@ public class ComplexLinterVisitorTest {
   public void violationsTest() {
     Program program = getProgram();
 
-    String rules = TestUtils.readResourceFile("anotherLinterRulesExample.json");
+    String rules = TestUtils.readResourceFile("linterRulesExampleReworkB.json");
     assertNotNull(rules);
 
     Linter linter = getLinter();

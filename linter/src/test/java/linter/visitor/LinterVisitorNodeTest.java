@@ -11,15 +11,15 @@ import ast.statements.CallExpression;
 import java.util.List;
 import java.util.Map;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.identifier.CamelCaseIdentifier;
-import linter.visitor.strategy.identifier.IdentifierLintingStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
 public class LinterVisitorNodeTest {
   private LinterVisitor getLinterVisitorOnlyIdentifierLinting() {
     LintingStrategy idStrategy = new CamelCaseIdentifier();
-    LintingStrategy mainIdStrategy = new IdentifierLintingStrategy(List.of(idStrategy));
+    LintingStrategy mainIdStrategy = new StrategiesContainer(List.of(idStrategy));
 
     Map<AstNodeType, LintingStrategy> nodesStrategies =
         Map.of(AstNodeType.IDENTIFIER, mainIdStrategy);
