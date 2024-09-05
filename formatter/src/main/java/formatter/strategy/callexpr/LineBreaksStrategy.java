@@ -1,7 +1,8 @@
-package formatter.newimpl.strategy;
+package formatter.strategy.callexpr;
 
 import ast.root.AstNode;
-import formatter.newimpl.FormatterVisitor2;
+import formatter.FormatterVisitor;
+import formatter.strategy.FormattingStrategy;
 
 public class LineBreaksStrategy implements FormattingStrategy {
   private final int lineBreaks;
@@ -11,7 +12,7 @@ public class LineBreaksStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor2 visitor) {
+  public String apply(AstNode node, FormatterVisitor visitor) {
     String currentCode = visitor.getCurrentCode();
     if (currentCode.isEmpty()) {
       return "";

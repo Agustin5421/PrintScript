@@ -1,15 +1,16 @@
-package formatter.newimpl.strategy;
+package formatter.strategy.vardec;
 
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
-import formatter.newimpl.FormatterVisitor2;
+import formatter.FormatterVisitor;
+import formatter.strategy.FormattingStrategy;
 
 public class GetTypeStrategy implements FormattingStrategy {
   @Override
-  public String apply(AstNode node, FormatterVisitor2 visitor) {
+  public String apply(AstNode node, FormatterVisitor visitor) {
     VariableDeclaration variableDeclaration = (VariableDeclaration) node;
     Expression expression = variableDeclaration.expression();
     return getType(expression);

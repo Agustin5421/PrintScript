@@ -1,13 +1,15 @@
-package formatter.newimpl;
+package formatter;
 
 import ast.root.AstNodeType;
 import com.google.gson.JsonObject;
-import formatter.OptionsChecker;
-import formatter.newimpl.strategy.*;
-import formatter.newimpl.strategy.factory.CallExpressionFactory;
-import formatter.newimpl.strategy.factory.FormattingStrategyFactory;
-import formatter.newimpl.strategy.factory.ReAssignmentFactory;
-import formatter.newimpl.strategy.factory.VariableDeclarationStrategyFactory;
+import formatter.strategy.FormattingStrategy;
+import formatter.strategy.common.OperatorConcatenationStrategy;
+import formatter.strategy.common.OperatorStrategy;
+import formatter.strategy.common.WhiteSpace;
+import formatter.strategy.factory.CallExpressionFactory;
+import formatter.strategy.factory.FormattingStrategyFactory;
+import formatter.strategy.factory.ReAssignmentFactory;
+import formatter.strategy.factory.VariableDeclarationStrategyFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,16 +19,16 @@ import observers.ProgressObserver;
 import observers.ProgressPrinter;
 
 public class FormatterInitializer {
-  public static MainFormatter2 init(String options) {
+  public static MainFormatter init(String options) {
     return init(new ProgressObserver(new ProgressPrinter(), 1), options);
   }
 
-  public static MainFormatter2 init(Observer observer, String options) {
+  public static MainFormatter init(Observer observer, String options) {
     JsonObject rules = OptionsChecker.checkAndReturn(options);
-    return new MainFormatter2(List.of(observer), createVisitor(rules));
+    return new MainFormatter(List.of(observer), createVisitor(rules));
   }
 
-  private static FormatterVisitor2 createVisitor(JsonObject rules) {
+  private static FormatterVisitor createVisitor(JsonObject rules) {
     Map<AstNodeType, FormattingStrategy> strategies = new HashMap<>();
 
     FormattingStrategyFactory callExpressionFactory = new CallExpressionFactory();
@@ -44,7 +46,7 @@ public class FormatterInitializer {
     FormattingStrategy varDecStrategy = varDecStrategyFactory.create(rules);
     strategies.put(AstNodeType.VARIABLE_DECLARATION, varDecStrategy);
 
-    return new FormatterVisitor2(strategies);
+    return new FormatterVisitor(strategies);
   }
 
   private static OperatorConcatenationStrategy getAssignmentStrategy(JsonObject rules) {

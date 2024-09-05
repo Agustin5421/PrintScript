@@ -1,9 +1,9 @@
-package formatter.newimpl.strategy.factory;
+package formatter.strategy.factory;
 
 import com.google.gson.JsonObject;
-import formatter.newimpl.strategy.FormattingStrategy;
-import formatter.newimpl.strategy.OperatorConcatenationStrategy;
-import formatter.newimpl.strategy.ReAssignationStrategy;
+import formatter.strategy.FormattingStrategy;
+import formatter.strategy.common.OperatorConcatenationStrategy;
+import formatter.strategy.reassign.ReAssignationStrategy;
 
 public class ReAssignmentFactory implements FormattingStrategyFactory {
   private final OperatorConcatenationStrategy equalStrategy;

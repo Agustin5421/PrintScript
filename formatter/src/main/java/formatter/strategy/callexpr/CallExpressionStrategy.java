@@ -1,8 +1,9 @@
-package formatter.newimpl.strategy;
+package formatter.strategy.callexpr;
 
 import ast.root.AstNode;
 import ast.statements.CallExpression;
-import formatter.newimpl.FormatterVisitor2;
+import formatter.FormatterVisitor;
+import formatter.strategy.FormattingStrategy;
 import java.util.List;
 
 public class CallExpressionStrategy implements FormattingStrategy {
@@ -13,9 +14,9 @@ public class CallExpressionStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor2 visitor) {
+  public String apply(AstNode node, FormatterVisitor visitor) {
     CallExpression callExpression = (CallExpression) node;
-    FormatterVisitor2 visit = (FormatterVisitor2) callExpression.methodIdentifier().accept(visitor);
+    FormatterVisitor visit = (FormatterVisitor) callExpression.methodIdentifier().accept(visitor);
 
     StringBuilder formattedCode = new StringBuilder();
     formattedCode

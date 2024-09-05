@@ -1,7 +1,12 @@
-package formatter.newimpl.strategy.factory;
+package formatter.strategy.factory;
 
 import com.google.gson.JsonObject;
-import formatter.newimpl.strategy.*;
+import formatter.strategy.*;
+import formatter.strategy.common.OperatorStrategy;
+import formatter.strategy.common.WhiteSpace;
+import formatter.strategy.vardec.GetTypeStrategy;
+import formatter.strategy.vardec.TypingStrategy;
+import formatter.strategy.vardec.VariableDeclarationStrategy;
 import java.util.ArrayList;
 import java.util.List;
 

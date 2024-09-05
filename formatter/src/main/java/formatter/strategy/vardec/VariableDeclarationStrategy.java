@@ -1,8 +1,9 @@
-package formatter.newimpl.strategy;
+package formatter.strategy.vardec;
 
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
-import formatter.newimpl.FormatterVisitor2;
+import formatter.FormatterVisitor;
+import formatter.strategy.FormattingStrategy;
 import java.util.List;
 
 public class VariableDeclarationStrategy implements FormattingStrategy {
@@ -19,12 +20,12 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor2 visitor) {
+  public String apply(AstNode node, FormatterVisitor visitor) {
     VariableDeclaration varDecNode = (VariableDeclaration) node;
     StringBuilder formattedCode = new StringBuilder();
     formattedCode.append(keyword).append(" ");
     // Adding the identifier
-    FormatterVisitor2 visit = (FormatterVisitor2) varDecNode.identifier().accept(visitor);
+    FormatterVisitor visit = (FormatterVisitor) varDecNode.identifier().accept(visitor);
     formattedCode.append(visit.getCurrentCode());
     // Adding the whitespaces strategies
     for (FormattingStrategy strategy : strategies) {
@@ -32,7 +33,7 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
     }
     // Formatting the expression
     formattedCode.append(
-        ((FormatterVisitor2) varDecNode.expression().accept(visitor)).getCurrentCode());
+        ((FormatterVisitor) varDecNode.expression().accept(visitor)).getCurrentCode());
     formattedCode.append(";");
     return formattedCode.toString();
   }

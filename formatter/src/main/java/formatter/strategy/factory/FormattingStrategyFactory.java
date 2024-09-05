@@ -1,7 +1,7 @@
-package formatter.newimpl.strategy.factory;
+package formatter.strategy.factory;
 
 import com.google.gson.JsonObject;
-import formatter.newimpl.strategy.FormattingStrategy;
+import formatter.strategy.FormattingStrategy;
 
 public interface FormattingStrategyFactory {
   FormattingStrategy create(JsonObject rules);

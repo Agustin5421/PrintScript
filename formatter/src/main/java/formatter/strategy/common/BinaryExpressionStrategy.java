@@ -1,8 +1,9 @@
-package formatter.newimpl.strategy;
+package formatter.strategy.common;
 
 import ast.expressions.BinaryExpression;
 import ast.root.AstNode;
-import formatter.newimpl.FormatterVisitor2;
+import formatter.FormatterVisitor;
+import formatter.strategy.FormattingStrategy;
 import java.util.List;
 
 public class BinaryExpressionStrategy implements FormattingStrategy {
@@ -17,15 +18,14 @@ public class BinaryExpressionStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor2 visitor) {
+  public String apply(AstNode node, FormatterVisitor visitor) {
     BinaryExpression binaryExpression = (BinaryExpression) node;
     String formattedCode =
-        ((FormatterVisitor2) binaryExpression.left().accept(visitor)).getCurrentCode();
+        ((FormatterVisitor) binaryExpression.left().accept(visitor)).getCurrentCode();
     // Applying the spaces and operator between the expression
     formattedCode += strategy.apply(binaryExpression, visitor);
     // Formatting the right side of the expression
-    formattedCode +=
-        ((FormatterVisitor2) binaryExpression.right().accept(visitor)).getCurrentCode();
+    formattedCode += ((FormatterVisitor) binaryExpression.right().accept(visitor)).getCurrentCode();
     return formattedCode;
   }
 }

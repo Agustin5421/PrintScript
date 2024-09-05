@@ -1,7 +1,10 @@
-package formatter.newimpl.strategy.factory;
+package formatter.strategy.factory;
 
 import com.google.gson.JsonObject;
-import formatter.newimpl.strategy.*;
+import formatter.strategy.callexpr.ArgumentsStrategy;
+import formatter.strategy.callexpr.CallExpressionStrategy;
+import formatter.strategy.callexpr.LineBreaksStrategy;
+import formatter.strategy.common.WhiteSpace;
 import java.util.List;
 
 public class CallExpressionFactory implements FormattingStrategyFactory {
