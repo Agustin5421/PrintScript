@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.Map;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.StrategiesContainer;
-import linter.visitor.strategy.identifier.CamelCaseIdentifier;
+import linter.visitor.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
 public class LinterVisitorNodeTest {
   private LinterVisitor getLinterVisitorOnlyIdentifierLinting() {
-    LintingStrategy idStrategy = new CamelCaseIdentifier();
+    LintingStrategy idStrategy =
+        new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
     LintingStrategy mainIdStrategy = new StrategiesContainer(List.of(idStrategy));
 
     Map<AstNodeType, LintingStrategy> nodesStrategies =

@@ -6,7 +6,7 @@ import ast.identifier.Identifier;
 import linter.report.FullReport;
 import linter.report.Report;
 import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.identifier.CamelCaseIdentifier;
+import linter.visitor.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -17,7 +17,8 @@ public class CamelCaseTest {
     Position end = new Position(0, 8);
     Identifier identifier = new Identifier("testName", start, end);
 
-    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
+    LintingStrategy camelCaseIdentifier =
+        new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
     FullReport fullReport = new FullReport();
     fullReport = camelCaseIdentifier.apply(identifier, fullReport);
 
@@ -30,7 +31,8 @@ public class CamelCaseTest {
     Position end = new Position(0, 8);
     Identifier identifier = new Identifier("test_name", start, end);
 
-    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
+    LintingStrategy camelCaseIdentifier =
+        new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
     FullReport fullReport = new FullReport();
     fullReport = camelCaseIdentifier.apply(identifier, fullReport);
 

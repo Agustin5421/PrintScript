@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
 import ast.literal.NumberLiteral;
+import ast.root.AstNodeType;
+import ast.statements.CallExpression;
+import java.util.List;
 import linter.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.callexpression.NoExpressionArgument;
+import linter.visitor.strategy.callexpression.ArgumentsStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -18,11 +21,17 @@ public class NoExpressionTest {
     NumberLiteral one = new NumberLiteral(1, position, position);
     NumberLiteral two = new NumberLiteral(2, position, position);
     BinaryExpression binaryExpression = new BinaryExpression(one, two, "+", position, position);
+    CallExpression callExpression =
+        new CallExpression(
+            new Identifier("methodName", position, position), List.of(binaryExpression), true);
 
-    LintingStrategy strategy = new NoExpressionArgument();
+    LintingStrategy strategy =
+        new ArgumentsStrategy(
+            List.of(
+                AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
     FullReport fullReport = new FullReport();
 
-    FullReport newReport = strategy.apply(binaryExpression, fullReport);
+    FullReport newReport = strategy.apply(callExpression, fullReport);
 
     assertEquals(1, newReport.getReports().size());
   }
@@ -31,8 +40,12 @@ public class NoExpressionTest {
   public void callExpressionWithoutExpressionArgumentTest() {
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("methodName", position, position);
+    CallExpression callExpression = new CallExpression(identifier, List.of(identifier), true);
 
-    LintingStrategy strategy = new NoExpressionArgument();
+    LintingStrategy strategy =
+        new ArgumentsStrategy(
+            List.of(
+                AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
     FullReport fullReport = new FullReport();
 
     FullReport newReport = strategy.apply(identifier, fullReport);

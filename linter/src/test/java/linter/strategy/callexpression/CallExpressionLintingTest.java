@@ -13,17 +13,18 @@ import java.util.List;
 import java.util.Map;
 import linter.visitor.LinterVisitor;
 import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.callexpression.CallExpressionLintingStrategy;
-import linter.visitor.strategy.callexpression.NoExpressionArgument;
-import linter.visitor.strategy.callexpression.NoLiteralArgument;
+import linter.visitor.strategy.StrategiesContainer;
+import linter.visitor.strategy.callexpression.ArgumentsStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
 public class CallExpressionLintingTest {
   private LinterVisitor getLinterVisitorV2() {
-    LintingStrategy strategy = new NoExpressionArgument();
-    LintingStrategy mainCallExpressionStrategy =
-        new CallExpressionLintingStrategy(List.of(strategy));
+    LintingStrategy strategy =
+        new ArgumentsStrategy(
+            List.of(
+                AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
+    LintingStrategy mainCallExpressionStrategy = new StrategiesContainer(List.of(strategy));
     Map<AstNodeType, LintingStrategy> nodesStrategies =
         Map.of(AstNodeType.CALL_EXPRESSION, mainCallExpressionStrategy);
 
@@ -87,10 +88,8 @@ public class CallExpressionLintingTest {
   }
 
   private LinterVisitor getLinterVisitorStrictArguments() {
-    LintingStrategy strategy1 = new NoExpressionArgument();
-    LintingStrategy strategy2 = new NoLiteralArgument();
-    LintingStrategy mainCallExpressionStrategy =
-        new CallExpressionLintingStrategy(List.of(strategy1, strategy2));
+    LintingStrategy strategy1 = new ArgumentsStrategy(List.of(AstNodeType.IDENTIFIER));
+    LintingStrategy mainCallExpressionStrategy = new StrategiesContainer(List.of(strategy1));
     Map<AstNodeType, LintingStrategy> nodesStrategies =
         Map.of(AstNodeType.CALL_EXPRESSION, mainCallExpressionStrategy);
 

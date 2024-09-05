@@ -7,8 +7,7 @@ import java.util.List;
 import linter.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.StrategiesContainer;
-import linter.visitor.strategy.identifier.CamelCaseIdentifier;
-import linter.visitor.strategy.identifier.SnakeCaseIdentifier;
+import linter.visitor.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -29,7 +28,8 @@ public class IdentifierLintingTest {
   public void severalIdentifiersCamelCaseTest() {
     List<Identifier> identifiers = getIdentifiers();
 
-    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
+    LintingStrategy camelCaseIdentifier =
+        new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
     LintingStrategy mainIdLinting = new StrategiesContainer(List.of(camelCaseIdentifier));
 
     FullReport fullReport = new FullReport();
@@ -44,7 +44,8 @@ public class IdentifierLintingTest {
   public void severalIdentifiersSnakeCaseTest() {
     List<Identifier> identifiers = getIdentifiers();
 
-    LintingStrategy snakeCaseIdentifier = new SnakeCaseIdentifier();
+    LintingStrategy snakeCaseIdentifier =
+        new WritingConventionStrategy("snakeCase", "^[a-z]+(_[a-z0-9]+)*$");
     LintingStrategy mainIdLinting = new StrategiesContainer(List.of(snakeCaseIdentifier));
 
     FullReport fullReport = new FullReport();
@@ -59,8 +60,10 @@ public class IdentifierLintingTest {
   public void severalIdentifiersBothCaseTest() {
     List<Identifier> identifiers = getIdentifiers();
 
-    LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
-    LintingStrategy snakeCaseIdentifier = new SnakeCaseIdentifier();
+    LintingStrategy camelCaseIdentifier =
+        new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
+    LintingStrategy snakeCaseIdentifier =
+        new WritingConventionStrategy("snakeCase", "^[a-z]+(_[a-z0-9]+)*$");
     LintingStrategy mainIdLinting =
         new StrategiesContainer(List.of(camelCaseIdentifier, snakeCaseIdentifier));
 
