@@ -6,7 +6,7 @@ import linter.TestUtils;
 import linter.visitor.factory.IdentifierStrategyFactory;
 import linter.visitor.factory.StrategyFactory;
 import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.identifier.IdentifierLintingStrategy;
+import linter.visitor.strategy.StrategiesContainer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +21,6 @@ public class IdentifierStrategyFactoryTest {
     LintingStrategy strategies = factory.createStrategies(rules);
 
     assertNotNull(strategies);
-    Assertions.assertInstanceOf(IdentifierLintingStrategy.class, strategies);
+    Assertions.assertInstanceOf(StrategiesContainer.class, strategies);
   }
 }

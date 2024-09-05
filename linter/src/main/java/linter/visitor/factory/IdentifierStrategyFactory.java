@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.List;
 import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.identifier.IdentifierLintingStrategy;
+import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.identifier.WritingConventionStrategy;
 
 public class IdentifierStrategyFactory implements StrategyFactory {
@@ -17,7 +17,7 @@ public class IdentifierStrategyFactory implements StrategyFactory {
     LintingStrategy identifierWritingConvention = getIdentifierWritingConvention(jsonObject);
 
     List<LintingStrategy> strategies = List.of(identifierWritingConvention);
-    return new IdentifierLintingStrategy(trimNullStrategies(strategies));
+    return new StrategiesContainer(trimNullStrategies(strategies));
   }
 
   private LintingStrategy getIdentifierWritingConvention(JsonObject jsonObject) {

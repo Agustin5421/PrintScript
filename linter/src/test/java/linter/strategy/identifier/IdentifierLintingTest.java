@@ -6,8 +6,8 @@ import ast.identifier.Identifier;
 import java.util.List;
 import linter.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.identifier.CamelCaseIdentifier;
-import linter.visitor.strategy.identifier.IdentifierLintingStrategy;
 import linter.visitor.strategy.identifier.SnakeCaseIdentifier;
 import org.junit.jupiter.api.Test;
 import token.Position;
@@ -30,7 +30,7 @@ public class IdentifierLintingTest {
     List<Identifier> identifiers = getIdentifiers();
 
     LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
-    LintingStrategy mainIdLinting = new IdentifierLintingStrategy(List.of(camelCaseIdentifier));
+    LintingStrategy mainIdLinting = new StrategiesContainer(List.of(camelCaseIdentifier));
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {
@@ -45,7 +45,7 @@ public class IdentifierLintingTest {
     List<Identifier> identifiers = getIdentifiers();
 
     LintingStrategy snakeCaseIdentifier = new SnakeCaseIdentifier();
-    LintingStrategy mainIdLinting = new IdentifierLintingStrategy(List.of(snakeCaseIdentifier));
+    LintingStrategy mainIdLinting = new StrategiesContainer(List.of(snakeCaseIdentifier));
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {
@@ -62,7 +62,7 @@ public class IdentifierLintingTest {
     LintingStrategy camelCaseIdentifier = new CamelCaseIdentifier();
     LintingStrategy snakeCaseIdentifier = new SnakeCaseIdentifier();
     LintingStrategy mainIdLinting =
-        new IdentifierLintingStrategy(List.of(camelCaseIdentifier, snakeCaseIdentifier));
+        new StrategiesContainer(List.of(camelCaseIdentifier, snakeCaseIdentifier));
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {

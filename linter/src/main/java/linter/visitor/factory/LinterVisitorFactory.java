@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.Map;
 import linter.visitor.LinterVisitor;
 import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.callexpression.CallExpressionLintingStrategy;
+import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.callexpression.NoExpressionArgument;
 import linter.visitor.strategy.callexpression.NoLiteralArgument;
 import linter.visitor.strategy.identifier.CamelCaseIdentifier;
-import linter.visitor.strategy.identifier.IdentifierLintingStrategy;
 import linter.visitor.strategy.identifier.SnakeCaseIdentifier;
 
 public class LinterVisitorFactory {
@@ -34,7 +33,7 @@ public class LinterVisitorFactory {
 
     List<LintingStrategy> identifierStrategies = getIdentifierWritingConventions(jsonObject);
 
-    return new IdentifierLintingStrategy(identifierStrategies);
+    return new StrategiesContainer(identifierStrategies);
   }
 
   private List<LintingStrategy> getIdentifierWritingConventions(JsonObject jsonObject) {
@@ -62,7 +61,7 @@ public class LinterVisitorFactory {
 
     List<LintingStrategy> callExpressionStrategies = getArgumentsStrategies(jsonObject);
 
-    return new CallExpressionLintingStrategy(callExpressionStrategies);
+    return new StrategiesContainer(callExpressionStrategies);
   }
 
   private List<LintingStrategy> getArgumentsStrategies(JsonObject jsonObject) {
