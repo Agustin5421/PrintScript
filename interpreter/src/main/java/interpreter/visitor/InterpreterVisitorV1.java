@@ -1,4 +1,4 @@
-package interpreter;
+package interpreter.visitor;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
@@ -6,17 +6,19 @@ import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
+import ast.root.AstNodeType;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
+import interpreter.VariablesRepository;
 import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
 
-public class interpreterVisitorV1 implements NodeVisitor {
+public class InterpreterVisitorV1 implements NodeVisitor { //}, NodeVisitor2 {
   private final VariablesRepository variablesRepository;
 
-  public interpreterVisitorV1(VariablesRepository variablesRepository) {
+  public InterpreterVisitorV1(VariablesRepository variablesRepository) {
     this.variablesRepository = variablesRepository;
   }
 
@@ -48,7 +50,7 @@ public class interpreterVisitorV1 implements NodeVisitor {
 
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(left, evaluatedRight);
-    return new interpreterVisitorV1(newVariablesRepository);
+    return new InterpreterVisitorV1(newVariablesRepository);
   }
 
   @Override
@@ -79,19 +81,20 @@ public class interpreterVisitorV1 implements NodeVisitor {
 
   @Override
   public NodeVisitor visit(AstNode node) {
-    if (node instanceof VariableDeclaration) {
+    AstNodeType nodeType = node.getNodeType();
+    if (nodeType == AstNodeType.VARIABLE_DECLARATION) {
       return visitVarDec((VariableDeclaration) node);
-    } else if (node instanceof AssignmentExpression) {
+    } else if (nodeType == AstNodeType.ASSIGNMENT_EXPRESSION) {
       return visitAssignmentExpression((AssignmentExpression) node);
-    } else if (node instanceof CallExpression) {
+    } else if (nodeType == AstNodeType.CALL_EXPRESSION) {
       return visitCallExpression((CallExpression) node);
-    } else if (node instanceof NumberLiteral) {
+    } else if (nodeType == AstNodeType.NUMBER_LITERAL) {
       return visitNumberLiteral((NumberLiteral) node);
-    } else if (node instanceof StringLiteral) {
+    } else if (nodeType == AstNodeType.STRING_LITERAL) {
       return visitStringLiteral((StringLiteral) node);
-    } else if (node instanceof Identifier) {
+    } else if (nodeType == AstNodeType.IDENTIFIER) {
       return visitIdentifier((Identifier) node);
-    } else if (node instanceof BinaryExpression) {
+    } else if (nodeType == AstNodeType.BINARY_EXPRESSION) {
       return visitBinaryExpression((BinaryExpression) node);
     } else {
       throw new IllegalArgumentException("Node not supported in this version :( ");
@@ -111,7 +114,7 @@ public class interpreterVisitorV1 implements NodeVisitor {
     // Object value = literal.value();
 
     VariablesRepository newVariablesRepository = variablesRepository.addVariable(name, value);
-    return new interpreterVisitorV1(newVariablesRepository);
+    return new InterpreterVisitorV1(newVariablesRepository);
   }
 
   private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
