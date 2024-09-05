@@ -17,10 +17,10 @@ public class LexerV2Test extends CommonParserTests {
 
   /*
   @Test
-    public void testIfStatement() {
-        Parser parser = setParser("if (true) { println(2); } else { println(3); }", getParser());
-        assertInstanceOf(IfStatement.class, parser.next());
-    }
+  public void testIfStatement() {
+    Parser parser = setParser("if (true) { println(2); } else { println(3); }", getParser());
+    assertInstanceOf(IfStatement.class, parser.next());
+  }
 
    */
 }

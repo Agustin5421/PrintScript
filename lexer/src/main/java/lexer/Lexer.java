@@ -135,4 +135,20 @@ public class Lexer implements Progressable, Iterator<Token> {
       observer.update(this);
     }
   }
+
+  public Token peek() {
+    if (!hasNext()) {
+      throw new IllegalStateException("No more tokens available");
+    }
+
+    String word = matcher.group();
+    int start = matcher.start();
+    int end = matcher.end();
+
+    Position finalPosition = updatePosition(code, start, end, currentPosition);
+
+    TokenType type = tokenTypeGetter.getType(word);
+
+    return new Token(type, word, currentPosition, finalPosition);
+  }
 }
