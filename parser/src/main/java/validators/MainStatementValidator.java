@@ -1,4 +1,4 @@
-package splitters;
+package validators;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,7 @@ import lexer.Lexer;
 import token.Token;
 
 public class MainStatementValidator {
-  private final List<StatementValidator> statementSplitters = List.of(new IfSStatementSplitter());
-
+  private final List<StatementValidator> statementValidators = List.of(new IfSStatementValidator());
   private final StatementValidator defaultStatementValidator = new SemicolonStatementValidator();
 
   public List<Token> getNextStatement(Lexer lexer) {
@@ -15,7 +14,7 @@ public class MainStatementValidator {
 
     tokens.add(lexer.next());
 
-    for (StatementValidator statementSplitter : statementSplitters) {
+    for (StatementValidator statementSplitter : statementValidators) {
       if (statementSplitter.shouldSplit(tokens)) {
         return statementSplitter.validate(lexer, tokens);
       }

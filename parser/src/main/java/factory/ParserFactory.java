@@ -12,7 +12,7 @@ import parsers.statements.CallFunctionParser;
 import parsers.statements.IfParser;
 import parsers.statements.StatementParser;
 import parsers.statements.VariableDeclarationParser;
-import splitters.MainStatementValidator;
+import validators.MainStatementValidator;
 
 public class ParserFactory {
   public static Parser getParser(String version) {

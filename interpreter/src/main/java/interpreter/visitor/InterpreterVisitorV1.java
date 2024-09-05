@@ -15,7 +15,7 @@ import interpreter.VariablesRepository;
 import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
 
-public class InterpreterVisitorV1 implements NodeVisitor { //}, NodeVisitor2 {
+public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
   private final VariablesRepository variablesRepository;
 
   public InterpreterVisitorV1(VariablesRepository variablesRepository) {

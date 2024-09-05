@@ -1,4 +1,4 @@
-package splitters;
+package validators;
 
 import exceptions.UnsupportedStatementException;
 import java.util.List;

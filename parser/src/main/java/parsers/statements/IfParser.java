@@ -5,6 +5,7 @@ import ast.statements.IfStatement;
 import ast.statements.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import parsers.Parser;
 import token.Position;
 import token.Token;
@@ -15,66 +16,72 @@ public class IfParser implements StatementParser {
   public Statement parse(Parser parser, List<Token> tokens) {
     Expression condition = parser.parseExpression(List.of(tokens.get(2)));
 
-    List<Token> thenBodyTokens = getThenBodyTokens(tokens);
-    List<Token> elseBodyTokens = getElseBodyTokens(tokens);
+    List<Token> thenBody = tokens.subList(4, tokens.size());
 
-    List<Statement> thenBodyStatements = parser.parseBlock(thenBodyTokens);
-    List<Statement> elseBodyStatements = parser.parseBlock(elseBodyTokens);
+    Map<String, List<Token>> bodyTokens = getBodyTokens(thenBody);
+
+    List<Statement> thenBodyStatements = parser.parseBlock(bodyTokens.get("then"));
+    List<Statement> elseBodyStatements = parser.parseBlock(bodyTokens.get("else"));
 
     Position start = tokens.get(0).initialPosition();
     Position end = tokens.get(tokens.size() - 1).finalPosition();
     return new IfStatement(start, end, condition, thenBodyStatements, elseBodyStatements);
   }
 
-  private List<Token> getThenBodyTokens(List<Token> tokens) {
+  private Map<String, List<Token>> getBodyTokens(List<Token> tokens) {
     List<Token> thenBodyTokens = new ArrayList<>();
     int braceCount = 0;
+    boolean hasElse = false;
 
-    for (int i = 4; i < tokens.size(); i++) {
+    for (int i = 0; i < tokens.size(); i++) {
       Token token = tokens.get(i);
       if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
         braceCount++;
-      } else if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
+      }
+
+      if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
         braceCount--;
+        thenBodyTokens.add(token);
+
         if (braceCount == 0) {
+          try {
+            if (tokens.get(i + 1).nodeType() == TokenSyntaxType.ELSE) {
+              hasElse = true;
+            }
+          } catch (IndexOutOfBoundsException e) {
+
+          }
           break;
         }
       }
+
       thenBodyTokens.add(token);
     }
 
-    return removeBraces(thenBodyTokens);
-  }
-
-  private List<Token> getElseBodyTokens(List<Token> tokens) {
     List<Token> elseBodyTokens = new ArrayList<>();
-    int braceCount = 0;
-
-    for (int i = 4; i < tokens.size(); i++) {
-      Token token = tokens.get(i);
-      if (token.nodeType() == TokenSyntaxType.ELSE) {
-        continue;
+    if (hasElse) {
+      for (int i = thenBodyTokens.size() + 1; i < tokens.size(); i++) {
+        Token token = tokens.get(i);
+        elseBodyTokens.add(token);
       }
-
-      if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
-        braceCount++;
-      } else if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
-        braceCount--;
-        if (braceCount == 0) {
-          break;
-        }
-      }
-      elseBodyTokens.add(token);
     }
-    return removeBraces(elseBodyTokens);
+
+    return Map.of("then", removeBraces(thenBodyTokens), "else", removeBraces(elseBodyTokens));
   }
 
   private List<Token> removeBraces(List<Token> tokens) {
+    if (tokens.size() < 2) {
+      return tokens;
+    }
     return tokens.subList(1, tokens.size() - 1);
   }
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
+    if (tokens.size() < 6) {
+      return false;
+    }
+
     return tokens.get(0).nodeType() == TokenSyntaxType.IF;
   }
 }

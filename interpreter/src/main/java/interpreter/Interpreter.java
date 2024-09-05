@@ -2,9 +2,8 @@ package interpreter;
 
 import ast.root.AstNode;
 import ast.root.Program;
-import java.util.List;
-
 import interpreter.visitor.InterpreterVisitorV1;
+import java.util.List;
 import observers.Observer;
 import observers.Progressable;
 

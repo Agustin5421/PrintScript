@@ -10,13 +10,15 @@ import java.util.List;
 import lexer.Lexer;
 import parsers.expressions.ExpressionParser;
 import parsers.statements.StatementParser;
-import splitters.MainStatementValidator;
+import splitters.MainStatementSplitter;
 import token.Token;
+import validators.MainStatementValidator;
 
 public class Parser implements Iterator<AstNode> {
   private final List<StatementParser> statementParsers;
   private final List<ExpressionParser> expressionParsers;
   private final MainStatementValidator mainStatementValidator;
+  private final MainStatementSplitter mainStatementSplitter = new MainStatementSplitter();
   private final Lexer lexer;
 
   public Parser(
@@ -56,8 +58,17 @@ public class Parser implements Iterator<AstNode> {
   }
 
   public List<Statement> parseBlock(List<Token> tokens) {
-    // TODO: Implement block parsing
-    throw new RuntimeException("Not implemented");
+    if (tokens.isEmpty()) {
+      return List.of();
+    }
+
+    List<List<Token>> statements = mainStatementSplitter.split(tokens);
+    List<Statement> parsedStatements = new java.util.ArrayList<>();
+
+    for (List<Token> statement : statements) {
+      parsedStatements.add(parseStatement(statement));
+    }
+    return parsedStatements;
   }
 
   @Override

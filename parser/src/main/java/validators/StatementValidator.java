@@ -1,4 +1,4 @@
-package splitters;
+package validators;
 
 import java.util.List;
 import lexer.Lexer;
