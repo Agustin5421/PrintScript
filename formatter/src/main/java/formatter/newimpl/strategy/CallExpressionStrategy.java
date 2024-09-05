@@ -23,7 +23,7 @@ public class CallExpressionStrategy implements FormattingStrategy {
         .append(visit.getCurrentCode())
         .append("(")
         .append(strategies.get(1).apply(node, visitor))
-        .append(")");
+        .append(");");
 
     return formattedCode.toString();
   }

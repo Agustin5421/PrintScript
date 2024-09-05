@@ -28,11 +28,12 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
     formattedCode.append(visit.getCurrentCode());
     // Adding the whitespaces strategies
     for (FormattingStrategy strategy : strategies) {
-      strategy.apply(node, visitor);
+      formattedCode.append(strategy.apply(varDecNode, visitor));
     }
     // Formatting the expression
     formattedCode.append(
         ((FormatterVisitor2) varDecNode.expression().accept(visitor)).getCurrentCode());
+    formattedCode.append(";");
     return formattedCode.toString();
   }
 }

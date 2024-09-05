@@ -4,12 +4,14 @@ import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
+import ast.statements.VariableDeclaration;
 import formatter.newimpl.FormatterVisitor2;
 
 public class GetTypeStrategy implements FormattingStrategy {
   @Override
   public String apply(AstNode node, FormatterVisitor2 visitor) {
-    Expression expression = (Expression) node;
+    VariableDeclaration variableDeclaration = (VariableDeclaration) node;
+    Expression expression = variableDeclaration.expression();
     return getType(expression);
   }
 

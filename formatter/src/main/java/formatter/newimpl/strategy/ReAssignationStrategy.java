@@ -23,6 +23,7 @@ public class ReAssignationStrategy implements FormattingStrategy {
     // Formatting the expression
     formattedCode.append(
         ((FormatterVisitor2) assignmentExpression.right().accept(visitor)).getCurrentCode());
+    formattedCode.append(";");
     return formattedCode.toString();
   }
 }

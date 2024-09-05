@@ -13,6 +13,10 @@ public class LineBreaksStrategy implements FormattingStrategy {
   @Override
   public String apply(AstNode node, FormatterVisitor2 visitor) {
     String currentCode = visitor.getCurrentCode();
+    if (currentCode.isEmpty()) {
+      return "";
+    }
+
     int existingLineBreaks = 0;
 
     // Count the number of line breaks at the end of the current code

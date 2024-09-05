@@ -16,8 +16,9 @@ public class VariableDeclarationStrategyFactory implements FormattingStrategyFac
   public FormattingStrategy create(JsonObject rules) {
     List<FormattingStrategy> strategies = new ArrayList<>();
     WhiteSpace whiteSpace = new WhiteSpace();
-    boolean beforeSpace = rules.get("before").getAsBoolean();
-    boolean afterSpace = rules.get("after").getAsBoolean();
+    JsonObject colonRules = rules.getAsJsonObject("colonRules");
+    boolean beforeSpace = colonRules.get("before").getAsBoolean();
+    boolean afterSpace = colonRules.get("after").getAsBoolean();
     if (beforeSpace) {
       strategies.add(whiteSpace);
     }
