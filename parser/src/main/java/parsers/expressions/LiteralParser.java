@@ -17,6 +17,6 @@ public class LiteralParser implements ExpressionParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return tokens.size() == 1 && tokens.get(0).type() instanceof TokenValueType;
+    return tokens.get(0).type() instanceof TokenValueType && tokens.size() <= 2;
   }
 }

@@ -1,22 +1,3 @@
-import ast.root.Program;
-import factory.LexerFactory;
-import formatter.MainFormatter;
-import formatter.MainFormatterInitializer;
-import interpreter.Interpreter;
-import lexer.Lexer;
-import linter.LinterV2;
-import observers.ProgressObserver;
-import observers.ProgressPrinter;
-import parsers.Parser;
-import token.Token;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Cli {
@@ -28,6 +9,8 @@ public class Cli {
   // src/main/resources/formatterOptionsTest.json"
   // .\gradlew :cli:run --args="Analyzing src/main/resources/clitest.txt
   // src/main/resources/linterOptionsTest.json"
+
+  /*
   public static void main(String[] args) {
     if (args.length == 0) {
       System.out.println("Please enter a valid instruction");
@@ -53,7 +36,7 @@ public class Cli {
     ProgressObserver observer = new ProgressObserver(progressPrinter, 3);
 
     Lexer lexer = initLexer(observer);
-    Parser parser = new Parser(List.of(observer));
+    Parser parser = ParserFactory.getParser("1.0");
     Interpreter interpreter = new Interpreter(List.of(observer));
 
     executeProgram(lexer, code, observer, parser, interpreter);
@@ -115,12 +98,12 @@ public class Cli {
     }
   }
 
-  private static Program validateFile(String code, ProgressObserver observer) {
+  private static AstNode validateFile(String code, ProgressObserver observer) {
     Lexer lexer = initLexer(observer);
-    Parser parser = new Parser(List.of(observer));
+    Parser parser = ParserFactory.getParser("1.0");
 
     try {
-      return parser.parse(lexer.tokenize(code));
+      parser.parse(lexer.tokenize(code));
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return null;
@@ -152,4 +135,6 @@ public class Cli {
       logger.log(Level.SEVERE, "Failed to write to file: " + filepath, e);
     }
   }
+
+   */
 }

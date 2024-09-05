@@ -8,6 +8,7 @@ import token.Token;
 import token.types.TokenType;
 import token.types.TokenValueType;
 
+// TODO: Implement a Literal parser for each type of literal
 public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {
     TokenType tokenType = token.type();
@@ -18,6 +19,10 @@ public class LiteralFactory {
     if (tokenType == TokenValueType.NUMBER) {
       return new NumberLiteral(
           Integer.parseInt(token.value()), token.initialPosition(), token.finalPosition());
+    }
+
+    if (tokenType == TokenValueType.BOOLEAN) {
+      return new BooleanLiteral(token.value(), token.initialPosition(), token.finalPosition());
     }
 
     Position position = token.initialPosition();

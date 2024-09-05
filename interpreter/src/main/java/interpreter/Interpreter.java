@@ -19,6 +19,8 @@ public class Interpreter implements Progressable {
     this.observers = List.of();
   }
 
+  // TODO: Delete return of executeProgram() method.
+
   public VariablesRepository executeProgram(Program program) {
     VariablesRepository variablesRepository = new VariablesRepository();
     AstNodeVisitor nodeVisitor = new AstNodeVisitor(variablesRepository);

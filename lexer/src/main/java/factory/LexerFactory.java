@@ -1,11 +1,13 @@
 package factory;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import lexer.Lexer;
 import token.types.TokenDataType;
 import token.types.TokenSyntaxType;
+import token.types.TokenType;
 import token.validators.DataTypePatternChecker;
 import token.validators.IdentifierTypeChecker;
 import token.validators.OperandPatternChecker;
@@ -39,10 +41,10 @@ public class LexerFactory {
                 "*", TokenDataType.OPERAND,
                 "/", TokenDataType.OPERAND));
 
-    SyntaxPatternChecker syntaxPatternChecker =
-        new SyntaxPatternChecker(
+    Map<String, TokenType> reservedWords =
+        new HashMap<>(
             Map.of(
-                "let", TokenSyntaxType.DECLARATION,
+                "let", TokenSyntaxType.LET_DECLARATION,
                 "(", TokenSyntaxType.OPEN_PARENTHESIS,
                 ")", TokenSyntaxType.CLOSE_PARENTHESIS,
                 "{", TokenSyntaxType.OPEN_BRACES,
@@ -52,6 +54,10 @@ public class LexerFactory {
                 "=", TokenSyntaxType.ASSIGNATION,
                 "if", TokenSyntaxType.IF,
                 "else", TokenSyntaxType.ELSE));
+
+    reservedWords.put("const", TokenSyntaxType.CONST_DECLARATION);
+
+    SyntaxPatternChecker syntaxPatternChecker = new SyntaxPatternChecker(reservedWords);
 
     DataTypePatternChecker dataTypePatternChecker =
         new DataTypePatternChecker(
@@ -76,7 +82,7 @@ public class LexerFactory {
                 literalTypeTokenChecker,
                 identifierTypeChecker));
 
-    return new Lexer(tokenTypeGetter);
+    return new Lexer("", tokenTypeGetter);
   }
 
   private static Lexer getLexerV1() {
@@ -94,11 +100,9 @@ public class LexerFactory {
     SyntaxPatternChecker syntaxPatternChecker =
         new SyntaxPatternChecker(
             Map.of(
-                "let", TokenSyntaxType.DECLARATION,
+                "let", TokenSyntaxType.LET_DECLARATION,
                 "(", TokenSyntaxType.OPEN_PARENTHESIS,
                 ")", TokenSyntaxType.CLOSE_PARENTHESIS,
-                "{", TokenSyntaxType.OPEN_BRACES,
-                "}", TokenSyntaxType.CLOSE_BRACES,
                 ";", TokenSyntaxType.SEMICOLON,
                 ":", TokenSyntaxType.COLON,
                 "=", TokenSyntaxType.ASSIGNATION));
@@ -121,6 +125,6 @@ public class LexerFactory {
                 dataTypePatternChecker,
                 literalTypeTokenChecker,
                 identifierTypeChecker));
-    return new Lexer(tokenTypeGetter);
+    return new Lexer("", tokenTypeGetter);
   }
 }
