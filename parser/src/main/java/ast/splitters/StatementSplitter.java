@@ -15,6 +15,10 @@ public class StatementSplitter {
     int braceCount = 0;
     boolean inIfStatement = false;
 
+    if (tokens.isEmpty()) {
+      throw new SyntaxException("expected statement but got: EOF");
+    }
+
     for (Token token : tokens) {
       if (token.type() != TokenSyntaxType.SEMICOLON) {
         currentSublist.add(token);

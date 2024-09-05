@@ -3,12 +3,14 @@ package factory;
 import ast.identifier.IdentifierParser;
 import ast.splitters.StatementSplitter;
 import java.util.List;
+import lexer.Lexer;
 import parsers.Parser;
 import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.ExpressionParser;
 import parsers.expressions.LiteralParser;
 import parsers.statements.AssignmentParser;
 import parsers.statements.CallFunctionParser;
+import parsers.statements.IfParser;
 import parsers.statements.StatementParser;
 import parsers.statements.VariableDeclarationParser;
 
@@ -22,14 +24,24 @@ public class ParserFactory {
   }
 
   private static Parser getParserV1() {
+    Lexer lexer = LexerFactory.getLexer("1.0");
     List<StatementParser> statementParsers =
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
     List<ExpressionParser> expressionParsers =
         List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
-    return new Parser(statementParsers, expressionParsers, new StatementSplitter());
+    return new Parser(lexer, statementParsers, expressionParsers, new StatementSplitter());
   }
 
   private static Parser getParserV2() {
-    return null;
+    Lexer lexer = LexerFactory.getLexer("1.1");
+    List<StatementParser> statementParsers =
+        List.of(
+            new IfParser(),
+            new CallFunctionParser(),
+            new VariableDeclarationParser(),
+            new AssignmentParser());
+    List<ExpressionParser> expressionParsers =
+        List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
+    return new Parser(lexer, statementParsers, expressionParsers, new StatementSplitter());
   }
 }
