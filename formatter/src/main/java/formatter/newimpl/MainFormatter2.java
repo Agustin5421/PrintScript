@@ -16,15 +16,12 @@ public class MainFormatter2 implements Progressable {
     this.visitor = visitor;
   }
 
-  public String format(Program program, String options) {
+  public String format(Program program) {
     StringBuilder formattedCode = new StringBuilder();
     totalSteps = program.statements().size();
     for (AstNode statement : program.statements()) {
       visitor = (FormatterVisitor2) statement.accept(visitor);
-      formattedCode
-          .append(visitor.getCurrentCode())
-          // Entering a new line after each statement
-          .append("\n");
+      formattedCode.append(visitor.getCurrentCode());
       notifyObservers();
     }
     return formattedCode.toString();
