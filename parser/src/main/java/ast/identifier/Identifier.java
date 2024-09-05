@@ -3,14 +3,25 @@ package ast.identifier;
 import ast.expressions.Expression;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
+import java.util.Map;
 import token.Position;
 import token.types.TokenDataType;
 
-public record Identifier(String name, Position start, Position end, TokenDataType type)
+public record Identifier(
+    String name, Position start, Position end, TokenDataType type, Map<String, Boolean> modifiers)
     implements Expression {
 
+  // This constructor is used by the parser to create an Identifier node v1
   public Identifier(String name, Position start, Position end) {
-    this(name, start, end, TokenDataType.STRING_TYPE);
+    this(name, start, end, TokenDataType.STRING_TYPE, Map.of());
+  }
+
+  public Identifier(String name, Position start, Position end, TokenDataType type) {
+    this(name, start, end, type, Map.of());
+  }
+
+  public Identifier(String name, Position start, Position end, Map<String, Boolean> modifiers) {
+    this(name, start, end, TokenDataType.STRING_TYPE, modifiers);
   }
 
   @Override
@@ -20,7 +31,7 @@ public record Identifier(String name, Position start, Position end, TokenDataTyp
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitIdentifier(this);
   }
 
   @Override

@@ -2,13 +2,14 @@ package interpreter.visitor;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
-import ast.root.AstNodeType;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
+import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import interpreter.VariablesRepository;
@@ -24,6 +25,16 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
 
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
+  }
+
+  @Override
+  public NodeVisitor visitIfStatement(IfStatement ifStatement) {
+    throw new IllegalArgumentException("If Node not supported in this version :( ");
+  }
+
+  @Override
+  public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
+    throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
   @Override
@@ -77,28 +88,6 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     return this;
-  }
-
-  @Override
-  public NodeVisitor visit(AstNode node) {
-    AstNodeType nodeType = node.getNodeType();
-    if (nodeType == AstNodeType.VARIABLE_DECLARATION) {
-      return visitVarDec((VariableDeclaration) node);
-    } else if (nodeType == AstNodeType.ASSIGNMENT_EXPRESSION) {
-      return visitAssignmentExpression((AssignmentExpression) node);
-    } else if (nodeType == AstNodeType.CALL_EXPRESSION) {
-      return visitCallExpression((CallExpression) node);
-    } else if (nodeType == AstNodeType.NUMBER_LITERAL) {
-      return visitNumberLiteral((NumberLiteral) node);
-    } else if (nodeType == AstNodeType.STRING_LITERAL) {
-      return visitStringLiteral((StringLiteral) node);
-    } else if (nodeType == AstNodeType.IDENTIFIER) {
-      return visitIdentifier((Identifier) node);
-    } else if (nodeType == AstNodeType.BINARY_EXPRESSION) {
-      return visitBinaryExpression((BinaryExpression) node);
-    } else {
-      throw new IllegalArgumentException("Node not supported in this version :( ");
-    }
   }
 
   private NodeVisitor setVariable(VariableDeclaration statement) {

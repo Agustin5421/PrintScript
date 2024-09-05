@@ -2,14 +2,19 @@ package ast.visitor;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
-import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
+import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 
 public interface NodeVisitor {
+  NodeVisitor visitIfStatement(IfStatement ifStatement);
+
+  NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral);
+
   NodeVisitor visitCallExpression(CallExpression callExpression);
 
   NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression);
@@ -23,6 +28,4 @@ public interface NodeVisitor {
   NodeVisitor visitIdentifier(Identifier identifier);
 
   NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression);
-
-  NodeVisitor visit(AstNode node);
 }

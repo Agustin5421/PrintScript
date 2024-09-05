@@ -3,12 +3,14 @@ package linter.visitor;
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
+import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import java.util.Map;
@@ -51,6 +53,16 @@ public class LinterVisitorV2 implements NodeVisitor {
     }
 
     return new LinterVisitorV2(newReport, getNodesStrategies());
+  }
+
+  @Override
+  public NodeVisitor visitIfStatement(IfStatement ifStatement) {
+    throw new IllegalArgumentException("If Node not supported in this version :( ");
+  }
+
+  @Override
+  public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
+    throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
   @Override

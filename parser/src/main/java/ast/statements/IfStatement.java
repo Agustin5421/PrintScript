@@ -43,7 +43,7 @@ public class IfStatement implements Statement {
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitIfStatement(this);
   }
 
   public Expression getCondition() {

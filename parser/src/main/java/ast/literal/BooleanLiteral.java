@@ -37,6 +37,6 @@ public class BooleanLiteral implements Literal {
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitBooleanLiteral(this);
   }
 }
