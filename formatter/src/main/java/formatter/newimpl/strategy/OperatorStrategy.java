@@ -4,7 +4,7 @@ import ast.root.AstNode;
 import formatter.newimpl.FormatterVisitor2;
 
 public class OperatorStrategy implements FormattingStrategy {
-  // Single operator that can be =, +=, +, -, /, *...
+  // Single operator that can be :, =, +=, +, -, /, *...
   private final String operator;
 
   public OperatorStrategy(String operator) {
