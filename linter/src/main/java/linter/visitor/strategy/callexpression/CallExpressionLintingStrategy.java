@@ -34,6 +34,6 @@ public class CallExpressionLintingStrategy implements LintingStrategy {
   }
 
   private boolean shouldApply(AstNode node) {
-    return node.getType().equals(AstNodeType.CALL_EXPRESSION);
+    return node.getNodeType().equals(AstNodeType.CALL_EXPRESSION);
   }
 }

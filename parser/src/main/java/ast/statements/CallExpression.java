@@ -26,7 +26,7 @@ public record CallExpression(
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.CALL_EXPRESSION;
   }
 

@@ -24,6 +24,6 @@ public class ConstDeclarationParser implements StatementParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return tokens.get(0).type().equals(TokenSyntaxType.CONST_DECLARATION);
+    return tokens.get(0).nodeType().equals(TokenSyntaxType.CONST_DECLARATION);
   }
 }

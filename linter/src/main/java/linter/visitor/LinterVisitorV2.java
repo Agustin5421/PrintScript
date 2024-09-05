@@ -45,7 +45,7 @@ public class LinterVisitorV2 implements NodeVisitor {
     visitor = expression.accept(visitor);
 
     FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(variableDeclaration.getType());
+    LintingStrategy strategy = getNodesStrategies().get(variableDeclaration.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(variableDeclaration, newReport);
     }
@@ -63,7 +63,7 @@ public class LinterVisitorV2 implements NodeVisitor {
     }
 
     FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(callExpression.getType());
+    LintingStrategy strategy = getNodesStrategies().get(callExpression.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(callExpression, newReport);
     }
@@ -80,7 +80,7 @@ public class LinterVisitorV2 implements NodeVisitor {
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(assignmentExpression.getType());
+    LintingStrategy strategy = getNodesStrategies().get(assignmentExpression.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(assignmentExpression, newReport);
     }
@@ -97,7 +97,7 @@ public class LinterVisitorV2 implements NodeVisitor {
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(binaryExpression.getType());
+    LintingStrategy strategy = getNodesStrategies().get(binaryExpression.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(binaryExpression, newReport);
     }
@@ -107,7 +107,7 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    LintingStrategy strategy = getNodesStrategies().get(numberLiteral.getType());
+    LintingStrategy strategy = getNodesStrategies().get(numberLiteral.getNodeType());
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(numberLiteral, getFullReport());
@@ -119,7 +119,7 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    LintingStrategy strategy = getNodesStrategies().get(stringLiteral.getType());
+    LintingStrategy strategy = getNodesStrategies().get(stringLiteral.getNodeType());
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(stringLiteral, getFullReport());
@@ -131,7 +131,7 @@ public class LinterVisitorV2 implements NodeVisitor {
 
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    LintingStrategy strategy = getNodesStrategies().get(identifier.getType());
+    LintingStrategy strategy = getNodesStrategies().get(identifier.getNodeType());
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(identifier, getFullReport());

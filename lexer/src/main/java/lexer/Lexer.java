@@ -93,7 +93,7 @@ public class Lexer implements Progressable, Iterator<Token> {
 
     currentPosition = finalPosition;
 
-    if (token.type() == TokenSyntaxType.INVALID) {
+    if (token.nodeType() == TokenSyntaxType.INVALID) {
       String message =
           getExceptionMessage(token.value(), currentPosition.row(), currentPosition.col());
       throw new UnsupportedCharacter(message);

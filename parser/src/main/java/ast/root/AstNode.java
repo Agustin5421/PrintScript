@@ -4,7 +4,7 @@ import ast.visitor.NodeVisitor;
 import token.Position;
 
 public interface AstNode {
-  AstNodeType getType();
+  AstNodeType getNodeType();
 
   Position start();
 
