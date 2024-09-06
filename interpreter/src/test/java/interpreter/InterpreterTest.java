@@ -15,6 +15,7 @@ import ast.statements.VariableDeclaration;
 import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorV1;
 import java.util.List;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -86,11 +87,7 @@ public class InterpreterTest {
     InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
     Interpreter interpreter = new Interpreter(visitor);
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          interpreter.executeProgram(program);
-        });
+    assertThrows(IllegalArgumentException.class, () -> interpreter.executeProgram(program));
   }
 
   private static List<AstNode> getAstNodes(
@@ -224,6 +221,28 @@ public class InterpreterTest {
     InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
     Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
+  }
+
+  @Test
+  public void testStringsIllegalOperation() {
+    Identifier identifier = new Identifier("x", defaultPosition, defaultPosition);
+    Literal<String> literal = new StringLiteral("a", defaultPosition, defaultPosition);
+    VariableDeclaration variableDeclaration = new VariableDeclaration(identifier, literal);
+
+    BinaryExpression binaryExpression =
+        new BinaryExpression(
+            new StringLiteral("b", defaultPosition, defaultPosition), identifier, "-");
+    Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
+    CallExpression callExpression =
+        new CallExpression(
+            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+
+    List<AstNode> statements = List.of(variableDeclaration, callExpression);
+    Program program = new Program(statements);
+
+    Interpreter interpreter = new Interpreter();
+    Assertions.assertThrows(
+        UnsupportedExpressionException.class, () -> interpreter.executeProgram(program));
   }
 
   private VariablesRepository addPrintStatement(VariableDeclaration variableDeclaration) {

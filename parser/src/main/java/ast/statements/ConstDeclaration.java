@@ -8,7 +8,7 @@ import token.Position;
 
 public record ConstDeclaration(
     Identifier identifier, Expression expression, Position start, Position end)
-    implements Statement {
+    implements StatementNode {
   private static final AstNodeType type = AstNodeType.VARIABLE_DECLARATION;
 
   public ConstDeclaration(Identifier identifier, Expression expression) {

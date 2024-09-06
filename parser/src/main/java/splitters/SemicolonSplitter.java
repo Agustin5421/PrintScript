@@ -1,5 +1,7 @@
 package splitters;
 
+import exceptions.UnsupportedStatementException;
+import java.util.ArrayList;
 import java.util.List;
 import token.Token;
 import token.types.TokenSyntaxType;
@@ -7,21 +9,19 @@ import token.types.TokenSyntaxType;
 public class SemicolonSplitter implements StatementSplitter {
 
   @Override
-  public List<List<Token>> split(List<Token> tokens) {
-    List<List<Token>> statements = new java.util.ArrayList<>();
+  public SplitResult split(List<Token> tokens) {
+    List<Token> statement = new ArrayList<>();
 
-    List<Token> statement = new java.util.ArrayList<>();
-
-    for (Token token : tokens) {
+    for (int i = 0; i < tokens.size(); i++) {
+      Token token = tokens.get(i);
       statement.add(token);
 
-      if (token.nodeType().equals(TokenSyntaxType.SEMICOLON)) {
-        statements.add(statement);
-        statement = new java.util.ArrayList<>();
+      if (token.type().equals(TokenSyntaxType.SEMICOLON)) {
+        return new SplitResult(statement, tokens.subList(i + 1, tokens.size()));
       }
     }
 
-    return statements;
+    throw new UnsupportedStatementException("No semicolon found in statement" + statement);
   }
 
   @Override
@@ -31,7 +31,7 @@ public class SemicolonSplitter implements StatementSplitter {
     }
 
     for (Token token : tokens) {
-      if (token.nodeType().equals(TokenSyntaxType.SEMICOLON)) {
+      if (token.type().equals(TokenSyntaxType.SEMICOLON)) {
         return true;
       }
     }

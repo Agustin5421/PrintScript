@@ -13,7 +13,7 @@ public record CallExpression(
     boolean optionalParameters,
     Position start,
     Position end)
-    implements Statement {
+    implements StatementNode {
 
   public CallExpression(
       Identifier methodIdentifier, List<AstNode> arguments, boolean optionalParameters) {

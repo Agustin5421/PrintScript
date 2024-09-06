@@ -8,7 +8,7 @@ import token.Token;
 import token.types.TokenType;
 import token.types.TokenValueType;
 
-// TODO: Implement a Literal parser for each nodeType of literal
+// TODO: Implement a Literal parser for each type of literal
 public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {
     TokenType tokenType = token.nodeType();

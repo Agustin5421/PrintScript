@@ -20,25 +20,23 @@ import token.Position;
 import token.Token;
 
 public class FormatterTest {
-  private final MainFormatter formatter = MainFormatterInitializer.init();
   private final String jsonOptions =
       """
             {
-              "rules": {
-                "colonRules": {
-                  "before": true,
-                  "after": true
-                },
-                "equalSpaces": true,
-                "printLineBreaks": 1
-              }
+              "colonRules": {
+                "before": true,
+                "after": true
+              },
+              "equalSpaces": true,
+              "printLineBreaks": 1
             }
             """;
+  private final MainFormatter formatter = FormatterInitializer.init(jsonOptions);
   private final Position defaultPosition = new Position(0, 0);
 
   @Test
   public void varDeclarationTest() {
-    Identifier name = new Identifier("myVar     ", defaultPosition, defaultPosition);
+    Identifier name = new Identifier("myVar", defaultPosition, defaultPosition);
     StringLiteral value = new StringLiteral("\"Hello World!\"", defaultPosition, defaultPosition);
     VariableDeclaration variableDeclaration = new VariableDeclaration(name, value);
     Program program = new Program(List.of(variableDeclaration));
@@ -46,24 +44,24 @@ public class FormatterTest {
         """
                 let myVar : string = "Hello World!";
                 """;
-    Assertions.assertEquals(formattedCode, formatter.format(program, jsonOptions));
+    Assertions.assertEquals(formattedCode, formatter.format(program));
   }
 
   @Test
   public void assignationTest() {
-    Identifier name = new Identifier("   \n myVar     ", defaultPosition, defaultPosition);
+    Identifier name = new Identifier("myVar", defaultPosition, defaultPosition);
     StringLiteral value = new StringLiteral("\"Goodbye World!\"", defaultPosition, defaultPosition);
     AssignmentExpression reAssignation = new AssignmentExpression(name, value, "=");
     Program program = new Program(List.of(reAssignation));
     String formattedCode = """
                 myVar = "Goodbye World!";
                 """;
-    Assertions.assertEquals(formattedCode, formatter.format(program, jsonOptions));
+    Assertions.assertEquals(formattedCode, formatter.format(program));
   }
 
   @Test
   public void varDeclarationWithExpressionTest() {
-    Identifier name = new Identifier("   \n myVar     ", defaultPosition, defaultPosition);
+    Identifier name = new Identifier("myVar", defaultPosition, defaultPosition);
     NumberLiteral first = new NumberLiteral(2, defaultPosition, defaultPosition);
     NumberLiteral second = new NumberLiteral(2, defaultPosition, defaultPosition);
     NumberLiteral third = new NumberLiteral(5, defaultPosition, defaultPosition);
@@ -74,7 +72,7 @@ public class FormatterTest {
     String formattedCode = """
                 let myVar : number = 2 + 2 * 5;
                 """;
-    Assertions.assertEquals(formattedCode, formatter.format(program, jsonOptions));
+    Assertions.assertEquals(formattedCode, formatter.format(program));
   }
 
   @Test
@@ -86,7 +84,7 @@ public class FormatterTest {
     String formattedCode = """
                 println("Hello World!");
                 """;
-    Assertions.assertEquals(formattedCode, formatter.format(program, jsonOptions));
+    Assertions.assertEquals(formattedCode, formatter.format(program));
   }
 
   @Test
@@ -169,12 +167,7 @@ public class FormatterTest {
   @Test
   public void invalidOptionsTest() {
     Assertions.assertThrows(
-        JsonSyntaxException.class,
-        () -> {
-          Program program =
-              new Program(List.of(new Identifier("null", defaultPosition, defaultPosition)));
-          formatter.format(program, "invalid options json");
-        });
+        JsonSyntaxException.class, () -> FormatterInitializer.init("invalid options json"));
   }
 
   private static Lexer initLexer() {

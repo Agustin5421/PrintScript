@@ -2,4 +2,4 @@ package ast.statements;
 
 import ast.root.AstNode;
 
-public interface Statement extends AstNode {}
+public interface StatementNode extends AstNode {}

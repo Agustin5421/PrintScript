@@ -13,19 +13,34 @@ import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import interpreter.VariablesRepository;
-import interpreter.runtime.ExpressionEvaluator;
+import interpreter.evaluator.BinaryExpressionEvaluator;
 import java.util.List;
+
+import interpreter.runtime.ExpressionEvaluator;
+import token.Position;
 
 public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisitor2 {
   private final VariablesRepository variablesRepository;
+  private final Literal<?> value;
+  private final BinaryExpressionEvaluator binaryExpressionEvaluator =
+      new BinaryExpressionEvaluator();
+
+  public InterpreterVisitorV1(VariablesRepository variablesRepository, Literal<?> value) {
+    this.variablesRepository = variablesRepository;
+    this.value = value;
+  }
 
   public InterpreterVisitorV1(VariablesRepository variablesRepository) {
-    this.variablesRepository = variablesRepository;
+    this(variablesRepository, new NumberLiteral(0, new Position(0, 0), new Position(0, 0)));
   }
 
   @Override
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
+  }
+
+  public Literal<?> getValue() {
+    return value;
   }
 
   @Override
@@ -57,16 +72,13 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     Identifier left = assignmentExpression.left();
-    AstNode right = assignmentExpression.right();
-    String operator = assignmentExpression.operator();
 
-    ExpressionEvaluator evaluator =
-        new ExpressionEvaluator(variablesRepository, left.start().row());
-    Literal<?> evaluatedRight = (Literal<?>) evaluator.evaluate(right);
+    Literal<?> evaluatedRight =
+        ((InterpreterVisitorV1) assignmentExpression.right().accept(this)).getValue();
 
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(left, evaluatedRight);
-    return new InterpreterVisitorV1(newVariablesRepository);
+    return new InterpreterVisitorV1(newVariablesRepository, value);
   }
 
   @Override
@@ -77,12 +89,12 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   // que tire excepcion  estos q no deberian de llegar
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    return this;
+    return new InterpreterVisitorV1(variablesRepository, numberLiteral);
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return this;
+    return new InterpreterVisitorV1(variablesRepository, stringLiteral);
   }
 
   @Override
@@ -92,7 +104,8 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    return this;
+    Literal<?> value = binaryExpressionEvaluator.evaluate(binaryExpression, this);
+    return new InterpreterVisitorV1(variablesRepository, value);
   }
 
   private NodeVisitor setVariable(VariableDeclaration statement) {
@@ -102,13 +115,10 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
       throw new IllegalArgumentException("Variable " + name + " is already defined");
     } // cambiar a una excepcion mas concreta de variable ya definida
 
-    ExpressionEvaluator expressionEvaluator =
-        new ExpressionEvaluator(variablesRepository, statement.start().row());
-    Literal<?> value = (Literal<?>) expressionEvaluator.evaluate(statement.expression());
-    // Object value = literal.value();
+    Literal<?> value = ((InterpreterVisitorV1) statement.expression().accept(this)).getValue();
 
     VariablesRepository newVariablesRepository = variablesRepository.addVariable(name, value);
-    return new InterpreterVisitorV1(newVariablesRepository);
+    return new InterpreterVisitorV1(newVariablesRepository, value);
   }
 
   private void printlnMethod(Identifier identifier, List<AstNode> arguments) {
@@ -118,5 +128,15 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
       System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
     }
     System.out.println();
+  }
+
+  // creo q este es de eli
+    private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
+    if (identifier.name().equals(name)) {
+      for (AstNode argument : arguments) {
+        System.out.println(((InterpreterVisitorV1) argument.accept(this)).getValue());
+      }
+      System.out.println();
+    }
   }
 }

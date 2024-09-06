@@ -2,35 +2,26 @@ package formatter;
 
 import ast.root.AstNode;
 import ast.root.Program;
-import com.google.gson.JsonObject;
 import java.util.List;
 import observers.Observer;
 import observers.Progressable;
 
 public class MainFormatter implements Progressable {
   private final List<Observer> observers;
-  private final OptionsChecker optionsChecker;
   private int totalSteps;
+  private FormatterVisitor visitor;
 
-  public MainFormatter(List<Observer> observers) {
+  public MainFormatter(List<Observer> observers, FormatterVisitor visitor) {
     this.observers = observers;
-    this.optionsChecker = new OptionsChecker();
+    this.visitor = visitor;
   }
 
-  public String format(Program program, String options) {
-    JsonObject rules = optionsChecker.checkAndReturn(options);
+  public String format(Program program) {
     StringBuilder formattedCode = new StringBuilder();
-    FormatterVisitor formatterVisitor;
     totalSteps = program.statements().size();
     for (AstNode statement : program.statements()) {
-      // Initialize the formatterVisitor with the current program
-      formatterVisitor = new FormatterVisitor(rules, formattedCode.toString());
-      // Changing the current program
-      formatterVisitor = (FormatterVisitor) statement.accept(formatterVisitor);
-      formattedCode
-          .append(formatterVisitor.getCurrentCode())
-          // Entering a new line after each statement
-          .append("\n");
+      visitor = (FormatterVisitor) statement.accept(visitor);
+      formattedCode.append(visitor.getCurrentCode());
       notifyObservers();
     }
     return formattedCode.toString();

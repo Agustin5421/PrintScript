@@ -6,7 +6,7 @@ import lexer.Lexer;
 import token.Token;
 
 public class MainStatementValidator {
-  private final List<StatementValidator> statementValidators = List.of(new IfSStatementValidator());
+  private final List<StatementValidator> statementValidators = List.of(new IfStatementValidator());
   private final StatementValidator defaultStatementValidator = new SemicolonStatementValidator();
 
   public List<Token> getNextStatement(Lexer lexer) {

@@ -5,10 +5,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 public class OptionsChecker {
-  public JsonObject checkAndReturn(String options) throws JsonSyntaxException {
+  public static JsonObject checkAndReturn(String options) throws JsonSyntaxException {
     try {
-      JsonObject jsonOptions = JsonParser.parseString(options).getAsJsonObject();
-      JsonObject rules = jsonOptions.getAsJsonObject("rules");
+      JsonObject rules = JsonParser.parseString(options).getAsJsonObject();
       JsonObject colonRules = rules.getAsJsonObject("colonRules");
       colonRules.get("before").getAsBoolean();
       colonRules.get("after").getAsBoolean();
