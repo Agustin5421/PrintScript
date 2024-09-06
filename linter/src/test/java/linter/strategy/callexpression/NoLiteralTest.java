@@ -19,7 +19,7 @@ public class NoLiteralTest {
     Position position = new Position(0, 0);
     NumberLiteral one = new NumberLiteral(1, position, position);
     CallExpression callExpression =
-        new CallExpression(new Identifier("methodName", position, position), List.of(one), true);
+        new CallExpression(new Identifier("methodName", position, position), List.of(one));
 
     LintingStrategy strategy =
         new ArgumentsStrategy(
@@ -39,7 +39,7 @@ public class NoLiteralTest {
   public void callExpressionWithoutLiteralArgumentTest() {
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("methodName", position, position);
-    CallExpression callExpression = new CallExpression(identifier, List.of(identifier), true);
+    CallExpression callExpression = new CallExpression(identifier, List.of(identifier));
 
     LintingStrategy strategy =
         new ArgumentsStrategy(

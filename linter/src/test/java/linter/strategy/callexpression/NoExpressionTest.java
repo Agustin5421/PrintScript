@@ -23,7 +23,7 @@ public class NoExpressionTest {
     BinaryExpression binaryExpression = new BinaryExpression(one, two, "+", position, position);
     CallExpression callExpression =
         new CallExpression(
-            new Identifier("methodName", position, position), List.of(binaryExpression), true);
+            new Identifier("methodName", position, position), List.of(binaryExpression));
 
     LintingStrategy strategy =
         new ArgumentsStrategy(
@@ -40,7 +40,7 @@ public class NoExpressionTest {
   public void callExpressionWithoutExpressionArgumentTest() {
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("methodName", position, position);
-    CallExpression callExpression = new CallExpression(identifier, List.of(identifier), true);
+    CallExpression callExpression = new CallExpression(identifier, List.of(identifier));
 
     LintingStrategy strategy =
         new ArgumentsStrategy(
