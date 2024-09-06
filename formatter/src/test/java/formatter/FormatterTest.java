@@ -79,7 +79,7 @@ public class FormatterTest {
   public void printLnTest() {
     Identifier name = new Identifier("println", defaultPosition, defaultPosition);
     StringLiteral value = new StringLiteral("\"Hello World!\"", defaultPosition, defaultPosition);
-    CallExpression printLnExpression = new CallExpression(name, List.of(value), false);
+    CallExpression printLnExpression = new CallExpression(name, List.of(value));
     Program program = new Program(List.of(printLnExpression));
     String formattedCode = """
                 println("Hello World!");

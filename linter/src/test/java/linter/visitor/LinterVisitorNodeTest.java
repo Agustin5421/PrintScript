@@ -35,7 +35,7 @@ public class LinterVisitorNodeTest {
     Position position = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("test_name", position, position);
     List<AstNode> arguments = List.of(methodIdentifier, methodIdentifier);
-    CallExpression callExpression = new CallExpression(methodIdentifier, arguments, true);
+    CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
     LinterVisitor newVisitor = (LinterVisitor) callExpression.accept(visitor);
 
@@ -49,7 +49,7 @@ public class LinterVisitorNodeTest {
     Position position = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("testName", position, position);
     List<AstNode> arguments = List.of(methodIdentifier, methodIdentifier);
-    CallExpression callExpression = new CallExpression(methodIdentifier, arguments, true);
+    CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
     LinterVisitor newVisitor = (LinterVisitor) callExpression.accept(visitor);
 
@@ -64,7 +64,7 @@ public class LinterVisitorNodeTest {
     Identifier methodIdentifier = new Identifier("test_name", position, position);
     List<AstNode> arguments =
         List.of(new Identifier("testName", position, position), methodIdentifier);
-    CallExpression callExpression = new CallExpression(methodIdentifier, arguments, true);
+    CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
     LinterVisitor newVisitor = (LinterVisitor) callExpression.accept(visitor);
 

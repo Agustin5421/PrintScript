@@ -2,7 +2,7 @@ package interpreter;
 
 import ast.root.AstNode;
 import ast.root.Program;
-import interpreter.visitor.InterpreterVisitorV1;
+import interpreter.visitor.InterpreterVisitor;
 import java.util.List;
 import observers.Observer;
 import observers.Progressable;
@@ -10,13 +10,16 @@ import observers.Progressable;
 public class Interpreter implements Progressable {
   private final List<Observer> observers;
   private int totalStatements;
+  private final InterpreterVisitor nodeVisitor;
 
-  public Interpreter(List<Observer> observers) {
+  public Interpreter(List<Observer> observers, InterpreterVisitor nodeVisitor) {
     this.observers = observers;
+    this.nodeVisitor = nodeVisitor;
   }
 
   // This constructor is created in order to make the tests pass
-  public Interpreter() {
+  public Interpreter(InterpreterVisitor nodeVisitor) {
+    this.nodeVisitor = nodeVisitor;
     this.observers = List.of();
   }
 
@@ -24,12 +27,13 @@ public class Interpreter implements Progressable {
 
   public VariablesRepository executeProgram(Program program) {
     VariablesRepository variablesRepository = new VariablesRepository();
-    InterpreterVisitorV1 nodeVisitor = new InterpreterVisitorV1(variablesRepository);
+    InterpreterVisitor visitor = nodeVisitor;
+
     totalStatements = program.statements().size();
 
     for (AstNode statement : program.statements()) {
-      nodeVisitor = (InterpreterVisitorV1) statement.accept(nodeVisitor);
-      variablesRepository = nodeVisitor.getVariablesRepository();
+      visitor = (InterpreterVisitor) statement.accept(visitor);
+      variablesRepository = visitor.getVariablesRepository();
       updateProgress();
     }
 

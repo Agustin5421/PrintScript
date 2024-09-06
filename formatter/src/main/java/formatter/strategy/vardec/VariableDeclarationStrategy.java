@@ -8,7 +8,7 @@ import java.util.List;
 
 public class VariableDeclarationStrategy implements FormattingStrategy {
   // Strategies should be having (or not) the first space, : and the
-  // second space, then the type of the node
+  // second space, then the nodeType of the node
   // then the assignment strategy
   private final List<FormattingStrategy> strategies;
   // Keyword that for now is only let

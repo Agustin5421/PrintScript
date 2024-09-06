@@ -19,6 +19,6 @@ public class IdentifierParser implements ExpressionParser {
     if (tokens.size() != 1) {
       return false;
     }
-    return tokens.get(0).type() == TokenSyntaxType.IDENTIFIER;
+    return tokens.get(0).nodeType() == TokenSyntaxType.IDENTIFIER;
   }
 }

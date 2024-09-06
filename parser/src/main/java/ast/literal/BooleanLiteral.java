@@ -4,12 +4,12 @@ import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import token.Position;
 
-public class BooleanLiteral implements Literal<Boolean> {
-  private final boolean value;
+public class BooleanLiteral implements Literal {
+  private final Boolean value;
   private final Position start;
   private final Position end;
 
-  public BooleanLiteral(boolean value, Position start, Position end) {
+  public BooleanLiteral(Boolean value, Position start, Position end) {
     this.value = value;
     this.start = start;
     this.end = end;

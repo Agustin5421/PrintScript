@@ -13,6 +13,8 @@ import ast.root.Program;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import exceptions.UnsupportedExpressionException;
+import interpreter.visitor.InterpreterVisitor;
+import interpreter.visitor.InterpreterVisitorV1;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,7 +32,8 @@ public class InterpreterTest {
     List<AstNode> statements = List.of(variableDeclaration);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals("this is a string", repository.getVariable(identifier).value());
@@ -44,7 +47,8 @@ public class InterpreterTest {
     List<AstNode> statements = List.of(variableDeclaration);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(42, repository.getVariable(identifier).value());
@@ -65,7 +69,8 @@ public class InterpreterTest {
     List<AstNode> statements = List.of(variableDeclaration1, variableDeclaration2);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals("this is a string", repository.getVariable(identifier1).value());
@@ -80,7 +85,8 @@ public class InterpreterTest {
     List<AstNode> statements = getAstNodes(identifier1, literal1, "x");
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
 
     assertThrows(IllegalArgumentException.class, () -> interpreter.executeProgram(program));
   }
@@ -101,7 +107,8 @@ public class InterpreterTest {
   public void testExecuteEmptyProgram() {
     Program program = new Program(List.of(), new Position(0, 0), new Position(0, 1));
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(0, repository.getVariables().size());
@@ -135,17 +142,18 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     List<AstNode> arguments = List.of(new Identifier("y", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression =
-        new CallExpression(printName, arguments, false, new Position(6, 0), new Position(6, 6));
+        new CallExpression(printName, arguments, new Position(6, 0), new Position(6, 6));
 
     List<AstNode> arguments1 = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression1 =
-        new CallExpression(printName, arguments1, false, new Position(6, 0), new Position(6, 6));
+        new CallExpression(printName, arguments1, new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements =
         List.of(variableDeclaration, variableDeclaration2, callExpression, callExpression1);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(42.5, repository.getVariable(identifier).value());
@@ -164,12 +172,13 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
   }
 
@@ -183,12 +192,13 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
   }
 
@@ -204,12 +214,13 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
   }
 
@@ -225,12 +236,13 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     Assertions.assertThrows(
         UnsupportedExpressionException.class, () -> interpreter.executeProgram(program));
   }
@@ -239,12 +251,13 @@ public class InterpreterTest {
     Identifier methodName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     List<AstNode> arguments = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression =
-        new CallExpression(methodName, arguments, false, new Position(6, 0), new Position(6, 6));
+        new CallExpression(methodName, arguments, new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     return interpreter.executeProgram(program);
   }
 
@@ -264,7 +277,9 @@ public class InterpreterTest {
     List<AstNode> statements = List.of(variableDeclaration, variableDeclaration2);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
+
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(42.5, repository.getVariable(identifier).value());

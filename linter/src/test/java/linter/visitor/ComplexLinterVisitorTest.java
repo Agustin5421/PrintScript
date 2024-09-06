@@ -29,7 +29,7 @@ public class ComplexLinterVisitorTest {
         new VariableDeclaration("test", identifier, stringLiteral, "test", position, position);
 
     CallExpression callExpression =
-        new CallExpression(identifier, List.of(identifier, stringLiteral), true);
+        new CallExpression(identifier, List.of(identifier, stringLiteral));
 
     return new Program(List.of(variableDeclaration, callExpression));
   }

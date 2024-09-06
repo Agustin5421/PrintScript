@@ -16,7 +16,7 @@ public class SemicolonSplitter implements StatementSplitter {
       Token token = tokens.get(i);
       statement.add(token);
 
-      if (token.type().equals(TokenSyntaxType.SEMICOLON)) {
+      if (token.nodeType().equals(TokenSyntaxType.SEMICOLON)) {
         return new SplitResult(statement, tokens.subList(i + 1, tokens.size()));
       }
     }
@@ -31,7 +31,7 @@ public class SemicolonSplitter implements StatementSplitter {
     }
 
     for (Token token : tokens) {
-      if (token.type().equals(TokenSyntaxType.SEMICOLON)) {
+      if (token.nodeType().equals(TokenSyntaxType.SEMICOLON)) {
         return true;
       }
     }

@@ -13,14 +13,14 @@ public class IfStatementSplitter implements StatementSplitter {
     for (int i = 0; i < tokens.size(); i++) {
       Token token = tokens.get(i);
       statement.add(token);
-      if (token.type().equals(TokenSyntaxType.OPEN_BRACES)) {
+      if (token.nodeType().equals(TokenSyntaxType.OPEN_BRACES)) {
         bracketCount++;
       }
-      if (token.type().equals(TokenSyntaxType.CLOSE_BRACES)) {
+      if (token.nodeType().equals(TokenSyntaxType.CLOSE_BRACES)) {
         bracketCount--;
 
         if (bracketCount == 0) {
-          if (i + 1 < tokens.size() && tokens.get(i + 1).type().equals(TokenSyntaxType.ELSE)) {
+          if (i + 1 < tokens.size() && tokens.get(i + 1).nodeType().equals(TokenSyntaxType.ELSE)) {
             continue;
           } else {
             return new SplitResult(statement, tokens.subList(i + 1, tokens.size()));
@@ -38,6 +38,6 @@ public class IfStatementSplitter implements StatementSplitter {
       return false;
     }
 
-    return tokens.get(0).type().equals(TokenSyntaxType.IF);
+    return tokens.get(0).nodeType().equals(TokenSyntaxType.IF);
   }
 }

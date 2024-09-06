@@ -16,15 +16,15 @@ public class IfStatementValidator implements StatementValidator {
       Token token = lexer.next();
       tokens.add(token);
 
-      if (token.type() == TokenSyntaxType.OPEN_BRACES) {
+      if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
         braceCount++;
       }
 
-      if (token.type() == TokenSyntaxType.CLOSE_BRACES) {
+      if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
         braceCount--;
         if (braceCount == 0) {
           try {
-            if (lexer.peek().type() == TokenSyntaxType.ELSE) {
+            if (lexer.peek().nodeType() == TokenSyntaxType.ELSE) {
               hasElse = true;
             }
           } catch (IndexOutOfBoundsException ignored) {
@@ -39,11 +39,11 @@ public class IfStatementValidator implements StatementValidator {
       while (lexer.hasNext()) {
         Token token = lexer.next();
         tokens.add(token);
-        if (token.type().equals(TokenSyntaxType.OPEN_BRACES)) {
+        if (token.nodeType().equals(TokenSyntaxType.OPEN_BRACES)) {
           braceCount++;
         }
 
-        if (token.type().equals(TokenSyntaxType.CLOSE_BRACES)) {
+        if (token.nodeType().equals(TokenSyntaxType.CLOSE_BRACES)) {
           braceCount--;
           if (braceCount == 0) {
             return tokens;
@@ -60,6 +60,6 @@ public class IfStatementValidator implements StatementValidator {
     if (tokens.isEmpty()) {
       return false;
     }
-    return tokens.get(0).type().equals(TokenSyntaxType.IF);
+    return tokens.get(0).nodeType().equals(TokenSyntaxType.IF);
   }
 }

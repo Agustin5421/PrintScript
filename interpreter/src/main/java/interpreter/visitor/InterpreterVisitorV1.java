@@ -17,7 +17,7 @@ import interpreter.evaluator.BinaryExpressionEvaluator;
 import java.util.List;
 import token.Position;
 
-public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
+public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisitor2 {
   private final VariablesRepository variablesRepository;
   private final Literal<?> value;
   private final BinaryExpressionEvaluator binaryExpressionEvaluator =
@@ -32,6 +32,7 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
     this(variablesRepository, new NumberLiteral(0, new Position(0, 0), new Position(0, 0)));
   }
 
+  @Override
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
   }
@@ -54,12 +55,15 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     List<AstNode> arguments = callExpression.arguments();
     Identifier identifier = callExpression.methodIdentifier();
-    boolean optionalParameters = callExpression.optionalParameters(); // TODO: how to use this?
 
-    String name = "println";
+    String name = identifier.name();
 
-    printlnMethod(identifier, name, arguments);
-    return this;
+    if (name.equals("println")) {
+      printlnMethod(identifier, arguments);
+      return this;
+    } else {
+      throw new IllegalArgumentException(name + " not supported in this version :( ");
+    }
   }
 
   @Override
@@ -114,12 +118,10 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
     return new InterpreterVisitorV1(newVariablesRepository, value);
   }
 
-  private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
-    if (identifier.name().equals(name)) {
-      for (AstNode argument : arguments) {
-        System.out.println(((InterpreterVisitorV1) argument.accept(this)).getValue());
-      }
-      System.out.println();
+  private void printlnMethod(Identifier identifier, List<AstNode> arguments) {
+    for (AstNode argument : arguments) {
+      System.out.println(((InterpreterVisitorV1) argument.accept(this)).getValue());
     }
+    System.out.println();
   }
 }

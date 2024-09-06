@@ -8,10 +8,10 @@ import token.Token;
 import token.types.TokenType;
 import token.types.TokenValueType;
 
-// TODO: Implement a Literal parser for each type of literal
+// TODO: Implement a Literal parser for each nodeType of literal
 public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {
-    TokenType tokenType = token.type();
+    TokenType tokenType = token.nodeType();
     if (tokenType == TokenValueType.STRING) {
       return new StringLiteral(token.value(), token.initialPosition(), token.finalPosition());
     }
@@ -22,9 +22,8 @@ public class LiteralFactory {
     }
 
     if (tokenType == TokenValueType.BOOLEAN) {
-      boolean value;
-      value = token.value().equals("true");
-      return new BooleanLiteral(value, token.initialPosition(), token.finalPosition());
+      return new BooleanLiteral(
+          Boolean.parseBoolean(token.value()), token.initialPosition(), token.finalPosition());
     }
 
     Position position = token.initialPosition();

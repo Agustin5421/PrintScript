@@ -34,6 +34,6 @@ public class LexerV2Test extends CommonLexerTests {
     }
 
     Assertions.assertEquals(11, tokens.size());
-    Assertions.assertEquals(TokenSyntaxType.IF, tokens.get(0).type());
+    Assertions.assertEquals(TokenSyntaxType.IF, tokens.get(0).nodeType());
   }
 }

@@ -41,17 +41,17 @@ public class BinaryExpressionParser implements ExpressionParser {
   private List<Token> removeUnnecessaryParentheses(List<Token> tokens) {
     // Eliminate surrounding parentheses only if they wrap the entire expression
     while (tokens.size() > 2
-        && tokens.get(0).type() == TokenSyntaxType.OPEN_PARENTHESIS
-        && tokens.get(tokens.size() - 1).type() == TokenSyntaxType.CLOSE_PARENTHESIS) {
+        && tokens.get(0).nodeType() == TokenSyntaxType.OPEN_PARENTHESIS
+        && tokens.get(tokens.size() - 1).nodeType() == TokenSyntaxType.CLOSE_PARENTHESIS) {
 
       int level = 0;
       boolean valid = true;
 
       for (int i = 0; i < tokens.size(); i++) {
         Token token = tokens.get(i);
-        if (token.type() == TokenSyntaxType.OPEN_PARENTHESIS) {
+        if (token.nodeType() == TokenSyntaxType.OPEN_PARENTHESIS) {
           level++;
-        } else if (token.type() == TokenSyntaxType.CLOSE_PARENTHESIS) {
+        } else if (token.nodeType() == TokenSyntaxType.CLOSE_PARENTHESIS) {
           level--;
         }
 
@@ -79,9 +79,9 @@ public class BinaryExpressionParser implements ExpressionParser {
     for (int i = 0; i < tokens.size(); i++) {
       Token token = tokens.get(i);
 
-      if (token.type() == TokenSyntaxType.OPEN_PARENTHESIS) {
+      if (token.nodeType() == TokenSyntaxType.OPEN_PARENTHESIS) {
         level++;
-      } else if (token.type() == TokenSyntaxType.CLOSE_PARENTHESIS) {
+      } else if (token.nodeType() == TokenSyntaxType.CLOSE_PARENTHESIS) {
         level--;
       } else if (level == 0 && isOperator(token)) {
         int currentPrecedence = getPrecedence(token);
@@ -112,7 +112,7 @@ public class BinaryExpressionParser implements ExpressionParser {
   }
 
   private boolean isOperator(Token token) {
-    return token.type() == TokenDataType.OPERAND;
+    return token.nodeType() == TokenDataType.OPERAND;
   }
 
   private int getPrecedence(Token token) {
