@@ -110,13 +110,12 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
     return new InterpreterVisitorV1(newVariablesRepository);
   }
 
-  private void printlnMethod(Identifier identifier,  List<AstNode> arguments) {
+  private void printlnMethod(Identifier identifier, List<AstNode> arguments) {
     ExpressionEvaluator expressionEvaluator =
         new ExpressionEvaluator(variablesRepository, identifier.start().row());
     for (AstNode argument : arguments) {
       System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
     }
     System.out.println();
-
   }
 }
