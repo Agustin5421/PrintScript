@@ -12,13 +12,12 @@ import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
-import interpreter.VariablesRepository;
-import token.Position;
 import env.EnvLoader;
-
+import interpreter.VariablesRepository;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+import token.Position;
 
 public class InterpreterVisitorV2 implements NodeVisitor {
 
@@ -113,7 +112,8 @@ public class InterpreterVisitorV2 implements NodeVisitor {
     }
 
     String envVarName = ((StringLiteral) arguments.get(0)).value();
-    String envVarValue = envProperties.getProperty(envVarName); // Obtener el valor de la variable de entorno
+    String envVarValue =
+        envProperties.getProperty(envVarName); // Obtener el valor de la variable de entorno
 
     if (envVarValue == null) {
       throw new IllegalArgumentException("Environment variable " + envVarName + " not found");
@@ -123,7 +123,7 @@ public class InterpreterVisitorV2 implements NodeVisitor {
 
     Identifier identifier = callExpression.methodIdentifier();
     VariablesRepository newVariablesRepository =
-            variablesRepository.addVariable(identifier, result);
+        variablesRepository.addVariable(identifier, result);
     return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository);
   }
 

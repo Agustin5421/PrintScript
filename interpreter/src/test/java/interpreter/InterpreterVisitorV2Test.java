@@ -132,73 +132,80 @@ public class InterpreterVisitorV2Test {
     assertEquals("validInput", repository.getVariable(methodIdentifier).value());
   }
 
+  @Test
+  public void testReadEnvNumber() {
+    Position defaultPosition = new Position(0, 0);
+    Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
+    StringLiteral argument = new StringLiteral("GRAVITY", defaultPosition, defaultPosition);
+    CallExpression callExpression =
+        new CallExpression(
+            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
 
-    @Test
-    public void testReadEnvNumber() {
-        Position defaultPosition = new Position(0, 0);
-        Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
-        StringLiteral argument = new StringLiteral("GRAVITY", defaultPosition, defaultPosition);
-        CallExpression callExpression =
-                new CallExpression(methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+    List<AstNode> statements = List.of(callExpression);
+    Program program = new Program(statements);
 
-        List<AstNode> statements = List.of(callExpression);
-        Program program = new Program(statements);
+    Interpreter interpreter = new Interpreter();
+    VariablesRepository repository = interpreter.executeProgram(program);
 
-        Interpreter interpreter = new Interpreter();
-        VariablesRepository repository = interpreter.executeProgram(program);
+    assertEquals(9.81, repository.getVariable(methodIdentifier).value());
+  }
 
-        assertEquals(9.81, repository.getVariable(methodIdentifier).value());
-    }
+  @Test
+  public void testReadEnvBoolean() {
+    Position defaultPosition = new Position(0, 0);
+    Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
+    StringLiteral argument = new StringLiteral("IS_CONSTANT", defaultPosition, defaultPosition);
+    CallExpression callExpression =
+        new CallExpression(
+            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
 
-    @Test
-    public void testReadEnvBoolean() {
-        Position defaultPosition = new Position(0, 0);
-        Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
-        StringLiteral argument = new StringLiteral("IS_CONSTANT", defaultPosition, defaultPosition);
-        CallExpression callExpression =
-                new CallExpression(methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+    List<AstNode> statements = List.of(callExpression);
+    Program program = new Program(statements);
 
-        List<AstNode> statements = List.of(callExpression);
-        Program program = new Program(statements);
+    Interpreter interpreter = new Interpreter();
+    VariablesRepository repository = interpreter.executeProgram(program);
 
-        Interpreter interpreter = new Interpreter();
-        VariablesRepository repository = interpreter.executeProgram(program);
+    assertEquals(true, repository.getVariable(methodIdentifier).value());
+  }
 
-        assertEquals(true, repository.getVariable(methodIdentifier).value());
-    }
+  @Test
+  public void testReadEnvString() {
+    Position defaultPosition = new Position(0, 0);
+    Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
+    StringLiteral argument =
+        new StringLiteral("UNIVERSAL_CONSTANT", defaultPosition, defaultPosition);
+    CallExpression callExpression =
+        new CallExpression(
+            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
 
-    @Test
-    public void testReadEnvString() {
-        Position defaultPosition = new Position(0, 0);
-        Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
-        StringLiteral argument = new StringLiteral("UNIVERSAL_CONSTANT", defaultPosition, defaultPosition);
-        CallExpression callExpression =
-                new CallExpression(methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+    List<AstNode> statements = List.of(callExpression);
+    Program program = new Program(statements);
 
-        List<AstNode> statements = List.of(callExpression);
-        Program program = new Program(statements);
+    Interpreter interpreter = new Interpreter();
+    VariablesRepository repository = interpreter.executeProgram(program);
 
-        Interpreter interpreter = new Interpreter();
-        VariablesRepository repository = interpreter.executeProgram(program);
+    assertEquals("constant", repository.getVariable(methodIdentifier).value());
+  }
 
-        assertEquals("constant", repository.getVariable(methodIdentifier).value());
-    }
+  @Test
+  public void testReadEnvVariableNotFound() {
+    Position defaultPosition = new Position(0, 0);
+    Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
+    StringLiteral argument =
+        new StringLiteral("NON_EXISTENT_VAR", defaultPosition, defaultPosition);
+    CallExpression callExpression =
+        new CallExpression(
+            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
 
-    @Test
-    public void testReadEnvVariableNotFound() {
-        Position defaultPosition = new Position(0, 0);
-        Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
-        StringLiteral argument = new StringLiteral("NON_EXISTENT_VAR", defaultPosition, defaultPosition);
-        CallExpression callExpression =
-                new CallExpression(methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+    List<AstNode> statements = List.of(callExpression);
+    Program program = new Program(statements);
 
-        List<AstNode> statements = List.of(callExpression);
-        Program program = new Program(statements);
+    Interpreter interpreter = new Interpreter();
 
-        Interpreter interpreter = new Interpreter();
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            interpreter.executeProgram(program);
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> {
+          interpreter.executeProgram(program);
         });
-    }
+  }
 }
