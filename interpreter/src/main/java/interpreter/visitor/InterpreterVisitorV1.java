@@ -54,7 +54,6 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     List<AstNode> arguments = callExpression.arguments();
     Identifier identifier = callExpression.methodIdentifier();
-    boolean optionalParameters = callExpression.optionalParameters(); // TODO: how to use this?
 
     String name = "println";
 

@@ -27,7 +27,7 @@ public class ParserFactory {
     Lexer lexer = LexerFactory.getLexer("1.0");
     List<StatementParser> statementParsers =
         List.of(
-            new CallFunctionParser(),
+            new CallFunctionParser(List.of("println")),
             new VariableDeclarationParser(List.of("let")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
@@ -40,7 +40,7 @@ public class ParserFactory {
     List<StatementParser> statementParsers =
         List.of(
             new IfParser(),
-            new CallFunctionParser(),
+            new CallFunctionParser(List.of("println", "readInput", "readEnv")),
             new VariableDeclarationParser(List.of("let", "const")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =

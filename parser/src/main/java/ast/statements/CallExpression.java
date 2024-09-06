@@ -8,19 +8,13 @@ import java.util.List;
 import token.Position;
 
 public record CallExpression(
-    Identifier methodIdentifier,
-    List<AstNode> arguments,
-    boolean optionalParameters,
-    Position start,
-    Position end)
+    Identifier methodIdentifier, List<AstNode> arguments, Position start, Position end)
     implements StatementNode {
 
-  public CallExpression(
-      Identifier methodIdentifier, List<AstNode> arguments, boolean optionalParameters) {
+  public CallExpression(Identifier methodIdentifier, List<AstNode> arguments) {
     this(
         methodIdentifier,
         arguments,
-        optionalParameters,
         methodIdentifier.start(),
         arguments.isEmpty() ? methodIdentifier.end() : arguments.get(arguments.size() - 1).end());
   }
