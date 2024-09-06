@@ -8,6 +8,8 @@ import ast.root.AstNode;
 import ast.root.Program;
 import ast.statements.AssignmentExpression;
 import ast.statements.VariableDeclaration;
+import interpreter.visitor.InterpreterVisitor;
+import interpreter.visitor.InterpreterVisitorV1;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import token.Position;
@@ -26,7 +28,8 @@ public class InterpreterVisitorTest {
     List<AstNode> statements = List.of(variableDeclaration, assignmentExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     interpreter.executeProgram(program);
   }
 
@@ -40,7 +43,8 @@ public class InterpreterVisitorTest {
     List<AstNode> statements = List.of(name, value, number);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     interpreter.executeProgram(program);
   }
 
@@ -54,7 +58,8 @@ public class InterpreterVisitorTest {
     List<AstNode> statements = List.of(binaryExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     interpreter.executeProgram(program);
   }
 }

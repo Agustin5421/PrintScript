@@ -8,6 +8,9 @@ import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.root.Program;
 import ast.statements.CallExpression;
+import interpreter.visitor.InterpreterVisitor;
+import interpreter.visitor.InterpreterVisitorV1;
+import interpreter.visitor.InterpreterVisitorV2;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -30,7 +33,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(42.0, repository.getVariable(methodIdentifier).value());
@@ -49,7 +55,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(42, repository.getVariable(methodIdentifier).value());
@@ -68,7 +77,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     boolean expectedValue = input.equalsIgnoreCase("true") || input.equalsIgnoreCase("t");
@@ -88,7 +100,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals("hello", repository.getVariable(methodIdentifier).value());
@@ -107,7 +122,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(" ", repository.getVariable(methodIdentifier).value());
@@ -126,7 +144,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals("validInput", repository.getVariable(methodIdentifier).value());
@@ -144,7 +165,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(9.81, repository.getVariable(methodIdentifier).value());
@@ -162,7 +186,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals(true, repository.getVariable(methodIdentifier).value());
@@ -181,7 +208,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     VariablesRepository repository = interpreter.executeProgram(program);
 
     assertEquals("constant", repository.getVariable(methodIdentifier).value());
@@ -200,7 +230,10 @@ public class InterpreterVisitorV2Test {
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor =
+        new InterpreterVisitorV2(
+            new InterpreterVisitorV1(new VariablesRepository()), new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
 
     assertThrows(
         IllegalArgumentException.class,

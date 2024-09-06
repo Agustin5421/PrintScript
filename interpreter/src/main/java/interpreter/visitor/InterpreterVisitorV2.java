@@ -19,7 +19,7 @@ import java.util.Properties;
 import java.util.Scanner;
 import token.Position;
 
-public class InterpreterVisitorV2 implements NodeVisitor {
+public class InterpreterVisitorV2 implements InterpreterVisitor {
 
   private final InterpreterVisitorV1 interpreterVisitorV1;
   private final VariablesRepository variablesRepository;
@@ -157,6 +157,7 @@ public class InterpreterVisitorV2 implements NodeVisitor {
     return interpreterVisitorV1.visitBinaryExpression(binaryExpression);
   }
 
+  @Override
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
   }
