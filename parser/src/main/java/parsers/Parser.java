@@ -2,7 +2,7 @@ package parsers;
 
 import ast.expressions.Expression;
 import ast.root.AstNode;
-import ast.statements.Statement;
+import ast.statements.StatementNode;
 import exceptions.UnsupportedExpressionException;
 import exceptions.UnsupportedStatementException;
 import java.util.Iterator;
@@ -47,7 +47,7 @@ public class Parser implements Iterator<AstNode> {
     throw new UnsupportedExpressionException(tokens.toString());
   }
 
-  public Statement parseStatement(List<Token> tokens) {
+  public StatementNode parseStatement(List<Token> tokens) {
     for (StatementParser statementParser : statementParsers) {
       if (statementParser.shouldParse(tokens)) {
         return statementParser.parse(this, tokens);
@@ -57,13 +57,13 @@ public class Parser implements Iterator<AstNode> {
     throw new UnsupportedStatementException(tokens.toString());
   }
 
-  public List<Statement> parseBlock(List<Token> tokens) {
+  public List<StatementNode> parseBlock(List<Token> tokens) {
     if (tokens.isEmpty()) {
       return List.of();
     }
 
     List<List<Token>> statements = mainStatementSplitter.split(tokens);
-    List<Statement> parsedStatements = new java.util.ArrayList<>();
+    List<StatementNode> parsedStatements = new java.util.ArrayList<>();
 
     for (List<Token> statement : statements) {
       parsedStatements.add(parseStatement(statement));

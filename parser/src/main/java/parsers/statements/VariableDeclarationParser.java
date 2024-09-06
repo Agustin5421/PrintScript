@@ -2,7 +2,7 @@ package parsers.statements;
 
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
-import ast.statements.Statement;
+import ast.statements.StatementNode;
 import ast.statements.VariableDeclaration;
 import exceptions.SyntaxException;
 import exceptions.UnsupportedDataType;
@@ -15,7 +15,7 @@ import token.Token;
 
 public class VariableDeclarationParser implements StatementParser {
   @Override
-  public Statement parse(Parser parser, List<Token> tokens) {
+  public StatementNode parse(Parser parser, List<Token> tokens) {
     Position start = tokens.get(0).initialPosition();
     Position end = tokens.get(tokens.size() - 1).finalPosition();
     Map<String, Boolean> modifiers = Map.of("isModifiable", true);
@@ -43,7 +43,9 @@ public class VariableDeclarationParser implements StatementParser {
 
     Expression value = parser.parseExpression(tokens.subList(5, tokens.size()));
 
-    return new VariableDeclaration(identifier, value, start, end);
+    String type = tokens.get(3).value();
+
+    return new VariableDeclaration(identifier, value, type, start, end);
   }
 
   @Override

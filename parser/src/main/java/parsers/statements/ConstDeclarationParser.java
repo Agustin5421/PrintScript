@@ -3,7 +3,7 @@ package parsers.statements;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.statements.ConstDeclaration;
-import ast.statements.Statement;
+import ast.statements.StatementNode;
 import java.util.List;
 import java.util.Map;
 // TODO: Declarations should be an interface
@@ -15,7 +15,7 @@ import token.types.TokenSyntaxType;
 
 public class ConstDeclarationParser implements StatementParser {
   @Override
-  public Statement parse(Parser parser, List<Token> tokens) {
+  public StatementNode parse(Parser parser, List<Token> tokens) {
     Map<String, Boolean> modifiers = Map.of("isModifiable", false);
 
     Identifier name =
@@ -23,7 +23,7 @@ public class ConstDeclarationParser implements StatementParser {
             tokens.get(1).value(),
             tokens.get(1).initialPosition(),
             tokens.get(1).finalPosition(),
-            (TokenDataType) tokens.get(3).nodeType(),
+            (TokenDataType) tokens.get(3).type(),
             modifiers);
     Expression value = parser.parseExpression(tokens.subList(4, tokens.size() - 1));
 
@@ -32,6 +32,6 @@ public class ConstDeclarationParser implements StatementParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return tokens.get(0).nodeType().equals(TokenSyntaxType.CONST_DECLARATION);
+    return tokens.get(0).type().equals(TokenSyntaxType.CONST_DECLARATION);
   }
 }

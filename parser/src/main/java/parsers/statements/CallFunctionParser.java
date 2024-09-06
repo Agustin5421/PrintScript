@@ -3,7 +3,7 @@ package parsers.statements;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
-import ast.statements.Statement;
+import ast.statements.StatementNode;
 import exceptions.SyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class CallFunctionParser implements StatementParser {
   }
 
   @Override
-  public Statement parse(Parser parser, List<Token> tokens) {
+  public StatementNode parse(Parser parser, List<Token> tokens) {
     String functionName = tokens.get(0).value();
     Position start = tokens.get(0).initialPosition();
     Position end = tokens.get(tokens.size() - 1).finalPosition();
@@ -57,7 +57,7 @@ public class CallFunctionParser implements StatementParser {
     int openParentheses = 0;
 
     for (Token token : tokens) {
-      TokenType type = token.nodeType();
+      TokenType type = token.type();
 
       if (type == TokenSyntaxType.OPEN_PARENTHESIS) {
         if (inArguments) {

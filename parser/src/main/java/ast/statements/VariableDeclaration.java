@@ -7,12 +7,12 @@ import ast.visitor.NodeVisitor;
 import token.Position;
 
 public record VariableDeclaration(
-    Identifier identifier, Expression expression, Position start, Position end)
-    implements Statement {
+    Identifier identifier, Expression expression, String varType, Position start, Position end)
+    implements StatementNode {
   private static final AstNodeType type = AstNodeType.VARIABLE_DECLARATION;
 
   public VariableDeclaration(Identifier identifier, Expression expression) {
-    this(identifier, expression, identifier.start(), expression.end());
+    this(identifier, expression, "test", identifier.start(), expression.end());
   }
 
   @Override

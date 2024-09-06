@@ -42,7 +42,7 @@ public class VariableDeclarationFormatter implements Formatter {
     return identifier.name().replaceAll("\\s+", "");
   }
 
-  // Returning the nodeType equivalent of printscript (only working for string and numbers for now)
+  // Returning the type equivalent of printscript (only working for string and numbers for now)
   private String getType(Expression expression) throws IllegalArgumentException {
     if (containsStringLiteral(expression)) {
       return "string";

@@ -2,7 +2,7 @@ import factory.ParserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import parsers.Parser;
 
-public class LexerV1Test extends CommonParserTests {
+public class ParserV1Test extends CommonParserTests {
   private Parser parserV1;
 
   @BeforeEach
