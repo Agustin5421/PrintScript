@@ -5,7 +5,7 @@ import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
 import ast.statements.AssignmentExpression;
-import ast.statements.Statement;
+import ast.statements.StatementNode;
 import exceptions.SyntaxException;
 import java.util.List;
 import parsers.Parser;
@@ -16,7 +16,7 @@ import token.types.TokenSyntaxType;
 public class AssignmentParser implements StatementParser {
 
   @Override
-  public Statement parse(Parser parser, List<Token> tokens) {
+  public StatementNode parse(Parser parser, List<Token> tokens) {
     validateSyntax(tokens);
 
     Position leftStart = tokens.get(0).initialPosition();
@@ -40,6 +40,6 @@ public class AssignmentParser implements StatementParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return tokens.get(0).nodeType() == TokenSyntaxType.IDENTIFIER && tokens.size() >= 2;
+    return tokens.get(0).type() == TokenSyntaxType.IDENTIFIER && tokens.size() >= 2;
   }
 }

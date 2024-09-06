@@ -6,19 +6,19 @@ import ast.visitor.NodeVisitor;
 import java.util.List;
 import token.Position;
 
-public class IfStatement implements Statement {
+public class IfStatement implements StatementNode {
   private final Position start;
   private final Position end;
   private final Expression condition;
-  private final List<Statement> thenBlockStatement;
-  private final List<Statement> elseBlockStatement;
+  private final List<StatementNode> thenBlockStatement;
+  private final List<StatementNode> elseBlockStatement;
 
   public IfStatement(
       Position start,
       Position end,
       Expression condition,
-      List<Statement> thenStatement,
-      List<Statement> elseStatement) {
+      List<StatementNode> thenStatement,
+      List<StatementNode> elseStatement) {
     this.start = start;
     this.end = end;
     this.condition = condition;
@@ -50,11 +50,11 @@ public class IfStatement implements Statement {
     return condition;
   }
 
-  public List<Statement> getThenBlockStatement() {
+  public List<StatementNode> getThenBlockStatement() {
     return thenBlockStatement;
   }
 
-  public List<Statement> getElseBlockStatement() {
+  public List<StatementNode> getElseBlockStatement() {
     return elseBlockStatement;
   }
 }

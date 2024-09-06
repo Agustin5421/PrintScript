@@ -2,12 +2,13 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import ast.root.AstNode;
 import ast.statements.IfStatement;
+import ast.statements.VariableDeclaration;
 import factory.ParserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import parsers.Parser;
 
-public class LexerV2Test extends CommonParserTests {
+public class ParserV2Test extends CommonParserTests {
   private Parser parserV2;
 
   @BeforeEach
@@ -22,8 +23,18 @@ public class LexerV2Test extends CommonParserTests {
 
   @Test
   public void testIfStatement() {
-    Parser parser = setParser("if (true) {a=2;} else {a=3}", getParser());
+    Parser parser =
+        setParser(
+            "if (true) { if(a){hola=2;} let name: string = \"Oliver\";} else {a=3; a=5; a=6;}",
+            getParser());
     AstNode node = parser.next();
     assertInstanceOf(IfStatement.class, node);
+  }
+
+  @Test
+  public void testConstDeclaration() {
+    Parser parser = setParser("const name: string = \"Oliver\";", getParser());
+    AstNode node = parser.next();
+    assertInstanceOf(VariableDeclaration.class, node);
   }
 }

@@ -4,19 +4,19 @@ import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import token.Position;
 
-public class BooleanLiteral implements Literal {
-  private final String value;
+public class BooleanLiteral implements Literal<Boolean> {
+  private final boolean value;
   private final Position start;
   private final Position end;
 
-  public BooleanLiteral(String value, Position start, Position end) {
+  public BooleanLiteral(boolean value, Position start, Position end) {
     this.value = value;
     this.start = start;
     this.end = end;
   }
 
   @Override
-  public String value() {
+  public Boolean value() {
     return value;
   }
 

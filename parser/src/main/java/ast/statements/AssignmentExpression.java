@@ -8,7 +8,7 @@ import token.Position;
 
 public record AssignmentExpression(
     Identifier left, Expression right, String operator, Position start, Position end)
-    implements Statement {
+    implements StatementNode {
 
   public AssignmentExpression(Identifier left, Expression right, String operator) {
     this(left, right, operator, left.start(), right.end());

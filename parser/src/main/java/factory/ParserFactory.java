@@ -26,7 +26,10 @@ public class ParserFactory {
   private static Parser getParserV1() {
     Lexer lexer = LexerFactory.getLexer("1.0");
     List<StatementParser> statementParsers =
-        List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
+        List.of(
+            new CallFunctionParser(),
+            new VariableDeclarationParser(List.of("let")),
+            new AssignmentParser());
     List<ExpressionParser> expressionParsers =
         List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
     return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
@@ -38,7 +41,7 @@ public class ParserFactory {
         List.of(
             new IfParser(),
             new CallFunctionParser(),
-            new VariableDeclarationParser(),
+            new VariableDeclarationParser(List.of("let", "const")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
         List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
