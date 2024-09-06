@@ -142,11 +142,11 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     List<AstNode> arguments = List.of(new Identifier("y", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression =
-        new CallExpression(printName, arguments, false, new Position(6, 0), new Position(6, 6));
+        new CallExpression(printName, arguments, new Position(6, 0), new Position(6, 6));
 
     List<AstNode> arguments1 = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression1 =
-        new CallExpression(printName, arguments1, false, new Position(6, 0), new Position(6, 6));
+        new CallExpression(printName, arguments1, new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements =
         List.of(variableDeclaration, variableDeclaration2, callExpression, callExpression1);
@@ -172,7 +172,7 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
@@ -192,7 +192,7 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -214,7 +214,7 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
@@ -236,7 +236,7 @@ public class InterpreterTest {
     Identifier printName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     CallExpression callExpression =
         new CallExpression(
-            printName, List.of(binaryExpression), false, new Position(6, 0), new Position(6, 6));
+            printName, List.of(binaryExpression), new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
@@ -251,7 +251,7 @@ public class InterpreterTest {
     Identifier methodName = new Identifier("println", new Position(6, 0), new Position(6, 6));
     List<AstNode> arguments = List.of(new Identifier("x", new Position(8, 0), new Position(8, 1)));
     CallExpression callExpression =
-        new CallExpression(methodName, arguments, false, new Position(6, 0), new Position(6, 6));
+        new CallExpression(methodName, arguments, new Position(6, 0), new Position(6, 6));
 
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
