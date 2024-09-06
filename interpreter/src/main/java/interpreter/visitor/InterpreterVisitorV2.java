@@ -13,18 +13,24 @@ import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import interpreter.VariablesRepository;
+import token.Position;
+import env.EnvLoader;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class InterpreterVisitorV2 implements NodeVisitor {
 
   private final InterpreterVisitorV1 interpreterVisitorV1;
   private final VariablesRepository variablesRepository;
+  private final Properties envProperties;
 
-  public InterpreterVisitorV2(InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository) {
+  public InterpreterVisitorV2(
+      InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository) {
     this.interpreterVisitorV1 = interpreterVisitorV1;
-      this.variablesRepository = variablesRepository;
+    this.variablesRepository = variablesRepository;
+    this.envProperties = EnvLoader.loadEnvProperties();
   }
 
   @Override
@@ -48,7 +54,7 @@ public class InterpreterVisitorV2 implements NodeVisitor {
     String name = identifier.name();
 
     if (name.equals("readEnv")) {
-      return readEnvMethod(identifier, arguments);
+      return handleReadEnv(callExpression, arguments);
     } else if (name.equals("readInput")) {
       return handleReadInput(callExpression);
     } else {
@@ -74,51 +80,52 @@ public class InterpreterVisitorV2 implements NodeVisitor {
     Literal<?> result = getLiteral(callExpression, userInput);
 
     Identifier identifier = callExpression.methodIdentifier();
-    VariablesRepository newVariablesRepository = variablesRepository.addVariable(identifier, result);
+    VariablesRepository newVariablesRepository =
+        variablesRepository.addVariable(identifier, result);
     return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository);
   }
 
   private static Literal<?> getLiteral(CallExpression callExpression, String userInput) {
     Literal<?> result;
-    if (userInput.matches("-?\\d+(\\.\\d+)?")) {
-        Number number;
-        if (userInput.contains(".")) {
-            number = Double.parseDouble(userInput);
-        } else {
-            number = Integer.parseInt(userInput);
-        }
-        result = new NumberLiteral(number, callExpression.start(), callExpression.end());
+    Position start = callExpression.start();
+    Position end = callExpression.end();
+
+    if (userInput.matches("-?\\d+(\\.\\d+)?([eE]-?\\d+)?")) {
+      Number number;
+      if (userInput.contains(".") || userInput.matches(".*[eE].*")) {
+        number = Double.parseDouble(userInput);
+      } else {
+        number = Integer.parseInt(userInput);
+      }
+      result = new NumberLiteral(number, start, end);
     } else if (userInput.matches("(?i)^(true|false|t|f)$")) {
       boolean bool = userInput.equalsIgnoreCase("true") || userInput.equalsIgnoreCase("t");
-        result = new BooleanLiteral(bool, callExpression.start(), callExpression.end());
+      result = new BooleanLiteral(bool, start, end);
     } else {
-        result = new StringLiteral(userInput, callExpression.start(), callExpression.end());
+      result = new StringLiteral(userInput, start, end);
     }
     return result;
   }
 
-  private NodeVisitor readEnvMethod(Identifier identifier, List<AstNode> arguments) {
+  private NodeVisitor handleReadEnv(CallExpression callExpression, List<AstNode> arguments) {
     if (arguments.size() != 1 || !(arguments.get(0) instanceof StringLiteral)) {
       throw new IllegalArgumentException("readEnv expects a single string argument");
     }
 
     String envVarName = ((StringLiteral) arguments.get(0)).value();
-    String envVarValue = System.getenv(envVarName);
+    String envVarValue = envProperties.getProperty(envVarName); // Obtener el valor de la variable de entorno
 
     if (envVarValue == null) {
       throw new IllegalArgumentException("Environment variable " + envVarName + " not found");
     }
 
-    Literal<?> result;
-    try {
-      result = new StringLiteral(envVarValue, identifier.start(), identifier.end());
-    } catch (Exception e) {
-      throw new IllegalArgumentException("Failed to convert environment variable " + envVarName + " to the expected type");
-    }
+    Literal<?> result = getLiteral(callExpression, envVarValue);
 
-    return this;
+    Identifier identifier = callExpression.methodIdentifier();
+    VariablesRepository newVariablesRepository =
+            variablesRepository.addVariable(identifier, result);
+    return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository);
   }
-
 
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
