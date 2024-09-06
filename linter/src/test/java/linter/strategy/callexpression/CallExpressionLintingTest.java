@@ -37,7 +37,7 @@ public class CallExpressionLintingTest {
     NumberLiteral two = new NumberLiteral(2, position, position);
     BinaryExpression binaryExpression = new BinaryExpression(one, two, "+", position, position);
     Identifier identifier = new Identifier("methodName", position, position);
-    CallExpression callExpression = new CallExpression(identifier, List.of(binaryExpression), true);
+    CallExpression callExpression = new CallExpression(identifier, List.of(binaryExpression));
 
     LinterVisitorV2 visitor = getLinterVisitorV2();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);
@@ -56,8 +56,7 @@ public class CallExpressionLintingTest {
     CallExpression callExpression =
         new CallExpression(
             identifier,
-            List.of(binaryExpression, binaryExpression, binaryExpression, binaryExpression),
-            true);
+            List.of(binaryExpression, binaryExpression, binaryExpression, binaryExpression));
 
     LinterVisitorV2 visitor = getLinterVisitorV2();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);
@@ -76,8 +75,7 @@ public class CallExpressionLintingTest {
     CallExpression callExpression =
         new CallExpression(
             identifier,
-            List.of(binaryExpression, identifier, binaryExpression, binaryExpression, identifier),
-            true);
+            List.of(binaryExpression, identifier, binaryExpression, binaryExpression, identifier));
 
     LinterVisitorV2 visitor = getLinterVisitorV2();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);
@@ -106,7 +104,7 @@ public class CallExpressionLintingTest {
     Identifier identifier = new Identifier("methodName", position, position);
     CallExpression callExpression =
         new CallExpression(
-            identifier, List.of(binaryExpression, one, two, binaryExpression, identifier), true);
+            identifier, List.of(binaryExpression, one, two, binaryExpression, identifier));
 
     LinterVisitorV2 visitor = getLinterVisitorStrictArguments();
     NodeVisitor newVisitor = visitor.visitCallExpression(callExpression);

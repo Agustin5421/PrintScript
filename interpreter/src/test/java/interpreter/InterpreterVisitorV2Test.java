@@ -28,7 +28,7 @@ public class InterpreterVisitorV2Test {
     Position defaultPosition = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("readInput", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(methodIdentifier, List.of(), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -50,7 +50,7 @@ public class InterpreterVisitorV2Test {
     Position defaultPosition = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("readInput", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(methodIdentifier, List.of(), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -72,7 +72,7 @@ public class InterpreterVisitorV2Test {
     Position defaultPosition = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("readInput", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(methodIdentifier, List.of(), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -95,7 +95,7 @@ public class InterpreterVisitorV2Test {
     Position defaultPosition = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("readInput", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(methodIdentifier, List.of(), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -117,7 +117,7 @@ public class InterpreterVisitorV2Test {
     Position defaultPosition = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("readInput", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(methodIdentifier, List.of(), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -139,7 +139,7 @@ public class InterpreterVisitorV2Test {
     Position defaultPosition = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("readInput", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(methodIdentifier, List.of(), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -159,8 +159,7 @@ public class InterpreterVisitorV2Test {
     Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
     StringLiteral argument = new StringLiteral("GRAVITY", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(
-            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(argument), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -180,8 +179,7 @@ public class InterpreterVisitorV2Test {
     Identifier methodIdentifier = new Identifier("readEnv", defaultPosition, defaultPosition);
     StringLiteral argument = new StringLiteral("IS_CONSTANT", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(
-            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(argument), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -202,8 +200,7 @@ public class InterpreterVisitorV2Test {
     StringLiteral argument =
         new StringLiteral("UNIVERSAL_CONSTANT", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(
-            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(argument), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
@@ -224,8 +221,7 @@ public class InterpreterVisitorV2Test {
     StringLiteral argument =
         new StringLiteral("NON_EXISTENT_VAR", defaultPosition, defaultPosition);
     CallExpression callExpression =
-        new CallExpression(
-            methodIdentifier, List.of(argument), false, defaultPosition, defaultPosition);
+        new CallExpression(methodIdentifier, List.of(argument), defaultPosition, defaultPosition);
 
     List<AstNode> statements = List.of(callExpression);
     Program program = new Program(statements);
