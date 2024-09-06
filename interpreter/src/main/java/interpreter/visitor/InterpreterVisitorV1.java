@@ -15,8 +15,6 @@ import ast.visitor.NodeVisitor;
 import interpreter.VariablesRepository;
 import interpreter.evaluator.BinaryExpressionEvaluator;
 import java.util.List;
-
-import interpreter.runtime.ExpressionEvaluator;
 import token.Position;
 
 public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisitor2 {
@@ -122,21 +120,9 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   }
 
   private void printlnMethod(Identifier identifier, List<AstNode> arguments) {
-    ExpressionEvaluator expressionEvaluator =
-        new ExpressionEvaluator(variablesRepository, identifier.start().row());
     for (AstNode argument : arguments) {
-      System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
+      System.out.println(((InterpreterVisitorV1) argument.accept(this)).getValue());
     }
     System.out.println();
-  }
-
-  // creo q este es de eli
-    private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
-    if (identifier.name().equals(name)) {
-      for (AstNode argument : arguments) {
-        System.out.println(((InterpreterVisitorV1) argument.accept(this)).getValue());
-      }
-      System.out.println();
-    }
   }
 }

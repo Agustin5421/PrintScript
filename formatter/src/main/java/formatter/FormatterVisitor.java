@@ -91,7 +91,7 @@ public class FormatterVisitor implements NodeVisitor {
   public FormattingStrategy getStrategy(AstNode node) throws IllegalArgumentException {
     FormattingStrategy strategy = strategies.get(node.getNodeType());
     if (strategy == null) {
-      throw new IllegalArgumentException("Strategy not found for type: " + node.getNodeType());
+      throw new IllegalArgumentException("Strategy not found for nodeType: " + node.getNodeType());
     }
     return strategy;
   }

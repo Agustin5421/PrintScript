@@ -16,7 +16,7 @@ public class GetTypeStrategy implements FormattingStrategy {
     return getType(expression);
   }
 
-  // Returning the type equivalent of printscript (only working for string and numbers for now)
+  // Returning the nodeType equivalent of printscript (only working for string and numbers for now)
   private String getType(Expression expression) throws IllegalArgumentException {
     if (containsStringLiteral(expression)) {
       return "string";

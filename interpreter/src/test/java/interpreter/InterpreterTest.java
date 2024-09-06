@@ -240,7 +240,8 @@ public class InterpreterTest {
     List<AstNode> statements = List.of(variableDeclaration, callExpression);
     Program program = new Program(statements);
 
-    Interpreter interpreter = new Interpreter();
+    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
+    Interpreter interpreter = new Interpreter(visitor);
     Assertions.assertThrows(
         UnsupportedExpressionException.class, () -> interpreter.executeProgram(program));
   }
