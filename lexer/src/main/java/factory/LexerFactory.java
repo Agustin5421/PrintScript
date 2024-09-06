@@ -56,6 +56,7 @@ public class LexerFactory {
                 "else", TokenSyntaxType.ELSE));
 
     reservedWords.put("const", TokenSyntaxType.CONST_DECLARATION);
+    reservedWords.put(",", TokenSyntaxType.COMMA);
 
     SyntaxPatternChecker syntaxPatternChecker = new SyntaxPatternChecker(reservedWords);
 
@@ -100,12 +101,20 @@ public class LexerFactory {
     SyntaxPatternChecker syntaxPatternChecker =
         new SyntaxPatternChecker(
             Map.of(
-                "let", TokenSyntaxType.LET_DECLARATION,
-                "(", TokenSyntaxType.OPEN_PARENTHESIS,
-                ")", TokenSyntaxType.CLOSE_PARENTHESIS,
-                ";", TokenSyntaxType.SEMICOLON,
-                ":", TokenSyntaxType.COLON,
-                "=", TokenSyntaxType.ASSIGNATION));
+                "let",
+                TokenSyntaxType.LET_DECLARATION,
+                "(",
+                TokenSyntaxType.OPEN_PARENTHESIS,
+                ")",
+                TokenSyntaxType.CLOSE_PARENTHESIS,
+                ";",
+                TokenSyntaxType.SEMICOLON,
+                ":",
+                TokenSyntaxType.COLON,
+                "=",
+                TokenSyntaxType.ASSIGNATION,
+                ",",
+                TokenSyntaxType.COMMA));
 
     DataTypePatternChecker dataTypePatternChecker =
         new DataTypePatternChecker(

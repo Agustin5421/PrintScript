@@ -16,8 +16,8 @@ import token.types.TokenType;
 public class CallFunctionParser implements StatementParser {
   private final List<String> reservedWords;
 
-  public CallFunctionParser() {
-    reservedWords = List.of("println");
+  public CallFunctionParser(List<String> reservedWords) {
+    this.reservedWords = reservedWords;
   }
 
   @Override
@@ -39,10 +39,7 @@ public class CallFunctionParser implements StatementParser {
       argumentExpressions.add(argument);
     }
 
-    boolean optionalParameters =
-        false; // TODO: Implement optional parameters in the future correctly
-
-    return new CallExpression(identifier, argumentExpressions, optionalParameters, start, end);
+    return new CallExpression(identifier, argumentExpressions, start, end);
   }
 
   @Override
