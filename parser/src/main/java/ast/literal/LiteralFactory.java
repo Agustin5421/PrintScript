@@ -22,7 +22,9 @@ public class LiteralFactory {
     }
 
     if (tokenType == TokenValueType.BOOLEAN) {
-      return new BooleanLiteral(token.value(), token.initialPosition(), token.finalPosition());
+      boolean value;
+      value = token.value().equals("true");
+      return new BooleanLiteral(value, token.initialPosition(), token.finalPosition());
     }
 
     Position position = token.initialPosition();
