@@ -16,14 +16,6 @@ public record Identifier(
     this(name, start, end, TokenDataType.STRING_TYPE, Map.of());
   }
 
-  public Identifier(String name, Position start, Position end, TokenDataType type) {
-    this(name, start, end, type, Map.of());
-  }
-
-  public Identifier(String name, Position start, Position end, Map<String, Boolean> modifiers) {
-    this(name, start, end, TokenDataType.STRING_TYPE, modifiers);
-  }
-
   @Override
   public AstNodeType getNodeType() {
     return AstNodeType.IDENTIFIER;

@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import ast.root.AstNode;
 import ast.statements.IfStatement;
+import ast.statements.VariableDeclaration;
 import factory.ParserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,5 +29,12 @@ public class ParserV2Test extends CommonParserTests {
             getParser());
     AstNode node = parser.next();
     assertInstanceOf(IfStatement.class, node);
+  }
+
+  @Test
+  public void testConstDeclaration() {
+    Parser parser = setParser("const name: string = \"Oliver\";", getParser());
+    AstNode node = parser.next();
+    assertInstanceOf(VariableDeclaration.class, node);
   }
 }

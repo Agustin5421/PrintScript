@@ -26,7 +26,7 @@ public class ComplexLinterVisitorTest {
     StringLiteral stringLiteral = new StringLiteral("test", position, position);
     VariableDeclaration variableDeclaration =
         // TODO: Fix this
-        new VariableDeclaration(identifier, stringLiteral, "test", position, position);
+        new VariableDeclaration("test", identifier, stringLiteral, "test", position, position);
 
     CallExpression callExpression =
         new CallExpression(identifier, List.of(identifier, stringLiteral), true);
