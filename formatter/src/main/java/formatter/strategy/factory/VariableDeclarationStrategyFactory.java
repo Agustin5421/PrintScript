@@ -1,7 +1,7 @@
 package formatter.strategy.factory;
 
 import com.google.gson.JsonObject;
-import formatter.strategy.*;
+import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.OperatorStrategy;
 import formatter.strategy.common.WhiteSpace;
 import formatter.strategy.vardec.GetTypeStrategy;
