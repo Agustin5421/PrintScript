@@ -1,27 +1,40 @@
-package interpreter;
+package interpreter.visitor;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
+import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
+import interpreter.VariablesRepository;
 import interpreter.runtime.ExpressionEvaluator;
 import java.util.List;
 
-public class AstNodeVisitor implements NodeVisitor {
+public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
   private final VariablesRepository variablesRepository;
 
-  public AstNodeVisitor(VariablesRepository variablesRepository) {
+  public InterpreterVisitorV1(VariablesRepository variablesRepository) {
     this.variablesRepository = variablesRepository;
   }
 
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
+  }
+
+  @Override
+  public NodeVisitor visitIfStatement(IfStatement ifStatement) {
+    throw new IllegalArgumentException("If Node not supported in this version :( ");
+  }
+
+  @Override
+  public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
+    throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
   @Override
@@ -48,7 +61,7 @@ public class AstNodeVisitor implements NodeVisitor {
 
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(left, evaluatedRight);
-    return new AstNodeVisitor(newVariablesRepository);
+    return new InterpreterVisitorV1(newVariablesRepository);
   }
 
   @Override
@@ -74,10 +87,6 @@ public class AstNodeVisitor implements NodeVisitor {
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    //    ExpressionEvaluator evaluator =
-    //        new ExpressionEvaluator(variablesRepository, binaryExpression.start().row());
-    //    AstNode result = evaluator.evaluate(binaryExpression);
-    //    System.out.println("BinaryExpression result: " + ((Literal<?>) result).value());
     return this;
   }
 
@@ -94,7 +103,7 @@ public class AstNodeVisitor implements NodeVisitor {
     // Object value = literal.value();
 
     VariablesRepository newVariablesRepository = variablesRepository.addVariable(name, value);
-    return new AstNodeVisitor(newVariablesRepository);
+    return new InterpreterVisitorV1(newVariablesRepository);
   }
 
   private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {

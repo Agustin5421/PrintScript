@@ -2,10 +2,12 @@ package formatter;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
+import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import com.google.gson.JsonObject;
@@ -21,6 +23,16 @@ public class FormatterVisitor implements NodeVisitor {
   public FormatterVisitor(JsonObject options, String formattedCode) {
     this.formattedCode = formattedCode;
     this.options = options;
+  }
+
+  @Override
+  public NodeVisitor visitIfStatement(IfStatement ifStatement) {
+    throw new IllegalArgumentException("If Node not supported in this version :( ");
+  }
+
+  @Override
+  public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
+    throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
   @Override

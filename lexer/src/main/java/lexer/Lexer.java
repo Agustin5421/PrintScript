@@ -93,7 +93,7 @@ public class Lexer implements Progressable, Iterator<Token> {
 
     currentPosition = finalPosition;
 
-    if (token.type() == TokenSyntaxType.INVALID) {
+    if (token.nodeType() == TokenSyntaxType.INVALID) {
       String message =
           getExceptionMessage(token.value(), currentPosition.row(), currentPosition.col());
       throw new UnsupportedCharacter(message);
@@ -134,5 +134,21 @@ public class Lexer implements Progressable, Iterator<Token> {
     for (Observer observer : observers) {
       observer.update(this);
     }
+  }
+
+  public Token peek() {
+    if (!hasNext()) {
+      throw new IllegalStateException("No more tokens available");
+    }
+
+    String word = matcher.group();
+    int start = matcher.start();
+    int end = matcher.end();
+
+    Position finalPosition = updatePosition(code, start, end, currentPosition);
+
+    TokenType type = tokenTypeGetter.getType(word);
+
+    return new Token(type, word, currentPosition, finalPosition);
   }
 }

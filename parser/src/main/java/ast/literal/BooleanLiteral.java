@@ -21,7 +21,7 @@ public class BooleanLiteral implements Literal {
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.BOOLEAN_LITERAL;
   }
 
@@ -37,6 +37,6 @@ public class BooleanLiteral implements Literal {
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return null;
+    return visitor.visitBooleanLiteral(this);
   }
 }

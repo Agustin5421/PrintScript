@@ -3,12 +3,14 @@ package linter.visitor;
 import ast.expressions.BinaryExpression;
 import ast.expressions.Expression;
 import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
+import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import java.util.Map;
@@ -45,12 +47,22 @@ public class LinterVisitor implements NodeVisitor {
     visitor = expression.accept(visitor);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(variableDeclaration.getType());
+    LintingStrategy strategy = getNodesStrategies().get(variableDeclaration.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(variableDeclaration, newReport);
     }
 
     return new LinterVisitor(newReport, getNodesStrategies());
+  }
+
+  @Override
+  public NodeVisitor visitIfStatement(IfStatement ifStatement) {
+    throw new IllegalArgumentException("If Node not supported in this version :( ");
+  }
+
+  @Override
+  public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
+    throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
   @Override
@@ -63,7 +75,7 @@ public class LinterVisitor implements NodeVisitor {
     }
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(callExpression.getType());
+    LintingStrategy strategy = getNodesStrategies().get(callExpression.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(callExpression, newReport);
     }
@@ -80,7 +92,7 @@ public class LinterVisitor implements NodeVisitor {
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(assignmentExpression.getType());
+    LintingStrategy strategy = getNodesStrategies().get(assignmentExpression.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(assignmentExpression, newReport);
     }
@@ -97,7 +109,7 @@ public class LinterVisitor implements NodeVisitor {
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
-    LintingStrategy strategy = getNodesStrategies().get(binaryExpression.getType());
+    LintingStrategy strategy = getNodesStrategies().get(binaryExpression.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(binaryExpression, newReport);
     }
@@ -107,7 +119,7 @@ public class LinterVisitor implements NodeVisitor {
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    LintingStrategy strategy = getNodesStrategies().get(numberLiteral.getType());
+    LintingStrategy strategy = getNodesStrategies().get(numberLiteral.getNodeType());
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(numberLiteral, getFullReport());
@@ -119,7 +131,7 @@ public class LinterVisitor implements NodeVisitor {
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    LintingStrategy strategy = getNodesStrategies().get(stringLiteral.getType());
+    LintingStrategy strategy = getNodesStrategies().get(stringLiteral.getNodeType());
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(stringLiteral, getFullReport());
@@ -131,7 +143,7 @@ public class LinterVisitor implements NodeVisitor {
 
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    LintingStrategy strategy = getNodesStrategies().get(identifier.getType());
+    LintingStrategy strategy = getNodesStrategies().get(identifier.getNodeType());
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(identifier, getFullReport());

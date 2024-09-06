@@ -26,7 +26,7 @@ public class ArgumentsStrategy implements LintingStrategy {
     List<AstNode> arguments = callExpression.arguments();
 
     for (AstNode argument : arguments) {
-      AstNodeType argumentType = argument.getType();
+      AstNodeType argumentType = argument.getNodeType();
       if (isNotValidArgument(argumentType)) {
         Report newReport =
             new Report(
@@ -41,7 +41,7 @@ public class ArgumentsStrategy implements LintingStrategy {
   }
 
   private boolean shouldApply(AstNode node) {
-    return node.getType().equals(AstNodeType.CALL_EXPRESSION);
+    return node.getNodeType().equals(AstNodeType.CALL_EXPRESSION);
   }
 
   private boolean isNotValidArgument(AstNodeType argumentType) {

@@ -1,7 +1,6 @@
 package factory;
 
 import ast.identifier.IdentifierParser;
-import ast.splitters.StatementSplitter;
 import java.util.List;
 import lexer.Lexer;
 import parsers.Parser;
@@ -13,6 +12,7 @@ import parsers.statements.CallFunctionParser;
 import parsers.statements.IfParser;
 import parsers.statements.StatementParser;
 import parsers.statements.VariableDeclarationParser;
+import validators.MainStatementValidator;
 
 public class ParserFactory {
   public static Parser getParser(String version) {
@@ -29,7 +29,7 @@ public class ParserFactory {
         List.of(new CallFunctionParser(), new VariableDeclarationParser(), new AssignmentParser());
     List<ExpressionParser> expressionParsers =
         List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
-    return new Parser(lexer, statementParsers, expressionParsers, new StatementSplitter());
+    return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
   }
 
   private static Parser getParserV2() {
@@ -42,6 +42,6 @@ public class ParserFactory {
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
         List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
-    return new Parser(lexer, statementParsers, expressionParsers, new StatementSplitter());
+    return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
   }
 }

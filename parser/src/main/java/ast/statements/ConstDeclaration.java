@@ -16,12 +16,13 @@ public record ConstDeclaration(
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.VARIABLE_DECLARATION;
   }
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
+    // return visitor.visit(this);
     throw new UnsupportedOperationException("Not implemented yet");
   }
 }

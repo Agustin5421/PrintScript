@@ -37,6 +37,6 @@ public class WritingConventionStrategy implements LintingStrategy {
   }
 
   private boolean shouldApply(AstNode node) {
-    return node.getType().equals(AstNodeType.IDENTIFIER);
+    return node.getNodeType().equals(AstNodeType.IDENTIFIER);
   }
 }

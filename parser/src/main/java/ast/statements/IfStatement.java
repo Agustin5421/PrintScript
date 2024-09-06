@@ -27,7 +27,7 @@ public class IfStatement implements Statement {
   }
 
   @Override
-  public AstNodeType getType() {
+  public AstNodeType getNodeType() {
     return AstNodeType.IF_STATEMENT;
   }
 
@@ -43,7 +43,7 @@ public class IfStatement implements Statement {
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return null;
+    return visitor.visitIfStatement(this);
   }
 
   public Expression getCondition() {
