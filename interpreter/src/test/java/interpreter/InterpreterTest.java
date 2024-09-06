@@ -12,6 +12,7 @@ import ast.root.AstNode;
 import ast.root.Program;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
+import exceptions.UnsupportedExpressionException;
 import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorV1;
 import java.util.List;
