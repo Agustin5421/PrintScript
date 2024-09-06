@@ -43,10 +43,14 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
     Identifier identifier = callExpression.methodIdentifier();
     boolean optionalParameters = callExpression.optionalParameters(); // TODO: how to use this?
 
-    String name = "println";
+    String name = identifier.name();
 
-    printlnMethod(identifier, name, arguments);
-    return this;
+    if (name.equals("println")) {
+      printlnMethod(identifier, arguments);
+      return this;
+    } else {
+      throw new IllegalArgumentException(name + " not supported in this version :( ");
+    }
   }
 
   @Override
@@ -106,14 +110,13 @@ public class InterpreterVisitorV1 implements NodeVisitor { // }, NodeVisitor2 {
     return new InterpreterVisitorV1(newVariablesRepository);
   }
 
-  private void printlnMethod(Identifier identifier, String name, List<AstNode> arguments) {
-    if (identifier.name().equals(name)) {
-      ExpressionEvaluator expressionEvaluator =
-          new ExpressionEvaluator(variablesRepository, identifier.start().row());
-      for (AstNode argument : arguments) {
-        System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
-      }
-      System.out.println();
+  private void printlnMethod(Identifier identifier,  List<AstNode> arguments) {
+    ExpressionEvaluator expressionEvaluator =
+        new ExpressionEvaluator(variablesRepository, identifier.start().row());
+    for (AstNode argument : arguments) {
+      System.out.println(((Literal<?>) expressionEvaluator.evaluate(argument)).value());
     }
+    System.out.println();
+
   }
 }
