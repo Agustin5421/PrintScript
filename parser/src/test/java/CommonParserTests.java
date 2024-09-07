@@ -45,4 +45,21 @@ public abstract class CommonParserTests {
     assertInstanceOf(CallExpression.class, call);
     assertInstanceOf(NumberLiteral.class, call.arguments().get(0));
   }
+
+  @Test
+  public void testCallFunction2() {
+    Parser parser = setParser("println(2, 2);", getParser());
+    CallExpression call = (CallExpression) parser.next();
+    assertInstanceOf(CallExpression.class, call);
+    assertInstanceOf(NumberLiteral.class, call.arguments().get(0));
+    assertInstanceOf(NumberLiteral.class, call.arguments().get(1));
+  }
+
+  @Test
+  public void testCallFunction3() {
+    Parser parser = setParser("println(2 + 2);", getParser());
+    CallExpression call = (CallExpression) parser.next();
+    assertInstanceOf(CallExpression.class, call);
+    assertInstanceOf(BinaryExpression.class, call.arguments().get(0));
+  }
 }

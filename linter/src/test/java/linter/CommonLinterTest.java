@@ -34,6 +34,14 @@ public abstract class CommonLinterTest {
   }
 
   @Test
+  public void lintVarDecWithBinaryExpressionTest() {
+    String code = "let var: Number = 1 + 1;";
+    IterableLinter linter = configureLinter(code);
+    FullReport report = linter.next();
+    assertEquals(0, report.getReports().size());
+  }
+
+  @Test
   public void lintCallExpressionTest() {
     String code = "println(\"Hello, World!\");";
     IterableLinter linter = configureLinter(code);
@@ -47,5 +55,13 @@ public abstract class CommonLinterTest {
     IterableLinter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(0, report.getReports().size());
+  }
+
+  @Test
+  public void lintCallExpression3Test() {
+    String code = "println(1 + 1);";
+    IterableLinter linter = configureLinter(code);
+    FullReport report = linter.next();
+    assertEquals(1, report.getReports().size());
   }
 }

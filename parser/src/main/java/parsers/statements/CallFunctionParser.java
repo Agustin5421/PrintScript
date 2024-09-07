@@ -31,11 +31,11 @@ public class CallFunctionParser implements StatementParser {
 
     // Arguments
     List<Token> subList = tokens.subList(1, tokens.size());
-    List<Token> arguments = extractArguments(subList);
+    List<List<Token>> arguments = extractArguments(subList);
 
     List<AstNode> argumentExpressions = new ArrayList<>();
-    for (Token token : arguments) {
-      AstNode argument = parser.parseExpression(List.of(token));
+    for (List<Token> token : arguments) {
+      AstNode argument = parser.parseExpression(token);
       argumentExpressions.add(argument);
     }
 
@@ -47,8 +47,8 @@ public class CallFunctionParser implements StatementParser {
     return reservedWords.contains(tokens.get(0).value());
   }
 
-  public static List<Token> extractArguments(List<Token> tokens) {
-    List<Token> argumentTokens = new ArrayList<>();
+  public static List<List<Token>> extractArguments(List<Token> tokens) {
+    List<List<Token>> argumentTokens = new ArrayList<>();
     List<Token> currentArgument = new ArrayList<>();
     boolean inArguments = false;
     int openParentheses = 0;
@@ -75,8 +75,8 @@ public class CallFunctionParser implements StatementParser {
         inArguments = false;
         openParentheses--;
         if (!currentArgument.isEmpty()) {
-          argumentTokens.addAll(currentArgument);
-          currentArgument.clear();
+          argumentTokens.add(currentArgument);
+          currentArgument = new ArrayList<>();
         }
         continue;
       }
@@ -86,8 +86,8 @@ public class CallFunctionParser implements StatementParser {
           if (currentArgument.isEmpty()) {
             throw new SyntaxException("Comma without preceding argument.");
           }
-          argumentTokens.addAll(currentArgument);
-          currentArgument.clear();
+          argumentTokens.add(currentArgument);
+          currentArgument = new ArrayList<>();
         } else {
           currentArgument.add(token);
         }
@@ -99,7 +99,7 @@ public class CallFunctionParser implements StatementParser {
     }
 
     if (!currentArgument.isEmpty()) {
-      argumentTokens.addAll(currentArgument);
+      argumentTokens.add(currentArgument);
     }
 
     return argumentTokens;
