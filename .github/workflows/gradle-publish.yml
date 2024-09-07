@@ -9,11 +9,9 @@ name: Gradle Package
 
 on:
   push:
-    branches:
-      - master
+    branches: [ "master" ]
   workflow_dispatch:
-    branches:
-      - master
+    branches: [ "master" ]
 
 jobs:
   build:
