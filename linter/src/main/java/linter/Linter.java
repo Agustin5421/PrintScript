@@ -5,7 +5,7 @@ import ast.root.Program;
 import ast.visitor.NodeVisitor;
 import java.util.List;
 import linter.report.FullReport;
-import linter.visitor.LinterVisitor;
+import linter.visitor.LinterVisitorV1;
 import linter.visitor.factory.LinterVisitorFactory;
 import observers.Observer;
 import observers.Progressable;
@@ -34,7 +34,7 @@ public class Linter implements Progressable {
       notifyObservers();
     }
 
-    return ((LinterVisitor) linterVisitor).getFullReport();
+    return ((LinterVisitorV1) linterVisitor).getFullReport();
   }
 
   @Override
