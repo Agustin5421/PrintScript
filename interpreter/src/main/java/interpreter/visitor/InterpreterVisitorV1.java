@@ -14,6 +14,7 @@ import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import interpreter.VariablesRepository;
 import interpreter.evaluator.BinaryExpressionEvaluator;
+import java.util.ArrayList;
 import java.util.List;
 import token.Position;
 
@@ -22,14 +23,23 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   private final Literal<?> value;
   private final BinaryExpressionEvaluator binaryExpressionEvaluator =
       new BinaryExpressionEvaluator();
+  private final List<String> printedValues;
 
   public InterpreterVisitorV1(VariablesRepository variablesRepository, Literal<?> value) {
     this.variablesRepository = variablesRepository;
     this.value = value;
+    this.printedValues = new ArrayList<>();
   }
 
   public InterpreterVisitorV1(VariablesRepository variablesRepository) {
     this(variablesRepository, new NumberLiteral(0, new Position(0, 0), new Position(0, 0)));
+  }
+
+  private InterpreterVisitorV1(
+      VariablesRepository variablesRepository, Literal<?> value, List<String> printedValues) {
+    this.variablesRepository = variablesRepository;
+    this.value = value;
+    this.printedValues = new ArrayList<>(printedValues);
   }
 
   @Override
@@ -59,8 +69,8 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     String name = identifier.name();
 
     if (name.equals("println")) {
-      printlnMethod(identifier, arguments);
-      return this;
+      List<String> newPrintedValues = printlnMethod(identifier, arguments);
+      return new InterpreterVisitorV1(variablesRepository, value, newPrintedValues);
     } else {
       throw new IllegalArgumentException(name + " not supported in this version :( ");
     }
@@ -75,7 +85,7 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
 
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(left, evaluatedRight);
-    return new InterpreterVisitorV1(newVariablesRepository, value);
+    return new InterpreterVisitorV1(newVariablesRepository, value, printedValues);
   }
 
   @Override
@@ -86,12 +96,12 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   // que tire excepcion  estos q no deberian de llegar
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    return new InterpreterVisitorV1(variablesRepository, numberLiteral);
+    return new InterpreterVisitorV1(variablesRepository, numberLiteral, printedValues);
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return new InterpreterVisitorV1(variablesRepository, stringLiteral);
+    return new InterpreterVisitorV1(variablesRepository, stringLiteral, printedValues);
   }
 
   @Override
@@ -102,7 +112,7 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     Literal<?> value = binaryExpressionEvaluator.evaluate(binaryExpression, this);
-    return new InterpreterVisitorV1(variablesRepository, value);
+    return new InterpreterVisitorV1(variablesRepository, value, printedValues);
   }
 
   private NodeVisitor setVariable(VariableDeclaration statement) {
@@ -115,13 +125,21 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     Literal<?> value = ((InterpreterVisitorV1) statement.expression().accept(this)).getValue();
 
     VariablesRepository newVariablesRepository = variablesRepository.addVariable(name, value);
-    return new InterpreterVisitorV1(newVariablesRepository, value);
+    return new InterpreterVisitorV1(newVariablesRepository, value, printedValues);
   }
 
-  private void printlnMethod(Identifier identifier, List<AstNode> arguments) {
+  private List<String> printlnMethod(Identifier identifier, List<AstNode> arguments) {
+    List<String> newPrintedValues = new ArrayList<>(printedValues);
     for (AstNode argument : arguments) {
-      System.out.println(((InterpreterVisitorV1) argument.accept(this)).getValue());
+      String value = ((InterpreterVisitorV1) argument.accept(this)).getValue().toString();
+      System.out.println(value);
+      newPrintedValues.add(value);
     }
     System.out.println();
+    return newPrintedValues;
+  }
+
+  public List<String> getPrintedValues() {
+    return new ArrayList<>(printedValues);
   }
 }
