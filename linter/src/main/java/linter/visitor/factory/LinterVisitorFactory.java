@@ -3,6 +3,8 @@ package linter.visitor.factory;
 import ast.root.AstNodeType;
 import java.util.Map;
 import linter.visitor.LinterVisitor;
+import linter.visitor.LinterVisitorV1;
+import linter.visitor.LinterVisitorV2;
 import linter.visitor.strategy.LintingStrategy;
 
 public class LinterVisitorFactory {
@@ -23,7 +25,12 @@ public class LinterVisitorFactory {
             AstNodeType.IDENTIFIER, identifierLintingStrategies,
             AstNodeType.CALL_EXPRESSION, callExpressionLintingStrategies);
 
-    return new LinterVisitor(nodesStrategies);
+    return new LinterVisitorV1(nodesStrategies);
+  }
+
+  public LinterVisitor createLinterVisitorV2(String rules) {
+    LinterVisitorV1 visitorV1 = (LinterVisitorV1) createLinterVisitor(rules);
+    return new LinterVisitorV2(Map.of(), visitorV1);
   }
 
   private LintingStrategy getIdentifierLintingStrategies(String rules) {
