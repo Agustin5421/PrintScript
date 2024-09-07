@@ -3,4 +3,4 @@ plugins {
 }
 
 group = 'org.example'
-version = 'unspecified'
+version = '1.1-SNAPSHOT'
