@@ -3,20 +3,28 @@ package runner;
 import factory.LexerFactory;
 import factory.ParserFactory;
 import lexer.Lexer;
+import linter.Linter;
+import linter.LinterFactory;
 import parsers.Parser;
 
 public class Runner {
-    public void execute (String codeFilepath, String version){
+    public void execute (String code, String version){
         //TODO: need factory for executor
 
     }
 
-    public void analyze (String codeFilepath, String version, String optionsFilepath, OutputResult output){
-        //TODO: need factory for analyzer
+    public void analyze (String code, String version, String config, OutputResult output){
+        Linter linter = LinterFactory.getLinter(version, config);
+        linter = linter.setInput(code);
 
+        while (linter.hasNext()) {
+            output.saveResult(linter.next().toString());
+        }
+
+        System.out.println(output.getResult());
     }
 
-    public void format (String codeFilepath, String version, String optionsFilepath){
+    public void format (String code, String version, String config){
         //TODO: need factory for formatter
 
     }
