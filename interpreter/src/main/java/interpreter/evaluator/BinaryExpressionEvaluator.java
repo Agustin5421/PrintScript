@@ -2,6 +2,7 @@ package interpreter.evaluator;
 
 import ast.expressions.BinaryExpression;
 import ast.literal.Literal;
+import ast.literal.NumberLiteral;
 import interpreter.visitor.InterpreterVisitorV1;
 
 public class BinaryExpressionEvaluator {
@@ -18,12 +19,14 @@ public class BinaryExpressionEvaluator {
     // If one of them is not a string, they are both numbers
     Number leftNumber = (Number) left.value();
     Number rightNumber = (Number) right.value();
-    if (IntegerOperationHandler.checkBothIntegers(leftNumber, rightNumber)) {
-      return IntegerOperationHandler.performIntegerOperation(
-          leftNumber.intValue(), rightNumber.intValue(), operator, left, right);
+    double result =
+        NumberOperationHandler.performDoubleOperation(
+            leftNumber.doubleValue(), rightNumber.doubleValue(), operator);
+    // If both numbers are integers and the operator is not division, we return the int value
+    if (NumberOperationHandler.returnsInteger(leftNumber, rightNumber, operator)) {
+      return new NumberLiteral((int) result, left.start(), right.end());
     } else {
-      return DoubleOperationHandler.performDoubleOperation(
-          leftNumber.doubleValue(), rightNumber.doubleValue(), operator, left, right);
+      return new NumberLiteral(result, left.start(), right.end());
     }
   }
 }

@@ -37,7 +37,7 @@ public class ExpressionEvaluatorTest {
     NumberLiteral numberLiteral = new NumberLiteral(10, position, position);
     NumberLiteral numberLiteral2 = new NumberLiteral(5, position, position);
     NumberLiteral result = evaluateBinaryExpression(numberLiteral, numberLiteral2, "/");
-    assertEquals(2, result.value());
+    assertEquals(2d, result.value());
   }
 
   @Test
