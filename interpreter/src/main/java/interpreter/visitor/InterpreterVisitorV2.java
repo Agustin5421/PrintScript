@@ -29,7 +29,10 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
 
   public InterpreterVisitorV2(
       InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository) {
-    this(interpreterVisitorV1, variablesRepository, new ArrayList<>());
+    this.interpreterVisitorV1 = interpreterVisitorV1;
+    this.variablesRepository = variablesRepository;
+    this.printedValues = new ArrayList<>();
+    this.envProperties = EnvLoader.loadEnvProperties();
   }
 
   private InterpreterVisitorV2(
