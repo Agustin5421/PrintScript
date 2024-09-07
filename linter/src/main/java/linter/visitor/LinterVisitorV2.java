@@ -60,7 +60,7 @@ public class LinterVisitorV2 implements LinterVisitor {
       visitor = statement.accept(visitor);
     }
 
-    FullReport newReport = ((LinterVisitorV1) visitor).getFullReport();
+    FullReport newReport = ((LinterVisitorV2) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(ifStatement.getNodeType());
     if (strategy != null) {
       newReport = strategy.apply(ifStatement, newReport);
@@ -75,7 +75,7 @@ public class LinterVisitorV2 implements LinterVisitor {
 
     if (strategy != null) {
       FullReport newReport = strategy.apply(booleanLiteral, getFullReport());
-      return new LinterVisitorV1(newReport, getNodesStrategies());
+      return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
     }
 
     return this;
@@ -99,7 +99,10 @@ public class LinterVisitorV2 implements LinterVisitor {
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    return null;
+    LinterVisitorV1 visitor = (LinterVisitorV1) variableDeclaration.accept(visitorV1);
+    FullReport newReport = visitor.getFullReport();
+
+    return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
   }
 
   @Override

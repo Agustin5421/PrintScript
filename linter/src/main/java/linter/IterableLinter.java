@@ -21,6 +21,10 @@ public class IterableLinter implements Progressable, Iterator<FullReport> {
     return visitor.getFullReport();
   }
 
+  public Parser getParser() {
+    return parser;
+  }
+
   public IterableLinter setParser(Parser parser) {
     return new IterableLinter(parser, linterVisitor);
   }
