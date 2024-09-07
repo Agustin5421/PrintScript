@@ -14,6 +14,7 @@ import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import env.EnvLoader;
 import interpreter.VariablesRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
@@ -24,12 +25,21 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   private final InterpreterVisitorV1 interpreterVisitorV1;
   private final VariablesRepository variablesRepository;
   private final Properties envProperties;
+  private final List<String> printedValues;
 
   public InterpreterVisitorV2(
       InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository) {
+    this(interpreterVisitorV1, variablesRepository, new ArrayList<>());
+  }
+
+  private InterpreterVisitorV2(
+      InterpreterVisitorV1 interpreterVisitorV1,
+      VariablesRepository variablesRepository,
+      List<String> printedValues) {
     this.interpreterVisitorV1 = interpreterVisitorV1;
     this.variablesRepository = variablesRepository;
     this.envProperties = EnvLoader.loadEnvProperties();
+    this.printedValues = new ArrayList<>(printedValues);
   }
 
   @Override
@@ -74,13 +84,15 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     }
 
     System.out.println(userInput);
+    List<String> newPrintedValues = new ArrayList<>(printedValues);
+    newPrintedValues.add(userInput);
 
     Literal<?> result = getLiteral(callExpression, userInput);
 
     Identifier identifier = callExpression.methodIdentifier();
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(identifier, result);
-    return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository);
+    return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository, newPrintedValues);
   }
 
   private static Literal<?> getLiteral(CallExpression callExpression, String userInput) {
@@ -123,7 +135,7 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     Identifier identifier = callExpression.methodIdentifier();
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(identifier, result);
-    return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository);
+    return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository, printedValues);
   }
 
   @Override
@@ -159,5 +171,9 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   @Override
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
+  }
+
+  public List<String> getPrintedValues() {
+    return new ArrayList<>(printedValues);
   }
 }
