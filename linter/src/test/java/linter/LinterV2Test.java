@@ -8,7 +8,7 @@ import ast.literal.BooleanLiteral;
 import ast.root.AstNode;
 import ast.statements.IfStatement;
 import java.util.List;
-import linter.report.FullReport;
+import linter.visitor.report.FullReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

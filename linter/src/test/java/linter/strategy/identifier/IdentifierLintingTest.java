@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.identifier.Identifier;
 import java.util.List;
-import linter.report.FullReport;
+import linter.visitor.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.identifier.WritingConventionStrategy;

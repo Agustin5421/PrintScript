@@ -1,4 +1,4 @@
-package linter.report;
+package linter.visitor.report;
 
 import java.util.ArrayList;
 import java.util.List;
