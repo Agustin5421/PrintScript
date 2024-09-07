@@ -8,8 +8,12 @@
 name: Gradle Package
 
 on:
-  - push
-  - workflow_dispatch
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
   build:
