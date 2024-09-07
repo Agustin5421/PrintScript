@@ -1,3 +1,7 @@
+package cli;
+
+import runner.Runner;
+
 public class Cli {
   private static final Runner runner = new Runner();
 
@@ -20,7 +24,7 @@ public class Cli {
 
     switch (operation) {
       case "Validation" -> runner.validate(codeFilePath, version);
-      case "Analyzing" -> runner.analyze(codeFilePath,version, args[3]); //args[3] is the options file
+      case "Analyzing" -> runner.analyze(codeFilePath,version, args[3], new MockOutput()); //args[3] is the options file
       case "Formatting" -> runner.format(codeFilePath, version, args[3]);
       case "Execution" -> runner.execute(codeFilePath, version);
       default -> throw new IllegalArgumentException("Unsupported operation: " + operation);

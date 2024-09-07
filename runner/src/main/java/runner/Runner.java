@@ -1,15 +1,18 @@
+package runner;
+
 import factory.LexerFactory;
 import factory.ParserFactory;
 import lexer.Lexer;
 import parsers.Parser;
 
 public class Runner {
-    public void analyze (String codeFilepath, String version, String optionsFilepath){
-        //TODO: need factory for analyzer
-    }
-
     public void execute (String codeFilepath, String version){
         //TODO: need factory for executor
+
+    }
+
+    public void analyze (String codeFilepath, String version, String optionsFilepath, OutputResult output){
+        //TODO: need factory for analyzer
 
     }
 
