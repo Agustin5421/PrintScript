@@ -3,8 +3,8 @@ package linter.strategy.identifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.identifier.Identifier;
-import linter.report.FullReport;
-import linter.report.Report;
+import linter.visitor.report.FullReport;
+import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;

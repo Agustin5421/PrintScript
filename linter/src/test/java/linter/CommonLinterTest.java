@@ -3,7 +3,7 @@ package linter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import lexer.Lexer;
-import linter.report.FullReport;
+import linter.visitor.report.FullReport;
 import org.junit.jupiter.api.Test;
 import parsers.Parser;
 

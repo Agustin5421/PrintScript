@@ -2,6 +2,8 @@ package linter.report;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import linter.visitor.report.FullReport;
+import linter.visitor.report.Report;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

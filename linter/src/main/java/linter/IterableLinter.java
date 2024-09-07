@@ -2,8 +2,8 @@ package linter;
 
 import ast.root.AstNode;
 import java.util.Iterator;
-import linter.report.FullReport;
 import linter.visitor.LinterVisitor;
+import linter.visitor.report.FullReport;
 import observers.Progressable;
 import parsers.Parser;
 

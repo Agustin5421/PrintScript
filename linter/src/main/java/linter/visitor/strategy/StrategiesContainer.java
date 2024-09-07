@@ -2,7 +2,7 @@ package linter.visitor.strategy;
 
 import ast.root.AstNode;
 import java.util.List;
-import linter.report.FullReport;
+import linter.visitor.report.FullReport;
 
 public class StrategiesContainer implements LintingStrategy {
   private final List<LintingStrategy> strategies;

@@ -8,7 +8,7 @@ import ast.literal.NumberLiteral;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
-import linter.report.FullReport;
+import linter.visitor.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.callexpression.ArgumentsStrategy;
 import org.junit.jupiter.api.Test;

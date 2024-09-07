@@ -4,8 +4,8 @@ import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
-import linter.report.FullReport;
-import linter.report.Report;
+import linter.visitor.report.FullReport;
+import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
 
 public class ArgumentsStrategy implements LintingStrategy {

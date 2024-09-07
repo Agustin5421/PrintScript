@@ -13,7 +13,7 @@ import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import java.util.Map;
-import linter.report.FullReport;
+import linter.visitor.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
 
 public class LinterVisitorV2 implements LinterVisitor {

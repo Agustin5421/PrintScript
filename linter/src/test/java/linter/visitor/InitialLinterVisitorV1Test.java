@@ -7,7 +7,7 @@ import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import java.util.List;
 import java.util.Map;
-import linter.report.FullReport;
+import linter.visitor.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.identifier.WritingConventionStrategy;
