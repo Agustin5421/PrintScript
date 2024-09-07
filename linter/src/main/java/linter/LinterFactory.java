@@ -10,7 +10,7 @@ import parsers.Parser;
 public class LinterFactory {
   private static final LinterVisitorFactory linterVisitorFactory = new LinterVisitorFactory();
 
-  public static IterableLinter getLinter(String version, String rules) {
+  public static Linter getLinter(String version, String rules) {
     return switch (version) {
       case "1.0" -> getLinterV1(rules);
       case "1.1" -> getLinterV2(rules);
@@ -18,7 +18,7 @@ public class LinterFactory {
     };
   }
 
-  private static IterableLinter getLinterV1(String rules) {
+  private static Linter getLinterV1(String rules) {
     Parser parser = ParserFactory.getParser("1.0");
 
     boolean validateRulesV1 = validateRules(rules);
@@ -28,10 +28,10 @@ public class LinterFactory {
     }
 
     LinterVisitor visitor = linterVisitorFactory.createLinterVisitor(rules);
-    return new IterableLinter(parser, visitor);
+    return new Linter(parser, visitor);
   }
 
-  private static IterableLinter getLinterV2(String rules) {
+  private static Linter getLinterV2(String rules) {
     Parser parser = ParserFactory.getParser("1.1");
 
     boolean validateRulesV1 = validateRules(rules);
@@ -41,7 +41,7 @@ public class LinterFactory {
     }
 
     LinterVisitor visitor = linterVisitorFactory.createLinterVisitorV2(rules);
-    return new IterableLinter(parser, visitor);
+    return new Linter(parser, visitor);
   }
 
   private static boolean validateRules(String rules) {
