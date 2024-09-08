@@ -1,10 +1,11 @@
 {
   "identifier": {
-    "writingConvention": "camelCase"
+    "writingConvention": {
+      "conventionName": "camelCase",
+      "conventionPattern": "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$"
+    }
   },
-  "callExpression" : {
-    "acceptIdentifiers": true,
-    "acceptLiterals": true,
-    "acceptExpressions": false
+  "callExpression": {
+    "arguments": ["IDENTIFIER", "STRING_LITERAL", "NUMBER_LITERAL"]
   }
 }
