@@ -9,7 +9,7 @@ import token.types.TokenSyntaxType;
 
 public class IdentifierParser implements ExpressionParser {
   @Override
-  public Expression parse(Parser parser, List<Token> tokens) {
+  public Expression expressionParse(Parser parser, List<Token> tokens) {
     return new Identifier(
         tokens.get(0).value(), tokens.get(0).initialPosition(), tokens.get(0).finalPosition());
   }

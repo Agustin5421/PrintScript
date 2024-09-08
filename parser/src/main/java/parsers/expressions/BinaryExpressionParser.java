@@ -14,7 +14,7 @@ import token.types.TokenSyntaxType;
 public class BinaryExpressionParser implements ExpressionParser {
 
   @Override
-  public Expression parse(Parser parser, List<Token> tokens) {
+  public Expression expressionParse(Parser parser, List<Token> tokens) {
     if (tokens.isEmpty()) {
       throw new IllegalArgumentException("Token list cannot be empty");
     }

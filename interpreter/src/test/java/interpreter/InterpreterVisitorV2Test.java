@@ -282,28 +282,28 @@ public class InterpreterVisitorV2Test {
     assertEquals("42", printedValues.get(0));
   }
 
-  //    @Test
-  //    public void testReadEnvExistingVariable() {
-  //        // Set an environment variable for testing
-  //        System.setProperty("TEST_ENV_VAR", "test_value");
-  //
-  //        String code = "let x: string = readEnv(\"TEST_ENV_VAR\");";
-  //        VariablesRepository variablesRepository = new VariablesRepository();
-  //        Interpreter interpreter = new Interpreter("1.1");
-  //        VariablesRepository newVar = interpreter.executeProgram(code);
-  //
-  //        assertEquals(
-  //            "test_value",
-  //                newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0,
-  // 0))).value());
-  //    }
-  //
-  //    @Test
-  //    public void testReadEnvNonExistentVariable() {
-  //        String code = "let x = readEnv(\"NON_EXISTENT_ENV_VAR\");";
-  //        VariablesRepository variablesRepository = new VariablesRepository();
-  //        Interpreter interpreter = new Interpreter("1.1");
-  //        assertThrows(IllegalArgumentException.class, () -> interpreter.executeProgram(code,
-  // variablesRepository));
-  //    }
+      @Test
+      public void testReadEnvExistingVariable() {
+          // Set an environment variable for testing
+          System.setProperty("TEST_ENV_VAR", "test_value");
+
+          String code = "let x: string = readEnv(\"TEST_ENV_VAR\");";
+          VariablesRepository variablesRepository = new VariablesRepository();
+          Interpreter interpreter = new Interpreter("1.1");
+          VariablesRepository newVar = interpreter.executeProgram(code);
+
+          assertEquals(
+              "test_value",
+                  newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0,
+   0))).value());
+      }
+
+      @Test
+      public void testReadEnvNonExistentVariable() {
+          String code = "let x = readEnv(\"NON_EXISTENT_ENV_VAR\");";
+          VariablesRepository variablesRepository = new VariablesRepository();
+          Interpreter interpreter = new Interpreter("1.1");
+          assertThrows(IllegalArgumentException.class, () -> interpreter.executeProgram(code,
+   variablesRepository));
+      }
 }

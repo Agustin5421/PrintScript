@@ -16,7 +16,7 @@ import token.types.TokenSyntaxType;
 public class AssignmentParser implements StatementParser {
 
   @Override
-  public StatementNode parse(Parser parser, List<Token> tokens) {
+  public StatementNode statementParse(Parser parser, List<Token> tokens) {
     validateSyntax(tokens);
 
     Position leftStart = tokens.get(0).initialPosition();

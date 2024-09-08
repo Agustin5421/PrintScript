@@ -31,7 +31,8 @@ public class ParserFactory {
             new VariableDeclarationParser(List.of("let")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
-        List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
+        List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser(),
+                new CallFunctionParser(List.of("println")));
     return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
   }
 
@@ -44,7 +45,8 @@ public class ParserFactory {
             new VariableDeclarationParser(List.of("let", "const")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
-        List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
+        List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser(),
+                new CallFunctionParser(List.of("println", "readInput", "readEnv")));
     return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
   }
 }
