@@ -104,9 +104,11 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     return new InterpreterVisitorV1(variablesRepository, stringLiteral, printedValues);
   }
 
+  // Method to get the value of a variable
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    return this;
+    return new InterpreterVisitorV1(
+        variablesRepository, variablesRepository.getVariable(identifier));
   }
 
   @Override
