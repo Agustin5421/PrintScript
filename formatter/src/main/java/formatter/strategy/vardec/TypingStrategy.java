@@ -1,8 +1,8 @@
 package formatter.strategy.vardec;
 
 import ast.root.AstNode;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class TypingStrategy implements FormattingStrategy {

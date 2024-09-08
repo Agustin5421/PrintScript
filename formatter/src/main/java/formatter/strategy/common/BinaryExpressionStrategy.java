@@ -2,8 +2,8 @@ package formatter.strategy.common;
 
 import ast.expressions.BinaryExpression;
 import ast.root.AstNode;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class BinaryExpressionStrategy implements FormattingStrategy {

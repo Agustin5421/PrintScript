@@ -2,9 +2,9 @@ package formatter.strategy.reassign;
 
 import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.OperatorConcatenationStrategy;
+import formatter.visitor.FormatterVisitor;
 
 public class ReAssignationStrategy implements FormattingStrategy {
   // The equal assignation strategy

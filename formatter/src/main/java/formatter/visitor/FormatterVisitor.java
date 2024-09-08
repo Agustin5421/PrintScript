@@ -1,4 +1,4 @@
-package formatter;
+package formatter.visitor;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;

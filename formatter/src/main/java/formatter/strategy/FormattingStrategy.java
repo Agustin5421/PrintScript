@@ -1,7 +1,7 @@
 package formatter.strategy;
 
 import ast.root.AstNode;
-import formatter.FormatterVisitor;
+import formatter.visitor.FormatterVisitor;
 
 public interface FormattingStrategy {
   String apply(AstNode node, FormatterVisitor visitor);

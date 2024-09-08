@@ -2,8 +2,8 @@ package formatter.strategy.vardec;
 
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class VariableDeclarationStrategy implements FormattingStrategy {

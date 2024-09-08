@@ -1,8 +1,8 @@
 package formatter.strategy.common;
 
 import ast.root.AstNode;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 
 public class OperatorStrategy implements FormattingStrategy {
   // Single operator that can be :, =, +=, +, -, /, *...

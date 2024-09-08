@@ -2,8 +2,8 @@ package formatter.strategy.callexpr;
 
 import ast.root.AstNode;
 import ast.statements.CallExpression;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class CallExpressionStrategy implements FormattingStrategy {

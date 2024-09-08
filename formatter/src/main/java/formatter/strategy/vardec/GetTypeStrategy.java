@@ -5,8 +5,8 @@ import ast.expressions.ExpressionNode;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 
 public class GetTypeStrategy implements FormattingStrategy {
   @Override
