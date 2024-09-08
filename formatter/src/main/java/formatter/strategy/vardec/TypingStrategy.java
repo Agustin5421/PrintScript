@@ -2,7 +2,7 @@ package formatter.strategy.vardec;
 
 import ast.root.AstNode;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
+import formatter.visitor.FormatterVisitorV1;
 import java.util.List;
 
 public class TypingStrategy implements FormattingStrategy {
@@ -13,7 +13,7 @@ public class TypingStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public String apply(AstNode node, FormatterVisitorV1 visitor) {
     StringBuilder formattedCode = new StringBuilder();
     for (FormattingStrategy strategy : strategies) {
       formattedCode.append(strategy.apply(node, visitor));

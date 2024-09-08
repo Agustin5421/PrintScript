@@ -3,7 +3,7 @@ package formatter.strategy.callexpr;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
+import formatter.visitor.FormatterVisitorV1;
 import java.util.List;
 
 public class CallExpressionStrategy implements FormattingStrategy {
@@ -14,9 +14,10 @@ public class CallExpressionStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public String apply(AstNode node, FormatterVisitorV1 visitor) {
     CallExpression callExpression = (CallExpression) node;
-    FormatterVisitor visit = (FormatterVisitor) callExpression.methodIdentifier().accept(visitor);
+    FormatterVisitorV1 visit =
+        (FormatterVisitorV1) callExpression.methodIdentifier().accept(visitor);
 
     StringBuilder formattedCode = new StringBuilder();
     formattedCode

@@ -1,22 +1,11 @@
 package formatter;
 
 import com.google.gson.JsonSyntaxException;
-import formatter.factory.FormatterInitializer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class FormatterTest {
-  private final String jsonOptions =
-      """
-            {
-              "colonRules": {
-                "before": true,
-                "after": true
-              },
-              "equalSpaces": true,
-              "printLineBreaks": 1
-            }
-            """;
+public abstract class AbstractFormatterTest {
+  protected abstract MainFormatter initFormatter(String jsonOptions, String formattedCode);
 
   @Test
   public void varDeclarationTest() {
@@ -24,7 +13,7 @@ public class FormatterTest {
         """
                 let myVar : string = "Hello World!";
                 """;
-    MainFormatter formatter = FormatterInitializer.init(jsonOptions, formattedCode, "1.0");
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
@@ -33,7 +22,7 @@ public class FormatterTest {
     String formattedCode = """
                 myVar = "Goodbye World!";
                 """;
-    MainFormatter formatter = FormatterInitializer.init(jsonOptions, formattedCode, "1.0");
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
@@ -42,7 +31,7 @@ public class FormatterTest {
     String formattedCode = """
                 let myVar : number = 2 + 2 * 5;
                 """;
-    MainFormatter formatter = FormatterInitializer.init(jsonOptions, formattedCode, "1.0");
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
@@ -51,7 +40,7 @@ public class FormatterTest {
     String formattedCode = """
                 println("Hello World!");
                 """;
-    MainFormatter formatter = FormatterInitializer.init(jsonOptions, formattedCode, "1.0");
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
@@ -66,7 +55,7 @@ public class FormatterTest {
 
                 println(myVar);
                 """;
-    MainFormatter formatter = FormatterInitializer.init(jsonOptions, formattedCode, "1.0");
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
@@ -94,14 +83,26 @@ public class FormatterTest {
 
                 println(myVar);
                 """;
-    MainFormatter formatter = FormatterInitializer.init(newJsonOptions, formattedCode, "1.0");
+    MainFormatter formatter = initFormatter(newJsonOptions, formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
   @Test
   public void invalidOptionsTest() {
     Assertions.assertThrows(
-        JsonSyntaxException.class,
-        () -> FormatterInitializer.init("invalid options json", "", "1.0"));
+        JsonSyntaxException.class, () -> initFormatter("invalid options json", ""));
+  }
+
+  protected String getJsonOptions() {
+    return """
+            {
+              "colonRules": {
+                "before": true,
+                "after": true
+              },
+              "equalSpaces": true,
+              "printLineBreaks": 1
+            }
+            """;
   }
 }

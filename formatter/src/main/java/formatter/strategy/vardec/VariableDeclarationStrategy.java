@@ -3,7 +3,7 @@ package formatter.strategy.vardec;
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
+import formatter.visitor.FormatterVisitorV1;
 import java.util.List;
 
 public class VariableDeclarationStrategy implements FormattingStrategy {
@@ -20,12 +20,12 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public String apply(AstNode node, FormatterVisitorV1 visitor) {
     VariableDeclaration varDecNode = (VariableDeclaration) node;
     StringBuilder formattedCode = new StringBuilder();
     formattedCode.append(keyword).append(" ");
     // Adding the identifier
-    FormatterVisitor visit = (FormatterVisitor) varDecNode.identifier().accept(visitor);
+    FormatterVisitorV1 visit = (FormatterVisitorV1) varDecNode.identifier().accept(visitor);
     formattedCode.append(visit.getCurrentCode());
     // Adding the whitespaces strategies
     for (FormattingStrategy strategy : strategies) {
@@ -33,7 +33,7 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
     }
     // Formatting the expression
     formattedCode.append(
-        ((FormatterVisitor) varDecNode.expression().accept(visitor)).getCurrentCode());
+        ((FormatterVisitorV1) varDecNode.expression().accept(visitor)).getCurrentCode());
     formattedCode.append(";");
     return formattedCode.toString();
   }

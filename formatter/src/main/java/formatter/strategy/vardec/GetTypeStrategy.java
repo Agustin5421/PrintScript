@@ -6,11 +6,11 @@ import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
+import formatter.visitor.FormatterVisitorV1;
 
 public class GetTypeStrategy implements FormattingStrategy {
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public String apply(AstNode node, FormatterVisitorV1 visitor) {
     VariableDeclaration variableDeclaration = (VariableDeclaration) node;
     ExpressionNode expression = variableDeclaration.expression();
     return getType(expression);

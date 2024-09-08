@@ -4,7 +4,7 @@ import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.OperatorConcatenationStrategy;
-import formatter.visitor.FormatterVisitor;
+import formatter.visitor.FormatterVisitorV1;
 
 public class ReAssignationStrategy implements FormattingStrategy {
   // The equal assignation strategy
@@ -15,16 +15,16 @@ public class ReAssignationStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public String apply(AstNode node, FormatterVisitorV1 visitor) {
     AssignmentExpression assignmentExpression = (AssignmentExpression) node;
     StringBuilder formattedCode = new StringBuilder();
     // Adding the identifier
-    FormatterVisitor visit = (FormatterVisitor) assignmentExpression.left().accept(visitor);
+    FormatterVisitorV1 visit = (FormatterVisitorV1) assignmentExpression.left().accept(visitor);
     formattedCode.append(visit.getCurrentCode());
     formattedCode.append(strategy.apply(node, visitor));
     // Formatting the expression
     formattedCode.append(
-        ((FormatterVisitor) assignmentExpression.right().accept(visitor)).getCurrentCode());
+        ((FormatterVisitorV1) assignmentExpression.right().accept(visitor)).getCurrentCode());
     formattedCode.append(";");
     return formattedCode.toString();
   }
