@@ -1,6 +1,6 @@
 package ast.statements;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
@@ -9,7 +9,7 @@ import token.Position;
 public record VariableDeclaration(
     String kind,
     Identifier identifier,
-    Expression expression,
+    ExpressionNode expression,
     String varType,
     Position start,
     Position end)
@@ -17,7 +17,7 @@ public record VariableDeclaration(
   private static final AstNodeType type = AstNodeType.VARIABLE_DECLARATION;
 
   // TODO remove this constructor
-  public VariableDeclaration(Identifier identifier, Expression expression) {
+  public VariableDeclaration(Identifier identifier, ExpressionNode expression) {
     this("test", identifier, expression, "test", identifier.start(), expression.end());
   }
 

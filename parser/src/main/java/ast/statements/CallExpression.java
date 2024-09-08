@@ -1,5 +1,6 @@
 package ast.statements;
 
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
@@ -9,7 +10,7 @@ import token.Position;
 
 public record CallExpression(
     Identifier methodIdentifier, List<AstNode> arguments, Position start, Position end)
-    implements StatementNode {
+    implements StatementNode, ExpressionNode {
 
   public CallExpression(Identifier methodIdentifier, List<AstNode> arguments) {
     this(

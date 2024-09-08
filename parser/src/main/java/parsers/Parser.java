@@ -1,6 +1,6 @@
 package parsers;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.root.AstNode;
 import ast.statements.StatementNode;
 import exceptions.UnsupportedExpressionException;
@@ -36,7 +36,7 @@ public class Parser implements Iterator<AstNode> {
     return parseStatement(tokens);
   }
 
-  public Expression parseExpression(List<Token> tokens) {
+  public ExpressionNode parseExpression(List<Token> tokens) {
     for (ExpressionParser expressionParser : expressionParsers) {
       if (expressionParser.shouldParse(tokens)) {
         return expressionParser.parse(this, tokens);

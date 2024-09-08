@@ -1,7 +1,7 @@
 package ast.literal;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 
-public interface Literal<T> extends Expression {
+public interface Literal<T> extends ExpressionNode {
   T value();
 }

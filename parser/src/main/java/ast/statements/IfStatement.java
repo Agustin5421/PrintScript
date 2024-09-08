@@ -1,6 +1,6 @@
 package ast.statements;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import java.util.List;
@@ -9,14 +9,14 @@ import token.Position;
 public class IfStatement implements StatementNode {
   private final Position start;
   private final Position end;
-  private final Expression condition;
+  private final ExpressionNode condition;
   private final List<StatementNode> thenBlockStatement;
   private final List<StatementNode> elseBlockStatement;
 
   public IfStatement(
       Position start,
       Position end,
-      Expression condition,
+      ExpressionNode condition,
       List<StatementNode> thenStatement,
       List<StatementNode> elseStatement) {
     this.start = start;
@@ -46,7 +46,7 @@ public class IfStatement implements StatementNode {
     return visitor.visitIfStatement(this);
   }
 
-  public Expression getCondition() {
+  public ExpressionNode getCondition() {
     return condition;
   }
 

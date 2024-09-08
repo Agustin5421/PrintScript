@@ -1,6 +1,6 @@
 package parsers.statements;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.statements.StatementNode;
 import ast.statements.VariableDeclaration;
@@ -34,7 +34,7 @@ public class VariableDeclarationParser implements StatementParser {
               + "' instead.");
     }
 
-    Expression value = parser.parseExpression(tokens.subList(5, tokens.size()));
+    ExpressionNode value = parser.parseExpression(tokens.subList(5, tokens.size()));
     String kind = tokens.get(0).value();
     String type = tokens.get(3).value();
 
