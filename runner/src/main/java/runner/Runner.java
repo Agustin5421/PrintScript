@@ -20,8 +20,6 @@ public class Runner {
         while (linter.hasNext()) {
             output.saveResult(linter.next().toString());
         }
-
-        System.out.println(output.getResult());
     }
 
     public void format (String code, String version, String config){
