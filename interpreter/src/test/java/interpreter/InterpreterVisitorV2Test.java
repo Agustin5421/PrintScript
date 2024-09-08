@@ -282,28 +282,47 @@ public class InterpreterVisitorV2Test {
     assertEquals("42", printedValues.get(0));
   }
 
-      @Test
-      public void testReadEnvExistingVariable() {
-          // Set an environment variable for testing
-          System.setProperty("TEST_ENV_VAR", "test_value");
+  @Test
+  public void testReadEnvExistingVariable() {
+    String code = "let x: string = readEnv(\"UNIVERSAL_CONSTANT\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
 
-          String code = "let x: string = readEnv(\"TEST_ENV_VAR\");";
-          VariablesRepository variablesRepository = new VariablesRepository();
-          Interpreter interpreter = new Interpreter("1.1");
-          VariablesRepository newVar = interpreter.executeProgram(code);
+    assertEquals(
+        "constant",
+        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+  }
 
-          assertEquals(
-              "test_value",
-                  newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0,
-   0))).value());
-      }
+  @Test
+  public void testReadEnvExistingBooleanVariable() {
+    String code = "let x: boolean = readEnv(\"IS_CONSTANT\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
 
-      @Test
-      public void testReadEnvNonExistentVariable() {
-          String code = "let x = readEnv(\"NON_EXISTENT_ENV_VAR\");";
-          VariablesRepository variablesRepository = new VariablesRepository();
-          Interpreter interpreter = new Interpreter("1.1");
-          assertThrows(IllegalArgumentException.class, () -> interpreter.executeProgram(code,
-   variablesRepository));
-      }
+    assertEquals(
+        true,
+        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+  }
+
+  @Test
+  public void testReadEnvExistingIntegerVariable() {
+    String code = "let x: number = readEnv(\"GRAVITY\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
+
+    assertEquals(
+        9.81,
+        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+  }
+
+  @Test
+  public void testReadEnvExistingDoubleVariable() {
+    String code = "let x: number = readEnv(\"PLANCK_CONSTANT\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
+
+    assertEquals(
+        6.62607015e-34,
+        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+  }
 }

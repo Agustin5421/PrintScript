@@ -122,7 +122,11 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
       throw new IllegalArgumentException("Variable " + name + " is already defined");
     } // cambiar a una excepcion mas concreta de variable ya definida
 
-    Literal<?> value = ((InterpreterVisitorV1) statement.expression().accept(this)).getValue();
+    InterpreterVisitor latestVisitor =
+        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
+    // es aca el problema, pero no se como hacer para q use el mas nuevo
+    Literal<?> value =
+        ((InterpreterVisitor) statement.expression().accept(latestVisitor)).getValue();
 
     VariablesRepository newVariablesRepository = variablesRepository.addVariable(name, value);
     return new InterpreterVisitorV1(newVariablesRepository, value, printedValues);
@@ -130,8 +134,11 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
 
   private List<String> printlnMethod(Identifier identifier, List<AstNode> arguments) {
     List<String> newPrintedValues = new ArrayList<>(printedValues);
+    InterpreterVisitor latestVisitor =
+        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
     for (AstNode argument : arguments) {
-      String value = ((InterpreterVisitorV1) argument.accept(this)).getValue().value().toString();
+      String value =
+          ((InterpreterVisitor) argument.accept(latestVisitor)).getValue().value().toString();
       System.out.println(value);
       newPrintedValues.add(value);
     }
@@ -142,5 +149,10 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   @Override
   public List<String> getPrintedValues() {
     return new ArrayList<>(printedValues);
+  }
+
+  @Override
+  public InterpreterVisitor getPreviousVisitor() {
+    return null;
   }
 }
