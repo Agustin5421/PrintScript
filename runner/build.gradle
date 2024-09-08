@@ -1,17 +1,11 @@
 plugins {
-    id 'java'
+    id 'common-conventions.printscript'
 }
 
 group = 'org.example'
 version = '1.1-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation project(':lexer')
     implementation project(':parser')
     implementation project(':interpreter')
@@ -19,8 +13,4 @@ dependencies {
     implementation project(':linter')
     implementation project(':utils')
 
-}
-
-test {
-    useJUnitPlatform()
 }

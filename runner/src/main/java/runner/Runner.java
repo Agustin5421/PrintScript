@@ -8,30 +8,30 @@ import linter.LinterFactory;
 import parsers.Parser;
 
 public class Runner {
-    public void execute (String code, String version){
-        //TODO: need factory for executor
+  public void execute(String code, String version) {
+    // TODO: need factory for executor
 
+  }
+
+  public void analyze(String code, String version, String config, OutputResult output) {
+    Linter linter = LinterFactory.getLinter(version, config);
+    linter = linter.setInput(code);
+
+    while (linter.hasNext()) {
+      output.saveResult(linter.next().toString());
     }
+  }
 
-    public void analyze (String code, String version, String config, OutputResult output){
-        Linter linter = LinterFactory.getLinter(version, config);
-        linter = linter.setInput(code);
+  public void format(String code, String version, String config) {
+    // TODO: need factory for formatter
 
-        while (linter.hasNext()) {
-            output.saveResult(linter.next().toString());
-        }
-    }
+  }
 
-    public void format (String code, String version, String config){
-        //TODO: need factory for formatter
+  public void validate(String input, String version) {
+    // TODO: lexer should receive codeFilePath
+    Lexer lexer = LexerFactory.getLexer(version);
+    Parser parser = ParserFactory.getParser(version);
 
-    }
-
-    public void validate (String input, String version){
-        //TODO: lexer should receive codeFilePath
-        Lexer lexer = LexerFactory.getLexer(version);
-        Parser parser = ParserFactory.getParser(version);
-
-        parser = parser.setLexer(lexer.setInput(input));
-    }
+    parser = parser.setLexer(lexer.setInput(input));
+  }
 }
