@@ -171,7 +171,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     return new InterpreterVisitorV2(
         (InterpreterVisitorV1) v1Result,
         ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
-        printedValues);
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
@@ -180,7 +181,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     return new InterpreterVisitorV2(
         (InterpreterVisitorV1) v1Result,
         ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
-        printedValues);
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
@@ -209,7 +211,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     return new InterpreterVisitorV2(
         (InterpreterVisitorV1) v1Result,
         ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
-        printedValues);
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
