@@ -164,32 +164,38 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
 
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
-    return interpreterVisitorV1.visitAssignmentExpression(assignmentExpression);
+    NodeVisitor v1Result = interpreterVisitorV1.visitAssignmentExpression(assignmentExpression);
+    return new InterpreterVisitorV2((InterpreterVisitorV1) v1Result, variablesRepository, printedValues);
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    return interpreterVisitorV1.visitVarDec(variableDeclaration);
+    NodeVisitor v1Result = interpreterVisitorV1.visitVarDec(variableDeclaration);
+    return new InterpreterVisitorV2((InterpreterVisitorV1) v1Result, variablesRepository, printedValues);
   }
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    return interpreterVisitorV1.visitNumberLiteral(numberLiteral);
+    NodeVisitor v1Result = interpreterVisitorV1.visitNumberLiteral(numberLiteral);
+    return new InterpreterVisitorV2((InterpreterVisitorV1) v1Result, variablesRepository, printedValues);
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return interpreterVisitorV1.visitStringLiteral(stringLiteral);
+    NodeVisitor v1Result = interpreterVisitorV1.visitStringLiteral(stringLiteral);
+    return new InterpreterVisitorV2((InterpreterVisitorV1) v1Result, variablesRepository, printedValues);
   }
 
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    return interpreterVisitorV1.visitIdentifier(identifier);
+    NodeVisitor v1Result = interpreterVisitorV1.visitIdentifier(identifier);
+    return new InterpreterVisitorV2((InterpreterVisitorV1) v1Result, variablesRepository, printedValues);
   }
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    return interpreterVisitorV1.visitBinaryExpression(binaryExpression);
+    NodeVisitor v1Result = interpreterVisitorV1.visitBinaryExpression(binaryExpression);
+    return new InterpreterVisitorV2((InterpreterVisitorV1) v1Result, variablesRepository, printedValues);
   }
 
   @Override

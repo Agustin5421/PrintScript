@@ -18,7 +18,7 @@ public class VariableDeclarationParser implements StatementParser {
   }
 
   @Override
-  public StatementNode statementParse(Parser parser, List<Token> tokens) {
+  public StatementNode parse(Parser parser, List<Token> tokens) {
     Position start = tokens.get(0).initialPosition();
     Position end = tokens.get(tokens.size() - 1).finalPosition();
 

@@ -39,7 +39,7 @@ public class Parser implements Iterator<AstNode> {
   public ExpressionNode parseExpression(List<Token> tokens) {
     for (ExpressionParser expressionParser : expressionParsers) {
       if (expressionParser.shouldParse(tokens)) {
-        return expressionParser.expressionParse(this, tokens);
+        return expressionParser.parse(this, tokens);
       }
     }
 
@@ -50,7 +50,7 @@ public class Parser implements Iterator<AstNode> {
   public StatementNode parseStatement(List<Token> tokens) {
     for (StatementParser statementParser : statementParsers) {
       if (statementParser.shouldParse(tokens)) {
-        return statementParser.statementParse(this, tokens);
+        return statementParser.parse(this, tokens);
       }
     }
 

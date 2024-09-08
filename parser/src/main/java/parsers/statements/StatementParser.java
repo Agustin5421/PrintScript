@@ -7,5 +7,5 @@ import parsers.Parser;
 import token.Token;
 
 public interface StatementParser extends InstructionParser {
-  StatementNode statementParse(Parser parser, List<Token> tokens);
+  StatementNode parse(Parser parser, List<Token> tokens);
 }
