@@ -26,6 +26,7 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   private final VariablesRepository variablesRepository;
   private final Properties envProperties;
   private final List<String> printedValues;
+  private final Literal<?> value;
 
   public InterpreterVisitorV2(
       InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository) {
@@ -33,6 +34,7 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     this.variablesRepository = variablesRepository;
     this.printedValues = new ArrayList<>();
     this.envProperties = EnvLoader.loadEnvProperties();
+    this.value = new NumberLiteral(0, new Position(0, 0), new Position(0, 0));
   }
 
   private InterpreterVisitorV2(
@@ -43,6 +45,11 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     this.variablesRepository = variablesRepository;
     this.envProperties = EnvLoader.loadEnvProperties();
     this.printedValues = new ArrayList<>(printedValues);
+    this.value = new NumberLiteral(0, new Position(0, 0), new Position(0, 0));
+  }
+
+  public Literal<?> getValue() {
+    return value;
   }
 
   @Override
@@ -68,9 +75,23 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
       return handleReadEnv(callExpression, arguments);
     } else if (name.equals("readInput")) {
       return handleReadInput(callExpression);
+    } else if (name.equals("println")) {
+      List<String> newPrintedValues = printlnMethod(identifier, arguments);
+      return new InterpreterVisitorV2(interpreterVisitorV1, variablesRepository, newPrintedValues);
     } else {
       return interpreterVisitorV1.visitCallExpression(callExpression);
     }
+  }
+
+  private List<String> printlnMethod(Identifier identifier, List<AstNode> arguments) {
+    List<String> newPrintedValues = new ArrayList<>(printedValues);
+    for (AstNode argument : arguments) {
+      String value = ((InterpreterVisitorV1) argument.accept(this)).getValue().value().toString();
+      System.out.println(value);
+      newPrintedValues.add(value);
+    }
+    System.out.println();
+    return newPrintedValues;
   }
 
   private NodeVisitor handleReadInput(CallExpression callExpression) {
@@ -176,6 +197,7 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     return variablesRepository;
   }
 
+  @Override
   public List<String> getPrintedValues() {
     return new ArrayList<>(printedValues);
   }

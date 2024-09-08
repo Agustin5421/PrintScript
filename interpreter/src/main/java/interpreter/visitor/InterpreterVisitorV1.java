@@ -131,7 +131,7 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   private List<String> printlnMethod(Identifier identifier, List<AstNode> arguments) {
     List<String> newPrintedValues = new ArrayList<>(printedValues);
     for (AstNode argument : arguments) {
-      String value = ((InterpreterVisitorV1) argument.accept(this)).getValue().toString();
+      String value = ((InterpreterVisitorV1) argument.accept(this)).getValue().value().toString();
       System.out.println(value);
       newPrintedValues.add(value);
     }
@@ -139,6 +139,7 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     return newPrintedValues;
   }
 
+  @Override
   public List<String> getPrintedValues() {
     return new ArrayList<>(printedValues);
   }

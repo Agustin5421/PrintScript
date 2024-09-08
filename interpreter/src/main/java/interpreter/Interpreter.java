@@ -1,6 +1,7 @@
 package interpreter;
 
 import ast.root.AstNode;
+import ast.visitor.NodeVisitor;
 import factory.ParserFactory;
 import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorFactory;
@@ -31,7 +32,7 @@ public class Interpreter implements Progressable {
   }
 
   // TODO: Delete return of executeProgram() method.
-
+  // Testing purposes only.
   public VariablesRepository executeProgram(String code) {
     VariablesRepository variablesRepository = new VariablesRepository();
     InterpreterVisitor visitor = nodeVisitor;
@@ -47,12 +48,30 @@ public class Interpreter implements Progressable {
     return variablesRepository;
   }
 
+  public List<String> executeProgram(String code, VariablesRepository variablesRepository) {
+    InterpreterVisitor visitor = nodeVisitor;
+    Lexer newLexer = parser.getLexer().setInput(code);
+    parser = parser.setLexer(newLexer);
+    while (hasMoreStatements()) {
+      AstNode statement = getNextStatement();
+      visitor = (InterpreterVisitor) statement.accept(visitor);
+      variablesRepository = visitor.getVariablesRepository();
+      updateProgress();
+    }
+
+    return visitor.getPrintedValues();
+  }
+
   private boolean hasMoreStatements() {
     return parser.hasNext();
   }
 
   private AstNode getNextStatement() {
     return parser.next();
+  }
+
+  public NodeVisitor getVisitor() {
+    return nodeVisitor;
   }
 
   private void updateProgress() {
