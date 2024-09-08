@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import parsers.Parser;
 
 public abstract class CommonLinterTest {
-  protected abstract IterableLinter getLinter();
+  protected abstract Linter getLinter();
 
-  private IterableLinter configureLinter(String code) {
-    IterableLinter linter = getLinter();
+  private Linter configureLinter(String code) {
+    Linter linter = getLinter();
     Parser parser = linter.getParser();
     Lexer newLexer = parser.getLexer().setInput(code);
     return linter.setParser(parser.setLexer(newLexer));
@@ -20,7 +20,7 @@ public abstract class CommonLinterTest {
   @Test
   public void lintVariableDeclarationTest() {
     String code = "let snake_case: string = \"Oliver\";";
-    IterableLinter linter = configureLinter(code);
+    Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(1, report.getReports().size());
   }
@@ -28,7 +28,7 @@ public abstract class CommonLinterTest {
   @Test
   public void lintVariableDeclaration2Test() {
     String code = "let camelCase: string = \"Oliver\";";
-    IterableLinter linter = configureLinter(code);
+    Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(0, report.getReports().size());
   }
@@ -36,7 +36,7 @@ public abstract class CommonLinterTest {
   @Test
   public void lintVarDecWithBinaryExpressionTest() {
     String code = "let var: Number = 1 + 1;";
-    IterableLinter linter = configureLinter(code);
+    Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(0, report.getReports().size());
   }
@@ -44,7 +44,7 @@ public abstract class CommonLinterTest {
   @Test
   public void lintCallExpressionTest() {
     String code = "println(\"Hello, World!\");";
-    IterableLinter linter = configureLinter(code);
+    Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(0, report.getReports().size());
   }
@@ -52,7 +52,7 @@ public abstract class CommonLinterTest {
   @Test
   public void lintCallExpression2Test() {
     String code = "println(identifier);";
-    IterableLinter linter = configureLinter(code);
+    Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(0, report.getReports().size());
   }
@@ -60,7 +60,7 @@ public abstract class CommonLinterTest {
   @Test
   public void lintCallExpression3Test() {
     String code = "println(1 + 1);";
-    IterableLinter linter = configureLinter(code);
+    Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(1, report.getReports().size());
   }

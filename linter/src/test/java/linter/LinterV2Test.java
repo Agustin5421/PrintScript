@@ -3,7 +3,7 @@ package linter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.literal.BooleanLiteral;
 import ast.root.AstNode;
 import ast.statements.IfStatement;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class LinterV2Test extends CommonLinterTest {
-  private IterableLinter linterV2;
+  private Linter linterV2;
 
   @BeforeEach
   public void setUp() {
@@ -23,15 +23,15 @@ public class LinterV2Test extends CommonLinterTest {
   }
 
   @Override
-  protected IterableLinter getLinter() {
+  protected Linter getLinter() {
     return linterV2;
   }
 
   @Test
   public void lintIfStatementTest() {
-    Expression booleanNode = new BooleanLiteral(true, null, null);
+    ExpressionNode booleanNode = new BooleanLiteral(true, null, null);
     AstNode ifNode = new IfStatement(null, null, booleanNode, List.of(), List.of());
-    IterableLinter linter = getLinter();
+    Linter linter = getLinter();
 
     FullReport report = linter.lint(ifNode);
     assertEquals(0, report.getReports().size());
@@ -40,7 +40,7 @@ public class LinterV2Test extends CommonLinterTest {
   @Test
   public void lintBooleanLiteralTest() {
     AstNode booleanNode = new BooleanLiteral(true, null, null);
-    IterableLinter linter = getLinter();
+    Linter linter = getLinter();
 
     FullReport report = linter.lint(booleanNode);
     assertEquals(0, report.getReports().size());

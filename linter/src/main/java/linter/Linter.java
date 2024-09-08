@@ -2,18 +2,25 @@ package linter;
 
 import ast.root.AstNode;
 import java.util.Iterator;
+import lexer.Lexer;
 import linter.visitor.LinterVisitor;
 import linter.visitor.report.FullReport;
 import observers.Progressable;
 import parsers.Parser;
 
-public class IterableLinter implements Progressable, Iterator<FullReport> {
+public class Linter implements Progressable, Iterator<FullReport> {
   private final Parser parser;
   private final LinterVisitor linterVisitor;
 
-  public IterableLinter(Parser parser, LinterVisitor linterVisitor) {
+  public Linter(Parser parser, LinterVisitor linterVisitor) {
     this.parser = parser;
     this.linterVisitor = linterVisitor;
+  }
+
+  public Linter setInput(String code) {
+    Parser parser = getParser();
+    Lexer newLexer = parser.getLexer().setInput(code);
+    return setParser(parser.setLexer(newLexer));
   }
 
   public FullReport lint(AstNode astNode) {
@@ -25,8 +32,8 @@ public class IterableLinter implements Progressable, Iterator<FullReport> {
     return parser;
   }
 
-  public IterableLinter setParser(Parser parser) {
-    return new IterableLinter(parser, linterVisitor);
+  public Linter setParser(Parser parser) {
+    return new Linter(parser, linterVisitor);
   }
 
   @Override

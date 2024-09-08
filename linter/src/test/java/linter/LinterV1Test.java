@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class LinterV1Test extends CommonLinterTest {
-  private IterableLinter linterV1;
+  private Linter linterV1;
 
   @BeforeEach
   public void setUp() {
@@ -20,14 +20,14 @@ public class LinterV1Test extends CommonLinterTest {
   }
 
   @Override
-  protected IterableLinter getLinter() {
+  protected Linter getLinter() {
     return linterV1;
   }
 
   @Test
   public void lintIfStatementTest() {
     AstNode ifNode = new IfStatement(null, null, null, null, null);
-    IterableLinter linter = getLinter();
+    Linter linter = getLinter();
 
     assertThrows(
         IllegalArgumentException.class,
@@ -39,7 +39,7 @@ public class LinterV1Test extends CommonLinterTest {
   @Test
   public void lintBooleanLiteralTest() {
     AstNode booleanNode = new BooleanLiteral(true, null, null);
-    IterableLinter linter = getLinter();
+    Linter linter = getLinter();
 
     assertThrows(
         IllegalArgumentException.class,
