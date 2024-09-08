@@ -17,8 +17,13 @@ public class LiteralFactory {
     }
 
     if (tokenType == TokenValueType.NUMBER) {
-      return new NumberLiteral(
-          Integer.parseInt(token.value()), token.initialPosition(), token.finalPosition());
+      if (token.value().contains(".")) {
+        return new NumberLiteral(
+            Double.parseDouble(token.value()), token.initialPosition(), token.finalPosition());
+      } else {
+        return new NumberLiteral(
+            Integer.parseInt(token.value()), token.initialPosition(), token.finalPosition());
+      }
     }
 
     if (tokenType == TokenValueType.BOOLEAN) {
