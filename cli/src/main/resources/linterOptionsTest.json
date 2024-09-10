@@ -6,6 +6,11 @@
     }
   },
   "callExpression": {
-    "arguments": ["IDENTIFIER", "STRING_LITERAL", "NUMBER_LITERAL"]
+    "println": {
+      "arguments": ["IDENTIFIER", "STRING_LITERAL", "NUMBER_LITERAL"]
+    },
+    "readInput": {
+      "arguments": ["IDENTIFIER", "STRING_LITERAL", "NUMBER_LITERAL"]
+    }
   }
 }
