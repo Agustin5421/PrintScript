@@ -3,7 +3,8 @@ package lexer;
 import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import exceptions.UnsupportedCharacter;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,55 +22,38 @@ public class Lexer implements Progressable, Iterator<Token> {
   private final List<Observer> observers;
   private final Pattern pattern;
   private Matcher matcher;
-  private final String code;
+  private final InputStream inputStream;
   private Position currentPosition;
   private int currentIndex;
-  private final int totalLength;
+  private final StringBuilder currentWordBuilder = new StringBuilder();
 
-  public Lexer(String code, TokenTypeGetter tokenTypeGetter) {
-    this.code = code;
+  public Lexer(InputStream inputStream, TokenTypeGetter tokenTypeGetter) throws IOException {
+    this.inputStream = inputStream;
     this.tokenTypeGetter = tokenTypeGetter;
     this.observers = List.of();
     this.pattern = new PatternProvider().getPattern();
-    resetMatcher();
     this.currentPosition = new Position(1, 1);
     this.currentIndex = 0;
-    this.totalLength = code.length();
-  }
-
-  public Lexer(String code, Lexer lexer) {
-    this.code = code;
-    this.tokenTypeGetter = lexer.tokenTypeGetter;
-    this.observers = List.of();
-    this.pattern = lexer.pattern;
     resetMatcher();
-    this.currentPosition = new Position(1, 1);
-    this.currentIndex = 0;
-    this.totalLength = code.length();
   }
 
-  private void resetMatcher() {
-    this.matcher = pattern.matcher(code);
+  private void resetMatcher() throws IOException {
+    String content = readInputStream();
+    this.matcher = pattern.matcher(content);
   }
 
-  public List<Token> tokenize(String code) {
-    Lexer lexer = new Lexer(code, this);
-
-    List<Token> tokens = new ArrayList<>();
-
-    while (lexer.hasNext()) {
-      tokens.add(lexer.next());
+  private String readInputStream() throws IOException {
+    StringBuilder content = new StringBuilder();
+    int byteRead;
+    while ((byteRead = inputStream.read()) != -1) {
+      content.append((char) byteRead);
     }
-    return tokens;
-  }
-
-  public Lexer setInput(String code) {
-    return new Lexer(code, this);
+    return content.toString();
   }
 
   @Override
   public boolean hasNext() {
-    matcher.region(currentIndex, totalLength);
+    matcher.region(currentIndex, matcher.regionEnd());
     return matcher.find();
   }
 
@@ -83,8 +67,8 @@ public class Lexer implements Progressable, Iterator<Token> {
     int start = matcher.start();
     int end = matcher.end();
 
-    currentPosition = updatePosition(code, currentIndex, start, currentPosition);
-    Position finalPosition = updatePosition(code, start, end, currentPosition);
+    currentPosition = updatePosition(start, end, currentPosition);
+    Position finalPosition = updatePosition(start, end, currentPosition);
 
     currentIndex = end;
 
@@ -103,13 +87,12 @@ public class Lexer implements Progressable, Iterator<Token> {
     return token;
   }
 
-  private Position updatePosition(
-      String code, int initialIndex, int finalIndex, Position position) {
+  private Position updatePosition(int startIndex, int endIndex, Position position) {
     int row = position.row();
     int col = position.col();
 
-    for (int i = initialIndex; i < finalIndex; i++) {
-      if (code.charAt(i) == '\n') {
+    for (int i = startIndex; i < endIndex; i++) {
+      if (currentWordBuilder.charAt(i) == '\n') {
         row++;
         col = 1;
       } else {
@@ -126,7 +109,7 @@ public class Lexer implements Progressable, Iterator<Token> {
 
   @Override
   public float getProgress() {
-    return (((float) currentIndex / totalLength) * 100);
+    return (((float) currentIndex / currentWordBuilder.length()) * 100);
   }
 
   @Override
@@ -145,10 +128,14 @@ public class Lexer implements Progressable, Iterator<Token> {
     int start = matcher.start();
     int end = matcher.end();
 
-    Position finalPosition = updatePosition(code, start, end, currentPosition);
+    Position finalPosition = updatePosition(start, end, currentPosition);
 
     TokenType type = tokenTypeGetter.getType(word);
 
     return new Token(type, word, currentPosition, finalPosition);
+  }
+
+  public Lexer setInput(InputStream inputStream) throws IOException {
+    return new Lexer(inputStream, this.tokenTypeGetter);
   }
 }

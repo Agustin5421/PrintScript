@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import exceptions.UnsupportedCharacter;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -15,12 +18,17 @@ import token.types.TokenValueType;
 public abstract class CommonLexerTests {
   protected abstract Lexer getLexer();
 
+  private Lexer createLexer(String input) throws IOException {
+    InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+    return getLexer().setInput(inputStream);
+  }
+
   @Test
-  public void testVarDeclaration() {
+  public void testVarDeclaration() throws IOException {
     String input = "let myVar string : x = 5;";
     List<Token> tokens = new ArrayList<>();
 
-    Lexer myLexer = getLexer().setInput(input);
+    Lexer myLexer = createLexer(input);
     while (myLexer.hasNext()) {
       tokens.add(myLexer.next());
     }
@@ -41,16 +49,19 @@ public abstract class CommonLexerTests {
     assertThrows(
         UnsupportedCharacter.class,
         () -> {
-          getLexer().tokenize(input);
+          Lexer lexer = createLexer(input);
+          while (lexer.hasNext()) {
+            lexer.next();
+          }
         });
   }
 
   @Test
-  public void testPrint() {
+  public void testPrint() throws IOException {
     String input = "println(\"Hello, world!\");";
     List<Token> tokens = new ArrayList<>();
 
-    Lexer myLexer = getLexer().setInput(input);
+    Lexer myLexer = createLexer(input);
     while (myLexer.hasNext()) {
       tokens.add(myLexer.next());
     }
@@ -59,11 +70,11 @@ public abstract class CommonLexerTests {
   }
 
   @Test
-  public void testStringLiteral() {
+  public void testStringLiteral() throws IOException {
     String input = "let greeting = \"Hello, world!\";";
     List<Token> tokens = new ArrayList<>();
 
-    Lexer myLexer = getLexer().setInput(input);
+    Lexer myLexer = createLexer(input);
     while (myLexer.hasNext()) {
       tokens.add(myLexer.next());
     }
@@ -73,11 +84,11 @@ public abstract class CommonLexerTests {
   }
 
   @Test
-  public void testNumberLiteral() {
+  public void testNumberLiteral() throws IOException {
     String input = "let greeting = 5;";
     List<Token> tokens = new ArrayList<>();
 
-    Lexer myLexer = getLexer().setInput(input);
+    Lexer myLexer = createLexer(input);
     while (myLexer.hasNext()) {
       tokens.add(myLexer.next());
     }
@@ -87,11 +98,11 @@ public abstract class CommonLexerTests {
   }
 
   @Test
-  public void testBinaryOperation() {
+  public void testBinaryOperation() throws IOException {
     String input = "let greeting = 5 + 5;";
     List<Token> tokens = new ArrayList<>();
 
-    Lexer myLexer = getLexer().setInput(input);
+    Lexer myLexer = createLexer(input);
     while (myLexer.hasNext()) {
       tokens.add(myLexer.next());
     }
