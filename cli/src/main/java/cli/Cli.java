@@ -1,7 +1,7 @@
 package cli;
 
-import runner.Runner;
 import java.io.FileInputStream;
+import runner.Runner;
 
 public class Cli {
   private static final Runner runner = new Runner();
@@ -25,10 +25,11 @@ public class Cli {
 
     String code = findCode(codeFilePath);
 
+    //args[3] is the options file
     switch (operation) {
       case "Validation" -> runner.validate(code, version);
       case "Execution" -> runner.execute(code, version);
-      case "Analyzing" -> runner.analyze(code,version, findCode(args[3]), new OutputString()); //args[3] is the options file
+      case "Analyzing" -> runner.analyze(code, version, findCode(args[3]), new OutputString());
       case "Formatting" -> runner.format(code, version, findCode(args[3]));
       default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
     }

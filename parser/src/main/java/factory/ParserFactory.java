@@ -8,8 +8,11 @@ import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.CallFunctionAsExpressionParser;
 import parsers.expressions.ExpressionParser;
 import parsers.expressions.LiteralParser;
-import parsers.statements.*;
+import parsers.statements.AssignmentParser;
 import parsers.statements.CallFunctionAsStatementParser;
+import parsers.statements.IfParser;
+import parsers.statements.StatementParser;
+import parsers.statements.VariableDeclarationParser;
 import validators.MainStatementValidator;
 
 public class ParserFactory {
