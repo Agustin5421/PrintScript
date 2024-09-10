@@ -29,7 +29,7 @@ public class ParserFactory {
     List<StatementParser> statementParsers =
         List.of(
             new CallFunctionAsStatementParser(List.of("println")),
-            new VariableDeclarationParser(List.of("let")),
+            new VariableDeclarationParser(List.of("let"), List.of("string", "number")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
         List.of(
@@ -46,7 +46,8 @@ public class ParserFactory {
         List.of(
             new IfParser(),
             new CallFunctionAsStatementParser(List.of("println", "readInput", "readEnv")),
-            new VariableDeclarationParser(List.of("let", "const")),
+            new VariableDeclarationParser(
+                List.of("let", "const"), List.of("string", "number", "boolean")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
         List.of(

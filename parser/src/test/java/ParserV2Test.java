@@ -36,7 +36,7 @@ public class ParserV2Test extends CommonParserTests {
 
   @Test
   public void testConstDeclaration() {
-    Parser parser = setParser("const name: string = \"Oliver\";", getParser());
+    Parser parser = setParser("const myBool: boolean = \"true\";", getParser());
     AstNode node = parser.next();
     assertInstanceOf(VariableDeclaration.class, node);
   }

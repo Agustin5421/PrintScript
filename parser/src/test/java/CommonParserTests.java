@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import ast.expressions.BinaryExpression;
@@ -6,7 +7,11 @@ import ast.literal.StringLiteral;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
+import exceptions.SyntaxException;
+import exceptions.UnsupportedExpressionException;
+import exceptions.UnsupportedStatementException;
 import lexer.Lexer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import parsers.Parser;
 
@@ -25,6 +30,12 @@ public abstract class CommonParserTests {
   }
 
   @Test
+  public void testCallFunctionAsExpression() {
+    Parser parser = setParser("let name: string = println(myVar);", getParser());
+    assertInstanceOf(VariableDeclaration.class, parser.next());
+  }
+
+  @Test
   public void testBinaryOperation() {
     Parser parser = setParser("myNumber =  1 + 'hola';", getParser());
     AssignmentExpression assignment = (AssignmentExpression) parser.next();
@@ -33,6 +44,7 @@ public abstract class CommonParserTests {
 
     BinaryExpression binary = (BinaryExpression) assignment.right();
 
+    Assertions.assertEquals("+", binary.operator());
     assertInstanceOf(BinaryExpression.class, binary);
     assertInstanceOf(NumberLiteral.class, binary.left());
     assertInstanceOf(StringLiteral.class, binary.right());
@@ -61,5 +73,23 @@ public abstract class CommonParserTests {
     CallExpression call = (CallExpression) parser.next();
     assertInstanceOf(CallExpression.class, call);
     assertInstanceOf(BinaryExpression.class, call.arguments().get(0));
+  }
+
+  @Test
+  public void testSyntaxException() {
+    Parser parser = setParser("let name string = \"Oliver\";", getParser());
+    assertThrows(SyntaxException.class, parser::next);
+  }
+
+  @Test
+  public void testUnsupportedStatement() {
+    Parser parser = setParser("thisIsNotAStatement", getParser());
+    assertThrows(UnsupportedStatementException.class, parser::next);
+  }
+
+  @Test
+  public void testUnsupportedExpression() {
+    Parser parser = setParser("let name : string = let a = 2;", getParser());
+    assertThrows(UnsupportedExpressionException.class, parser::next);
   }
 }

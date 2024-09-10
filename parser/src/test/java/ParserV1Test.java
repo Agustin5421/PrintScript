@@ -1,5 +1,9 @@
+import static org.junit.Assert.assertThrows;
+
+import exceptions.UnsupportedDataType;
 import factory.ParserFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import parsers.Parser;
 
 public class ParserV1Test extends CommonParserTests {
@@ -13,5 +17,11 @@ public class ParserV1Test extends CommonParserTests {
   @Override
   protected Parser getParser() {
     return parserV1;
+  }
+
+  @Test
+  public void testDataTypeException() {
+    Parser parser = setParser("let name : boolean = \"Oliver\";", getParser());
+    assertThrows(UnsupportedDataType.class, parser::next);
   }
 }
