@@ -8,10 +8,12 @@ import java.util.List;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.callexpression.ArgumentsStrategy;
+import linter.visitor.strategy.callexpression.MethodArgumentsStrategy;
 
 public class CallExpressionStrategyFactory implements StrategyFactory {
+  // TODO: createStrategies receives the version.
   @Override
-  public LintingStrategy createStrategies(String rules) {
+  public LintingStrategy createStrategies(String rules, String version) {
     JsonObject jsonObject;
 
     try {
@@ -20,11 +22,38 @@ public class CallExpressionStrategyFactory implements StrategyFactory {
     } catch (Exception e) {
       return null;
     }
+    return switch (version) {
+      case "1.0" -> new StrategiesContainer(getStrategiesV1(jsonObject));
+      case "1.1" -> new StrategiesContainer(getStrategiesV2(jsonObject));
+      default -> throw new IllegalArgumentException("Invalid version: " + version);
+    };
+  }
 
-    LintingStrategy validArguments = getValidArguments(jsonObject);
+  public List<LintingStrategy> getStrategiesV1(JsonObject jsonObject) {
+    List<LintingStrategy> strategies = new ArrayList<>();
 
-    List<LintingStrategy> strategies = List.of(validArguments);
-    return new StrategiesContainer(trimNullStrategies(strategies));
+    try {
+      JsonObject printlnArguments = jsonObject.getAsJsonObject("println");
+      strategies.add(new MethodArgumentsStrategy("println", getValidArguments(printlnArguments)));
+
+      return trimNullStrategies(strategies);
+    } catch (Exception e) {
+      return strategies;
+    }
+  }
+
+  public List<LintingStrategy> getStrategiesV2(JsonObject jsonObject) {
+    List<LintingStrategy> strategies = getStrategiesV1(jsonObject);
+
+    try {
+      JsonObject readInputArguments = jsonObject.getAsJsonObject("readInput");
+      strategies.add(
+          new MethodArgumentsStrategy("readInput", getValidArguments(readInputArguments)));
+
+      return trimNullStrategies(strategies);
+    } catch (Exception e) {
+      return strategies;
+    }
   }
 
   private LintingStrategy getValidArguments(JsonObject jsonObject) {

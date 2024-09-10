@@ -10,7 +10,7 @@ import linter.visitor.strategy.identifier.WritingConventionStrategy;
 
 public class IdentifierStrategyFactory implements StrategyFactory {
   @Override
-  public LintingStrategy createStrategies(String rules) {
+  public LintingStrategy createStrategies(String rules, String version) {
     JsonObject jsonObject;
 
     try {
