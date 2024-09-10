@@ -14,7 +14,7 @@ public class LinterV1Test extends CommonLinterTest {
 
   @BeforeEach
   public void setUp() {
-    String rules = TestUtils.readResourceFile("linterRulesExampleReworkA.json");
+    String rules = TestUtils.readResourceFile("linterRulesRework2A.json");
     assertNotNull(rules);
     linterV1 = LinterFactory.getLinter("1.0", rules);
   }
