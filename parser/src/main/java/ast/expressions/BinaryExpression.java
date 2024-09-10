@@ -5,9 +5,9 @@ import ast.visitor.NodeVisitor;
 import token.Position;
 
 public record BinaryExpression(
-    Expression left, Expression right, String operator, Position start, Position end)
-    implements Expression {
-  public BinaryExpression(Expression left, Expression right, String operator) {
+    ExpressionNode left, ExpressionNode right, String operator, Position start, Position end)
+    implements ExpressionNode {
+  public BinaryExpression(ExpressionNode left, ExpressionNode right, String operator) {
     this(left, right, operator, left.start(), right.end());
   }
 

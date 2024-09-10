@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import ast.root.AstNode;
+import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
@@ -56,5 +57,16 @@ public class ParserV2Test extends CommonParserTests {
     assertInstanceOf(CallExpression.class, node);
     assertEquals("readEnv", node.methodIdentifier().name());
     assertEquals(5, node.arguments().size());
+  }
+
+  @Test
+  public void testReadEnvAsFunctionExpression() {
+    Parser parser = setParser("a = readEnv('this is a string', is, also, a, test);", getParser());
+    AssignmentExpression node = (AssignmentExpression) parser.next();
+    assertInstanceOf(AssignmentExpression.class, node);
+    CallExpression callExpression = (CallExpression) node.right();
+    assertEquals("readEnv", callExpression.methodIdentifier().name());
+    assertEquals(5, callExpression.arguments().size());
+    assertEquals("a", node.left().name());
   }
 }

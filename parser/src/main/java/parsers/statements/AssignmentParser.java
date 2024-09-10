@@ -2,7 +2,7 @@ package parsers.statements;
 
 import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.statements.AssignmentExpression;
 import ast.statements.StatementNode;
@@ -25,7 +25,7 @@ public class AssignmentParser implements StatementParser {
     Position rightEnd = tokens.get(2).finalPosition();
 
     Identifier left = new Identifier(tokens.get(0).value(), leftStart, leftEnd);
-    Expression right = parser.parseExpression(tokens.subList(2, tokens.size()));
+    ExpressionNode right = parser.parseExpression(tokens.subList(2, tokens.size()));
 
     return new AssignmentExpression(left, right, tokens.get(1).value(), leftStart, rightEnd);
   }

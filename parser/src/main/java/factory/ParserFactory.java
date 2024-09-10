@@ -5,10 +5,11 @@ import java.util.List;
 import lexer.Lexer;
 import parsers.Parser;
 import parsers.expressions.BinaryExpressionParser;
+import parsers.expressions.CallFunctionAsExpressionParser;
 import parsers.expressions.ExpressionParser;
 import parsers.expressions.LiteralParser;
 import parsers.statements.AssignmentParser;
-import parsers.statements.CallFunctionParser;
+import parsers.statements.CallFunctionAsStatementParser;
 import parsers.statements.IfParser;
 import parsers.statements.StatementParser;
 import parsers.statements.VariableDeclarationParser;
@@ -27,11 +28,15 @@ public class ParserFactory {
     Lexer lexer = LexerFactory.getLexer("1.0");
     List<StatementParser> statementParsers =
         List.of(
-            new CallFunctionParser(List.of("println")),
+            new CallFunctionAsStatementParser(List.of("println")),
             new VariableDeclarationParser(List.of("let")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
-        List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
+        List.of(
+            new IdentifierParser(),
+            new LiteralParser(),
+            new BinaryExpressionParser(),
+            new CallFunctionAsExpressionParser(List.of("println")));
     return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
   }
 
@@ -40,11 +45,15 @@ public class ParserFactory {
     List<StatementParser> statementParsers =
         List.of(
             new IfParser(),
-            new CallFunctionParser(List.of("println", "readInput", "readEnv")),
+            new CallFunctionAsStatementParser(List.of("println", "readInput", "readEnv")),
             new VariableDeclarationParser(List.of("let", "const")),
             new AssignmentParser());
     List<ExpressionParser> expressionParsers =
-        List.of(new IdentifierParser(), new LiteralParser(), new BinaryExpressionParser());
+        List.of(
+            new IdentifierParser(),
+            new LiteralParser(),
+            new BinaryExpressionParser(),
+            new CallFunctionAsExpressionParser(List.of("println", "readInput", "readEnv")));
     return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
   }
 }

@@ -1,6 +1,6 @@
 package ast.identifier;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import java.util.List;
 import parsers.Parser;
 import parsers.expressions.ExpressionParser;
@@ -9,7 +9,7 @@ import token.types.TokenSyntaxType;
 
 public class IdentifierParser implements ExpressionParser {
   @Override
-  public Expression parse(Parser parser, List<Token> tokens) {
+  public ExpressionNode parse(Parser parser, List<Token> tokens) {
     return new Identifier(
         tokens.get(0).value(), tokens.get(0).initialPosition(), tokens.get(0).finalPosition());
   }

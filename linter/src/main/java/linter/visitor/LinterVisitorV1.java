@@ -1,7 +1,7 @@
 package linter.visitor;
 
 import ast.expressions.BinaryExpression;
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
@@ -43,7 +43,7 @@ public class LinterVisitorV1 implements LinterVisitor {
     Identifier identifier = variableDeclaration.identifier();
     NodeVisitor visitor = identifier.accept(this);
 
-    Expression expression = variableDeclaration.expression();
+    ExpressionNode expression = variableDeclaration.expression();
     visitor = expression.accept(visitor);
 
     FullReport newReport = ((LinterVisitorV1) visitor).getFullReport();
@@ -88,7 +88,7 @@ public class LinterVisitorV1 implements LinterVisitor {
     Identifier left = assignmentExpression.left();
     NodeVisitor visitor = left.accept(this);
 
-    Expression right = assignmentExpression.right();
+    ExpressionNode right = assignmentExpression.right();
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitorV1) visitor).getFullReport();
@@ -102,10 +102,10 @@ public class LinterVisitorV1 implements LinterVisitor {
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    Expression left = binaryExpression.left();
+    ExpressionNode left = binaryExpression.left();
     NodeVisitor visitor = left.accept(this);
 
-    Expression right = binaryExpression.right();
+    ExpressionNode right = binaryExpression.right();
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitorV1) visitor).getFullReport();
