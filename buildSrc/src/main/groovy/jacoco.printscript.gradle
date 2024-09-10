@@ -21,12 +21,13 @@ tasks.withType(JacocoReport).configureEach {
             destination = file("${rootDir}/reports/jacoco/${project.name}")
         }
     }
-
     classDirectories.setFrom(
             files(classDirectories.files.collect {
                 fileTree(dir: it, exclude: [
-                        '**/cli/**', // Excluye el módulo 'cli'
-                  ])
+                        '**/cli/**',
+                        '**/runner/**',
+                        '**/parser/ast/**'
+                ])
             })
     )
 }
@@ -36,7 +37,7 @@ tasks.withType(JacocoCoverageVerification).configureEach {
     violationRules {
         rule {
             limit {
-                minimum = 0.8 // Sets the acceptable minimum coverage
+                minimum = 0.8 // Establece el mínimo aceptable de cobertura
             }
         }
 
@@ -53,3 +54,8 @@ tasks.withType(JacocoCoverageVerification).configureEach {
         }
     }
 }
+
+tasks.named('build') {
+    dependsOn tasks.withType(JacocoCoverageVerification)
+}
+

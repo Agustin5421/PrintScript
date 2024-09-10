@@ -16,3 +16,7 @@ tasks.withType(Checkstyle).configureEach {
         }
     }
 }
+
+tasks.named('build') {
+    dependsOn tasks.withType(Checkstyle)
+}
