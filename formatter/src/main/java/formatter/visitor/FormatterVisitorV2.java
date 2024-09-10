@@ -20,18 +20,21 @@ public class FormatterVisitorV2 implements FormatterVisitor {
   private final String currentCode;
   private final Map<AstNodeType, FormattingStrategy> strategies;
   private final FormatterVisitor visitorV1;
+  private final int indentSize;
 
   public FormatterVisitorV2(
       FormatterVisitor visitorV1,
       Map<AstNodeType, FormattingStrategy> strategies,
-      String currentCode) {
+      String currentCode,
+      int indentSize) {
     this.currentCode = currentCode;
     this.strategies = strategies;
-    this.visitorV1 = visitorV1;
+    this.visitorV1 = new FormatterVisitorV1(visitorV1.getStrategies(), currentCode);
+    this.indentSize = indentSize;
   }
 
   public FormatterVisitorV2(FormatterVisitor visitorV1) {
-    this(visitorV1, visitorV1.getStrategies(), visitorV1.getCurrentCode());
+    this(visitorV1, visitorV1.getStrategies(), visitorV1.getCurrentCode(), 0);
   }
 
   @Override
@@ -55,28 +58,39 @@ public class FormatterVisitorV2 implements FormatterVisitor {
 
   @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
-    return null;
+    return new FormatterVisitorV2(visitorV1, strategies, currentCode, indentSize + 1);
   }
 
   @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
-    return new FormatterVisitorV2(visitorV1, strategies, booleanLiteral.value().toString());
+    return new FormatterVisitorV2(
+        visitorV1, strategies, booleanLiteral.value().toString(), indentSize);
   }
 
   @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
-    return new FormatterVisitorV2((FormatterVisitor) visitorV1.visitCallExpression(callExpression));
+    String formattedCode = "\t".repeat(indentSize);
+    FormatterVisitor newVisitor = (FormatterVisitor) visitorV1.visitCallExpression(callExpression);
+    formattedCode += newVisitor.getCurrentCode();
+    return new FormatterVisitorV2(newVisitor, strategies, formattedCode, indentSize);
   }
 
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
-    return new FormatterVisitorV2(
-        (FormatterVisitor) visitorV1.visitAssignmentExpression(assignmentExpression));
+    String formattedCode =
+        "\t".repeat(indentSize)
+            + getStrategy(assignmentExpression).apply(assignmentExpression, this)
+            + "\n";
+    return new FormatterVisitorV2(visitorV1, strategies, formattedCode, indentSize);
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    return new FormatterVisitorV2((FormatterVisitor) visitorV1.visitVarDec(variableDeclaration));
+    String formattedCode =
+        "\t".repeat(indentSize)
+            + getStrategy(variableDeclaration).apply(variableDeclaration, this)
+            + "\n";
+    return new FormatterVisitorV2(visitorV1, strategies, formattedCode, indentSize);
   }
 
   @Override

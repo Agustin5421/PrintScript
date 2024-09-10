@@ -33,6 +33,6 @@ public class VariableDeclarationStrategyFactory implements FormattingStrategyFac
     }
     strategies.add(new GetTypeStrategy());
     TypingStrategy semiColonStrategy = new TypingStrategy(strategies);
-    return new VariableDeclarationStrategy(List.of(semiColonStrategy, equalStrategy), "let");
+    return new VariableDeclarationStrategy(List.of(semiColonStrategy, equalStrategy));
   }
 }

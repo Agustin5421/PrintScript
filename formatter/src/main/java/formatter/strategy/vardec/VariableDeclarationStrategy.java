@@ -3,7 +3,7 @@ package formatter.strategy.vardec;
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitorV1;
+import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class VariableDeclarationStrategy implements FormattingStrategy {
@@ -11,21 +11,18 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
   // second space, then the nodeType of the node
   // then the assignment strategy
   private final List<FormattingStrategy> strategies;
-  // Keyword that for now is only let
-  private final String keyword;
 
-  public VariableDeclarationStrategy(List<FormattingStrategy> strategies, String keyword) {
+  public VariableDeclarationStrategy(List<FormattingStrategy> strategies) {
     this.strategies = strategies;
-    this.keyword = keyword;
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitorV1 visitor) {
+  public String apply(AstNode node, FormatterVisitor visitor) {
     VariableDeclaration varDecNode = (VariableDeclaration) node;
     StringBuilder formattedCode = new StringBuilder();
-    formattedCode.append(keyword).append(" ");
+    formattedCode.append(varDecNode.kind()).append(" ");
     // Adding the identifier
-    FormatterVisitorV1 visit = (FormatterVisitorV1) varDecNode.identifier().accept(visitor);
+    FormatterVisitor visit = (FormatterVisitor) varDecNode.identifier().accept(visitor);
     formattedCode.append(visit.getCurrentCode());
     // Adding the whitespaces strategies
     for (FormattingStrategy strategy : strategies) {
@@ -33,7 +30,7 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
     }
     // Formatting the expression
     formattedCode.append(
-        ((FormatterVisitorV1) varDecNode.expression().accept(visitor)).getCurrentCode());
+        ((FormatterVisitor) varDecNode.expression().accept(visitor)).getCurrentCode());
     formattedCode.append(";");
     return formattedCode.toString();
   }

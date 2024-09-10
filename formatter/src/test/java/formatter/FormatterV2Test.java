@@ -1,6 +1,8 @@
 package formatter;
 
 import formatter.factory.FormatterInitializer;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class FormatterV2Test extends AbstractFormatterTest {
   @Override
@@ -9,7 +11,6 @@ public class FormatterV2Test extends AbstractFormatterTest {
   }
 
   // TODO : Add additional tests for the new formatter
-  /*
   @Test
   public void additionalTest1() {
     String formattedCode = """
@@ -27,6 +28,4 @@ public class FormatterV2Test extends AbstractFormatterTest {
     MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
-
-   */
 }
