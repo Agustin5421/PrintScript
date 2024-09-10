@@ -1,60 +1,82 @@
 package lexer;
 
-import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
-
 import exceptions.UnsupportedCharacter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import observers.Observer;
-import observers.Progressable;
 import token.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
 import token.types.TokenType;
 import token.validators.TokenTypeGetter;
 
-public class Lexer implements Progressable, Iterator<Token> {
+public class Lexer implements Iterator<Token> {
   private final TokenTypeGetter tokenTypeGetter;
-  private final List<Observer> observers;
   private final Pattern pattern;
   private Matcher matcher;
-  private final InputStream inputStream;
+  private final BufferedReader reader;
+  private String currentLine;
   private Position currentPosition;
-  private int currentIndex;
-  private final StringBuilder currentWordBuilder = new StringBuilder();
+  private final Queue<Token> tokens; // Token buffer
 
   public Lexer(InputStream inputStream, TokenTypeGetter tokenTypeGetter) throws IOException {
-    this.inputStream = inputStream;
+    this.reader = new BufferedReader(new InputStreamReader(inputStream));
     this.tokenTypeGetter = tokenTypeGetter;
-    this.observers = List.of();
     this.pattern = new PatternProvider().getPattern();
     this.currentPosition = new Position(1, 1);
-    this.currentIndex = 0;
-    resetMatcher();
+    this.tokens = new LinkedList<>();
+    advanceToNextLine();
   }
 
-  private void resetMatcher() throws IOException {
-    String content = readInputStream();
-    this.matcher = pattern.matcher(content);
-  }
-
-  private String readInputStream() throws IOException {
-    StringBuilder content = new StringBuilder();
-    int byteRead;
-    while ((byteRead = inputStream.read()) != -1) {
-      content.append((char) byteRead);
+  private void advanceToNextLine() throws IOException {
+    currentLine = reader.readLine();
+    if (currentLine != null) {
+      matcher = pattern.matcher(currentLine);
     }
-    return content.toString();
   }
 
   @Override
   public boolean hasNext() {
-    matcher.region(currentIndex, matcher.regionEnd());
-    return matcher.find();
+    // If there are tokens in the buffer, return true
+    if (!tokens.isEmpty()) {
+      return true;
+    }
+
+    // Once there are no more tokens in the buffer, tokenize the next line
+    try {
+      while (currentLine != null) {
+        while (matcher.find()) {
+          String word = matcher.group();
+          int start = matcher.start();
+          int end = matcher.end();
+
+          // Update the current position
+          Position startPosition = new Position(currentPosition.row(), start);
+          Position endPosition = updatePosition(start, end, startPosition);
+
+          currentPosition = endPosition;
+          currentPosition = updatePosition(end, currentLine.length(), currentPosition);
+
+          // Get token type and create a new token
+          TokenType type = tokenTypeGetter.getType(word);
+          Token token = new Token(type, word, startPosition, endPosition);
+
+          if (token.nodeType() == TokenSyntaxType.INVALID) {
+            throw new UnsupportedCharacter("Invalid token: " + token.value());
+          }
+
+          tokens.add(token);
+        }
+        advanceToNextLine(); // Read the next line once we have processed the current one
+      }
+    } catch (IOException e) {
+      return false;
+    }
+
+    return !tokens.isEmpty();
   }
 
   @Override
@@ -62,29 +84,7 @@ public class Lexer implements Progressable, Iterator<Token> {
     if (!hasNext()) {
       throw new IllegalStateException("No more tokens available");
     }
-
-    String word = matcher.group();
-    int start = matcher.start();
-    int end = matcher.end();
-
-    currentPosition = updatePosition(start, end, currentPosition);
-    Position finalPosition = updatePosition(start, end, currentPosition);
-
-    currentIndex = end;
-
-    TokenType type = tokenTypeGetter.getType(word);
-    Token token = new Token(type, word, currentPosition, finalPosition);
-
-    currentPosition = finalPosition;
-
-    if (token.nodeType() == TokenSyntaxType.INVALID) {
-      String message =
-          getExceptionMessage(token.value(), currentPosition.row(), currentPosition.col());
-      throw new UnsupportedCharacter(message);
-    }
-
-    updateProgress();
-    return token;
+    return tokens.poll();
   }
 
   private Position updatePosition(int startIndex, int endIndex, Position position) {
@@ -92,7 +92,7 @@ public class Lexer implements Progressable, Iterator<Token> {
     int col = position.col();
 
     for (int i = startIndex; i < endIndex; i++) {
-      if (currentWordBuilder.charAt(i) == '\n') {
+      if (currentLine.charAt(i) == '\n') {
         row++;
         col = 1;
       } else {
@@ -103,39 +103,24 @@ public class Lexer implements Progressable, Iterator<Token> {
     return new Position(row, col);
   }
 
-  private void updateProgress() {
-    notifyObservers();
-  }
-
-  @Override
-  public float getProgress() {
-    return (((float) currentIndex / currentWordBuilder.length()) * 100);
-  }
-
-  @Override
-  public void notifyObservers() {
-    for (Observer observer : observers) {
-      observer.update(this);
-    }
-  }
-
   public Token peek() {
     if (!hasNext()) {
       throw new IllegalStateException("No more tokens available");
     }
 
-    String word = matcher.group();
-    int start = matcher.start();
-    int end = matcher.end();
-
-    Position finalPosition = updatePosition(start, end, currentPosition);
-
-    TokenType type = tokenTypeGetter.getType(word);
-
-    return new Token(type, word, currentPosition, finalPosition);
+    return tokens.peek();
   }
 
   public Lexer setInput(InputStream inputStream) throws IOException {
     return new Lexer(inputStream, this.tokenTypeGetter);
+  }
+
+  public Lexer setInputAsString(String code) {
+    try {
+      InputStream myCode = new ByteArrayInputStream(code.getBytes());
+      return new Lexer(myCode, this.tokenTypeGetter);
+    } catch (IOException e) {
+      return null;
+    }
   }
 }

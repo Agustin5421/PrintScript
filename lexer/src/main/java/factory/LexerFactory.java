@@ -22,12 +22,17 @@ import token.validators.literal.NumberTypePatternChecker;
 import token.validators.literal.StringTypePatternChecker;
 
 public class LexerFactory {
-  public static Lexer getLexer(String version) throws IOException {
-    return switch (version) {
-      case "1.0" -> getLexerV1();
-      case "1.1" -> getLexerV2();
-      default -> throw new IllegalArgumentException("Invalid version");
-    };
+  public static Lexer getLexer(String version) {
+    try {
+      return switch (version) {
+        case "1.0" -> getLexerV1();
+        case "1.1" -> getLexerV2();
+        default -> throw new IllegalArgumentException("Invalid version");
+      };
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   // TODO: move constructors to its own class
