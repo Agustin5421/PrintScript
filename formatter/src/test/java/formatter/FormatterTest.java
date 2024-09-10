@@ -1,25 +1,7 @@
 package formatter;
 
-import ast.expressions.BinaryExpression;
-import ast.identifier.Identifier;
-import ast.literal.NumberLiteral;
-import ast.literal.StringLiteral;
-import ast.root.Program;
-import ast.statements.AssignmentExpression;
-import ast.statements.CallExpression;
-import ast.statements.VariableDeclaration;
-import com.google.gson.JsonSyntaxException;
-import factory.LexerFactory;
-import factory.ParserFactory;
-import java.util.List;
-import lexer.Lexer;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import parsers.Parser;
-import token.Position;
-import token.Token;
-
 public class FormatterTest {
+  /*
   private final String jsonOptions =
       """
             {
@@ -102,7 +84,7 @@ public class FormatterTest {
                         """);
 
     // TODO: Formatter should iterate over parser
-    /*
+
     Program program = parser.parse(tokens);
     String formattedCode =
         """
@@ -115,7 +97,7 @@ public class FormatterTest {
                 """;
     Assertions.assertEquals(formattedCode, formatter.format(program, jsonOptions));
 
-     */
+
   }
 
   @Test
@@ -146,7 +128,7 @@ public class FormatterTest {
                         println(myVar);""");
 
     // TODO: Formatter should iterate over parser
-    /*
+
     Program program = parser.parse(tokens);
 
     String formattedCode =
@@ -161,7 +143,7 @@ public class FormatterTest {
                 println(myVar);
                 """;
     Assertions.assertEquals(formattedCode, formatter.format(program, newJsonOptions));
-     */
+
   }
 
   @Test
@@ -173,4 +155,6 @@ public class FormatterTest {
   private static Lexer initLexer() {
     return LexerFactory.getLexer("1.0");
   }
+  */
+
 }

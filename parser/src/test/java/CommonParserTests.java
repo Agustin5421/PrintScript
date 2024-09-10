@@ -19,7 +19,7 @@ public abstract class CommonParserTests {
   protected abstract Parser getParser();
 
   public Parser setParser(String input, Parser parser) {
-    Lexer newLexer = parser.getLexer().setInput(input);
+    Lexer newLexer = parser.getLexer().setInputAsString(input);
     return parser.setLexer(newLexer);
   }
 

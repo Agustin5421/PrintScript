@@ -19,7 +19,7 @@ public class Linter implements Progressable, Iterator<FullReport> {
 
   public Linter setInput(String code) {
     Parser parser = getParser();
-    Lexer newLexer = parser.getLexer().setInput(code);
+    Lexer newLexer = parser.getLexer().setInputAsString(code);
     return setParser(parser.setLexer(newLexer));
   }
 
