@@ -6,14 +6,17 @@ import ast.identifier.Identifier;
 import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
+import java.util.List;
 import java.util.Map;
 import linter.visitor.report.FullReport;
+import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
 
 public class LinterVisitorV2 implements LinterVisitor {
@@ -83,24 +86,52 @@ public class LinterVisitorV2 implements LinterVisitor {
 
   @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
-    LinterVisitor visitor = (LinterVisitor) callExpression.accept(visitorV1);
-    FullReport newReport = visitor.getFullReport();
+    Identifier methodIdentifier = callExpression.methodIdentifier();
+    NodeVisitor visitor = methodIdentifier.accept(this);
+
+    for (AstNode argument : callExpression.arguments()) {
+      visitor = argument.accept(visitor);
+    }
+
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
+    LintingStrategy strategy = getNodesStrategies().get(callExpression.getNodeType());
+    if (strategy != null) {
+      newReport = strategy.apply(callExpression, newReport);
+    }
 
     return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
   }
 
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
-    LinterVisitor visitor = (LinterVisitor) assignmentExpression.accept(visitorV1);
-    FullReport newReport = visitor.getFullReport();
+    Identifier left = assignmentExpression.left();
+    NodeVisitor visitor = left.accept(this);
+
+    Expression right = assignmentExpression.right();
+    visitor = right.accept(visitor);
+
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
+    LintingStrategy strategy = getNodesStrategies().get(assignmentExpression.getNodeType());
+    if (strategy != null) {
+      newReport = strategy.apply(assignmentExpression, newReport);
+    }
 
     return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    LinterVisitor visitor = (LinterVisitor) variableDeclaration.accept(visitorV1);
-    FullReport newReport = visitor.getFullReport();
+    Identifier identifier = variableDeclaration.identifier();
+    NodeVisitor visitor = identifier.accept(this);
+
+    Expression expression = variableDeclaration.expression();
+    visitor = expression.accept(visitor);
+
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
+    LintingStrategy strategy = getNodesStrategies().get(variableDeclaration.getNodeType());
+    if (strategy != null) {
+      newReport = strategy.apply(variableDeclaration, newReport);
+    }
 
     return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
   }
@@ -110,7 +141,9 @@ public class LinterVisitorV2 implements LinterVisitor {
     LinterVisitor visitor = (LinterVisitor) numberLiteral.accept(visitorV1);
     FullReport newReport = visitor.getFullReport();
 
-    return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
+    List<Report> reports = newReport.getReports();
+    return new LinterVisitorV2(
+        getFullReport().addReports(reports), getNodesStrategies(), getVisitorV1());
   }
 
   @Override
@@ -118,7 +151,9 @@ public class LinterVisitorV2 implements LinterVisitor {
     LinterVisitor visitor = (LinterVisitor) stringLiteral.accept(visitorV1);
     FullReport newReport = visitor.getFullReport();
 
-    return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
+    List<Report> reports = newReport.getReports();
+    return new LinterVisitorV2(
+        getFullReport().addReports(reports), getNodesStrategies(), getVisitorV1());
   }
 
   @Override
@@ -126,13 +161,24 @@ public class LinterVisitorV2 implements LinterVisitor {
     LinterVisitor visitor = (LinterVisitor) identifier.accept(visitorV1);
     FullReport newReport = visitor.getFullReport();
 
-    return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
+    List<Report> reports = newReport.getReports();
+    return new LinterVisitorV2(
+        getFullReport().addReports(reports), getNodesStrategies(), getVisitorV1());
   }
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    LinterVisitor visitor = (LinterVisitor) binaryExpression.accept(visitorV1);
-    FullReport newReport = visitor.getFullReport();
+    Expression left = binaryExpression.left();
+    NodeVisitor visitor = left.accept(this);
+
+    Expression right = binaryExpression.right();
+    visitor = right.accept(visitor);
+
+    FullReport newReport = ((LinterVisitor) visitor).getFullReport();
+    LintingStrategy strategy = getNodesStrategies().get(binaryExpression.getNodeType());
+    if (strategy != null) {
+      newReport = strategy.apply(binaryExpression, newReport);
+    }
 
     return new LinterVisitorV2(newReport, getNodesStrategies(), getVisitorV1());
   }
