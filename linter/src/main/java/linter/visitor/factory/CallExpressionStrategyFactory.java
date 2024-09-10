@@ -12,8 +12,14 @@ import linter.visitor.strategy.callexpression.ArgumentsStrategy;
 public class CallExpressionStrategyFactory implements StrategyFactory {
   @Override
   public LintingStrategy createStrategies(String rules) {
-    JsonObject jsonObject =
-        JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("callExpression");
+    JsonObject jsonObject;
+
+    try {
+      jsonObject =
+          JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("callExpression");
+    } catch (Exception e) {
+      return null;
+    }
 
     LintingStrategy validArguments = getValidArguments(jsonObject);
 
@@ -22,14 +28,20 @@ public class CallExpressionStrategyFactory implements StrategyFactory {
   }
 
   private LintingStrategy getValidArguments(JsonObject jsonObject) {
-    String[] stringArgs =
-        jsonObject
-            .getAsJsonArray("arguments")
-            .toString()
-            .replace("[", "")
-            .replace("]", "")
-            .replace("\"", "")
-            .split(",");
+    String[] stringArgs;
+
+    try {
+      stringArgs =
+          jsonObject
+              .getAsJsonArray("arguments")
+              .toString()
+              .replace("[", "")
+              .replace("]", "")
+              .replace("\"", "")
+              .split(",");
+    } catch (Exception e) {
+      return null;
+    }
 
     List<AstNodeType> allowedArguments = new ArrayList<>();
 

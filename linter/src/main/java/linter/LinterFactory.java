@@ -1,7 +1,5 @@
 package linter;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import factory.ParserFactory;
 import linter.visitor.LinterVisitor;
 import linter.visitor.factory.LinterVisitorFactory;
@@ -21,12 +19,6 @@ public class LinterFactory {
   private static Linter getLinterV1(String rules) {
     Parser parser = ParserFactory.getParser("1.0");
 
-    boolean validateRulesV1 = validateRules(rules);
-
-    if (!validateRulesV1) {
-      throw new IllegalArgumentException("Invalid rules: " + rules);
-    }
-
     LinterVisitor visitor = linterVisitorFactory.createLinterVisitor(rules);
     return new Linter(parser, visitor);
   }
@@ -34,27 +26,7 @@ public class LinterFactory {
   private static Linter getLinterV2(String rules) {
     Parser parser = ParserFactory.getParser("1.1");
 
-    boolean validateRulesV1 = validateRules(rules);
-
-    if (!validateRulesV1) {
-      throw new IllegalArgumentException("Invalid rules: " + rules);
-    }
-
     LinterVisitor visitor = linterVisitorFactory.createLinterVisitorV2(rules);
     return new Linter(parser, visitor);
-  }
-
-  private static boolean validateRules(String rules) {
-    try {
-      JsonObject jsonObject = JsonParser.parseString(rules).getAsJsonObject();
-      JsonObject idJson =
-          jsonObject.getAsJsonObject("identifier").getAsJsonObject("writingConvention");
-      idJson.get("conventionName").getAsString();
-      idJson.get("conventionPattern").getAsString();
-      jsonObject.getAsJsonObject("callExpression").getAsJsonArray("arguments");
-      return true;
-    } catch (Exception e) {
-      return false;
-    }
   }
 }

@@ -11,8 +11,13 @@ import linter.visitor.strategy.identifier.WritingConventionStrategy;
 public class IdentifierStrategyFactory implements StrategyFactory {
   @Override
   public LintingStrategy createStrategies(String rules) {
-    JsonObject jsonObject =
-        JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("identifier");
+    JsonObject jsonObject;
+
+    try {
+      jsonObject = JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("identifier");
+    } catch (Exception e) {
+      return null;
+    }
 
     LintingStrategy identifierWritingConvention = getIdentifierWritingConvention(jsonObject);
 
