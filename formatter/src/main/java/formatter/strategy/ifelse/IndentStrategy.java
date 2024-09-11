@@ -1,13 +1,12 @@
-package formatter.strategy.vardec;
+package formatter.strategy.ifelse;
 
 import ast.root.AstNode;
-import ast.statements.VariableDeclaration;
 import formatter.strategy.FormattingStrategy;
 import formatter.visitor.FormatterVisitor;
 
-public class GetTypeStrategy implements FormattingStrategy {
+public class IndentStrategy implements FormattingStrategy {
   @Override
   public String apply(AstNode node, FormatterVisitor visitor) {
-    return ((VariableDeclaration) node).varType();
+    return "\t".repeat(visitor.getValue());
   }
 }

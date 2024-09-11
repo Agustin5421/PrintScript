@@ -2,30 +2,26 @@ package formatter.strategy.callexpr;
 
 import ast.root.AstNode;
 import ast.statements.CallExpression;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
-import java.util.List;
+import formatter.strategy.common.CallStrategy;
+import formatter.visitor.FormatterVisitor;
 
 public class CallExpressionStrategy implements FormattingStrategy {
-  private final List<FormattingStrategy> strategies;
+  private final CallStrategy callStrategy;
 
-  public CallExpressionStrategy(List<FormattingStrategy> strategies) {
-    this.strategies = strategies;
+  public CallExpressionStrategy(CallStrategy callStrategy) {
+
+    this.callStrategy = callStrategy;
   }
 
   @Override
   public String apply(AstNode node, FormatterVisitor visitor) {
     CallExpression callExpression = (CallExpression) node;
     FormatterVisitor visit = (FormatterVisitor) callExpression.methodIdentifier().accept(visitor);
+    String identifier = visit.getCurrentCode();
 
-    StringBuilder formattedCode = new StringBuilder();
-    formattedCode
-        .append(strategies.get(0).apply(node, visitor))
-        .append(visit.getCurrentCode())
-        .append("(")
-        .append(strategies.get(1).apply(node, visitor))
-        .append(");");
+    CallStrategy newCallStrategy = callStrategy.newStrategy(identifier, callExpression.arguments());
 
-    return formattedCode.toString();
+    return newCallStrategy.apply(node, visitor);
   }
 }

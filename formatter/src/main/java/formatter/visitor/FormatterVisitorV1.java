@@ -1,4 +1,4 @@
-package formatter;
+package formatter.visitor;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
@@ -14,18 +14,19 @@ import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.BinaryExpressionStrategy;
+import java.util.HashMap;
 import java.util.Map;
 
-public class FormatterVisitor implements NodeVisitor {
+public class FormatterVisitorV1 implements FormatterVisitor {
   private final String currentCode;
   private final Map<AstNodeType, FormattingStrategy> strategies;
 
-  public FormatterVisitor(Map<AstNodeType, FormattingStrategy> strategies, String formattedCode) {
+  public FormatterVisitorV1(Map<AstNodeType, FormattingStrategy> strategies, String formattedCode) {
     this.currentCode = formattedCode;
     this.strategies = strategies;
   }
 
-  public FormatterVisitor(Map<AstNodeType, FormattingStrategy> strategies) {
+  public FormatterVisitorV1(Map<AstNodeType, FormattingStrategy> strategies) {
     this(strategies, "");
   }
 
@@ -44,7 +45,7 @@ public class FormatterVisitor implements NodeVisitor {
     FormattingStrategy strategy = getStrategy(callExpression);
     String formattedCode = strategy.apply(callExpression, this);
     formattedCode += "\n";
-    return new FormatterVisitor(strategies, formattedCode);
+    return newVisitor(formattedCode);
   }
 
   @Override
@@ -52,7 +53,7 @@ public class FormatterVisitor implements NodeVisitor {
     FormattingStrategy strategy = getStrategy(assignmentExpression);
     String formattedCode = strategy.apply(assignmentExpression, this);
     formattedCode += "\n";
-    return new FormatterVisitor(strategies, formattedCode);
+    return newVisitor(formattedCode);
   }
 
   @Override
@@ -60,39 +61,61 @@ public class FormatterVisitor implements NodeVisitor {
     FormattingStrategy strategy = getStrategy(variableDeclaration);
     String formattedCode = strategy.apply(variableDeclaration, this);
     formattedCode += "\n";
-    return new FormatterVisitor(strategies, formattedCode);
+    return newVisitor(formattedCode);
   }
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    return new FormatterVisitor(strategies, numberLiteral.value().toString());
+    return newVisitor(numberLiteral.value().toString());
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return new FormatterVisitor(strategies, stringLiteral.value());
+    return newVisitor(stringLiteral.value());
   }
 
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    return new FormatterVisitor(strategies, identifier.name());
+    return newVisitor(identifier.name());
   }
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     BinaryExpressionStrategy strategy = new BinaryExpressionStrategy(binaryExpression.operator());
-    return new FormatterVisitor(strategies, strategy.apply(binaryExpression, this));
+    return newVisitor(strategy.apply(binaryExpression, this));
   }
 
+  @Override
   public String getCurrentCode() {
     return currentCode;
   }
 
-  public FormattingStrategy getStrategy(AstNode node) throws IllegalArgumentException {
+  @Override
+  public int getValue() {
+    return 0;
+  }
+
+  @Override
+  public Map<AstNodeType, FormattingStrategy> getStrategies() {
+    return new HashMap<>(strategies);
+  }
+
+  @Override
+  public FormattingStrategy getStrategy(AstNode node) {
     FormattingStrategy strategy = strategies.get(node.getNodeType());
     if (strategy == null) {
       throw new IllegalArgumentException("Strategy not found for nodeType: " + node.getNodeType());
     }
     return strategy;
+  }
+
+  @Override
+  public FormatterVisitor newVisitor(String newCode) {
+    return new FormatterVisitorV1(strategies, newCode);
+  }
+
+  @Override
+  public FormatterVisitor cloneVisitor() {
+    return new FormatterVisitorV1(strategies, currentCode);
   }
 }

@@ -1,16 +1,16 @@
 package formatter.strategy.common;
 
 import ast.root.AstNode;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class OperatorConcatenationStrategy implements FormattingStrategy {
   // The strategies consist of whitespaces or the missing of it and
   // the operator concatenation
-  private final List<FormattingStrategy> strategies;
+  private final List<CharacterStrategy> strategies;
 
-  public OperatorConcatenationStrategy(List<FormattingStrategy> strategies) {
+  public OperatorConcatenationStrategy(List<CharacterStrategy> strategies) {
     this.strategies = strategies;
   }
 
