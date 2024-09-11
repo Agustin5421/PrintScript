@@ -1,9 +1,9 @@
-package parsers.statements;
+package parsers.expressions;
 
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
-import ast.statements.StatementNode;
 import exceptions.SyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +13,15 @@ import token.Token;
 import token.types.TokenSyntaxType;
 import token.types.TokenType;
 
-public class CallFunctionParser implements StatementParser {
+public class CallFunctionAsExpressionParser implements ExpressionParser {
   private final List<String> reservedWords;
 
-  public CallFunctionParser(List<String> reservedWords) {
+  public CallFunctionAsExpressionParser(List<String> reservedWords) {
     this.reservedWords = reservedWords;
   }
 
   @Override
-  public StatementNode parse(Parser parser, List<Token> tokens) {
+  public ExpressionNode parse(Parser parser, List<Token> tokens) {
     String functionName = tokens.get(0).value();
     Position start = tokens.get(0).initialPosition();
     Position end = tokens.get(tokens.size() - 1).finalPosition();
@@ -31,11 +31,11 @@ public class CallFunctionParser implements StatementParser {
 
     // Arguments
     List<Token> subList = tokens.subList(1, tokens.size());
-    List<List<Token>> arguments = extractArguments(subList);
+    List<Token> arguments = extractArguments(subList);
 
     List<AstNode> argumentExpressions = new ArrayList<>();
-    for (List<Token> token : arguments) {
-      AstNode argument = parser.parseExpression(token);
+    for (Token token : arguments) {
+      AstNode argument = parser.parseExpression(List.of(token));
       argumentExpressions.add(argument);
     }
 
@@ -47,8 +47,8 @@ public class CallFunctionParser implements StatementParser {
     return reservedWords.contains(tokens.get(0).value());
   }
 
-  public static List<List<Token>> extractArguments(List<Token> tokens) {
-    List<List<Token>> argumentTokens = new ArrayList<>();
+  public static List<Token> extractArguments(List<Token> tokens) {
+    List<Token> argumentTokens = new ArrayList<>();
     List<Token> currentArgument = new ArrayList<>();
     boolean inArguments = false;
     int openParentheses = 0;
@@ -75,8 +75,8 @@ public class CallFunctionParser implements StatementParser {
         inArguments = false;
         openParentheses--;
         if (!currentArgument.isEmpty()) {
-          argumentTokens.add(currentArgument);
-          currentArgument = new ArrayList<>();
+          argumentTokens.addAll(currentArgument);
+          currentArgument.clear();
         }
         continue;
       }
@@ -86,8 +86,8 @@ public class CallFunctionParser implements StatementParser {
           if (currentArgument.isEmpty()) {
             throw new SyntaxException("Comma without preceding argument.");
           }
-          argumentTokens.add(currentArgument);
-          currentArgument = new ArrayList<>();
+          argumentTokens.addAll(currentArgument);
+          currentArgument.clear();
         } else {
           currentArgument.add(token);
         }
@@ -99,7 +99,7 @@ public class CallFunctionParser implements StatementParser {
     }
 
     if (!currentArgument.isEmpty()) {
-      argumentTokens.add(currentArgument);
+      argumentTokens.addAll(currentArgument);
     }
 
     return argumentTokens;

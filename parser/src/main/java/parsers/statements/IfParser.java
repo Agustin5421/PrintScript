@@ -1,6 +1,6 @@
 package parsers.statements;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.statements.IfStatement;
 import ast.statements.StatementNode;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import token.types.TokenSyntaxType;
 public class IfParser implements StatementParser {
   @Override
   public StatementNode parse(Parser parser, List<Token> tokens) {
-    Expression condition = parser.parseExpression(List.of(tokens.get(2)));
+    ExpressionNode condition = parser.parseExpression(List.of(tokens.get(2)));
 
     List<Token> thenBody = tokens.subList(4, tokens.size());
 

@@ -1,43 +1,77 @@
 package interpreter;
 
 import ast.root.AstNode;
-import ast.root.Program;
+import ast.visitor.NodeVisitor;
+import factory.ParserFactory;
 import interpreter.visitor.InterpreterVisitor;
+import interpreter.visitor.InterpreterVisitorFactory;
 import java.util.List;
+import lexer.Lexer;
 import observers.Observer;
 import observers.Progressable;
+import parsers.Parser;
 
 public class Interpreter implements Progressable {
   private final List<Observer> observers;
   private int totalStatements;
   private final InterpreterVisitor nodeVisitor;
 
-  public Interpreter(List<Observer> observers, InterpreterVisitor nodeVisitor) {
+  private Parser parser;
+
+  public Interpreter(List<Observer> observers, String version) {
     this.observers = observers;
-    this.nodeVisitor = nodeVisitor;
+    this.nodeVisitor = InterpreterVisitorFactory.getInterpreterVisitor(version);
+    this.parser = ParserFactory.getParser(version);
   }
 
   // This constructor is created in order to make the tests pass
-  public Interpreter(InterpreterVisitor nodeVisitor) {
-    this.nodeVisitor = nodeVisitor;
+  public Interpreter(String version) {
+    this.nodeVisitor = InterpreterVisitorFactory.getInterpreterVisitor(version);
+    this.parser = ParserFactory.getParser(version);
     this.observers = List.of();
   }
 
   // TODO: Delete return of executeProgram() method.
-
-  public VariablesRepository executeProgram(Program program) {
+  // Testing purposes only.
+  public VariablesRepository executeProgram(String code) {
     VariablesRepository variablesRepository = new VariablesRepository();
     InterpreterVisitor visitor = nodeVisitor;
-
-    totalStatements = program.statements().size();
-
-    for (AstNode statement : program.statements()) {
+    Lexer newLexer = parser.getLexer().setInput(code);
+    parser = parser.setLexer(newLexer);
+    while (hasMoreStatements()) {
+      AstNode statement = getNextStatement();
       visitor = (InterpreterVisitor) statement.accept(visitor);
       variablesRepository = visitor.getVariablesRepository();
       updateProgress();
     }
 
     return variablesRepository;
+  }
+
+  public List<String> executeProgram(String code, VariablesRepository variablesRepository) {
+    InterpreterVisitor visitor = nodeVisitor;
+    Lexer newLexer = parser.getLexer().setInput(code);
+    parser = parser.setLexer(newLexer);
+    while (hasMoreStatements()) {
+      AstNode statement = getNextStatement();
+      visitor = (InterpreterVisitor) statement.accept(visitor);
+      variablesRepository = visitor.getVariablesRepository();
+      updateProgress();
+    }
+
+    return visitor.getPrintedValues();
+  }
+
+  private boolean hasMoreStatements() {
+    return parser.hasNext();
+  }
+
+  private AstNode getNextStatement() {
+    return parser.next();
+  }
+
+  public NodeVisitor getVisitor() {
+    return nodeVisitor;
   }
 
   private void updateProgress() {

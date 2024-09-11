@@ -1,65 +1,34 @@
 package interpreter;
 
-import ast.expressions.BinaryExpression;
+import static org.junit.Assert.assertEquals;
+
 import ast.identifier.Identifier;
-import ast.literal.NumberLiteral;
-import ast.literal.StringLiteral;
-import ast.root.AstNode;
-import ast.root.Program;
-import ast.statements.AssignmentExpression;
-import ast.statements.VariableDeclaration;
-import interpreter.visitor.InterpreterVisitor;
-import interpreter.visitor.InterpreterVisitorV1;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
 public class InterpreterVisitorTest {
+  private final Position defaultPosition = new Position(0, 0);
+
   @Test
   public void testAssignmentExpression() {
-    Position defaultPosition = new Position(0, 0);
-    Identifier name = new Identifier("name", defaultPosition, defaultPosition);
-    StringLiteral value = new StringLiteral("value", defaultPosition, defaultPosition);
-    VariableDeclaration variableDeclaration = new VariableDeclaration(name, value);
-
-    StringLiteral otherValue = new StringLiteral("otherValue", defaultPosition, defaultPosition);
-    AssignmentExpression assignmentExpression = new AssignmentExpression(name, otherValue, "=");
-
-    List<AstNode> statements = List.of(variableDeclaration, assignmentExpression);
-    Program program = new Program(statements);
-
-    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
-    Interpreter interpreter = new Interpreter(visitor);
-    interpreter.executeProgram(program);
+    String code = "let name: string = \"value\"; name = \"otherValue\";";
+    Interpreter interpreter = new Interpreter("1.0");
+    VariablesRepository repository = interpreter.executeProgram(code);
+    assertEquals(
+        "\"otherValue\"",
+        repository.getVariable(new Identifier("name", defaultPosition, defaultPosition)).value());
   }
 
   @Test
   public void testSimpleNodes() {
-    Position defaultPosition = new Position(0, 0);
-    Identifier name = new Identifier("name", defaultPosition, defaultPosition);
-    StringLiteral value = new StringLiteral("value", defaultPosition, defaultPosition);
-    NumberLiteral number = new NumberLiteral(1, defaultPosition, defaultPosition);
-
-    List<AstNode> statements = List.of(name, value, number);
-    Program program = new Program(statements);
-
-    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
-    Interpreter interpreter = new Interpreter(visitor);
-    interpreter.executeProgram(program);
-  }
-
-  @Test
-  public void testBinaryExpression() {
-    Position defaultPosition = new Position(0, 0);
-    StringLiteral value = new StringLiteral("value", defaultPosition, defaultPosition);
-    NumberLiteral number = new NumberLiteral(1, defaultPosition, defaultPosition);
-    BinaryExpression binaryExpression = new BinaryExpression(value, number, "+");
-
-    List<AstNode> statements = List.of(binaryExpression);
-    Program program = new Program(statements);
-
-    InterpreterVisitor visitor = new InterpreterVisitorV1(new VariablesRepository());
-    Interpreter interpreter = new Interpreter(visitor);
-    interpreter.executeProgram(program);
+    String code = "let name: string = \"value\"; let number: number = 42;";
+    Interpreter interpreter = new Interpreter("1.0");
+    VariablesRepository repository = interpreter.executeProgram(code);
+    assertEquals(
+        "\"value\"",
+        repository.getVariable(new Identifier("name", defaultPosition, defaultPosition)).value());
+    assertEquals(
+        42,
+        repository.getVariable(new Identifier("number", defaultPosition, defaultPosition)).value());
   }
 }

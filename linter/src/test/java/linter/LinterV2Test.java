@@ -3,7 +3,7 @@ package linter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.literal.BooleanLiteral;
 import ast.root.AstNode;
 import ast.statements.IfStatement;
@@ -29,7 +29,7 @@ public class LinterV2Test extends CommonLinterTest {
 
   @Test
   public void lintIfStatementTest() {
-    Expression booleanNode = new BooleanLiteral(true, null, null);
+    ExpressionNode booleanNode = new BooleanLiteral(true, null, null);
     AstNode ifNode = new IfStatement(null, null, booleanNode, List.of(), List.of());
     Linter linter = getLinter();
 

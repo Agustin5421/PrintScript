@@ -3,7 +3,7 @@ package parsers.expressions;
 import static exceptions.ExceptionMessageBuilder.getExceptionMessage;
 
 import ast.expressions.BinaryExpression;
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import java.util.List;
 import parsers.Parser;
 import token.Position;
@@ -14,7 +14,7 @@ import token.types.TokenSyntaxType;
 public class BinaryExpressionParser implements ExpressionParser {
 
   @Override
-  public Expression parse(Parser parser, List<Token> tokens) {
+  public ExpressionNode parse(Parser parser, List<Token> tokens) {
     if (tokens.isEmpty()) {
       throw new IllegalArgumentException("Token list cannot be empty");
     }
@@ -32,8 +32,8 @@ public class BinaryExpressionParser implements ExpressionParser {
     List<Token> rightTokens = tokens.subList(operatorIndex + 1, tokens.size());
 
     // Recursively parse the left and right expressions
-    Expression left = parser.parseExpression(leftTokens);
-    Expression right = parser.parseExpression(rightTokens);
+    ExpressionNode left = parser.parseExpression(leftTokens);
+    ExpressionNode right = parser.parseExpression(rightTokens);
 
     return new BinaryExpression(left, right, operator.value());
   }

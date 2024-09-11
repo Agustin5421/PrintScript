@@ -1,7 +1,7 @@
 package linter.visitor;
 
 import ast.expressions.BinaryExpression;
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
@@ -52,7 +52,7 @@ public class LinterVisitorV2 implements LinterVisitor {
 
   @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
-    Expression condition = ifStatement.getCondition();
+    ExpressionNode condition = ifStatement.getCondition();
     NodeVisitor visitor = condition.accept(this);
 
     for (var statement : ifStatement.getThenBlockStatement()) {

@@ -22,24 +22,46 @@ import token.Position;
 
 public class InterpreterVisitorV2 implements InterpreterVisitor {
 
-  private final InterpreterVisitorV1 interpreterVisitorV1;
+  private final InterpreterVisitor previousVisitor;
   private final VariablesRepository variablesRepository;
   private final Properties envProperties;
   private final List<String> printedValues;
+  private final Literal<?> value;
 
   public InterpreterVisitorV2(
-      InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository) {
-    this(interpreterVisitorV1, variablesRepository, new ArrayList<>());
+      InterpreterVisitor previousVisitor, VariablesRepository variablesRepository) {
+    this.previousVisitor = previousVisitor;
+    this.variablesRepository = variablesRepository;
+    this.printedValues = new ArrayList<>();
+    this.envProperties = EnvLoader.loadEnvProperties();
+    this.value = new NumberLiteral(0, new Position(0, 0), new Position(0, 0));
   }
 
   private InterpreterVisitorV2(
-      InterpreterVisitorV1 interpreterVisitorV1,
+      InterpreterVisitor previousVisitor,
       VariablesRepository variablesRepository,
       List<String> printedValues) {
-    this.interpreterVisitorV1 = interpreterVisitorV1;
+    this.previousVisitor = previousVisitor;
     this.variablesRepository = variablesRepository;
     this.envProperties = EnvLoader.loadEnvProperties();
     this.printedValues = new ArrayList<>(printedValues);
+    this.value = new NumberLiteral(0, new Position(0, 0), new Position(0, 0));
+  }
+
+  private InterpreterVisitorV2(
+      InterpreterVisitor previousVisitor,
+      VariablesRepository variablesRepository,
+      List<String> printedValues,
+      Literal<?> value) {
+    this.previousVisitor = previousVisitor;
+    this.variablesRepository = variablesRepository;
+    this.envProperties = EnvLoader.loadEnvProperties();
+    this.printedValues = new ArrayList<>(printedValues);
+    this.value = value;
+  }
+
+  public Literal<?> getValue() {
+    return value;
   }
 
   @Override
@@ -51,7 +73,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
     // Implementación específica para BooleanLiteral
-    return this;
+    return new InterpreterVisitorV2(
+        previousVisitor, variablesRepository, printedValues, booleanLiteral);
   }
 
   @Override
@@ -65,8 +88,12 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
       return handleReadEnv(callExpression, arguments);
     } else if (name.equals("readInput")) {
       return handleReadInput(callExpression);
+      //    } else if (name.equals("println")) {
+      //      List<String> newPrintedValues = printlnMethod(identifier, arguments);
+      //      return new InterpreterVisitorV2(previousVisitor, variablesRepository,
+      // newPrintedValues);
     } else {
-      return interpreterVisitorV1.visitCallExpression(callExpression);
+      return previousVisitor.visitCallExpression(callExpression);
     }
   }
 
@@ -92,7 +119,7 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     Identifier identifier = callExpression.methodIdentifier();
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(identifier, result);
-    return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository, newPrintedValues);
+    return new InterpreterVisitorV2(previousVisitor, newVariablesRepository, newPrintedValues);
   }
 
   private static Literal<?> getLiteral(CallExpression callExpression, String userInput) {
@@ -135,37 +162,67 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     Identifier identifier = callExpression.methodIdentifier();
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(identifier, result);
-    return new InterpreterVisitorV2(interpreterVisitorV1, newVariablesRepository, printedValues);
+    return new InterpreterVisitorV2(previousVisitor, newVariablesRepository, printedValues, result);
   }
 
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
-    return interpreterVisitorV1.visitAssignmentExpression(assignmentExpression);
+    NodeVisitor v1Result = previousVisitor.visitAssignmentExpression(assignmentExpression);
+    return new InterpreterVisitorV2(
+        (InterpreterVisitorV1) v1Result,
+        ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    return interpreterVisitorV1.visitVarDec(variableDeclaration);
+    NodeVisitor v1Result = previousVisitor.visitVarDec(variableDeclaration);
+    return new InterpreterVisitorV2(
+        (InterpreterVisitorV1) v1Result,
+        ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    return interpreterVisitorV1.visitNumberLiteral(numberLiteral);
+    NodeVisitor v1Result = previousVisitor.visitNumberLiteral(numberLiteral);
+    return new InterpreterVisitorV2(
+        (InterpreterVisitorV1) v1Result,
+        ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return interpreterVisitorV1.visitStringLiteral(stringLiteral);
+    NodeVisitor v1Result = previousVisitor.visitStringLiteral(stringLiteral);
+    return new InterpreterVisitorV2(
+        (InterpreterVisitorV1) v1Result,
+        ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    return interpreterVisitorV1.visitIdentifier(identifier);
+    NodeVisitor v1Result = previousVisitor.visitIdentifier(identifier);
+    return new InterpreterVisitorV2(
+        (InterpreterVisitorV1) v1Result,
+        ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    return interpreterVisitorV1.visitBinaryExpression(binaryExpression);
+    NodeVisitor v1Result = previousVisitor.visitBinaryExpression(binaryExpression);
+    return new InterpreterVisitorV2(
+        (InterpreterVisitorV1) v1Result,
+        ((InterpreterVisitorV1) v1Result).getVariablesRepository(),
+        printedValues,
+        ((InterpreterVisitorV1) v1Result).getValue());
   }
 
   @Override
@@ -173,7 +230,13 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     return variablesRepository;
   }
 
+  @Override
   public List<String> getPrintedValues() {
     return new ArrayList<>(printedValues);
+  }
+
+  @Override
+  public InterpreterVisitor getPreviousVisitor() {
+    return previousVisitor;
   }
 }

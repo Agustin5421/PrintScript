@@ -1,6 +1,6 @@
 package ast.identifier;
 
-import ast.expressions.Expression;
+import ast.expressions.ExpressionNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import java.util.Map;
@@ -9,7 +9,7 @@ import token.types.TokenDataType;
 
 public record Identifier(
     String name, Position start, Position end, TokenDataType type, Map<String, Boolean> modifiers)
-    implements Expression {
+    implements ExpressionNode {
 
   // This constructor is used by the parser to create an Identifier node v1
   public Identifier(String name, Position start, Position end) {
