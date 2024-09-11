@@ -13,7 +13,6 @@ import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.env.EnvLoader;
-import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
 import interpreter.visitor.repository.VariablesRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +24,7 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   private final InterpreterVisitor previousVisitor;
   private final VariablesRepository variablesRepository;
   private final List<String> printedValues;
-  private final BinaryExpressionEvaluator binaryExpressionEvaluator =
-      new BinaryExpressionEvaluator();
+
   private final Literal<?> value;
 
   public InterpreterVisitorV2(

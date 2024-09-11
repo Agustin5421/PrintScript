@@ -250,7 +250,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(\"Hello, world!\");";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("\"Hello, world!\"", printedValues.get(0));
   }
@@ -260,7 +260,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(42);";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("42", printedValues.get(0));
   }
@@ -270,7 +270,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(\"true\");";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("\"true\"", printedValues.get(0));
   }
@@ -280,7 +280,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(21 + 21);";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("42", printedValues.get(0));
   }

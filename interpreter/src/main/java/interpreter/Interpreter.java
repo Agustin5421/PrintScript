@@ -55,14 +55,13 @@ public class Interpreter implements Progressable {
     return variablesRepository;
   }
 
-  public List<String> executeProgram(String code, VariablesRepository variablesRepository) {
+  public List<String> interpret(String code) {
     InterpreterVisitor visitor = nodeVisitor;
     Lexer newLexer = parser.getLexer().setInput(code);
     parser = parser.setLexer(newLexer);
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();
       visitor = (InterpreterVisitor) statement.accept(visitor);
-      variablesRepository = visitor.getVariablesRepository();
       updateProgress();
     }
 
