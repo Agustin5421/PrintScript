@@ -3,6 +3,7 @@ package formatter.strategy.common;
 import ast.expressions.BinaryExpression;
 import ast.root.AstNode;
 import formatter.strategy.FormattingStrategy;
+import formatter.strategy.common.space.WhiteSpace;
 import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class BinaryExpressionStrategy implements FormattingStrategy {
     WhiteSpace whiteSpace = new WhiteSpace();
     this.strategy =
         new OperatorConcatenationStrategy(
-            List.of(whiteSpace, new OperatorStrategy(operator), whiteSpace));
+            List.of(whiteSpace, new CharacterStrategy(operator), whiteSpace));
   }
 
   @Override

@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import formatter.strategy.callexpr.ArgumentsStrategy;
 import formatter.strategy.callexpr.CallExpressionStrategy;
 import formatter.strategy.callexpr.LineBreaksStrategy;
-import formatter.strategy.common.WhiteSpace;
+import formatter.strategy.common.space.WhiteSpace;
 import java.util.List;
 
 public class CallExpressionFactory implements FormattingStrategyFactory {

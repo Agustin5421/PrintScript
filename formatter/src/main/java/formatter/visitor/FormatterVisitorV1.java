@@ -45,7 +45,7 @@ public class FormatterVisitorV1 implements FormatterVisitor {
     FormattingStrategy strategy = getStrategy(callExpression);
     String formattedCode = strategy.apply(callExpression, this);
     formattedCode += "\n";
-    return new FormatterVisitorV1(strategies, formattedCode);
+    return newVisitor(formattedCode);
   }
 
   @Override
@@ -53,7 +53,7 @@ public class FormatterVisitorV1 implements FormatterVisitor {
     FormattingStrategy strategy = getStrategy(assignmentExpression);
     String formattedCode = strategy.apply(assignmentExpression, this);
     formattedCode += "\n";
-    return new FormatterVisitorV1(strategies, formattedCode);
+    return newVisitor(formattedCode);
   }
 
   @Override
@@ -61,33 +61,38 @@ public class FormatterVisitorV1 implements FormatterVisitor {
     FormattingStrategy strategy = getStrategy(variableDeclaration);
     String formattedCode = strategy.apply(variableDeclaration, this);
     formattedCode += "\n";
-    return new FormatterVisitorV1(strategies, formattedCode);
+    return newVisitor(formattedCode);
   }
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
-    return new FormatterVisitorV1(strategies, numberLiteral.value().toString());
+    return newVisitor(numberLiteral.value().toString());
   }
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return new FormatterVisitorV1(strategies, stringLiteral.value());
+    return newVisitor(stringLiteral.value());
   }
 
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    return new FormatterVisitorV1(strategies, identifier.name());
+    return newVisitor(identifier.name());
   }
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     BinaryExpressionStrategy strategy = new BinaryExpressionStrategy(binaryExpression.operator());
-    return new FormatterVisitorV1(strategies, strategy.apply(binaryExpression, this));
+    return newVisitor(strategy.apply(binaryExpression, this));
   }
 
   @Override
   public String getCurrentCode() {
     return currentCode;
+  }
+
+  @Override
+  public int getValue() {
+    return 0;
   }
 
   @Override
@@ -102,5 +107,15 @@ public class FormatterVisitorV1 implements FormatterVisitor {
       throw new IllegalArgumentException("Strategy not found for nodeType: " + node.getNodeType());
     }
     return strategy;
+  }
+
+  @Override
+  public FormatterVisitor newVisitor(String newCode) {
+    return new FormatterVisitorV1(strategies, newCode);
+  }
+
+  @Override
+  public FormatterVisitor cloneVisitor() {
+    return new FormatterVisitorV1(strategies, currentCode);
   }
 }

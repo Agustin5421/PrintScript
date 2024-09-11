@@ -2,8 +2,8 @@ package formatter.strategy.factory;
 
 import com.google.gson.JsonObject;
 import formatter.strategy.FormattingStrategy;
-import formatter.strategy.common.OperatorStrategy;
-import formatter.strategy.common.WhiteSpace;
+import formatter.strategy.common.CharacterStrategy;
+import formatter.strategy.common.space.WhiteSpace;
 import formatter.strategy.vardec.GetTypeStrategy;
 import formatter.strategy.vardec.TypingStrategy;
 import formatter.strategy.vardec.VariableDeclarationStrategy;
@@ -27,7 +27,7 @@ public class VariableDeclarationStrategyFactory implements FormattingStrategyFac
     if (beforeSpace) {
       strategies.add(whiteSpace);
     }
-    strategies.add(new OperatorStrategy(":"));
+    strategies.add(new CharacterStrategy(":"));
     if (afterSpace) {
       strategies.add(whiteSpace);
     }

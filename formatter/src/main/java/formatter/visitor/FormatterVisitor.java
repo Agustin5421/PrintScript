@@ -9,7 +9,13 @@ import java.util.Map;
 public interface FormatterVisitor extends NodeVisitor {
   String getCurrentCode();
 
+  int getValue();
+
   Map<AstNodeType, FormattingStrategy> getStrategies();
 
   FormattingStrategy getStrategy(AstNode node) throws IllegalArgumentException;
+
+  FormatterVisitor newVisitor(String newCode);
+
+  FormatterVisitor cloneVisitor();
 }

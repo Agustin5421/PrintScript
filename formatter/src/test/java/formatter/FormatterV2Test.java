@@ -58,4 +58,26 @@ public class FormatterV2Test extends AbstractFormatterTest {
     MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
+
+  @Test
+  public void completeFormattingTest() {
+    String code =
+        "if (true) { if(a){hola=2;} let name: string = \"Oliver\";} else {a=3; a=5; a=6;} const a: number = 5;";
+    String formattedCode =
+        """
+                if (true) {
+                	if (a) {
+                		hola = 2;
+                	}
+                	let name : string = "Oliver";
+                } else {
+                	a = 3;
+                	a = 5;
+                	a = 6;
+                }
+                const a : number = 5;
+                """;
+    MainFormatter formatter = initFormatter(getJsonOptions(), code);
+    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+  }
 }

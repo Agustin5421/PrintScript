@@ -43,6 +43,11 @@ public class FormatterVisitorV2 implements FormatterVisitor {
   }
 
   @Override
+  public int getValue() {
+    return indentationLevel * indentSize;
+  }
+
+  @Override
   public Map<AstNodeType, FormattingStrategy> getStrategies() {
     return new HashMap<>(strategies);
   }
@@ -57,40 +62,45 @@ public class FormatterVisitorV2 implements FormatterVisitor {
   }
 
   @Override
+  public FormatterVisitor newVisitor(String newCode) {
+    return new FormatterVisitorV2(visitorV1, strategies, newCode, indentSize, indentationLevel);
+  }
+
+  // Method used to enter a new level of indentation
+  @Override
+  public FormatterVisitor cloneVisitor() {
+    return enterLevel();
+  }
+
+  @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
-    String formattedCode = "\t".repeat(indentationLevel);
-    return enterLevel(formattedCode);
+    String formattedCode = getStrategy(ifStatement).apply(ifStatement, this);
+    formattedCode += "\n";
+    return newVisitor(formattedCode);
   }
 
   @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
-    return newVisitorV2(booleanLiteral.value().toString());
+    return newVisitor(booleanLiteral.value().toString());
   }
 
   @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
-    String formattedCode = "\t".repeat(indentSize * indentationLevel);
-    FormatterVisitor newVisitor = (FormatterVisitor) visitorV1.visitCallExpression(callExpression);
-    formattedCode += newVisitor.getCurrentCode();
-    return newVisitorV2(formattedCode);
+    return newVisitor(
+        ((FormatterVisitor) visitorV1.visitCallExpression(callExpression)).getCurrentCode());
   }
 
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     String formattedCode =
-        "\t".repeat(indentSize * indentationLevel)
-            + getStrategy(assignmentExpression).apply(assignmentExpression, this)
-            + "\n";
-    return newVisitorV2(formattedCode);
+        getStrategy(assignmentExpression).apply(assignmentExpression, this) + "\n";
+    return newVisitor(formattedCode);
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    String formattedCode =
-        "\t".repeat(indentSize * indentationLevel)
-            + getStrategy(variableDeclaration).apply(variableDeclaration, this)
-            + "\n";
-    return newVisitorV2(formattedCode);
+    String formattedCode = getStrategy(variableDeclaration).apply(variableDeclaration, this) + "\n";
+    return newVisitor(formattedCode);
   }
 
   @Override
@@ -118,11 +128,8 @@ public class FormatterVisitorV2 implements FormatterVisitor {
         newVisitorV1, strategies, newVisitorV1.getCurrentCode(), indentSize, indentationLevel);
   }
 
-  public FormatterVisitorV2 newVisitorV2(String newCode) {
-    return new FormatterVisitorV2(visitorV1, strategies, newCode, indentSize, indentationLevel);
-  }
-
-  public FormatterVisitorV2 enterLevel(String newCode) {
-    return new FormatterVisitorV2(visitorV1, strategies, newCode, indentSize, indentationLevel + 1);
+  public FormatterVisitorV2 enterLevel() {
+    return new FormatterVisitorV2(
+        visitorV1, strategies, currentCode, indentSize, indentationLevel + 1);
   }
 }

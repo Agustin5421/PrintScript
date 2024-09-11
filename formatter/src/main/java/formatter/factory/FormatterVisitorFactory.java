@@ -3,13 +3,12 @@ package formatter.factory;
 import ast.root.AstNodeType;
 import com.google.gson.JsonObject;
 import formatter.strategy.FormattingStrategy;
+import formatter.strategy.common.CharacterStrategy;
 import formatter.strategy.common.OperatorConcatenationStrategy;
-import formatter.strategy.common.OperatorStrategy;
-import formatter.strategy.common.WhiteSpace;
-import formatter.strategy.factory.CallExpressionFactory;
-import formatter.strategy.factory.FormattingStrategyFactory;
-import formatter.strategy.factory.ReAssignmentFactory;
-import formatter.strategy.factory.VariableDeclarationStrategyFactory;
+import formatter.strategy.common.space.WhiteSpace;
+import formatter.strategy.factory.*;
+import formatter.strategy.ifelse.IfElseStrategy;
+import formatter.strategy.ifelse.IndentStrategy;
 import formatter.visitor.FormatterVisitor;
 import formatter.visitor.FormatterVisitorV1;
 import formatter.visitor.FormatterVisitorV2;
@@ -42,6 +41,14 @@ public class FormatterVisitorFactory {
 
     Map<AstNodeType, FormattingStrategy> strategies = getAssignmentStrategies(rules, "1.1");
 
+    ConditionalFactory conditionalFactory = new ConditionalFactory();
+    FormattingStrategy conditionalStatementStrategy = conditionalFactory.create(rules, "1.1");
+    WhiteSpace whiteSpace = new WhiteSpace();
+    strategies.put(
+        AstNodeType.IF_STATEMENT,
+        new IfElseStrategy(
+            conditionalStatementStrategy, List.of(whiteSpace, whiteSpace), new IndentStrategy()));
+
     int indentSize = rules.get("indentSize").getAsInt();
     return new FormatterVisitorV2(formatterVisitorV1, strategies, "", indentSize, 0);
   }
@@ -65,7 +72,7 @@ public class FormatterVisitorFactory {
   private static OperatorConcatenationStrategy getAssignmentStrategy(JsonObject rules) {
     boolean equalSpace = rules.get("equalSpaces").getAsBoolean();
     List<FormattingStrategy> strategies = new ArrayList<>();
-    OperatorStrategy operatorStrategy = new OperatorStrategy("=");
+    CharacterStrategy operatorStrategy = new CharacterStrategy("=");
     if (equalSpace) {
       WhiteSpace whiteSpace = new WhiteSpace();
       strategies.add(whiteSpace);
