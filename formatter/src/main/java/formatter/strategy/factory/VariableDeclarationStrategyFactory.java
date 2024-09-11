@@ -2,6 +2,7 @@ package formatter.strategy.factory;
 
 import com.google.gson.JsonObject;
 import formatter.strategy.FormattingStrategy;
+import formatter.strategy.common.AssignationStrategy;
 import formatter.strategy.common.CharacterStrategy;
 import formatter.strategy.common.space.WhiteSpace;
 import formatter.strategy.vardec.GetTypeStrategy;
@@ -11,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VariableDeclarationStrategyFactory implements FormattingStrategyFactory {
-  private final FormattingStrategy equalStrategy;
+  private final AssignationStrategy assignationStrategy;
 
-  public VariableDeclarationStrategyFactory(FormattingStrategy equalStrategy) {
-    this.equalStrategy = equalStrategy;
+  public VariableDeclarationStrategyFactory(AssignationStrategy assignationStrategy) {
+    this.assignationStrategy = assignationStrategy;
   }
 
   @Override
@@ -33,14 +34,6 @@ public class VariableDeclarationStrategyFactory implements FormattingStrategyFac
     }
     strategies.add(new GetTypeStrategy());
     TypingStrategy semiColonStrategy = new TypingStrategy(strategies);
-    List<String> keyWords;
-    switch (version) {
-      case "1.1":
-        keyWords = List.of("let", "const");
-        break;
-      default:
-        keyWords = List.of("let");
-    }
-    return new VariableDeclarationStrategy(List.of(semiColonStrategy, equalStrategy), keyWords);
+    return new VariableDeclarationStrategy(semiColonStrategy, " ", assignationStrategy);
   }
 }

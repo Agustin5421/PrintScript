@@ -3,12 +3,11 @@ package formatter.factory;
 import ast.root.AstNodeType;
 import com.google.gson.JsonObject;
 import formatter.strategy.FormattingStrategy;
+import formatter.strategy.common.AssignationStrategy;
 import formatter.strategy.common.CharacterStrategy;
 import formatter.strategy.common.OperatorConcatenationStrategy;
 import formatter.strategy.common.space.WhiteSpace;
 import formatter.strategy.factory.*;
-import formatter.strategy.ifelse.IfElseStrategy;
-import formatter.strategy.ifelse.IndentStrategy;
 import formatter.visitor.FormatterVisitor;
 import formatter.visitor.FormatterVisitorV1;
 import formatter.visitor.FormatterVisitorV2;
@@ -41,13 +40,9 @@ public class FormatterVisitorFactory {
 
     Map<AstNodeType, FormattingStrategy> strategies = getAssignmentStrategies(rules, "1.1");
 
-    ConditionalFactory conditionalFactory = new ConditionalFactory();
-    FormattingStrategy conditionalStatementStrategy = conditionalFactory.create(rules, "1.1");
-    WhiteSpace whiteSpace = new WhiteSpace();
-    strategies.put(
-        AstNodeType.IF_STATEMENT,
-        new IfElseStrategy(
-            conditionalStatementStrategy, List.of(whiteSpace, whiteSpace), new IndentStrategy()));
+    IfElseFactory ifElseFactory = new IfElseFactory();
+    FormattingStrategy ifElseStrategy = ifElseFactory.create(rules, "1.1");
+    strategies.put(AstNodeType.IF_STATEMENT, ifElseStrategy);
 
     int indentSize = rules.get("indentSize").getAsInt();
     return new FormatterVisitorV2(formatterVisitorV1, strategies, "", indentSize, 0);
@@ -56,7 +51,7 @@ public class FormatterVisitorFactory {
   private static Map<AstNodeType, FormattingStrategy> getAssignmentStrategies(
       JsonObject rules, String version) {
     Map<AstNodeType, FormattingStrategy> strategies = new HashMap<>();
-    OperatorConcatenationStrategy assignmentStrategy = getAssignmentStrategy(rules);
+    AssignationStrategy assignmentStrategy = getAssignmentStrategy(rules);
 
     FormattingStrategyFactory reAssignmentFactory = new ReAssignmentFactory(assignmentStrategy);
     FormattingStrategy reAssignmentStrategy = reAssignmentFactory.create(rules, version);
@@ -69,9 +64,9 @@ public class FormatterVisitorFactory {
     return strategies;
   }
 
-  private static OperatorConcatenationStrategy getAssignmentStrategy(JsonObject rules) {
+  private static AssignationStrategy getAssignmentStrategy(JsonObject rules) {
     boolean equalSpace = rules.get("equalSpaces").getAsBoolean();
-    List<FormattingStrategy> strategies = new ArrayList<>();
+    List<CharacterStrategy> strategies = new ArrayList<>();
     CharacterStrategy operatorStrategy = new CharacterStrategy("=");
     if (equalSpace) {
       WhiteSpace whiteSpace = new WhiteSpace();
@@ -81,6 +76,6 @@ public class FormatterVisitorFactory {
     } else {
       strategies.add(operatorStrategy);
     }
-    return new OperatorConcatenationStrategy(strategies);
+    return new AssignationStrategy(new OperatorConcatenationStrategy(strategies));
   }
 }

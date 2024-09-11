@@ -10,9 +10,17 @@ public class BodyStrategy implements FormattingStrategy {
   private final List<StatementNode> body;
   private final IndentStrategy indentStrategy;
 
-  public BodyStrategy(List<StatementNode> body, IndentStrategy indentStrategy) {
+  public BodyStrategy(IndentStrategy indentStrategy, List<StatementNode> body) {
     this.body = body;
     this.indentStrategy = indentStrategy;
+  }
+
+  public BodyStrategy(IndentStrategy indentStrategy) {
+    this(indentStrategy, List.of());
+  }
+
+  public BodyStrategy newStrategy(List<StatementNode> body) {
+    return new BodyStrategy(indentStrategy, body);
   }
 
   @Override

@@ -9,15 +9,19 @@ import java.util.List;
 
 public class IfElseStrategy implements FormattingStrategy {
   private final ConditionalStatementStrategy conditionalStatementStrategy;
+  // List of two white spaces for the else keyword (before and after)
   private final List<CharacterStrategy> whiteSpaces;
+  // Strategy that adds indentation depending on the level of the node (getValue())
+  private final BodyStrategy bodyStrategy;
   private final IndentStrategy indentStrategy;
 
   public IfElseStrategy(
-      FormattingStrategy conditionalStatementStrategy,
+      ConditionalStatementStrategy conditionalStatementStrategy,
       List<CharacterStrategy> whiteSpaces,
       IndentStrategy indentStrategy) {
-    this.conditionalStatementStrategy = (ConditionalStatementStrategy) conditionalStatementStrategy;
+    this.conditionalStatementStrategy = conditionalStatementStrategy;
     this.whiteSpaces = whiteSpaces;
+    this.bodyStrategy = new BodyStrategy(indentStrategy);
     this.indentStrategy = indentStrategy;
   }
 
@@ -26,6 +30,7 @@ public class IfElseStrategy implements FormattingStrategy {
     StringBuilder formattedCode = new StringBuilder();
     IfStatement ifStatementNode = (IfStatement) node;
 
+    // Adding "if (condition)"
     String condition = formatCondition(ifStatementNode, node, visitor);
     formattedCode.append(condition);
 
@@ -33,9 +38,9 @@ public class IfElseStrategy implements FormattingStrategy {
     FormatterVisitor newVisitor = visitor.cloneVisitor();
 
     // Format the whole if body
-    BodyStrategy bodyStrategy =
-        new BodyStrategy(ifStatementNode.getThenBlockStatement(), indentStrategy);
-    String ifBody = formatBody(bodyStrategy, node, visitor, newVisitor, indentStrategy);
+    BodyStrategy newBodyStrategy =
+        bodyStrategy.newStrategy(ifStatementNode.getThenBlockStatement());
+    String ifBody = formatBody(newBodyStrategy, node, visitor, newVisitor);
     formattedCode.append(ifBody);
 
     // Format the else block if it exists
@@ -44,8 +49,8 @@ public class IfElseStrategy implements FormattingStrategy {
       formattedCode.append("else");
       formattedCode.append(whiteSpaces.get(1).apply(node, newVisitor));
 
-      bodyStrategy = new BodyStrategy(ifStatementNode.getElseBlockStatement(), indentStrategy);
-      String elseBody = formatBody(bodyStrategy, node, visitor, newVisitor, indentStrategy);
+      newBodyStrategy = bodyStrategy.newStrategy(ifStatementNode.getElseBlockStatement());
+      String elseBody = formatBody(newBodyStrategy, node, visitor, newVisitor);
       formattedCode.append(elseBody);
     }
     return formattedCode.toString();
@@ -66,8 +71,7 @@ public class IfElseStrategy implements FormattingStrategy {
       BodyStrategy bodyStrategy,
       AstNode node,
       FormatterVisitor previousVisitor,
-      FormatterVisitor visitor,
-      IndentStrategy indentStrategy) {
+      FormatterVisitor visitor) {
     StringBuilder formattedCode = new StringBuilder();
     formattedCode.append("{\n");
     formattedCode.append(bodyStrategy.apply(node, visitor));
