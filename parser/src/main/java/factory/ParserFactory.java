@@ -52,8 +52,8 @@ public class ParserFactory {
         List.of(
             new IdentifierParser(),
             new LiteralParser(),
-            new BinaryExpressionParser(),
-            new CallFunctionAsExpressionParser(List.of("println", "readInput", "readEnv")));
+            new CallFunctionAsExpressionParser(List.of("println", "readInput", "readEnv")),
+            new BinaryExpressionParser());
     return new Parser(lexer, statementParsers, expressionParsers, new MainStatementValidator());
   }
 }
