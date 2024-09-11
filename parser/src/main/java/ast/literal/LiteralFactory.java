@@ -13,7 +13,7 @@ public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {
     TokenType tokenType = token.nodeType();
     if (tokenType == TokenValueType.STRING) {
-      return new StringLiteral(token.value(), token.initialPosition(), token.finalPosition());
+      return new StringLiteral(removeQuotes(token.value()), token.initialPosition(), token.finalPosition());
     }
 
     if (tokenType == TokenValueType.NUMBER) {
@@ -35,5 +35,9 @@ public class LiteralFactory {
     String exceptionMessage = getExceptionMessage(token.value(), position.row(), position.col());
 
     throw new UnsupportedDataType(exceptionMessage);
+  }
+
+  private static String removeQuotes(String value) {
+    return value.substring(1, value.length() - 1);
   }
 }
