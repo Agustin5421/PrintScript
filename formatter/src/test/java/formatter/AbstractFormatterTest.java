@@ -61,17 +61,6 @@ public abstract class AbstractFormatterTest {
 
   @Test
   public void differentFormatTest() {
-    final String newJsonOptions =
-        """
-                    {
-                    "colonRules": {
-                      "before": true,
-                      "after": false
-                    },
-                    "equalSpaces": false,
-                    "printLineBreaks": 2
-                  }
-                """;
     String formattedCode =
         """
                 let myVar :number=2 + 3 * 2;
@@ -83,7 +72,7 @@ public abstract class AbstractFormatterTest {
 
                 println(myVar);
                 """;
-    MainFormatter formatter = initFormatter(newJsonOptions, formattedCode);
+    MainFormatter formatter = initFormatter(alternativeOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
@@ -102,6 +91,19 @@ public abstract class AbstractFormatterTest {
               },
               "equalSpaces": true,
               "printLineBreaks": 1
+            }
+            """;
+  }
+
+  protected String alternativeOptions() {
+    return """
+            {
+              "colonRules": {
+                "before": true,
+                "after": false
+              },
+              "equalSpaces": false,
+              "printLineBreaks": 2
             }
             """;
   }

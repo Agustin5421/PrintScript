@@ -42,7 +42,8 @@ public class FormatterVisitorFactory {
 
     Map<AstNodeType, FormattingStrategy> strategies = getAssignmentStrategies(rules, "1.1");
 
-    return new FormatterVisitorV2(formatterVisitorV1, strategies, "", 0);
+    int indentSize = rules.get("indentSize").getAsInt();
+    return new FormatterVisitorV2(formatterVisitorV1, strategies, "", indentSize, 0);
   }
 
   private static Map<AstNodeType, FormattingStrategy> getAssignmentStrategies(

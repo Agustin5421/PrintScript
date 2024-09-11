@@ -12,7 +12,7 @@ import parsers.Parser;
 
 public class FormatterInitializer {
   public static MainFormatter init(String options, String code, String version, Observer observer) {
-    JsonObject rules = OptionsChecker.checkAndReturn(options);
+    JsonObject rules = OptionsChecker.checkAndReturn(options, version);
     Parser parser = ParserFactory.getParser(version);
     parser = parser.setLexer(parser.getLexer().setInput(code));
     return new MainFormatter(

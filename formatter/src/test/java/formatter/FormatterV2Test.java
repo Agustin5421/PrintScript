@@ -10,6 +10,36 @@ public class FormatterV2Test extends AbstractFormatterTest {
     return FormatterInitializer.init(jsonOptions, formattedCode, "1.1");
   }
 
+  @Override
+  public String getJsonOptions() {
+    return """
+            {
+              "colonRules": {
+                "before": true,
+                "after": true
+              },
+              "equalSpaces": true,
+              "printLineBreaks": 1,
+              "indentSize": 1
+            }
+            """;
+  }
+
+  @Override
+  public String alternativeOptions() {
+    return """
+            {
+              "colonRules": {
+                "before": true,
+                "after": false
+              },
+              "equalSpaces": false,
+              "printLineBreaks": 2,
+              "indentSize": 4
+            }
+            """;
+  }
+
   // TODO : Add additional tests for the new formatter
   @Test
   public void additionalTest1() {
