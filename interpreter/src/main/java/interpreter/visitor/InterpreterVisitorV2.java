@@ -13,7 +13,7 @@ import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import env.EnvLoader;
-import interpreter.VariablesRepository;
+import interpreter.visitor.repository.VariablesRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;

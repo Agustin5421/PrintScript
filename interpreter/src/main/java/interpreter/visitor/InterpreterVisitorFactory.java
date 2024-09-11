@@ -1,6 +1,6 @@
 package interpreter.visitor;
 
-import interpreter.VariablesRepository;
+import interpreter.visitor.repository.VariablesRepository;
 
 public class InterpreterVisitorFactory {
   public static InterpreterVisitor getInterpreterVisitor(String version) {

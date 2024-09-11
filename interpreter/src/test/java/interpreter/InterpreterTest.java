@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ast.identifier.Identifier;
 import exceptions.UnsupportedExpressionException;
+import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import token.Position;

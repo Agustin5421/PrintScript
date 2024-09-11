@@ -5,6 +5,7 @@ import ast.visitor.NodeVisitor;
 import factory.ParserFactory;
 import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorFactory;
+import interpreter.visitor.repository.VariablesRepository;
 import java.util.List;
 import lexer.Lexer;
 import observers.Observer;

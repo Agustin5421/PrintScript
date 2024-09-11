@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.expressions.BinaryExpression;
 import ast.literal.NumberLiteral;
-import interpreter.evaluator.BinaryExpressionEvaluator;
 import interpreter.visitor.InterpreterVisitorV1;
+import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
+import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

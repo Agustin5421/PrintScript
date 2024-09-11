@@ -1,4 +1,4 @@
-package interpreter;
+package interpreter.visitor.repository;
 
 import ast.identifier.Identifier;
 import ast.literal.Literal;

@@ -1,4 +1,4 @@
-package interpreter.evaluator;
+package interpreter.visitor.evaluator;
 
 import ast.expressions.BinaryExpression;
 import ast.literal.Literal;

@@ -3,6 +3,7 @@ package interpreter;
 import static org.junit.Assert.assertEquals;
 
 import ast.identifier.Identifier;
+import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Test;
 import token.Position;
 

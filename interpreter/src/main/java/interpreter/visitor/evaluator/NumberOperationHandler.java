@@ -1,4 +1,4 @@
-package interpreter.evaluator;
+package interpreter.visitor.evaluator;
 
 public class NumberOperationHandler {
   public static double performDoubleOperation(
