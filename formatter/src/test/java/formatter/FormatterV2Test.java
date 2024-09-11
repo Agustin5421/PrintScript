@@ -30,8 +30,8 @@ public class FormatterV2Test extends AbstractFormatterTest {
     return """
             {
               "colonRules": {
-                "before": true,
-                "after": false
+                "before": false,
+                "after": true
               },
               "equalSpaces": false,
               "printLineBreaks": 2,
@@ -42,16 +42,16 @@ public class FormatterV2Test extends AbstractFormatterTest {
 
   // TODO : Add additional tests for the new formatter
   @Test
-  public void additionalTest1() {
+  public void testBooleanDeclaration() {
     String formattedCode = """
-                let anotherVar : boolean = true;
+                let myVar : boolean = true;
                 """;
     MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 
   @Test
-  public void additionalTest2() {
+  public void testBooleanReAssignation() {
     String formattedCode = """
                 anotherVar = false;
                 """;
@@ -60,9 +60,27 @@ public class FormatterV2Test extends AbstractFormatterTest {
   }
 
   @Test
-  public void completeFormattingTest() {
+  public void testReadInput() {
+    String formattedCode = """
+            let myVar : string = readInput();
+            """;
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+  }
+
+  @Test
+  public void testReadEnv() {
+    String formattedCode = """
+            let myVar : string = readEnv("ENV_VAR");
+            """;
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+  }
+
+  @Test
+  public void newCompleteFormattingTest() {
     String code =
-        "if (true) { if(a){hola=2;} let name: string = \"Oliver\";} else {a=3; a=5; a=6;} const a: number = 5;";
+        "if (true) { if(a){hola=2;} let name: string = \"Oliver\";} else {a=3; a=5; a=6;a=readInput();if(a){a=readEnv(\"ENV_VAR\");}} const a: number = 5;";
     String formattedCode =
         """
                 if (true) {
@@ -74,10 +92,43 @@ public class FormatterV2Test extends AbstractFormatterTest {
                 	a = 3;
                 	a = 5;
                 	a = 6;
+                	a = readInput();
+                	if (a) {
+                		a = readEnv("ENV_VAR");
+                	}
                 }
                 const a : number = 5;
                 """;
     MainFormatter formatter = initFormatter(getJsonOptions(), code);
+    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+  }
+
+  @Test
+  public void newDifferentFormatTest() {
+    String code =
+        "if (true) { if(a){hola=2;} let name: string = \"Oliver\";} else {a=3; a=5; a=6;a=readInput();if(a){a=readEnv(\"ENV_VAR\");if(a){a=false;}}} const a: number = 5;";
+    String formattedCode =
+        """
+                if (true) {
+                				if (a) {
+                								hola=2;
+                				}
+                				let name: string="Oliver";
+                } else {
+                				a=3;
+                				a=5;
+                				a=6;
+                				a=readInput();
+                				if (a) {
+                								a=readEnv("ENV_VAR");
+                								if (a) {
+                												a=false;
+                								}
+                				}
+                }
+                const a: number=5;
+                """;
+    MainFormatter formatter = initFormatter(alternativeOptions(), code);
     Assertions.assertEquals(formattedCode, formatter.formatProgram());
   }
 }

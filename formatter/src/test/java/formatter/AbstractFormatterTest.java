@@ -63,7 +63,7 @@ public abstract class AbstractFormatterTest {
   public void differentFormatTest() {
     String formattedCode =
         """
-                let myVar :number=2 + 3 * 2;
+                let myVar: number=2 + 3 * 2;
 
 
                 println(myVar);
@@ -99,8 +99,8 @@ public abstract class AbstractFormatterTest {
     return """
             {
               "colonRules": {
-                "before": true,
-                "after": false
+                "before": false,
+                "after": true
               },
               "equalSpaces": false,
               "printLineBreaks": 2

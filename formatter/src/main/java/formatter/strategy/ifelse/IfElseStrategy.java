@@ -72,11 +72,9 @@ public class IfElseStrategy implements FormattingStrategy {
       AstNode node,
       FormatterVisitor previousVisitor,
       FormatterVisitor visitor) {
-    StringBuilder formattedCode = new StringBuilder();
-    formattedCode.append("{\n");
-    formattedCode.append(bodyStrategy.apply(node, visitor));
-    formattedCode.append(indentStrategy.apply(node, previousVisitor));
-    formattedCode.append("}");
-    return formattedCode.toString();
+    return "{\n"
+        + bodyStrategy.apply(node, visitor)
+        + indentStrategy.apply(node, previousVisitor)
+        + "}";
   }
 }
