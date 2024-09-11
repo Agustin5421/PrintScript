@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import exceptions.UnsupportedExpressionException;
+import interpreter.factory.InterpreterFactory;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +26,7 @@ public class InterpreterTest {
   @Test
   public void testExecuteProgramWithNumber() {
     String code = "let x: number = 42;";
-    Interpreter interpreter = new Interpreter("1.0");
+    Interpreter interpreter = InterpreterFactory.getInterpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(42, repository.getNewVariable(new VariableIdentifier("x")).value());
   }

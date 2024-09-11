@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ast.identifier.Identifier;
+import interpreter.factory.InterpreterFactory;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import java.io.ByteArrayInputStream;
@@ -19,7 +20,7 @@ public class InterpreterVisitorV2Test {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
     String code = "readInput();";
-    Interpreter interpreter = new Interpreter("1.1");
+    Interpreter interpreter = InterpreterFactory.getInterpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
     assertEquals(

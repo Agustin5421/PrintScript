@@ -32,6 +32,12 @@ public class Interpreter implements Progressable {
     this.observers = List.of();
   }
 
+  public Interpreter(Parser parser, InterpreterVisitor interpreterVisitor) {
+    this.nodeVisitor = interpreterVisitor;
+    this.parser = parser;
+    this.observers = List.of();
+  }
+
   // TODO: Delete return of executeProgram() method.
   // Testing purposes only.
   public VariablesRepository executeProgram(String code) {
