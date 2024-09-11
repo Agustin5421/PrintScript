@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ast.identifier.Identifier;
+import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -289,9 +290,7 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        "constant",
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals("constant", newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -300,9 +299,7 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        true,
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals(true, newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -311,9 +308,7 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        9.81,
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals(9.81, newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -322,8 +317,6 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        6.62607015e-34,
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals(6.62607015e-34, newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 }

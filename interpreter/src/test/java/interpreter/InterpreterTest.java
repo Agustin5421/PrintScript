@@ -3,8 +3,8 @@ package interpreter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ast.identifier.Identifier;
 import exceptions.UnsupportedExpressionException;
+import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(
-        "\"this is a string\"",
-        repository.getVariable(new Identifier("x", defaultPosition, defaultPosition)).value());
+        "\"this is a string\"", repository.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -28,8 +27,7 @@ public class InterpreterTest {
     String code = "let x: number = 42;";
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
-    assertEquals(
-        42, repository.getVariable(new Identifier("x", defaultPosition, defaultPosition)).value());
+    assertEquals(42, repository.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -38,10 +36,8 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(
-        "\"this is a string\"",
-        repository.getVariable(new Identifier("x", defaultPosition, defaultPosition)).value());
-    assertEquals(
-        42, repository.getVariable(new Identifier("y", defaultPosition, defaultPosition)).value());
+        "\"this is a string\"", repository.getNewVariable(new VariableIdentifier("x")).value());
+    assertEquals(42, repository.getNewVariable(new VariableIdentifier("y")).value());
   }
 
   @Test
@@ -56,7 +52,7 @@ public class InterpreterTest {
     String code = "";
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
-    assertEquals(0, repository.getVariables().size());
+    assertEquals(0, repository.getNewVariables().size());
   }
 
   @Test
@@ -65,8 +61,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(
-        "\"this is a string\"",
-        repository.getVariable(new Identifier("x", defaultPosition, defaultPosition)).value());
+        "\"this is a string\"", repository.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -74,14 +69,10 @@ public class InterpreterTest {
     String code = "let x: number = 42.5; let y: number = x + 42.5; println(y); println(x);";
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
-    assertEquals(
-        42.5,
-        repository.getVariable(new Identifier("x", defaultPosition, defaultPosition)).value());
+    assertEquals(42.5, repository.getNewVariable(new VariableIdentifier("x")).value());
 
     //  no esta sumando bien, dice q x es 0
-    assertEquals(
-        85.0,
-        repository.getVariable(new Identifier("y", defaultPosition, defaultPosition)).value());
+    assertEquals(85.0, repository.getNewVariable(new VariableIdentifier("y")).value());
   }
 
   @Test

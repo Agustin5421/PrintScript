@@ -13,6 +13,8 @@ import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
+import interpreter.visitor.repository.VariableIdentifier;
+import interpreter.visitor.repository.VariableIdentifierFactory;
 import interpreter.visitor.repository.VariablesRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,21 +81,36 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     Identifier left = assignmentExpression.left();
+    VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromIdentifier(left);
+
+    InterpreterVisitor latestVisitor =
+        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
 
     Literal<?> evaluatedRight =
-        ((InterpreterVisitorV1) assignmentExpression.right().accept(this)).getValue();
+        ((InterpreterVisitor) assignmentExpression.right().accept(latestVisitor)).getValue();
 
     VariablesRepository newVariablesRepository =
-        variablesRepository.addVariable(left, evaluatedRight);
-    return new InterpreterVisitorV1(newVariablesRepository, value, printedValues);
+        variablesRepository.setNewVariable(varId, evaluatedRight);
+
+    return new InterpreterVisitorV1(newVariablesRepository, evaluatedRight, printedValues);
   }
 
   @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
-    return setVariable(variableDeclaration);
+    VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromVarDec(variableDeclaration);
+
+    InterpreterVisitor latestVisitor =
+        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
+
+    Literal<?> value =
+        ((InterpreterVisitor) variableDeclaration.expression().accept(latestVisitor)).getValue();
+
+    VariablesRepository newVariablesRepository =
+        getVariablesRepository().addNewVariable(varId, value);
+
+    return new InterpreterVisitorV1(newVariablesRepository, value, printedValues);
   }
 
-  // que tire excepcion  estos q no deberian de llegar
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
     return new InterpreterVisitorV1(variablesRepository, numberLiteral, printedValues);
@@ -104,34 +121,20 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     return new InterpreterVisitorV1(variablesRepository, stringLiteral, printedValues);
   }
 
-  // Method to get the value of a variable
   @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    return new InterpreterVisitorV1(
-        variablesRepository, variablesRepository.getVariable(identifier));
+    VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
+    Literal<Object> value = getVariablesRepository().getNewVariable(varId);
+
+    return new InterpreterVisitorV1(getVariablesRepository(), value);
   }
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    Literal<?> value = binaryExpressionEvaluator.evaluate(binaryExpression, this);
-    return new InterpreterVisitorV1(variablesRepository, value, printedValues);
-  }
-
-  private NodeVisitor setVariable(VariableDeclaration statement) {
-    Identifier name = statement.identifier();
-
-    if (variablesRepository.getVariables().containsKey(name)) {
-      throw new IllegalArgumentException("Variable " + name + " is already defined");
-    } // cambiar a una excepcion mas concreta de variable ya definida
-
     InterpreterVisitor latestVisitor =
         InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
-    // es aca el problema, pero no se como hacer para q use el mas nuevo
-    Literal<?> value =
-        ((InterpreterVisitor) statement.expression().accept(latestVisitor)).getValue();
-
-    VariablesRepository newVariablesRepository = variablesRepository.addVariable(name, value);
-    return new InterpreterVisitorV1(newVariablesRepository, value, printedValues);
+    Literal<?> value = binaryExpressionEvaluator.evaluate(binaryExpression, latestVisitor);
+    return new InterpreterVisitorV1(variablesRepository, value, printedValues);
   }
 
   private List<String> printlnMethod(Identifier identifier, List<AstNode> arguments) {
