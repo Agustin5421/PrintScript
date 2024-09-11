@@ -14,9 +14,9 @@ public class IdentifierStrategyFactory implements StrategyFactory {
     JsonObject jsonObject =
         JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("identifier");
 
-    //    if (jsonObject == null) {
-    //      return new StrategiesContainer(List.of());
-    //    }
+    if (jsonObject == null) {
+      return new StrategiesContainer(List.of());
+    }
 
     List<LintingStrategy> strategies = new ArrayList<>();
 
