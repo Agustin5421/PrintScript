@@ -11,16 +11,13 @@ import linter.visitor.strategy.callexpression.ArgumentsStrategy;
 import linter.visitor.strategy.callexpression.MethodArgumentsStrategy;
 
 public class CallExpressionStrategyFactory implements StrategyFactory {
-  // TODO: createStrategies receives the version.
   @Override
   public LintingStrategy createStrategies(String rules, String version) {
-    JsonObject jsonObject;
+    JsonObject jsonObject =
+        JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("callExpression");
 
-    try {
-      jsonObject =
-          JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("callExpression");
-    } catch (Exception e) {
-      return null;
+    if (jsonObject == null) {
+      return new StrategiesContainer(List.of());
     }
     return switch (version) {
       case "1.0" -> new StrategiesContainer(getStrategiesV1(jsonObject));
