@@ -62,6 +62,17 @@ public class ParserV2Test extends CommonParserTests {
   }
 
   @Test
+  public void testReadInputWithExpression() {
+    Parser parser =
+        setParser("let input: string = readInput(\"Enter\" + \"something\");", getParser());
+    VariableDeclaration node = (VariableDeclaration) parser.next();
+    assertInstanceOf(VariableDeclaration.class, node);
+    assertEquals("input", node.identifier().name());
+    CallExpression callExpression = (CallExpression) node.expression();
+    assertEquals("readInput", callExpression.methodIdentifier().name());
+  }
+
+  @Test
   public void testReadEnvFunction() {
     Parser parser = setParser("readEnv('this is a string', is, also, a, test);", getParser());
     CallExpression node = (CallExpression) parser.next();
