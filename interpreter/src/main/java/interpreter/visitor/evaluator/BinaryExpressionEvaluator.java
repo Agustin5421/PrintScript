@@ -29,4 +29,11 @@ public class BinaryExpressionEvaluator {
       return new NumberLiteral(result, left.start(), right.end());
     }
   }
+
+  private boolean checkBoolean(Literal<?> left, Literal<?> right) {
+    AstNodeType leftType = left.getNodeType();
+    AstNodeType rightType = right.getNodeType();
+    return leftType.equals(AstNodeType.BOOLEAN_LITERAL)
+        && rightType.equals(AstNodeType.BOOLEAN_LITERAL);
+  }
 }
