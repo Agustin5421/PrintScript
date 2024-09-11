@@ -104,4 +104,36 @@ public class InterpreterTest {
     Assertions.assertThrows(
         UnsupportedExpressionException.class, () -> interpreter.executeProgram(code));
   }
+
+  // TODO: solve these tests
+  /*
+  @Test
+  public void testNoValueDeclaration() {
+    String code = "let x: string;";
+    Interpreter interpreter = new Interpreter("1.0");
+    VariablesRepository repository = interpreter.executeProgram(code);
+    assertEquals(null, repository.getNewVariable(new VariableIdentifier("x")).value());
+  }
+
+  @Test
+  public void testNoAdditionalQuotes() {
+    String code = "let x: string = \"hello\";";
+    Interpreter interpreter = new Interpreter("1.0");
+    VariablesRepository repository = interpreter.executeProgram(code);
+    assertEquals("hello", repository.getNewVariable(new VariableIdentifier("x")).value());
+  }
+
+  @Test
+  public void testPrintsLog() {
+    String code = """
+            println("Hello");
+            println("World");
+            """;
+    Interpreter interpreter = new Interpreter("1.0");
+    List<String> prints = interpreter.interpret(code);
+    List<String> expected = List.of("Hello", "World");
+    assertEquals(expected, prints);
+  }
+
+   */
 }

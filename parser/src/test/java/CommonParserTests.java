@@ -24,6 +24,16 @@ public abstract class CommonParserTests {
     assertInstanceOf(VariableDeclaration.class, parser.next());
   }
 
+  // TODO: solve these tests
+  /*
+  @Test
+  public void testNoValueDeclaration() {
+    Parser parser = setParser("let x: string;\"", getParser());
+    assertInstanceOf(VariableDeclaration.class, parser.next());
+  }
+
+   */
+
   @Test
   public void testBinaryOperation() {
     Parser parser = setParser("myNumber =  1 + 'hola';", getParser());

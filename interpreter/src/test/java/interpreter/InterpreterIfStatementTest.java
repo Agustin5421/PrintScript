@@ -54,26 +54,19 @@ public class InterpreterIfStatementTest {
     assertEquals(6, repository.getNewVariable(new VariableIdentifier("hola")).value());
   }
 
-  //    @Test
-  //    public void testExecuteProgram3() {
-  //
-  //        String code = "let x: string = \"this is a string\"; if (true) {x = \"omg it worked\";}
-  // let y:string = \"geda\"";
-  //        Interpreter interpreter = new Interpreter("1.1");
-  //        VariablesRepository repository = interpreter.executeProgram(code);
-  //        assertEquals(
-  //                "omg it worked",
-  //                repository.getNewVariable(new VariableIdentifier("x")).value());
-  //    }
-  //
-  //    @Test
-  //    public void testExecuteProgram4() {
-  //        String code = "let x: string = \"this is a string\"; if (false) {x = \"omg it worked\";}
-  // let y:string = \"gedi\"";
-  //        Interpreter interpreter = new Interpreter("1.1");
-  //        VariablesRepository repository = interpreter.executeProgram(code);
-  //        assertEquals(
-  //                "this is a string",
-  //                repository.getNewVariable(new VariableIdentifier("x")).value());
-  //    }
+  // TODO: solve these tests
+  /*
+  @Test
+  public void testPrintsLog() {
+    String code = """
+            println("Hello");
+            println("World");
+            """;
+    Interpreter interpreter = new Interpreter("1.0");
+    List<String> prints = interpreter.interpret(code);
+    List<String> expected = List.of("Hello", "World");
+    assertEquals(expected, prints);
+  }
+
+   */
 }
