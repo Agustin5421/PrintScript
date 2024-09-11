@@ -107,7 +107,7 @@ public class LinterVisitorV2 implements LinterVisitor {
     Identifier left = assignmentExpression.left();
     NodeVisitor visitor = left.accept(this);
 
-    Expression right = assignmentExpression.right();
+    ExpressionNode right = assignmentExpression.right();
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
@@ -124,7 +124,7 @@ public class LinterVisitorV2 implements LinterVisitor {
     Identifier identifier = variableDeclaration.identifier();
     NodeVisitor visitor = identifier.accept(this);
 
-    Expression expression = variableDeclaration.expression();
+    ExpressionNode expression = variableDeclaration.expression();
     visitor = expression.accept(visitor);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
@@ -168,10 +168,10 @@ public class LinterVisitorV2 implements LinterVisitor {
 
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
-    Expression left = binaryExpression.left();
+    ExpressionNode left = binaryExpression.left();
     NodeVisitor visitor = left.accept(this);
 
-    Expression right = binaryExpression.right();
+    ExpressionNode right = binaryExpression.right();
     visitor = right.accept(visitor);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
