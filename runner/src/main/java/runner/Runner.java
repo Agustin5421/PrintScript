@@ -32,7 +32,7 @@ public class Runner {
     Lexer lexer = LexerFactory.getLexer(version);
     Parser parser = ParserFactory.getParser(version);
 
-      assert lexer != null;
-      parser = parser.setLexer(lexer.setInputAsString(input));
+    assert lexer != null;
+    parser = parser.setLexer(lexer.setInputAsString(input));
   }
 }

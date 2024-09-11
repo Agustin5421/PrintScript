@@ -13,7 +13,8 @@ public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {
     TokenType tokenType = token.nodeType();
     if (tokenType == TokenValueType.STRING) {
-      return new StringLiteral(removeQuotes(token.value()), token.initialPosition(), token.finalPosition());
+      return new StringLiteral(
+          removeQuotes(token.value()), token.initialPosition(), token.finalPosition());
     }
 
     if (tokenType == TokenValueType.NUMBER) {
