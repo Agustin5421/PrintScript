@@ -105,7 +105,7 @@ public class Lexer implements Iterator<Token> {
 
   public Token peek() {
     if (!hasNext()) {
-      throw new IllegalStateException("No more tokens available");
+      return null;
     }
 
     return tokens.peek();

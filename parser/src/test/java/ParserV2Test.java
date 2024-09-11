@@ -69,4 +69,11 @@ public class ParserV2Test extends CommonParserTests {
     assertEquals(5, callExpression.arguments().size());
     assertEquals("a", node.left().name());
   }
+
+  @Test
+  public void testIfWithoutElse() {
+    Parser parser = setParser("if (true) {x = 'omg it worked';}", getParser());
+    IfStatement node = (IfStatement) parser.next();
+    assertEquals(1, node.getThenBlockStatement().size());
+  }
 }

@@ -23,11 +23,8 @@ public class IfStatementValidator implements StatementValidator {
       if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
         braceCount--;
         if (braceCount == 0) {
-          try {
-            if (lexer.peek().nodeType() == TokenSyntaxType.ELSE) {
-              hasElse = true;
-            }
-          } catch (IndexOutOfBoundsException ignored) {
+          if (lexer.peek() != null && lexer.peek().nodeType() == TokenSyntaxType.ELSE) {
+            hasElse = true;
           }
           break;
         }
@@ -52,7 +49,7 @@ public class IfStatementValidator implements StatementValidator {
       }
     }
 
-    throw new RuntimeException("Expected '}' to close if-else block but got: EOF");
+    return tokens;
   }
 
   @Override
