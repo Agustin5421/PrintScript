@@ -34,6 +34,17 @@ public class ParserV2Test extends CommonParserTests {
     assertInstanceOf(IfStatement.class, node);
   }
 
+  // TODO: solve these tests
+  /*
+  @Test
+  public void testNoElse() {
+    Parser parser = setParser("if (true) { let name: string = \"Oliver\";}", getParser());
+    AstNode node = parser.next();
+    assertInstanceOf(IfStatement.class, node);
+  }
+
+   */
+
   @Test
   public void testConstDeclaration() {
     Parser parser = setParser("const name: string = \"Oliver\";", getParser());
