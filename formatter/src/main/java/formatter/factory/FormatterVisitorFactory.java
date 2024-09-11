@@ -28,10 +28,10 @@ public class FormatterVisitorFactory {
   }
 
   private static FormatterVisitor getFormatterVisitorV1(JsonObject rules) {
-    Map<AstNodeType, FormattingStrategy> strategies = getAssignmentStrategies(rules);
+    Map<AstNodeType, FormattingStrategy> strategies = getAssignmentStrategies(rules, "1.0");
 
     FormattingStrategyFactory callExpressionFactory = new CallExpressionFactory();
-    FormattingStrategy callExpressionStrategy = callExpressionFactory.create(rules);
+    FormattingStrategy callExpressionStrategy = callExpressionFactory.create(rules, "1.0");
     strategies.put(AstNodeType.CALL_EXPRESSION, callExpressionStrategy);
 
     return new FormatterVisitorV1(strategies);
@@ -40,22 +40,23 @@ public class FormatterVisitorFactory {
   private static FormatterVisitor getFormatterVisitorV2(JsonObject rules) {
     FormatterVisitorV1 formatterVisitorV1 = (FormatterVisitorV1) getFormatterVisitorV1(rules);
 
-    Map<AstNodeType, FormattingStrategy> strategies = getAssignmentStrategies(rules);
+    Map<AstNodeType, FormattingStrategy> strategies = getAssignmentStrategies(rules, "1.1");
 
     return new FormatterVisitorV2(formatterVisitorV1, strategies, "", 0);
   }
 
-  private static Map<AstNodeType, FormattingStrategy> getAssignmentStrategies(JsonObject rules) {
+  private static Map<AstNodeType, FormattingStrategy> getAssignmentStrategies(
+      JsonObject rules, String version) {
     Map<AstNodeType, FormattingStrategy> strategies = new HashMap<>();
     OperatorConcatenationStrategy assignmentStrategy = getAssignmentStrategy(rules);
 
     FormattingStrategyFactory reAssignmentFactory = new ReAssignmentFactory(assignmentStrategy);
-    FormattingStrategy reAssignmentStrategy = reAssignmentFactory.create(rules);
+    FormattingStrategy reAssignmentStrategy = reAssignmentFactory.create(rules, version);
     strategies.put(AstNodeType.ASSIGNMENT_EXPRESSION, reAssignmentStrategy);
 
     FormattingStrategyFactory varDecStrategyFactory =
         new VariableDeclarationStrategyFactory(assignmentStrategy);
-    FormattingStrategy varDecStrategy = varDecStrategyFactory.create(rules);
+    FormattingStrategy varDecStrategy = varDecStrategyFactory.create(rules, version);
     strategies.put(AstNodeType.VARIABLE_DECLARATION, varDecStrategy);
     return strategies;
   }

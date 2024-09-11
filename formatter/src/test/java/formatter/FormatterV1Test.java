@@ -13,9 +13,19 @@ public class FormatterV1Test extends AbstractFormatterTest {
   }
 
   @Test
-  public void testV2() {
+  public void testInvalidBoolean() {
     String formattedCode = """
                 let anotherVar : boolean = true;
+                """;
+    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
+    assertThrows(UnsupportedExpressionException.class, formatter::formatProgram);
+  }
+
+  @Test
+  public void testInvalidConst() {
+    String formattedCode =
+        """
+                const anotherVar : string = "Hello World";
                 """;
     MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
     assertThrows(UnsupportedExpressionException.class, formatter::formatProgram);

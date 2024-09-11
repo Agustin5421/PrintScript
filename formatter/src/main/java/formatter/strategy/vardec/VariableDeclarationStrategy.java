@@ -2,6 +2,7 @@ package formatter.strategy.vardec;
 
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
+import exceptions.UnsupportedExpressionException;
 import formatter.strategy.FormattingStrategy;
 import formatter.visitor.FormatterVisitor;
 import java.util.List;
@@ -11,16 +12,22 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
   // second space, then the nodeType of the node
   // then the assignment strategy
   private final List<FormattingStrategy> strategies;
+  private final List<String> keyWords;
 
-  public VariableDeclarationStrategy(List<FormattingStrategy> strategies) {
+  public VariableDeclarationStrategy(List<FormattingStrategy> strategies, List<String> keyWords) {
     this.strategies = strategies;
+    this.keyWords = keyWords;
   }
 
   @Override
   public String apply(AstNode node, FormatterVisitor visitor) {
     VariableDeclaration varDecNode = (VariableDeclaration) node;
     StringBuilder formattedCode = new StringBuilder();
-    formattedCode.append(varDecNode.kind()).append(" ");
+    String kind = varDecNode.kind();
+    if (!keyWords.contains(kind)) {
+      throw new UnsupportedExpressionException(kind + " is not supported in this version");
+    }
+    formattedCode.append(kind).append(" ");
     // Adding the identifier
     FormatterVisitor visit = (FormatterVisitor) varDecNode.identifier().accept(visitor);
     formattedCode.append(visit.getCurrentCode());

@@ -18,7 +18,7 @@ public class VariableDeclarationStrategyFactory implements FormattingStrategyFac
   }
 
   @Override
-  public FormattingStrategy create(JsonObject rules) {
+  public FormattingStrategy create(JsonObject rules, String version) {
     List<FormattingStrategy> strategies = new ArrayList<>();
     WhiteSpace whiteSpace = new WhiteSpace();
     JsonObject colonRules = rules.getAsJsonObject("colonRules");
@@ -33,6 +33,14 @@ public class VariableDeclarationStrategyFactory implements FormattingStrategyFac
     }
     strategies.add(new GetTypeStrategy());
     TypingStrategy semiColonStrategy = new TypingStrategy(strategies);
-    return new VariableDeclarationStrategy(List.of(semiColonStrategy, equalStrategy));
+    List<String> keyWords;
+    switch (version) {
+      case "1.1":
+        keyWords = List.of("let", "const");
+        break;
+      default:
+        keyWords = List.of("let");
+    }
+    return new VariableDeclarationStrategy(List.of(semiColonStrategy, equalStrategy), keyWords);
   }
 }

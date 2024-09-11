@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CallExpressionFactory implements FormattingStrategyFactory {
   @Override
-  public CallExpressionStrategy create(JsonObject rules) {
+  public CallExpressionStrategy create(JsonObject rules, String version) {
     int lineBreaks = rules.get("printLineBreaks").getAsInt();
     LineBreaksStrategy lineBreaksStrategy = new LineBreaksStrategy(lineBreaks);
     return new CallExpressionStrategy(
