@@ -8,18 +8,21 @@ import exceptions.UnsupportedStatementException;
 import java.util.Iterator;
 import java.util.List;
 import lexer.Lexer;
+import observers.Observable;
+import observers.ProgressObserver;
 import parsers.expressions.ExpressionParser;
 import parsers.statements.StatementParser;
 import splitters.MainStatementSplitter;
 import token.Token;
 import validators.MainStatementValidator;
 
-public class Parser implements Iterator<AstNode> {
+public class Parser implements Iterator<AstNode>, Observable {
   private final List<StatementParser> statementParsers;
   private final List<ExpressionParser> expressionParsers;
   private final MainStatementValidator mainStatementValidator;
   private final MainStatementSplitter mainStatementSplitter = new MainStatementSplitter();
   private final Lexer lexer;
+  private ProgressObserver observer;
 
   public Parser(
       Lexer lexer,
@@ -73,8 +76,11 @@ public class Parser implements Iterator<AstNode> {
 
   @Override
   public boolean hasNext() {
-    // TODO: Implement hasNext correctly
-    return lexer.hasNext();
+    if (lexer.hasNext()) {
+      return true;
+    }
+    notifyObservers();
+    return false;
   }
 
   @Override
@@ -103,5 +109,14 @@ public class Parser implements Iterator<AstNode> {
 
   public Lexer getLexer() {
     return lexer;
+  }
+
+  public void addObserver(ProgressObserver progressObserver) {
+    this.observer = progressObserver;
+  }
+
+  @Override
+  public void notifyObservers() {
+    observer.update(this);
   }
 }

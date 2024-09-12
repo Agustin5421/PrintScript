@@ -8,10 +8,21 @@ import java.util.List;
 import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
+import observers.ProgressObserver;
 import parsers.Parser;
 
 public class Runner {
-  public void execute(String code, String version, OutputResult printLog, OutputResult errorLog) {
+  private final ProgressObserver progressObserver;
+
+    public Runner(ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
+    }
+
+    public Runner() {
+      this.progressObserver = null;
+    }
+
+    public void execute(String code, String version, OutputResult printLog, OutputResult errorLog) {
     Interpreter interpreter = InterpreterFactory.getInterpreter(version);
 
     try {
@@ -35,15 +46,17 @@ public class Runner {
 
   public void format(String code, String version, String config) {
     // TODO: need factory for formatter
-
   }
 
   public void validate(String input, String version) {
-    // TODO: lexer should receive codeFilePath
     Lexer lexer = LexerFactory.getLexer(version);
     Parser parser = ParserFactory.getParser(version);
 
     assert lexer != null;
     parser = parser.setLexer(lexer.setInputAsString(input));
+
+    while (parser.hasNext()) {
+      parser.next();
+    }
   }
 }
