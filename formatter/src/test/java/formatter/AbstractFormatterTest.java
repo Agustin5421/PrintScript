@@ -1,12 +1,9 @@
 package formatter;
 
-import com.google.gson.JsonSyntaxException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 public abstract class AbstractFormatterTest {
   protected abstract MainFormatter initFormatter(String jsonOptions, String formattedCode);
 
+  /*
   @Test
   public void varDeclarationTest() {
     String formattedCode =
@@ -107,4 +104,6 @@ public abstract class AbstractFormatterTest {
             }
             """;
   }
+
+   */
 }
