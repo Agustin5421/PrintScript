@@ -47,7 +47,6 @@ public class Lexer implements Iterator<Token> {
 
     // Once there are no more tokens in the buffer, tokenize the next line
     try {
-      while (currentLine != null) {
         while (matcher.find()) {
           String word = matcher.group();
           int start = matcher.start();
@@ -71,7 +70,6 @@ public class Lexer implements Iterator<Token> {
           tokens.add(token);
         }
         advanceToNextLine(); // Read the next line once we have processed the current one
-      }
     } catch (IOException e) {
       return false;
     }
