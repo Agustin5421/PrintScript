@@ -3,6 +3,7 @@ package runner;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
+import output.OutputResult;
 
 public class RunnerLinterTest {
   @Test

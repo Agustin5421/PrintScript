@@ -1,6 +1,7 @@
 package cli;
 
-import runner.OutputResult;
+
+import output.OutputResult;
 
 public class OutputMock implements OutputResult {
   @Override

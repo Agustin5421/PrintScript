@@ -1,6 +1,6 @@
 package cli;
 
-import runner.OutputResult;
+import output.OutputResult;
 
 public class OutputString implements OutputResult {
   private final String result;

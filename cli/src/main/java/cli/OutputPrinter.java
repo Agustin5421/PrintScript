@@ -1,6 +1,6 @@
 package cli;
 
-import runner.OutputResult;
+import output.OutputResult;
 
 public class OutputPrinter implements OutputResult {
   @Override

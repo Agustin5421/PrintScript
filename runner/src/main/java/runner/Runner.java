@@ -12,18 +12,23 @@ import java.util.List;
 import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
+import output.OutputResult;
 import parsers.Parser;
 
 public class Runner {
-  public void execute(InputStream code, String version, OutputResult printLog, OutputResult errorLog) {
+
+  public void execute(InputStream code, String version,OutputResult printLog, OutputResult errorLog) {
     Interpreter interpreter = InterpreterFactory.getInterpreter(version);
 
     try {
+      /*
       List<String> prints = interpreter.interpretInputStream(code);
       interpreter = null;
       for (String print : prints) {
         printLog.saveResult(print);
       }
+
+       */
     } catch (OutOfMemoryError e) {
       interpreter = null;
       System.gc();
