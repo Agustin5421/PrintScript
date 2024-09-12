@@ -2,8 +2,11 @@ package parsers.statements;
 
 import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
+import ast.literal.Literal;
+import ast.root.AstNodeType;
 import ast.statements.StatementNode;
 import ast.statements.VariableDeclaration;
+import exceptions.SyntaxException;
 import exceptions.UnexpectedTokenException;
 import exceptions.UnsupportedDataType;
 import java.util.List;
@@ -45,7 +48,25 @@ public class VariableDeclarationParser implements StatementParser {
 
     String type = getType(tokens.get(3));
 
+    boolean correctType = checkTypes(type, value);
+
+    if (!correctType) {
+      throw new SyntaxException("Type mismatch.");
+    }
+
     return new VariableDeclaration(kind, identifier, value, type, start, end);
+  }
+
+  private boolean checkTypes(String type, ExpressionNode value) {
+    if (value == null) {
+      return true;
+    }
+    if (!(value instanceof Literal<?>)) {
+      return true;
+    }
+    return type.equals("number") && value.getNodeType().equals(AstNodeType.NUMBER_LITERAL)
+        || type.equals("string") && value.getNodeType().equals(AstNodeType.STRING_LITERAL)
+        || type.equals("boolean") && value.getNodeType().equals(AstNodeType.BOOLEAN_LITERAL);
   }
 
   private String getType(Token token) {

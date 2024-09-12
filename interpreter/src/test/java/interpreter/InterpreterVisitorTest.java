@@ -1,7 +1,9 @@
 package interpreter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import exceptions.SyntaxException;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Test;
@@ -33,5 +35,16 @@ public class InterpreterVisitorTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(3.14, repository.getNewVariable(new VariableIdentifier("pi")).value());
+  }
+
+  @Test
+  public void constVarTest() {
+    String code = "let pi: number = \"hola\";";
+    Interpreter interpreter = new Interpreter("1.0");
+    assertThrows(
+        SyntaxException.class,
+        () -> {
+          interpreter.executeProgram(code);
+        });
   }
 }

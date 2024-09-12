@@ -7,6 +7,7 @@ import ast.literal.StringLiteral;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
+import exceptions.SyntaxException;
 import exceptions.UnexpectedTokenException;
 import exceptions.UnsupportedExpressionException;
 import exceptions.UnsupportedStatementException;
@@ -89,6 +90,12 @@ public abstract class CommonParserTests {
   public void testSyntaxException() {
     Parser parser = setParser("let name string = \"Oliver\";", getParser());
     assertThrows(UnexpectedTokenException.class, parser::next);
+  }
+
+  @Test
+  public void testSyntaxException2() {
+    Parser parser = setParser("let pi: number = \"hola\";", getParser());
+    assertThrows(SyntaxException.class, parser::next);
   }
 
   @Test
