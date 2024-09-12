@@ -18,5 +18,4 @@ dependencies {
     implementation project(':formatter')
     implementation project(':linter')
     implementation project(':utils')
-
 }
