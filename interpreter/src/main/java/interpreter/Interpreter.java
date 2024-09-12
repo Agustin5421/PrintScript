@@ -5,6 +5,7 @@ import ast.visitor.NodeVisitor;
 import factory.ParserFactory;
 import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorFactory;
+import interpreter.visitor.repository.VariablesRepository;
 import java.util.List;
 import lexer.Lexer;
 import observers.Observer;
@@ -31,6 +32,12 @@ public class Interpreter implements Progressable {
     this.observers = List.of();
   }
 
+  public Interpreter(Parser parser, InterpreterVisitor interpreterVisitor) {
+    this.nodeVisitor = interpreterVisitor;
+    this.parser = parser;
+    this.observers = List.of();
+  }
+
   // TODO: Delete return of executeProgram() method.
   // Testing purposes only.
   public VariablesRepository executeProgram(String code) {
@@ -48,14 +55,13 @@ public class Interpreter implements Progressable {
     return variablesRepository;
   }
 
-  public List<String> executeProgram(String code, VariablesRepository variablesRepository) {
+  public List<String> interpret(String code) {
     InterpreterVisitor visitor = nodeVisitor;
     Lexer newLexer = parser.getLexer().setInputAsString(code);
     parser = parser.setLexer(newLexer);
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();
       visitor = (InterpreterVisitor) statement.accept(visitor);
-      variablesRepository = visitor.getVariablesRepository();
       updateProgress();
     }
 

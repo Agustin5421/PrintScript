@@ -1,20 +1,24 @@
-package interpreter.evaluator;
+package interpreter.visitor.evaluator;
 
 import ast.expressions.BinaryExpression;
 import ast.literal.Literal;
 import ast.literal.NumberLiteral;
-import interpreter.visitor.InterpreterVisitorV1;
+import ast.root.AstNodeType;
+import interpreter.visitor.InterpreterVisitor;
 
 public class BinaryExpressionEvaluator {
-  public Literal<?> evaluate(BinaryExpression node, InterpreterVisitorV1 visitor) {
-    Literal<?> left = ((InterpreterVisitorV1) node.left().accept(visitor)).getValue();
-    Literal<?> right = ((InterpreterVisitorV1) node.right().accept(visitor)).getValue();
+  public Literal<?> evaluate(BinaryExpression node, InterpreterVisitor visitor) {
+    Literal<?> left = ((InterpreterVisitor) node.left().accept(visitor)).getValue();
+    Literal<?> right = ((InterpreterVisitor) node.right().accept(visitor)).getValue();
     return performOperation(left, right, node.operator());
   }
 
   private Literal<?> performOperation(Literal<?> left, Literal<?> right, String operator) {
     if (StringOperationHandler.isStringOperation(left, right, operator)) {
       return StringOperationHandler.performStringConcatenation(left, right);
+    }
+    if (checkBoolean(left, right)) {
+      throw new UnsupportedOperationException("Trying to operate with booleans.");
     }
     // If one of them is not a string, they are both numbers
     Number leftNumber = (Number) left.value();
@@ -28,5 +32,12 @@ public class BinaryExpressionEvaluator {
     } else {
       return new NumberLiteral(result, left.start(), right.end());
     }
+  }
+
+  private boolean checkBoolean(Literal<?> left, Literal<?> right) {
+    AstNodeType leftType = left.getNodeType();
+    AstNodeType rightType = right.getNodeType();
+    return leftType.equals(AstNodeType.BOOLEAN_LITERAL)
+        && rightType.equals(AstNodeType.BOOLEAN_LITERAL);
   }
 }

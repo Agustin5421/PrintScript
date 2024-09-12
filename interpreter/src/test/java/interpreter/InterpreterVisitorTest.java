@@ -2,7 +2,8 @@ package interpreter;
 
 import static org.junit.Assert.assertEquals;
 
-import ast.identifier.Identifier;
+import interpreter.visitor.repository.VariableIdentifier;
+import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -15,8 +16,7 @@ public class InterpreterVisitorTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(
-        "\"otherValue\"",
-        repository.getVariable(new Identifier("name", defaultPosition, defaultPosition)).value());
+        "\"otherValue\"", repository.getNewVariable(new VariableIdentifier("name")).value());
   }
 
   @Test
@@ -24,11 +24,7 @@ public class InterpreterVisitorTest {
     String code = "let name: string = \"value\"; let number: number = 42;";
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
-    assertEquals(
-        "\"value\"",
-        repository.getVariable(new Identifier("name", defaultPosition, defaultPosition)).value());
-    assertEquals(
-        42,
-        repository.getVariable(new Identifier("number", defaultPosition, defaultPosition)).value());
+    assertEquals("\"value\"", repository.getNewVariable(new VariableIdentifier("name")).value());
+    assertEquals(42, repository.getNewVariable(new VariableIdentifier("number")).value());
   }
 }

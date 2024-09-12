@@ -29,6 +29,16 @@ public abstract class CommonParserTests {
     assertInstanceOf(VariableDeclaration.class, parser.next());
   }
 
+  // TODO: solve these tests
+  /*
+  @Test
+  public void testNoValueDeclaration() {
+    Parser parser = setParser("let x: string;\"", getParser());
+    assertInstanceOf(VariableDeclaration.class, parser.next());
+  }
+
+   */
+
   @Test
   public void testCallFunctionAsExpression() {
     Parser parser = setParser("let name: string = println(myVar);", getParser());

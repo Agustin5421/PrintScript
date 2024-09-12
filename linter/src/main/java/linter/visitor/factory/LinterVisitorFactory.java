@@ -1,6 +1,7 @@
 package linter.visitor.factory;
 
 import ast.root.AstNodeType;
+import java.util.HashMap;
 import java.util.Map;
 import linter.visitor.LinterVisitor;
 import linter.visitor.LinterVisitorV1;
@@ -17,8 +18,9 @@ public class LinterVisitorFactory {
   }
 
   public LinterVisitor createLinterVisitor(String rules) {
-    LintingStrategy identifierLintingStrategies = getIdentifierLintingStrategies(rules);
-    LintingStrategy callExpressionLintingStrategies = getCallExpressionLintingStrategies(rules);
+    LintingStrategy identifierLintingStrategies = getIdentifierLintingStrategies(rules, "1.0");
+    LintingStrategy callExpressionLintingStrategies =
+        getCallExpressionLintingStrategies(rules, "1.0");
 
     Map<AstNodeType, LintingStrategy> nodesStrategies =
         Map.of(
@@ -29,15 +31,22 @@ public class LinterVisitorFactory {
   }
 
   public LinterVisitor createLinterVisitorV2(String rules) {
-    LinterVisitorV1 visitorV1 = (LinterVisitorV1) createLinterVisitor(rules);
-    return new LinterVisitorV2(Map.of(), visitorV1);
+    LinterVisitor visitorV1 = createLinterVisitor(rules);
+    LintingStrategy callExpressionLintingStrategies =
+        getCallExpressionLintingStrategies(rules, "1.1");
+
+    Map<AstNodeType, LintingStrategy> nodesStrategies =
+        new HashMap<>(visitorV1.getNodesStrategies());
+    nodesStrategies.put(AstNodeType.CALL_EXPRESSION, callExpressionLintingStrategies);
+
+    return new LinterVisitorV2(nodesStrategies, visitorV1);
   }
 
-  private LintingStrategy getIdentifierLintingStrategies(String rules) {
-    return identifierStrategyFactory.createStrategies(rules);
+  private LintingStrategy getIdentifierLintingStrategies(String rules, String version) {
+    return identifierStrategyFactory.createStrategies(rules, version);
   }
 
-  private LintingStrategy getCallExpressionLintingStrategies(String rules) {
-    return callExpressionStrategyFactory.createStrategies(rules);
+  private LintingStrategy getCallExpressionLintingStrategies(String rules, String version) {
+    return callExpressionStrategyFactory.createStrategies(rules, version);
   }
 }

@@ -1,14 +1,14 @@
 package formatter.strategy.callexpr;
 
 import ast.root.AstNode;
-import formatter.FormatterVisitor;
 import formatter.strategy.FormattingStrategy;
+import formatter.visitor.FormatterVisitor;
 
 public class LineBreaksStrategy implements FormattingStrategy {
   private final int lineBreaks;
 
   public LineBreaksStrategy(int lineBreaks) {
-    this.lineBreaks = lineBreaks;
+    this.lineBreaks = lineBreaks + 1;
   }
 
   @Override

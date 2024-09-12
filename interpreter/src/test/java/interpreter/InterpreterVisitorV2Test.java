@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ast.identifier.Identifier;
+import interpreter.factory.InterpreterFactory;
+import interpreter.visitor.repository.VariableIdentifier;
+import interpreter.visitor.repository.VariablesRepository;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -17,7 +20,7 @@ public class InterpreterVisitorV2Test {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
     String code = "readInput();";
-    Interpreter interpreter = new Interpreter("1.1");
+    Interpreter interpreter = InterpreterFactory.getInterpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
     assertEquals(
@@ -247,7 +250,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(\"Hello, world!\");";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("\"Hello, world!\"", printedValues.get(0));
   }
@@ -257,7 +260,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(42);";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("42", printedValues.get(0));
   }
@@ -267,7 +270,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(\"true\");";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("\"true\"", printedValues.get(0));
   }
@@ -277,7 +280,7 @@ public class InterpreterVisitorV2Test {
     String code = "println(21 + 21);";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.executeProgram(code, variablesRepository);
+    List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("42", printedValues.get(0));
   }
@@ -288,9 +291,7 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        "constant",
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals("constant", newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -299,9 +300,7 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        true,
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals(true, newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -310,9 +309,7 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        9.81,
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals(9.81, newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -321,8 +318,6 @@ public class InterpreterVisitorV2Test {
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository newVar = interpreter.executeProgram(code);
 
-    assertEquals(
-        6.62607015e-34,
-        newVar.getVariable(new Identifier("x", new Position(0, 0), new Position(0, 0))).value());
+    assertEquals(6.62607015e-34, newVar.getNewVariable(new VariableIdentifier("x")).value());
   }
 }

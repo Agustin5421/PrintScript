@@ -18,7 +18,7 @@ public class IdentifierStrategyFactoryTest {
 
     StrategyFactory factory = new IdentifierStrategyFactory();
 
-    LintingStrategy strategies = factory.createStrategies(rules);
+    LintingStrategy strategies = factory.createStrategies(rules, "1.0");
 
     assertNotNull(strategies);
     Assertions.assertInstanceOf(StrategiesContainer.class, strategies);

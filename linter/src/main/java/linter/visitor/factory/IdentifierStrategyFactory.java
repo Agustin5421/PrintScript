@@ -10,13 +10,19 @@ import linter.visitor.strategy.identifier.WritingConventionStrategy;
 
 public class IdentifierStrategyFactory implements StrategyFactory {
   @Override
-  public LintingStrategy createStrategies(String rules) {
+  public LintingStrategy createStrategies(String rules, String version) {
     JsonObject jsonObject =
         JsonParser.parseString(rules).getAsJsonObject().getAsJsonObject("identifier");
 
+    if (jsonObject == null) {
+      return new StrategiesContainer(List.of());
+    }
+
+    List<LintingStrategy> strategies = new ArrayList<>();
+
     LintingStrategy identifierWritingConvention = getIdentifierWritingConvention(jsonObject);
 
-    List<LintingStrategy> strategies = List.of(identifierWritingConvention);
+    strategies.add(identifierWritingConvention);
     return new StrategiesContainer(trimNullStrategies(strategies));
   }
 

@@ -1,4 +1,4 @@
-package interpreter.evaluator;
+package interpreter.visitor.evaluator;
 
 import ast.literal.Literal;
 import ast.literal.StringLiteral;

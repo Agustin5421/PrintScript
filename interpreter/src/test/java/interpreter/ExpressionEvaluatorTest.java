@@ -3,9 +3,12 @@ package interpreter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.expressions.BinaryExpression;
+import ast.identifier.Identifier;
 import ast.literal.NumberLiteral;
-import interpreter.evaluator.BinaryExpressionEvaluator;
 import interpreter.visitor.InterpreterVisitorV1;
+import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
+import interpreter.visitor.repository.VariablesRepository;
+import java.io.ByteArrayInputStream;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -93,4 +96,37 @@ public class ExpressionEvaluatorTest {
     NumberLiteral result = evaluateBinaryExpression(numberLiteral, numberLiteral2, "*");
     assertEquals(2.0, result.value());
   }
+
+  @Test
+  public void testReadInputNumberDouble() {
+    String input = "42.0";
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+    String code = "readInput();";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository repository = interpreter.executeProgram(code);
+
+    assertEquals(
+        42.0,
+        repository
+            .getVariable(new Identifier("readInput", new Position(0, 0), new Position(0, 0)))
+            .value());
+  }
+
+  // TODO: solve these tests
+  /*
+  @Test
+  public void readInputPlusStringTest() {
+    String input = "hello";
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+    String code = "let x: string = readInput() + \" world\";";
+
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository repository = interpreter.executeProgram(code);
+
+    assertEquals("hello world", repository.getNewVariable(new VariableIdentifier("x")).value());
+  }
+
+   */
 }
