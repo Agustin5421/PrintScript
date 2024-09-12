@@ -5,6 +5,7 @@ import ast.identifier.Identifier;
 import ast.statements.StatementNode;
 import ast.statements.VariableDeclaration;
 import exceptions.SyntaxException;
+import exceptions.UnsupportedDataType;
 import java.util.List;
 import parsers.Parser;
 import token.Position;
@@ -12,9 +13,11 @@ import token.Token;
 
 public class VariableDeclarationParser implements StatementParser {
   private final List<String> kinds;
+  private final List<String> types;
 
-  public VariableDeclarationParser(List<String> kinds) {
+  public VariableDeclarationParser(List<String> kinds, List<String> types) {
     this.kinds = kinds;
+    this.types = types;
   }
 
   @Override
@@ -36,9 +39,17 @@ public class VariableDeclarationParser implements StatementParser {
 
     ExpressionNode value = parser.parseExpression(tokens.subList(5, tokens.size()));
     String kind = tokens.get(0).value();
-    String type = tokens.get(3).value();
+
+    String type = getType(tokens.get(3).value());
 
     return new VariableDeclaration(kind, identifier, value, type, start, end);
+  }
+
+  private String getType(String value) {
+    if (types.contains(value)) {
+      return value;
+    }
+    throw new UnsupportedDataType(value);
   }
 
   @Override

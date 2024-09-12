@@ -1,6 +1,7 @@
 package formatter.strategy.ifelse;
 
-import ast.literal.StringLiteral;
+import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.root.AstNode;
 import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.CallStrategy;
@@ -25,8 +26,15 @@ public class ConditionalStatementStrategy implements FormattingStrategy {
 
   @Override
   public String apply(AstNode node, FormatterVisitor visitor) {
-    CallStrategy newCallStrategy =
-        callStrategy.newStrategy(keyword, List.of(new StringLiteral(condition, null, null)));
+    AstNode conditionValue;
+
+    if (condition.equals("true") || condition.equals("false")) {
+      conditionValue = new BooleanLiteral(Boolean.valueOf(condition), null, null);
+    } else {
+      conditionValue = new Identifier(condition, null, null);
+    }
+
+    CallStrategy newCallStrategy = callStrategy.newStrategy(keyword, List.of(conditionValue));
     return newCallStrategy.apply(node, visitor);
   }
 

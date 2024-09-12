@@ -14,7 +14,7 @@ public class FormatterInitializer {
   public static MainFormatter init(String options, String code, String version, Observer observer) {
     JsonObject rules = OptionsChecker.checkAndReturn(options, version);
     Parser parser = ParserFactory.getParser(version);
-    parser = parser.setLexer(parser.getLexer().setInput(code));
+    parser = parser.setLexer(parser.getLexer().setInputAsString(code));
     return new MainFormatter(
         List.of(observer), FormatterVisitorFactory.createVisitor(version, rules), parser);
   }

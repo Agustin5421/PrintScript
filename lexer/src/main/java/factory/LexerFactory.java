@@ -1,5 +1,8 @@
 package factory;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,16 +23,21 @@ import token.validators.literal.StringTypePatternChecker;
 
 public class LexerFactory {
   public static Lexer getLexer(String version) {
-    return switch (version) {
-      case "1.0" -> getLexerV1();
-      case "1.1" -> getLexerV2();
-      default -> throw new IllegalArgumentException("Invalid version");
-    };
+    try {
+      return switch (version) {
+        case "1.0" -> getLexerV1();
+        case "1.1" -> getLexerV2();
+        default -> throw new IllegalArgumentException("Invalid version");
+      };
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   // TODO: move constructors to its own class
 
-  private static Lexer getLexerV2() {
+  private static Lexer getLexerV2() throws IOException {
     IdentifierTypeChecker identifierTypeChecker =
         new IdentifierTypeChecker(Pattern.compile("^[a-zA-Z_][a-zA-Z\\d_]*$"));
 
@@ -83,10 +91,12 @@ public class LexerFactory {
                 literalTypeTokenChecker,
                 identifierTypeChecker));
 
-    return new Lexer("", tokenTypeGetter);
+    String code = "";
+    InputStream inputStream = new ByteArrayInputStream(code.getBytes());
+    return new Lexer(inputStream, tokenTypeGetter);
   }
 
-  private static Lexer getLexerV1() {
+  private static Lexer getLexerV1() throws IOException {
     IdentifierTypeChecker identifierTypeChecker =
         new IdentifierTypeChecker(Pattern.compile("^[a-zA-Z_][a-zA-Z\\d_]*$"));
 
@@ -134,6 +144,9 @@ public class LexerFactory {
                 dataTypePatternChecker,
                 literalTypeTokenChecker,
                 identifierTypeChecker));
-    return new Lexer("", tokenTypeGetter);
+
+    String code = "";
+    InputStream inputStream = new ByteArrayInputStream(code.getBytes());
+    return new Lexer(inputStream, tokenTypeGetter);
   }
 }

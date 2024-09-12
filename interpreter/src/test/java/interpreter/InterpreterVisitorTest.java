@@ -15,8 +15,7 @@ public class InterpreterVisitorTest {
     String code = "let name: string = \"value\"; name = \"otherValue\";";
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
-    assertEquals(
-        "\"otherValue\"", repository.getNewVariable(new VariableIdentifier("name")).value());
+    assertEquals("otherValue", repository.getNewVariable(new VariableIdentifier("name")).value());
   }
 
   @Test
@@ -24,7 +23,7 @@ public class InterpreterVisitorTest {
     String code = "let name: string = \"value\"; let number: number = 42;";
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
-    assertEquals("\"value\"", repository.getNewVariable(new VariableIdentifier("name")).value());
+    assertEquals("value", repository.getNewVariable(new VariableIdentifier("name")).value());
     assertEquals(42, repository.getNewVariable(new VariableIdentifier("number")).value());
   }
 }

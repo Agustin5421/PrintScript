@@ -13,7 +13,7 @@ public abstract class CommonLinterTest {
   private Linter configureLinter(String code) {
     Linter linter = getLinter();
     Parser parser = linter.getParser();
-    Lexer newLexer = parser.getLexer().setInput(code);
+    Lexer newLexer = parser.getLexer().setInputAsString(code);
     return linter.setParser(parser.setLexer(newLexer));
   }
 
@@ -35,7 +35,7 @@ public abstract class CommonLinterTest {
 
   @Test
   public void lintVarDecWithBinaryExpressionTest() {
-    String code = "let var: Number = 1 + 1;";
+    String code = "let var: number = 1 + 1;";
     Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(0, report.getReports().size());

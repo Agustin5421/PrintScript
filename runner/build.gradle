@@ -1,5 +1,11 @@
 plugins {
-    id 'common-conventions.printscript'
+    id 'java.printscript'
+    id 'test.printscript'
+    id 'publishing.printscript'
+}
+
+repositories {
+    mavenCentral()
 }
 
 group = 'org.example'

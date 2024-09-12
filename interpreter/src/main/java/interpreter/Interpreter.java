@@ -43,7 +43,7 @@ public class Interpreter implements Progressable {
   public VariablesRepository executeProgram(String code) {
     VariablesRepository variablesRepository = new VariablesRepository();
     InterpreterVisitor visitor = nodeVisitor;
-    Lexer newLexer = parser.getLexer().setInput(code);
+    Lexer newLexer = parser.getLexer().setInputAsString(code);
     parser = parser.setLexer(newLexer);
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();
@@ -57,7 +57,7 @@ public class Interpreter implements Progressable {
 
   public List<String> interpret(String code) {
     InterpreterVisitor visitor = nodeVisitor;
-    Lexer newLexer = parser.getLexer().setInput(code);
+    Lexer newLexer = parser.getLexer().setInputAsString(code);
     parser = parser.setLexer(newLexer);
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();

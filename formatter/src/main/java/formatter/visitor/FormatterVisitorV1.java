@@ -71,7 +71,7 @@ public class FormatterVisitorV1 implements FormatterVisitor {
 
   @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
-    return newVisitor(stringLiteral.value());
+    return newVisitor("\"" + stringLiteral.value() + "\"");
   }
 
   @Override

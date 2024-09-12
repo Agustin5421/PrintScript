@@ -56,7 +56,7 @@ public class LinterV1Test extends CommonLinterTest {
     String code = "let snake_case: string = \"Oliver\"; let camelCase: string = \"Oliver\";";
 
     Parser parser = linter.getParser();
-    Lexer newLexer = parser.getLexer().setInput(code);
+    Lexer newLexer = parser.getLexer().setInputAsString(code);
     linter = linter.setParser(parser.setLexer(newLexer));
 
     FullReport report = new FullReport();

@@ -20,7 +20,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(
-        "\"this is a string\"", repository.getNewVariable(new VariableIdentifier("x")).value());
+        "this is a string", repository.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
@@ -37,7 +37,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(
-        "\"this is a string\"", repository.getNewVariable(new VariableIdentifier("x")).value());
+        "this is a string", repository.getNewVariable(new VariableIdentifier("x")).value());
     assertEquals(42, repository.getNewVariable(new VariableIdentifier("y")).value());
   }
 
@@ -62,7 +62,7 @@ public class InterpreterTest {
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(
-        "\"this is a string\"", repository.getNewVariable(new VariableIdentifier("x")).value());
+        "this is a string", repository.getNewVariable(new VariableIdentifier("x")).value());
   }
 
   @Test
