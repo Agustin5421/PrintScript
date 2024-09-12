@@ -28,8 +28,9 @@ public class LiteralHandler {
     }
 
     String input = ((StringLiteral) callExpression.arguments().get(0)).value();
-    while (userInput.isEmpty()) {
+    printedValues.add(input);
 
+    while (userInput.isEmpty()) {
       System.out.println(input);
       userInput = scanner.nextLine();
       if (userInput.isEmpty()) {
@@ -37,9 +38,7 @@ public class LiteralHandler {
         System.out.println();
       }
     }
-
-    System.out.println(userInput);
-    printedValues.add(userInput);
+    //printedValues.add(userInput);
 
     return new ResultLiteral(getLiteral(callExpression, userInput), printedValues);
   }

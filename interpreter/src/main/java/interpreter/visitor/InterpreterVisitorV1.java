@@ -117,17 +117,22 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
 
     ExpressionNode expression = variableDeclaration.expression();
 
+    List<String> printedList;
+    InterpreterVisitor visitor;
     Literal<?> value;
     if (expression == null) {
       value = null;
+      printedList = printedValues;
     } else {
-      value = ((InterpreterVisitor) expression.accept(latestVisitor)).getValue();
+      visitor = ((InterpreterVisitor) expression.accept(latestVisitor));
+      value = visitor.getValue();
+      printedList = visitor.getPrintedValues();
     }
 
     VariablesRepository newVariablesRepository =
         getVariablesRepository().addNewVariable(varId, value);
 
-    return new InterpreterVisitorV1(newVariablesRepository, value, printedValues);
+    return new InterpreterVisitorV1(newVariablesRepository, value, printedList);
   }
 
   @Override
