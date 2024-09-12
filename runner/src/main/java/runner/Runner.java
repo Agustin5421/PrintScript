@@ -19,10 +19,12 @@ public class Runner {
 
     try {
       List<String> prints = interpreter.interpretInputStream(code);
+      interpreter = null;
       for (String print : prints) {
         printLog.saveResult(print);
       }
     } catch (Exception e) {
+      interpreter = null;
       errorLog.saveResult(e.getMessage());
     }
   }
