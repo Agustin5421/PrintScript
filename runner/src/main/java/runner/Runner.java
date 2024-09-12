@@ -23,8 +23,11 @@ public class Runner {
       for (String print : prints) {
         printLog.saveResult(print);
       }
-    } catch (Exception e) {
+    } catch (OutOfMemoryError e) {
       interpreter = null;
+      System.gc();
+      errorLog.saveResult("Java heap space");
+    } catch (Exception e) {
       errorLog.saveResult(e.getMessage());
     }
   }
