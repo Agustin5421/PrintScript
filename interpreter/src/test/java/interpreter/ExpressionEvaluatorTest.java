@@ -7,6 +7,7 @@ import ast.identifier.Identifier;
 import ast.literal.NumberLiteral;
 import interpreter.visitor.InterpreterVisitorV1;
 import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
+import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -129,17 +130,16 @@ public class ExpressionEvaluatorTest {
 
   // TODO: solve these tests
 
-  //  @Test
-  //  public void readInputPlusStringTest2() {
-  //    String input = "hello";
-  //    System.setIn(new ByteArrayInputStream(input.getBytes()));
-  //
-  //    String code = "let x: string = readInput(\"Name:\") + \" world\";";
-  //
-  //    Interpreter interpreter = new Interpreter("1.1");
-  //    VariablesRepository repository = interpreter.executeProgram(code);
-  //
-  //    assertEquals("hello world", repository.getNewVariable(new VariableIdentifier("x")).value());
-  //  }
+  @Test
+  public void readInputPlusStringTest2() {
+    String input = "world";
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
 
+    String code = "let x: string = \"hello \" + readInput(\"Name:\");";
+
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository repository = interpreter.executeProgram(code);
+
+    assertEquals("hello world", repository.getNewVariable(new VariableIdentifier("x")).value());
+  }
 }
