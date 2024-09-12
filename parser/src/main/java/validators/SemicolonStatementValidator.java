@@ -17,7 +17,7 @@ public class SemicolonStatementValidator implements StatementValidator {
       }
     }
 
-    throw new UnsupportedStatementException(tokens.toString());
+    throw new UnsupportedStatementException(tokens);
   }
 
   @Override
