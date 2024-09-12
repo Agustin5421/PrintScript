@@ -27,7 +27,7 @@ public class MainStatementSplitter {
       }
 
       if (!statementFound) {
-        throw new UnsupportedStatementException("No statement found in tokens: " + tokens);
+        throw new UnsupportedStatementException(tokens);
       }
     }
     return statements;

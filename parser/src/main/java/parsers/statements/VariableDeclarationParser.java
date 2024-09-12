@@ -4,12 +4,13 @@ import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.statements.StatementNode;
 import ast.statements.VariableDeclaration;
-import exceptions.SyntaxException;
+import exceptions.UnexpectedTokenException;
 import exceptions.UnsupportedDataType;
 import java.util.List;
 import parsers.Parser;
 import token.Position;
 import token.Token;
+import token.types.TokenSyntaxType;
 
 public class VariableDeclarationParser implements StatementParser {
   private final List<String> kinds;
@@ -29,27 +30,29 @@ public class VariableDeclarationParser implements StatementParser {
 
     // TODO: improve exception messages
     if (!tokens.get(2).value().equals(":")) {
-      throw new SyntaxException(
-          "expected ':' at "
-              + tokens.get(2).initialPosition().toString()
-              + " but found '"
-              + tokens.get(2).value()
-              + "' instead.");
+      throw new UnexpectedTokenException(tokens.get(2), ":");
     }
 
-    ExpressionNode value = parser.parseExpression(tokens.subList(5, tokens.size()));
+    ExpressionNode value;
+
+    if (tokens.get(4).nodeType() != TokenSyntaxType.ASSIGNATION) {
+      value = null;
+    } else {
+      value = parser.parseExpression(tokens.subList(5, tokens.size()));
+    }
+
     String kind = tokens.get(0).value();
 
-    String type = getType(tokens.get(3).value());
+    String type = getType(tokens.get(3));
 
     return new VariableDeclaration(kind, identifier, value, type, start, end);
   }
 
-  private String getType(String value) {
-    if (types.contains(value)) {
-      return value;
+  private String getType(Token token) {
+    if (types.contains(token.value())) {
+      return token.value();
     }
-    throw new UnsupportedDataType(value);
+    throw new UnsupportedDataType(token);
   }
 
   @Override

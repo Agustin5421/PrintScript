@@ -1,6 +1,6 @@
 package splitters;
 
-import exceptions.UnsupportedStatementException;
+import exceptions.UnexpectedTokenException;
 import java.util.ArrayList;
 import java.util.List;
 import token.Token;
@@ -21,7 +21,7 @@ public class SemicolonSplitter implements StatementSplitter {
       }
     }
 
-    throw new UnsupportedStatementException("No semicolon found in statement" + statement);
+    throw new UnexpectedTokenException(tokens.get(tokens.size() - 1), ";");
   }
 
   @Override

@@ -4,6 +4,7 @@ import ast.literal.Literal;
 import ast.literal.StringLiteral;
 import ast.root.AstNodeType;
 import exceptions.UnsupportedExpressionException;
+import java.util.List;
 
 public class StringOperationHandler {
   public static Literal<?> performStringConcatenation(Literal<?> left, Literal<?> right) {
@@ -17,8 +18,8 @@ public class StringOperationHandler {
       if (operator.equals("+")) {
         return true;
       } else {
-        throw new UnsupportedExpressionException(
-            "Trying to perform an " + operator + " operation on a string");
+        // TODO: should throw IllegalOperation
+        throw new UnsupportedExpressionException(List.of());
       }
     }
     return false;

@@ -5,6 +5,7 @@ import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.statements.StatementNode;
 import exceptions.SyntaxException;
+import exceptions.UnexpectedTokenException;
 import java.util.ArrayList;
 import java.util.List;
 import parsers.Parser;
@@ -58,7 +59,7 @@ public class CallFunctionAsStatementParser implements StatementParser {
 
       if (type == TokenSyntaxType.OPEN_PARENTHESIS) {
         if (inArguments) {
-          throw new SyntaxException("Unexpected '(' while already inside arguments.");
+          throw new UnexpectedTokenException(token, "None");
         }
         inArguments = true;
         openParentheses++;
@@ -67,10 +68,10 @@ public class CallFunctionAsStatementParser implements StatementParser {
 
       if (type == TokenSyntaxType.CLOSE_PARENTHESIS) {
         if (!inArguments) {
-          throw new SyntaxException("Unexpected ')' outside of arguments.");
+          throw new UnexpectedTokenException(token, "None");
         }
         if (openParentheses == 0) {
-          throw new SyntaxException("Unmatched ')' encountered.");
+          throw new UnexpectedTokenException(token, ")");
         }
         inArguments = false;
         openParentheses--;
@@ -94,6 +95,7 @@ public class CallFunctionAsStatementParser implements StatementParser {
       }
     }
 
+    // TODO: Add exception message
     if (openParentheses != 0) {
       throw new SyntaxException("Unmatched '(' encountered.");
     }

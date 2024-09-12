@@ -44,7 +44,7 @@ public class Parser implements Iterator<AstNode> {
     }
 
     // TODO: Add exception message
-    throw new UnsupportedExpressionException(tokens.toString());
+    throw new UnsupportedExpressionException(tokens);
   }
 
   public StatementNode parseStatement(List<Token> tokens) {
@@ -54,7 +54,7 @@ public class Parser implements Iterator<AstNode> {
       }
     }
 
-    throw new UnsupportedStatementException(tokens.toString());
+    throw new UnsupportedStatementException(tokens);
   }
 
   public List<StatementNode> parseBlock(List<Token> tokens) {
