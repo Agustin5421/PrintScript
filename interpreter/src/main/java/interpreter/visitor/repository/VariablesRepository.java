@@ -77,13 +77,13 @@ public class VariablesRepository {
   }
 
   public <T> Literal<T> getNewVariable(VariableIdentifier identifier) {
-    Literal<T> value = (Literal<T>) getNewVariables().get(identifier);
 
-    if (value == null) {
-      throw new IllegalArgumentException("Variable " + identifier.name() + " is not defined.");
-    }
+    //    if (value == null) {
+    //      throw new IllegalArgumentException("Variable " + identifier.name() + " is not
+    // defined.");
+    //    }
 
-    return value;
+    return (Literal<T>) getNewVariables().get(identifier);
   }
 
   private VariableIdentifier getKeyId(VariableIdentifier identifier) {

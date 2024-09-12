@@ -12,11 +12,9 @@ import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
-import interpreter.visitor.env.EnvLoader;
+import interpreter.visitor.patternStat.ResultLiteral;
 import interpreter.visitor.repository.VariablesRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import token.Position;
 
 public class InterpreterVisitorV2 implements InterpreterVisitor {
@@ -24,8 +22,11 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   private final InterpreterVisitor previousVisitor;
   private final VariablesRepository variablesRepository;
   private final List<String> printedValues;
-
+  private final LiteralHandler literalHandler;
   private final Literal<?> value;
+
+  // The queue of inputs we receive from the user
+  private final Queue<String> inputs;
 
   public InterpreterVisitorV2(
       InterpreterVisitor previousVisitor, VariablesRepository variablesRepository) {
@@ -33,9 +34,11 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     this.variablesRepository = variablesRepository;
     this.printedValues = new ArrayList<>();
     this.value = new NumberLiteral(0, new Position(0, 0), new Position(0, 0));
+    this.literalHandler = new LiteralHandler();
+    this.inputs = new LinkedList<>();
   }
 
-  private InterpreterVisitorV2(
+  public InterpreterVisitorV2(
       InterpreterVisitor previousVisitor,
       VariablesRepository variablesRepository,
       List<String> printedValues) {
@@ -43,6 +46,22 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     this.variablesRepository = variablesRepository;
     this.printedValues = new ArrayList<>(printedValues);
     this.value = new NumberLiteral(0, new Position(0, 0), new Position(0, 0));
+    this.literalHandler = new LiteralHandler();
+    this.inputs = new LinkedList<>();
+  }
+
+  public InterpreterVisitorV2(
+      InterpreterVisitor previousVisitor,
+      VariablesRepository variablesRepository,
+      List<String> printedValues,
+      Literal<?> value,
+      Queue<String> inputs) {
+    this.previousVisitor = previousVisitor;
+    this.variablesRepository = variablesRepository;
+    this.printedValues = new ArrayList<>(printedValues);
+    this.value = value;
+    this.literalHandler = new LiteralHandler();
+    this.inputs = inputs;
   }
 
   private InterpreterVisitorV2(
@@ -54,6 +73,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     this.variablesRepository = variablesRepository;
     this.printedValues = new ArrayList<>(printedValues);
     this.value = value;
+    this.literalHandler = new LiteralHandler();
+    this.inputs = new LinkedList<>();
   }
 
   public Literal<?> getValue() {
@@ -121,71 +142,28 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   }
 
   private NodeVisitor handleReadInput(CallExpression callExpression) {
-    Scanner scanner = new Scanner(System.in);
-    String userInput = "";
+    String savedInputs = inputs.poll();
+    // Check if there is a user input saved in the queue or else it will
+    // wait for the user to input a value
+    String userInput = savedInputs == null ? "" : savedInputs;
+    ResultLiteral result = literalHandler.handleReadInput(callExpression, printedValues, userInput);
+    Literal<?> resultLiteral = result.literal();
+    List<String> newPrintedValues = result.strings();
 
-    while (userInput.isEmpty()) {
-      System.out.println("Please enter input: ");
-      userInput = scanner.nextLine();
-      if (userInput.isEmpty()) {
-        System.out.println("Input cannot be empty. Please enter a valid input.");
-        System.out.println();
-      }
-    }
+    Identifier identifier = callExpression.methodIdentifier();
+    VariablesRepository newVariablesRepository =
+        variablesRepository.addVariable(identifier, resultLiteral);
+    return new InterpreterVisitorV2(
+        previousVisitor, newVariablesRepository, newPrintedValues, resultLiteral, inputs);
+  }
 
-    System.out.println(userInput);
-    List<String> newPrintedValues = new ArrayList<>(printedValues);
-    newPrintedValues.add(userInput);
-
-    Literal<?> result = getLiteral(callExpression, userInput);
-
+  private NodeVisitor handleReadEnv(CallExpression callExpression, List<AstNode> arguments) {
+    Literal<?> result = literalHandler.handleReadEnv(callExpression, arguments);
     Identifier identifier = callExpression.methodIdentifier();
     VariablesRepository newVariablesRepository =
         variablesRepository.addVariable(identifier, result);
     return new InterpreterVisitorV2(
-        previousVisitor, newVariablesRepository, newPrintedValues, result);
-  }
-
-  private NodeVisitor handleReadEnv(CallExpression callExpression, List<AstNode> arguments) {
-    if (arguments.size() != 1 || !(arguments.get(0) instanceof StringLiteral)) {
-      throw new IllegalArgumentException("readEnv expects a single string argument");
-    }
-
-    String envVarName = ((StringLiteral) arguments.get(0)).value();
-    String envVarValue = EnvLoader.getValue(envVarName);
-
-    if (envVarValue == null) {
-      throw new IllegalArgumentException("Environment variable " + envVarName + " not found");
-    }
-
-    Literal<?> result = getLiteral(callExpression, envVarValue);
-
-    Identifier identifier = callExpression.methodIdentifier();
-    VariablesRepository newVariablesRepository =
-        variablesRepository.addVariable(identifier, result);
-    return new InterpreterVisitorV2(previousVisitor, newVariablesRepository, printedValues, result);
-  }
-
-  private static Literal<?> getLiteral(CallExpression callExpression, String userInput) {
-    Literal<?> result;
-    Position start = callExpression.start();
-    Position end = callExpression.end();
-
-    if (userInput.matches("-?\\d+(\\.\\d+)?([eE]-?\\d+)?")) {
-      Number number;
-      if (userInput.contains(".") || userInput.matches(".*[eE].*")) {
-        number = Double.parseDouble(userInput);
-      } else {
-        number = Integer.parseInt(userInput);
-      }
-      result = new NumberLiteral(number, start, end);
-    } else if (userInput.matches("(?i)^(true|false|t|f)$")) {
-      boolean bool = userInput.equalsIgnoreCase("true") || userInput.equalsIgnoreCase("t");
-      result = new BooleanLiteral(bool, start, end);
-    } else {
-      result = new StringLiteral(userInput, start, end);
-    }
-    return result;
+        previousVisitor, newVariablesRepository, printedValues, result, inputs);
   }
 
   @Override
@@ -195,7 +173,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
         (InterpreterVisitor) v1Result,
         ((InterpreterVisitor) v1Result).getVariablesRepository(),
         printedValues,
-        ((InterpreterVisitor) v1Result).getValue());
+        ((InterpreterVisitor) v1Result).getValue(),
+        inputs);
   }
 
   @Override
@@ -205,7 +184,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
         (InterpreterVisitor) v1Result,
         ((InterpreterVisitor) v1Result).getVariablesRepository(),
         printedValues,
-        ((InterpreterVisitor) v1Result).getValue());
+        ((InterpreterVisitor) v1Result).getValue(),
+        inputs);
   }
 
   @Override
@@ -215,7 +195,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
         (InterpreterVisitor) v1Result,
         ((InterpreterVisitor) v1Result).getVariablesRepository(),
         printedValues,
-        ((InterpreterVisitor) v1Result).getValue());
+        ((InterpreterVisitor) v1Result).getValue(),
+        inputs);
   }
 
   @Override
@@ -225,7 +206,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
         (InterpreterVisitor) v1Result,
         ((InterpreterVisitor) v1Result).getVariablesRepository(),
         printedValues,
-        ((InterpreterVisitor) v1Result).getValue());
+        ((InterpreterVisitor) v1Result).getValue(),
+        inputs);
   }
 
   @Override
@@ -235,7 +217,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
         (InterpreterVisitor) v1Result,
         ((InterpreterVisitor) v1Result).getVariablesRepository(),
         printedValues,
-        ((InterpreterVisitor) v1Result).getValue());
+        ((InterpreterVisitor) v1Result).getValue(),
+        inputs);
   }
 
   @Override
@@ -245,7 +228,8 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
         (InterpreterVisitor) v1Result,
         ((InterpreterVisitor) v1Result).getVariablesRepository(),
         printedValues,
-        ((InterpreterVisitor) v1Result).getValue());
+        ((InterpreterVisitor) v1Result).getValue(),
+        inputs);
   }
 
   @Override

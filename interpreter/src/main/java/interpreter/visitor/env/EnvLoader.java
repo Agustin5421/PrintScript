@@ -34,7 +34,6 @@ public class EnvLoader {
   }
 
   public static String getValue(String key) {
-    String value = map.get(key.substring(1, key.length() - 1));
-    return value;
+    return map.get(key);
   }
 }

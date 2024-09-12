@@ -27,11 +27,13 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   private final BinaryExpressionEvaluator binaryExpressionEvaluator =
       new BinaryExpressionEvaluator();
   private final List<String> printedValues;
+  private final LiteralHandler literalHandler;
 
   public InterpreterVisitorV1(VariablesRepository variablesRepository, Literal<?> value) {
     this.variablesRepository = variablesRepository;
     this.value = value;
     this.printedValues = new ArrayList<>();
+    this.literalHandler = new LiteralHandler();
   }
 
   public InterpreterVisitorV1(VariablesRepository variablesRepository) {
@@ -43,6 +45,14 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     this.variablesRepository = variablesRepository;
     this.value = value;
     this.printedValues = new ArrayList<>(printedValues);
+    this.literalHandler = new LiteralHandler();
+  }
+
+  public InterpreterVisitorV1(VariablesRepository variablesRepository, List<String> printedValues) {
+    this.variablesRepository = variablesRepository;
+    this.value = new NumberLiteral(0, new Position(0, 0), new Position(0, 0));
+    this.printedValues = new ArrayList<>(printedValues);
+    this.literalHandler = new LiteralHandler();
   }
 
   @Override
@@ -72,7 +82,7 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     String name = identifier.name();
 
     if (name.equals("println")) {
-      List<String> newPrintedValues = printlnMethod(identifier, arguments);
+      List<String> newPrintedValues = literalHandler.printlnMethod(arguments, printedValues, this);
       return new InterpreterVisitorV1(variablesRepository, value, newPrintedValues);
     } else {
       throw new IllegalArgumentException(name + " not supported in this version :( ");
@@ -85,7 +95,8 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromIdentifier(left);
 
     InterpreterVisitor latestVisitor =
-        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
+        InterpreterVisitorFactory.getInterpreterVisitorWithParams(
+            variablesRepository, printedValues);
 
     Literal<?> evaluatedRight =
         ((InterpreterVisitor) assignmentExpression.right().accept(latestVisitor)).getValue();
@@ -101,17 +112,17 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromVarDec(variableDeclaration);
 
     InterpreterVisitor latestVisitor =
-        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
+        InterpreterVisitorFactory.getInterpreterVisitorWithParams(
+            variablesRepository, printedValues);
 
     ExpressionNode expression = variableDeclaration.expression();
 
+    Literal<?> value;
     if (expression == null) {
-      VariablesRepository newVariablesRepository =
-          getVariablesRepository().addNewVariable(varId, null);
-      return new InterpreterVisitorV1(newVariablesRepository, this.value, printedValues);
+      value = null;
+    } else {
+      value = ((InterpreterVisitor) expression.accept(latestVisitor)).getValue();
     }
-
-    Literal<?> value = ((InterpreterVisitor) expression.accept(latestVisitor)).getValue();
 
     VariablesRepository newVariablesRepository =
         getVariablesRepository().addNewVariable(varId, value);
@@ -140,23 +151,10 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     InterpreterVisitor latestVisitor =
-        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
+        InterpreterVisitorFactory.getInterpreterVisitorWithParams(
+            variablesRepository, printedValues);
     Literal<?> value = binaryExpressionEvaluator.evaluate(binaryExpression, latestVisitor);
     return new InterpreterVisitorV1(variablesRepository, value, printedValues);
-  }
-
-  private List<String> printlnMethod(Identifier identifier, List<AstNode> arguments) {
-    List<String> newPrintedValues = new ArrayList<>(printedValues);
-    InterpreterVisitor latestVisitor =
-        InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
-    for (AstNode argument : arguments) {
-      String value =
-          ((InterpreterVisitor) argument.accept(latestVisitor)).getValue().value().toString();
-      System.out.println(value);
-      newPrintedValues.add(value);
-    }
-    System.out.println();
-    return newPrintedValues;
   }
 
   @Override
