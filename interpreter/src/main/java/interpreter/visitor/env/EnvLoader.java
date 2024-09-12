@@ -2,11 +2,12 @@ package interpreter.visitor.env;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EnvLoader {
   public static final Map<String, String> map =
-      Map.ofEntries(
+          new HashMap<>(Map.ofEntries(
           new SimpleEntry<>("GRAVITY", "9.81"),
           new SimpleEntry<>("SPEED_OF_LIGHT", "299792458"),
           new SimpleEntry<>("PLANCK_CONSTANT", "6.62607015e-34"),
@@ -23,7 +24,7 @@ public class EnvLoader {
           new SimpleEntry<>("LIGHT_YEAR", "9.4607e15"),
           new SimpleEntry<>("PARSEC", "3.0857e16"),
           new SimpleEntry<>("IS_CONSTANT", "true"),
-          new SimpleEntry<>("UNIVERSAL_CONSTANT", "constant"));
+          new SimpleEntry<>("UNIVERSAL_CONSTANT", "constant")));
 
   public static void addNewConstants(@NotNull String key, @NotNull String value) {
     map.put(key, value);

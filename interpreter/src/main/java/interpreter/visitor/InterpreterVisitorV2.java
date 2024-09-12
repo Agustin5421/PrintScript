@@ -135,7 +135,12 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
           (InterpreterVisitor) previousVisitor.visitCallExpression(callExpression);
       List<String> nestedPrints = innerVisitor.getPrintedValues();
       List<String> updatedPrints = new ArrayList<>(printedValues);
-      updatedPrints.addAll(nestedPrints);
+      for (String print : nestedPrints) {
+        if (!printedValues.contains(print)) {
+          updatedPrints.add(print);
+        }
+      }
+
       return new InterpreterVisitorV2(
           innerVisitor, variablesRepository, updatedPrints, innerVisitor.getValue());
     }
