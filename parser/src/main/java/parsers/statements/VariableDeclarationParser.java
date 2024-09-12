@@ -10,6 +10,7 @@ import java.util.List;
 import parsers.Parser;
 import token.Position;
 import token.Token;
+import token.types.TokenSyntaxType;
 
 public class VariableDeclarationParser implements StatementParser {
   private final List<String> kinds;
@@ -32,7 +33,14 @@ public class VariableDeclarationParser implements StatementParser {
       throw new UnexpectedTokenException(tokens.get(2), ":");
     }
 
-    ExpressionNode value = parser.parseExpression(tokens.subList(5, tokens.size()));
+    ExpressionNode value;
+
+    if (tokens.get(4).nodeType() != TokenSyntaxType.ASSIGNATION) {
+      value = null;
+    } else {
+      value = parser.parseExpression(tokens.subList(5, tokens.size()));
+    }
+
     String kind = tokens.get(0).value();
 
     String type = getType(tokens.get(3));
