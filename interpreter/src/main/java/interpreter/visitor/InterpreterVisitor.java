@@ -13,4 +13,6 @@ public interface InterpreterVisitor extends NodeVisitor {
   InterpreterVisitor getPreviousVisitor();
 
   Literal<?> getValue();
+
+  InterpreterVisitor cloneVisitor();
 }

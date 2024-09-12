@@ -63,6 +63,12 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   }
 
   @Override
+  public InterpreterVisitor cloneVisitor() {
+    return new InterpreterVisitorV2(
+        previousVisitor.cloneVisitor(), variablesRepository, new ArrayList<>(), value);
+  }
+
+  @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
 
     Literal<?> conditionValue =

@@ -65,6 +65,11 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
   }
 
   @Override
+  public InterpreterVisitor cloneVisitor() {
+    return new InterpreterVisitorV1(variablesRepository, value, new ArrayList<>());
+  }
+
+  @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     throw new IllegalArgumentException("If Node not supported in this version :( ");
   }
