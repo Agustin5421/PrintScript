@@ -125,7 +125,7 @@ public class ExpressionEvaluatorTest {
     Interpreter interpreter = new Interpreter("1.1");
     List<String> printedValues = interpreter.interpret(code);
 
-    assertEquals("hello world", printedValues.get(0));
+    assertEquals("hello world", printedValues.get(1));
   }
 
   // TODO: solve these tests

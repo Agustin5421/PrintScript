@@ -38,7 +38,7 @@ public class LiteralHandler {
         System.out.println();
       }
     }
-    //printedValues.add(userInput);
+    // printedValues.add(userInput);
 
     return new ResultLiteral(getLiteral(callExpression, userInput), printedValues);
   }
