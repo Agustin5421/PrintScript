@@ -44,7 +44,7 @@ public class Lexer implements Iterator<Token> {
     return !tokens.isEmpty() || currentLine != null;
   }
 
-  private void tokenizeLine(){
+  private void tokenizeLine() {
     while (matcher.find()) {
       String word = matcher.group();
       int start = matcher.start();
@@ -73,6 +73,7 @@ public class Lexer implements Iterator<Token> {
       throw new RuntimeException(e);
     }
   }
+
   @Override
   public Token next() {
     if (tokens.isEmpty() || currentLine != null) {
