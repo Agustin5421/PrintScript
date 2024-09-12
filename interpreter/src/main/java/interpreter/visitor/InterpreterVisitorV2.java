@@ -84,11 +84,11 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
         variablesRepository.update(nestedVisitorVariablesRepository);
     InterpreterVisitor updatedPrevVisitor = new InterpreterVisitorV1(updatedVarRepo);
 
+    List<String> nestedPrints = nestedVisitor.getPrintedValues();
+    List<String> updatedPrints = new ArrayList<>(printedValues);
+    updatedPrints.addAll(nestedPrints);
     return new InterpreterVisitorV2(
-        updatedPrevVisitor,
-        updatedVarRepo,
-        nestedVisitor.getPrintedValues(),
-        nestedVisitor.getValue());
+        updatedPrevVisitor, updatedVarRepo, updatedPrints, nestedVisitor.getValue());
   }
 
   @Override
@@ -110,7 +110,13 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     } else if (name.equals("readInput")) {
       return handleReadInput(callExpression);
     } else {
-      return previousVisitor.visitCallExpression(callExpression);
+      InterpreterVisitor innerVisitor =
+          (InterpreterVisitor) previousVisitor.visitCallExpression(callExpression);
+      List<String> nestedPrints = innerVisitor.getPrintedValues();
+      List<String> updatedPrints = new ArrayList<>(printedValues);
+      updatedPrints.addAll(nestedPrints);
+      return new InterpreterVisitorV2(
+          innerVisitor, variablesRepository, updatedPrints, innerVisitor.getValue());
     }
   }
 

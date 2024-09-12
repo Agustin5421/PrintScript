@@ -20,8 +20,8 @@ public class VariablesRepository {
 
   public VariablesRepository(
       Map<Identifier, Literal<?>> variables, Map<VariableIdentifier, Literal<?>> newVariables) {
-    this.variables = Map.copyOf(variables);
-    this.newVariables = Map.copyOf(newVariables);
+    this.variables = variables;
+    this.newVariables = newVariables;
   }
 
   public Map<Identifier, Literal<?>> getVariables() {

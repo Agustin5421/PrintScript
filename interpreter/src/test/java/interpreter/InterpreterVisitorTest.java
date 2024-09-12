@@ -26,4 +26,12 @@ public class InterpreterVisitorTest {
     assertEquals("value", repository.getNewVariable(new VariableIdentifier("name")).value());
     assertEquals(42, repository.getNewVariable(new VariableIdentifier("number")).value());
   }
+
+  @Test
+  public void testInitializedVar() {
+    String code = "let pi: number;\n" + "pi = 3.14;\n" + "println(pi / 2);";
+    Interpreter interpreter = new Interpreter("1.0");
+    VariablesRepository repository = interpreter.executeProgram(code);
+    assertEquals(3.14, repository.getNewVariable(new VariableIdentifier("pi")).value());
+  }
 }

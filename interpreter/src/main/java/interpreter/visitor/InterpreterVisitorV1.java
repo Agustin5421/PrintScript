@@ -1,6 +1,7 @@
 package interpreter.visitor;
 
 import ast.expressions.BinaryExpression;
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.literal.BooleanLiteral;
 import ast.literal.Literal;
@@ -102,8 +103,15 @@ public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisi
     InterpreterVisitor latestVisitor =
         InterpreterVisitorFactory.getInterpreterVisitor(variablesRepository);
 
-    Literal<?> value =
-        ((InterpreterVisitor) variableDeclaration.expression().accept(latestVisitor)).getValue();
+    ExpressionNode expression = variableDeclaration.expression();
+
+    if (expression == null) {
+      VariablesRepository newVariablesRepository =
+          getVariablesRepository().addNewVariable(varId, null);
+      return new InterpreterVisitorV1(newVariablesRepository, this.value, printedValues);
+    }
+
+    Literal<?> value = ((InterpreterVisitor) expression.accept(latestVisitor)).getValue();
 
     VariablesRepository newVariablesRepository =
         getVariablesRepository().addNewVariable(varId, value);

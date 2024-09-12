@@ -284,6 +284,21 @@ public class InterpreterVisitorV2Test {
     assertEquals("42", printedValues.get(0));
   }
 
+  @Test
+  public void testPrintList() {
+    String code =
+        "const booleanValue: boolean = true;\n"
+            + "if(booleanValue) {\n"
+            + "    println(\"if statement working correctly\");\n"
+            + "}\n"
+            + "println(\"outside of conditional\");\n";
+    Interpreter interpreter = new Interpreter("1.1");
+    List<String> prints = interpreter.interpret(code);
+
+    assertEquals("if statement working correctly", prints.get(0));
+    assertEquals("outside of conditional", prints.get(1));
+  }
+
   //  @Test
   //  public void testReadEnvExistingVariable() {
   //    String code = "let x: string = readEnv(\"UNIVERSAL_CONSTANT\");";
