@@ -4,8 +4,8 @@ import ast.literal.Literal;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
-import interpreter.visitor.env.EnvLoader;
 import interpreter.visitor.patternStat.*;
+import interpreter.visitor.staticprovider.EnvLoader;
 import java.util.*;
 import token.Position;
 

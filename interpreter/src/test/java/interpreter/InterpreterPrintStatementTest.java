@@ -2,9 +2,9 @@ package interpreter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import interpreter.visitor.env.EnvLoader;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
+import interpreter.visitor.staticprovider.EnvLoader;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import org.junit.jupiter.api.Test;

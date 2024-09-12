@@ -1,4 +1,4 @@
-package interpreter.visitor.env;
+package interpreter.visitor.staticprovider;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import java.util.AbstractMap.SimpleEntry;
