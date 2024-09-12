@@ -41,47 +41,44 @@ public class Lexer implements Iterator<Token> {
   @Override
   public boolean hasNext() {
     // If there are tokens in the buffer, return true
-    if (!tokens.isEmpty()) {
-      return true;
-    }
-
-    // Once there are no more tokens in the buffer, tokenize the next line
-    try {
-        while (matcher.find()) {
-          String word = matcher.group();
-          int start = matcher.start();
-          int end = matcher.end();
-
-          // Update the current position
-          Position startPosition = new Position(currentPosition.row(), start);
-          Position endPosition = updatePosition(start, end, startPosition);
-
-          currentPosition = endPosition;
-          currentPosition = updatePosition(end, currentLine.length(), currentPosition);
-
-          // Get token type and create a new token
-          TokenType type = tokenTypeGetter.getType(word);
-          Token token = new Token(type, word, startPosition, endPosition);
-
-          if (token.nodeType() == TokenSyntaxType.INVALID) {
-            throw new UnsupportedCharacter("Invalid token: " + token.value());
-          }
-
-          tokens.add(token);
-        }
-        advanceToNextLine(); // Read the next line once we have processed the current one
-    } catch (IOException e) {
-      return false;
-    }
-
-    return !tokens.isEmpty();
+    return !tokens.isEmpty() || currentLine != null;
   }
 
+  private void tokenizeLine(){
+    while (matcher.find()) {
+      String word = matcher.group();
+      int start = matcher.start();
+      int end = matcher.end();
+
+      // Update the current position
+      Position startPosition = new Position(currentPosition.row(), start);
+      Position endPosition = updatePosition(start, end, startPosition);
+
+      currentPosition = endPosition;
+      currentPosition = updatePosition(end, currentLine.length(), currentPosition);
+
+      // Get token type and create a new token
+      TokenType type = tokenTypeGetter.getType(word);
+      Token token = new Token(type, word, startPosition, endPosition);
+
+      if (token.nodeType() == TokenSyntaxType.INVALID) {
+        throw new UnsupportedCharacter("Invalid token: " + token.value());
+      }
+      tokens.add(token);
+    }
+
+    try {
+      advanceToNextLine();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
   @Override
   public Token next() {
-    if (!hasNext()) {
-      throw new IllegalStateException("No more tokens available");
+    if (tokens.isEmpty() || currentLine != null) {
+      tokenizeLine();
     }
+
     return tokens.poll();
   }
 
