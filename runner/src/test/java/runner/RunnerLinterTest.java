@@ -2,6 +2,8 @@ package runner;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
+
 public class RunnerLinterTest {
   @Test
   public void runLinterTest() {
@@ -9,7 +11,7 @@ public class RunnerLinterTest {
 
     Runner runner = new Runner();
     runner.analyze(
-        code,
+            new ByteArrayInputStream(code.getBytes()),
         "1.0",
         "{\n"
             + "  \"identifier\": {\n"

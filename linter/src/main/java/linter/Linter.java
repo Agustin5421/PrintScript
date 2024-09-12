@@ -1,6 +1,8 @@
 package linter;
 
 import ast.root.AstNode;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import lexer.Lexer;
 import linter.visitor.LinterVisitor;
@@ -15,6 +17,17 @@ public class Linter implements Progressable, Iterator<FullReport> {
   public Linter(Parser parser, LinterVisitor linterVisitor) {
     this.parser = parser;
     this.linterVisitor = linterVisitor;
+  }
+
+  public Linter setInputStream(InputStream code) {
+    Parser parser = getParser();
+    Lexer newLexer = null;
+    try {
+      newLexer = parser.getLexer().setInput(code);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return setParser(parser.setLexer(newLexer));
   }
 
   public Linter setInput(String code) {

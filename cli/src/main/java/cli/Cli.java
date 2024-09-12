@@ -1,6 +1,8 @@
 package cli;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
+
 import runner.Runner;
 
 public class Cli {
@@ -23,24 +25,23 @@ public class Cli {
     String codeFilePath = args[1];
     String version = args[2];
 
-    String code = findCode(codeFilePath);
+    InputStream code = findCode(codeFilePath);
 
     //args[3] is the options file
     switch (operation) {
       case "Validation" -> runner.validate(code, version);
       case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock());
-      case "Analyzing" -> runner.analyze(code, version, findCode(args[3]), new OutputString());
-      case "Formatting" -> runner.format(code, version, findCode(args[3]));
+      case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputString());
+      case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
       default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
     }
   }
 
-  private static String findCode(String codeFilePath) {
+  private static InputStream findCode(String codeFilePath) {
     try {
-      return new FileInputStream(codeFilePath).toString();
+      return new FileInputStream(codeFilePath);
     } catch (Exception e) {
-      System.out.println("File not found");
-      return null;
+        throw new RuntimeException(e);
     }
   }
 }

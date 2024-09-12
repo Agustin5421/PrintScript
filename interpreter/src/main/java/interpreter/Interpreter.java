@@ -6,6 +6,8 @@ import factory.ParserFactory;
 import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorFactory;
 import interpreter.visitor.repository.VariablesRepository;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import lexer.Lexer;
 import observers.Observer;
@@ -58,6 +60,24 @@ public class Interpreter implements Progressable {
   public List<String> interpret(String code) {
     InterpreterVisitor visitor = nodeVisitor;
     Lexer newLexer = parser.getLexer().setInputAsString(code);
+    parser = parser.setLexer(newLexer);
+    while (hasMoreStatements()) {
+      AstNode statement = getNextStatement();
+      visitor = (InterpreterVisitor) statement.accept(visitor);
+      updateProgress();
+    }
+
+    return visitor.getPrintedValues();
+  }
+
+  public List<String> interpretInputStream(InputStream code) {
+    InterpreterVisitor visitor = nodeVisitor;
+    Lexer newLexer = null;
+    try {
+      newLexer = parser.getLexer().setInput(code);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
     parser = parser.setLexer(newLexer);
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();
