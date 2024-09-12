@@ -9,6 +9,7 @@ import interpreter.visitor.InterpreterVisitorV1;
 import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
 import interpreter.visitor.repository.VariablesRepository;
 import java.io.ByteArrayInputStream;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import token.Position;
 
@@ -102,7 +103,7 @@ public class ExpressionEvaluatorTest {
     String input = "42.0";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Number:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -113,20 +114,32 @@ public class ExpressionEvaluatorTest {
             .value());
   }
 
-  // TODO: solve these tests
-  /*
   @Test
   public void readInputPlusStringTest() {
     String input = "hello";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "let x: string = readInput() + \" world\";";
+    String code = "let x: string = readInput(\"Name:\"); println(x+\" world\");";
 
     Interpreter interpreter = new Interpreter("1.1");
-    VariablesRepository repository = interpreter.executeProgram(code);
+    List<String> printedValues = interpreter.interpret(code);
 
-    assertEquals("hello world", repository.getNewVariable(new VariableIdentifier("x")).value());
+    assertEquals("hello world", printedValues.get(0));
   }
 
-   */
+  // TODO: solve these tests
+
+  //  @Test
+  //  public void readInputPlusStringTest2() {
+  //    String input = "hello";
+  //    System.setIn(new ByteArrayInputStream(input.getBytes()));
+  //
+  //    String code = "let x: string = readInput(\"Name:\") + \" world\";";
+  //
+  //    Interpreter interpreter = new Interpreter("1.1");
+  //    VariablesRepository repository = interpreter.executeProgram(code);
+  //
+  //    assertEquals("hello world", repository.getNewVariable(new VariableIdentifier("x")).value());
+  //  }
+
 }

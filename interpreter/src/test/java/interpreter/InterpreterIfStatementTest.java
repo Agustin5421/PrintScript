@@ -5,11 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import org.junit.jupiter.api.Test;
-import token.Position;
 
 public class InterpreterIfStatementTest {
-  private final Position defaultPosition = new Position(0, 0);
-
   @Test
   public void testExecuteProgram() {
     String code =
@@ -53,20 +50,4 @@ public class InterpreterIfStatementTest {
     VariablesRepository repository = interpreter.executeProgram(code);
     assertEquals(6, repository.getNewVariable(new VariableIdentifier("hola")).value());
   }
-
-  // TODO: solve these tests
-  /*
-  @Test
-  public void testPrintsLog() {
-    String code = """
-            println("Hello");
-            println("World");
-            """;
-    Interpreter interpreter = new Interpreter("1.0");
-    List<String> prints = interpreter.interpret(code);
-    List<String> expected = List.of("Hello", "World");
-    assertEquals(expected, prints);
-  }
-
-   */
 }

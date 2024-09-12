@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ast.identifier.Identifier;
 import interpreter.factory.InterpreterFactory;
+import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -18,7 +19,7 @@ public class InterpreterVisitorV2Test {
     String input = "42.0";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = InterpreterFactory.getInterpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -34,7 +35,7 @@ public class InterpreterVisitorV2Test {
     String input = "42";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -50,7 +51,7 @@ public class InterpreterVisitorV2Test {
     String input = "Hello, world!";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -66,7 +67,7 @@ public class InterpreterVisitorV2Test {
     String input = "true";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -89,7 +90,7 @@ public class InterpreterVisitorV2Test {
     String input = "\n\nhola";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -105,7 +106,7 @@ public class InterpreterVisitorV2Test {
     String input = "true";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -121,7 +122,7 @@ public class InterpreterVisitorV2Test {
     String input = "false";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -137,7 +138,7 @@ public class InterpreterVisitorV2Test {
     String input = "t";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -153,7 +154,7 @@ public class InterpreterVisitorV2Test {
     String input = "f";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -169,7 +170,7 @@ public class InterpreterVisitorV2Test {
     String input = "42.0";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -185,7 +186,7 @@ public class InterpreterVisitorV2Test {
     String input = "42";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -201,7 +202,7 @@ public class InterpreterVisitorV2Test {
     String input = "Hello, world!";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -217,7 +218,7 @@ public class InterpreterVisitorV2Test {
     String input = "HelloWorld";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -233,7 +234,7 @@ public class InterpreterVisitorV2Test {
     String input = "Hello world this is a test";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
 
-    String code = "readInput();";
+    String code = "readInput(\"Name:\");";
     Interpreter interpreter = new Interpreter("1.1");
     VariablesRepository repository = interpreter.executeProgram(code);
 
@@ -299,39 +300,51 @@ public class InterpreterVisitorV2Test {
     assertEquals("outside of conditional", prints.get(1));
   }
 
-  //  @Test
-  //  public void testReadEnvExistingVariable() {
-  //    String code = "let x: string = readEnv(\"UNIVERSAL_CONSTANT\");";
-  //    Interpreter interpreter = new Interpreter("1.1");
-  //    VariablesRepository newVar = interpreter.executeProgram(code);
-  //
-  //    assertEquals("constant", newVar.getNewVariable(new VariableIdentifier("x")).value());
-  //  }
-  //
-  //  @Test
-  //  public void testReadEnvExistingBooleanVariable() {
-  //    String code = "let x: boolean = readEnv(\"IS_CONSTANT\");";
-  //    Interpreter interpreter = new Interpreter("1.1");
-  //    VariablesRepository newVar = interpreter.executeProgram(code);
-  //
-  //    assertEquals(true, newVar.getNewVariable(new VariableIdentifier("x")).value());
-  //  }
-  //
-  //  @Test
-  //  public void testReadEnvExistingIntegerVariable() {
-  //    String code = "let x: number = readEnv(\"GRAVITY\");";
-  //    Interpreter interpreter = new Interpreter("1.1");
-  //    VariablesRepository newVar = interpreter.executeProgram(code);
-  //
-  //    assertEquals(9.81, newVar.getNewVariable(new VariableIdentifier("x")).value());
-  //  }
-  //
-  //  @Test
-  //  public void testReadEnvExistingDoubleVariable() {
-  //    String code = "let x: number = readEnv(\"PLANCK_CONSTANT\");";
-  //    Interpreter interpreter = new Interpreter("1.1");
-  //    VariablesRepository newVar = interpreter.executeProgram(code);
-  //
-  //    assertEquals(6.62607015e-34, newVar.getNewVariable(new VariableIdentifier("x")).value());
-  //  }
+  @Test
+  public void testPrintsLog() {
+    String code = """
+            println("Hello");
+            println("World");
+            """;
+    Interpreter interpreter = new Interpreter("1.0");
+    List<String> prints = interpreter.interpret(code);
+    List<String> expected = List.of("Hello", "World");
+    assertEquals(expected, prints);
+  }
+
+  @Test
+  public void testReadEnvExistingVariable() {
+    String code = "let x: string = readEnv(\"UNIVERSAL_CONSTANT\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
+
+    assertEquals("constant", newVar.getNewVariable(new VariableIdentifier("x")).value());
+  }
+
+  @Test
+  public void testReadEnvExistingBooleanVariable() {
+    String code = "let x: boolean = readEnv(\"IS_CONSTANT\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
+
+    assertEquals(true, newVar.getNewVariable(new VariableIdentifier("x")).value());
+  }
+
+  @Test
+  public void testReadEnvExistingIntegerVariable() {
+    String code = "let x: number = readEnv(\"GRAVITY\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
+
+    assertEquals(9.81, newVar.getNewVariable(new VariableIdentifier("x")).value());
+  }
+
+  @Test
+  public void testReadEnvExistingDoubleVariable() {
+    String code = "let x: number = readEnv(\"PLANCK_CONSTANT\");";
+    Interpreter interpreter = new Interpreter("1.1");
+    VariablesRepository newVar = interpreter.executeProgram(code);
+
+    assertEquals(6.62607015e-34, newVar.getNewVariable(new VariableIdentifier("x")).value());
+  }
 }

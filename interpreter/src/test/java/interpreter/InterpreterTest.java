@@ -1,12 +1,14 @@
 package interpreter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import exceptions.UnsupportedExpressionException;
 import interpreter.factory.InterpreterFactory;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import token.Position;
@@ -106,13 +108,16 @@ public class InterpreterTest {
   }
 
   // TODO: solve these tests
-  /*
+
   @Test
   public void testNoValueDeclaration() {
     String code = "let x: string;";
     Interpreter interpreter = new Interpreter("1.0");
     VariablesRepository repository = interpreter.executeProgram(code);
-    assertEquals(null, repository.getNewVariable(new VariableIdentifier("x")).value());
+    VariableIdentifier varId = new VariableIdentifier("x");
+    assertNull(
+        repository.getNewVariable(varId),
+        "Variable x should not be initialized and should be null by default.");
   }
 
   @Test
@@ -134,6 +139,4 @@ public class InterpreterTest {
     List<String> expected = List.of("Hello", "World");
     assertEquals(expected, prints);
   }
-
-   */
 }
