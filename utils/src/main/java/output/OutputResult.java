@@ -1,4 +1,4 @@
-package runner;
+package output;
 
 public interface OutputResult {
   OutputResult saveResult(String result);

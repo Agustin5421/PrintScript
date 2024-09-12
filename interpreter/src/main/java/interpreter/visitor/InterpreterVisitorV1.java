@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import token.Position;
 
-public class InterpreterVisitorV1 implements InterpreterVisitor { // }, NodeVisitor2 {
+public class InterpreterVisitorV1 implements InterpreterVisitor {
   private final VariablesRepository variablesRepository;
   private final Literal<?> value;
   private final BinaryExpressionEvaluator binaryExpressionEvaluator =

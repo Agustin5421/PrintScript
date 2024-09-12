@@ -8,11 +8,11 @@ import interpreter.visitor.InterpreterVisitorFactory;
 import interpreter.visitor.repository.VariablesRepository;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import lexer.Lexer;
 import observers.Observer;
 import observers.Progressable;
+import output.OutputResult;
 import parsers.Parser;
 
 public class Interpreter implements Progressable {
@@ -71,8 +71,8 @@ public class Interpreter implements Progressable {
     return visitor.getPrintedValues();
   }
 
-  public List<String> interpretInputStream(InputStream code) {
-    List<String> prints = new ArrayList<>();
+  public void interpretInputStream(InputStream code, OutputResult printLog) {
+
     InterpreterVisitor visitor = nodeVisitor;
     Lexer newLexer = null;
     try {
@@ -84,11 +84,13 @@ public class Interpreter implements Progressable {
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();
       visitor = (InterpreterVisitor) statement.accept(visitor.cloneVisitor());
-      prints.addAll(visitor.getPrintedValues());
+      List<String> printedValues = visitor.getPrintedValues();
+      for (String printedValue : printedValues) {
+        printLog.saveResult(printedValue);
+      }
+      System.gc();
       updateProgress();
     }
-
-    return visitor.getPrintedValues();
   }
 
   private boolean hasMoreStatements() {
