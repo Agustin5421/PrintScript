@@ -173,7 +173,7 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
     return new InterpreterVisitorV2(
         (InterpreterVisitor) v1Result,
         ((InterpreterVisitor) v1Result).getVariablesRepository(),
-        printedValues,
+        ((InterpreterVisitor) v1Result).getPrintedValues(),
         ((InterpreterVisitor) v1Result).getValue());
   }
 

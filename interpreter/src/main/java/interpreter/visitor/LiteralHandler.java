@@ -80,7 +80,7 @@ public class LiteralHandler {
     for (AstNode argument : arguments) {
       String value =
           ((InterpreterVisitor) argument.accept(latestVisitor)).getValue().value().toString();
-      // System.out.println(value);
+      System.out.println(value);
       newPrintedValues.add(value);
     }
     // System.out.println();
