@@ -3,6 +3,7 @@ package runner;
 import factory.LexerFactory;
 import factory.ParserFactory;
 import interpreter.Interpreter;
+import interpreter.IterableInterpreter;
 import interpreter.factory.InterpreterFactory;
 
 import java.io.IOException;
@@ -18,22 +19,20 @@ import parsers.Parser;
 public class Runner {
 
   public void execute(InputStream code, String version,OutputResult printLog, OutputResult errorLog) {
-    Interpreter interpreter = InterpreterFactory.getInterpreter(version);
+    IterableInterpreter iterableInterpreter = new IterableInterpreter(version, code);
 
     try {
-      /*
-      List<String> prints = interpreter.interpretInputStream(code);
-      interpreter = null;
-      for (String print : prints) {
-        printLog.saveResult(print);
+      List<String> nextPrints;
+      while(iterableInterpreter.hasNext()) {
+        nextPrints = iterableInterpreter.next();
+        for (String print : nextPrints) {
+          printLog.saveResult(print);
+        }
       }
-
-       */
-    } catch (OutOfMemoryError e) {
-      interpreter = null;
+    } catch (Throwable e) {
+      iterableInterpreter = null;
       System.gc();
-      errorLog.saveResult("Java heap space");
-    } catch (Exception e) {
+      System.out.println(e.getMessage());
       errorLog.saveResult(e.getMessage());
     }
   }
