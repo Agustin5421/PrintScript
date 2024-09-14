@@ -21,6 +21,6 @@ public record AssignmentExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visitAssignmentExpression(this);
+    return visitor.visit(this);
   }
 }

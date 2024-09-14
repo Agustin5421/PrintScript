@@ -23,7 +23,7 @@ public record Identifier(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visitIdentifier(this);
+    return visitor.visit(this);
   }
 
   @Override

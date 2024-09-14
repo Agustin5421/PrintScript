@@ -1,6 +1,6 @@
 package factory;
 
-import ast.identifier.IdentifierParser;
+import parsers.expressions.IdentifierParser;
 import java.util.List;
 import lexer.Lexer;
 import parsers.Parser;
