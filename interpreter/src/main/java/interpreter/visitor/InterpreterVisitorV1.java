@@ -70,16 +70,18 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
   }
 
   @Override
+  public NodeVisitor visit(AstNode node) {
+    return this;
+  }
+
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     throw new IllegalArgumentException("If Node not supported in this version :( ");
   }
 
-  @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
     throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
-  @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     List<AstNode> arguments = callExpression.arguments();
     Identifier identifier = callExpression.methodIdentifier();
@@ -94,7 +96,6 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     }
   }
 
-  @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     Identifier left = assignmentExpression.left();
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromIdentifier(left);
@@ -112,7 +113,6 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     return new InterpreterVisitorV1(newVariablesRepository, evaluatedRight, printedValues);
   }
 
-  @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromVarDec(variableDeclaration);
 
@@ -140,17 +140,14 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     return new InterpreterVisitorV1(newVariablesRepository, value, printedList);
   }
 
-  @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
     return new InterpreterVisitorV1(variablesRepository, numberLiteral, printedValues);
   }
 
-  @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
     return new InterpreterVisitorV1(variablesRepository, stringLiteral, printedValues);
   }
 
-  @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
     Literal<Object> value = getVariablesRepository().getNewVariable(varId);
@@ -158,7 +155,6 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     return new InterpreterVisitorV1(getVariablesRepository(), value);
   }
 
-  @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     InterpreterVisitor latestVisitor =
         InterpreterVisitorFactory.getInterpreterVisitorWithParams(
@@ -167,12 +163,10 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     return new InterpreterVisitorV1(variablesRepository, value, printedValues);
   }
 
-  @Override
   public List<String> getPrintedValues() {
     return new ArrayList<>(printedValues);
   }
 
-  @Override
   public InterpreterVisitor getPreviousVisitor() {
     return null;
   }

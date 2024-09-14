@@ -14,22 +14,23 @@ public class RunnerLinterTest {
     runner.analyze(
             new ByteArrayInputStream(code.getBytes()),
         "1.0",
-        "{\n"
-            + "  \"identifier\": {\n"
-            + "    \"writingConvention\": {\n"
-            + "      \"conventionName\": \"camelCase\",\n"
-            + "      \"conventionPattern\": \"^[a-z]+(?:[A-Z]?[a-z0-9]+)*$\"\n"
-            + "    }\n"
-            + "  },\n"
-            + "  \"callExpression\": {\n"
-            + "    \"arguments\": [\"IDENTIFIER\", \"STRING_LITERAL\", \"NUMBER_LITERAL\"]\n"
-            + "  }\n"
-            + "}\n",
-        new OutputResult() {
+            """
+                    {
+                      "identifier": {
+                        "writingConvention": {
+                          "conventionName": "camelCase",
+                          "conventionPattern": "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$"
+                        }
+                      },
+                      "callExpression": {
+                        "arguments": ["IDENTIFIER", "STRING_LITERAL", "NUMBER_LITERAL"]
+                      }
+                    }
+                    """,
+        new OutputResult<String>() {
           @Override
-          public OutputResult saveResult(String result) {
+          public void saveResult(String result) {
             System.out.println(result);
-            return this;
           }
 
           @Override
