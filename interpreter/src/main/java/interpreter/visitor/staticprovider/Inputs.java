@@ -10,7 +10,11 @@ public class Inputs {
     Inputs.inputs = inputs;
   }
 
-  public static Queue<String> getInputs() {
-    return inputs;
+  public static String nextInput() throws IllegalStateException {
+    String input = inputs.poll();
+    if (input == null) {
+      throw new IllegalStateException("No more inputs available");
+    }
+    return input;
   }
 }

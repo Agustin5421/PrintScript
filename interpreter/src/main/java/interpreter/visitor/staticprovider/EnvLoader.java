@@ -35,7 +35,11 @@ public class EnvLoader {
     return map;
   }
 
-  public static String getValue(String key) {
-    return map.get(key);
+  public static String getValue(String key) throws IllegalArgumentException {
+    String variable = map.get(key);
+    if (variable == null) {
+      throw new IllegalArgumentException("Enviroment variable not found: " + key);
+    }
+    return variable;
   }
 }
