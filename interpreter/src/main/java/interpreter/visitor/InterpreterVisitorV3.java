@@ -3,42 +3,53 @@ package interpreter.visitor;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
+import interpreter.ValueCollector;
 import interpreter.visitor.repository.VariablesRepository;
-import interpreter.visitor.strategy.InterpretingStrategy;
+import interpreter.visitor.strategy.StrategyContainer;
 import output.OutputResult;
 
-import java.util.Map;
-
-// Only works with VariableDeclaration, AssignmentExpression and CallExpression (only println() method).
 public class InterpreterVisitorV3 implements NodeVisitor {
     private final VariablesRepository variablesRepository;
-    private final Map<AstNodeType, InterpretingStrategy> strategies;
+    // Only works with VariableDeclaration, AssignmentExpression and CallExpression (only println() method).
+    private final StrategyContainer<AstNodeType> strategies;
     private final OutputResult<String> outputResult;
+    private final ValueCollector valueCollector;
 
-    public InterpreterVisitorV3(VariablesRepository variablesRepository, Map<AstNodeType, InterpretingStrategy> strategies, OutputResult<String> outputResult) {
+    public InterpreterVisitorV3(VariablesRepository variablesRepository, StrategyContainer<AstNodeType> strategies, OutputResult<String> outputResult, ValueCollector valueCollector) {
         this.variablesRepository = variablesRepository;
         this.strategies = strategies;
         this.outputResult = outputResult;
+        this.valueCollector = valueCollector;
+    }
+
+    public InterpreterVisitorV3 setVariablesRepository(VariablesRepository repository) {
+        return new InterpreterVisitorV3(repository, strategies, outputResult, valueCollector);
     }
 
     public VariablesRepository getVariablesRepository() {
         return variablesRepository;
     }
 
-    public InterpreterVisitorV3 cloneVisitor() {
-        return new InterpreterVisitorV3(variablesRepository, strategies, outputResult);
+    public StrategyContainer<AstNodeType> getStrategies() {
+        return strategies;
+    }
+
+    public ValueCollector getValueCollector() {
+        return valueCollector.setVariablesRepository(variablesRepository);
+    }
+
+    @Override
+    public OutputResult<String> getOutputResult() {
+        return outputResult;
     }
 
     @Override
     public NodeVisitor visit(AstNode node) {
-        if (strategies.containsKey(node.getNodeType())) {
-            return strategies.get(node.getNodeType()).interpret(node, this);
-        }
-        throw new IllegalArgumentException(node.getNodeType() + " not working in this version :(");
+        AstNodeType nodeType = node.getNodeType();
+        return strategies.getStrategy(nodeType).interpret(node, this);
     }
 
-    @Override
-    public OutputResult<?> getOutputResult() {
-        return outputResult;
+    public InterpreterVisitorV3 cloneVisitor() {
+        return new InterpreterVisitorV3(variablesRepository, strategies, outputResult, valueCollector);
     }
 }
