@@ -6,10 +6,11 @@ import java.util.List;
 public class InterpreterVisitorFactory {
   public static InterpreterVisitor getInterpreterVisitor(String version) {
     VariablesRepository variablesRepository = new VariablesRepository();
+    List<String> printedValues = List.of();
     return switch (version) {
-      case "1.0" -> new InterpreterVisitorV1(variablesRepository);
+      case "1.0" -> new InterpreterVisitorV1(variablesRepository, printedValues);
       case "1.1" -> new InterpreterVisitorV2(
-          new InterpreterVisitorV1(variablesRepository), variablesRepository);
+          new InterpreterVisitorV1(variablesRepository, printedValues), variablesRepository, printedValues);
       default -> throw new IllegalArgumentException("Invalid version: " + version);
     };
   }
@@ -20,7 +21,7 @@ public class InterpreterVisitorFactory {
     return switch (version) {
       case "1.0" -> new InterpreterVisitorV1(variablesRepository, printedValues);
       case "1.1" -> new InterpreterVisitorV2(
-          new InterpreterVisitorV1(variablesRepository), variablesRepository, printedValues);
+          new InterpreterVisitorV1(variablesRepository, printedValues), variablesRepository, printedValues);
       default -> throw new IllegalArgumentException("Invalid version: " + version);
     };
   }

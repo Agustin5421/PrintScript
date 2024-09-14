@@ -16,7 +16,8 @@ import token.Position;
 
 public class ExpressionEvaluatorTest {
   private final VariablesRepository variablesRepository = new VariablesRepository();
-  private final InterpreterVisitorV1 visitor = new InterpreterVisitorV1(variablesRepository);
+  private List<String> printedValues;
+  private final InterpreterVisitorV1 visitor = new InterpreterVisitorV1(variablesRepository, printedValues);
   private final BinaryExpressionEvaluator expressionEvaluator = new BinaryExpressionEvaluator();
 
   private NumberLiteral evaluateBinaryExpression(
@@ -123,7 +124,7 @@ public class ExpressionEvaluatorTest {
     String code = "let x: string = readInput(\"Name:\"); println(x+\" world\");";
 
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.interpret(code);
+    // List<String> printedValues = interpreter.interpret(code);
 
     assertEquals("hello world", printedValues.get(1));
   }

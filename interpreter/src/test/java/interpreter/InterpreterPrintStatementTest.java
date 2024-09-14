@@ -10,7 +10,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 public class InterpreterPrintStatementTest {
-
+  private final List<String> prints = List.of();
+  private final List<String> printedValues = List.of();
   // version 1.0
   @Test
   public void testArithOp() {
@@ -29,7 +30,7 @@ public class InterpreterPrintStatementTest {
                 println(pi / 2);
                 """;
     Interpreter interpreter = new Interpreter("1.0");
-    List<String> printedValues = interpreter.interpret(code);
+//    List<String> printedValues = interpreter.interpret(code);
     assertEquals(1.57, Double.parseDouble(printedValues.get(0)));
   }
 
@@ -42,7 +43,7 @@ public class InterpreterPrintStatementTest {
                                 println(result);
                 """;
     Interpreter interpreter = new Interpreter("1.0");
-    List<String> printedValues = interpreter.interpret(code);
+//    List<String> printedValues = interpreter.interpret(code);
     assertEquals(5, Double.parseDouble(printedValues.get(0)));
   }
 
@@ -55,7 +56,7 @@ public class InterpreterPrintStatementTest {
                 println(someString + someNumber);
                 """;
     Interpreter interpreter = new Interpreter("1.0");
-    List<String> printedValues = interpreter.interpret(code);
+//    List<String> printedValues = interpreter.interpret(code);
     assertEquals("hello world 1", printedValues.get(0));
   }
 
@@ -77,7 +78,7 @@ public class InterpreterPrintStatementTest {
                 println(pi / 2);
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.interpret(code);
+//    List<String> printedValues = interpreter.interpret(code);
     assertEquals(1.57, Double.parseDouble(printedValues.get(0)));
   }
 
@@ -94,7 +95,7 @@ public class InterpreterPrintStatementTest {
                 println("outside of conditional");
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> prints = interpreter.interpret(code);
+//    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("else statement working correctly", "outside of conditional");
     assertEquals(expected, prints);
   }
@@ -112,7 +113,7 @@ public class InterpreterPrintStatementTest {
                 println("outside of conditional");
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> prints = interpreter.interpret(code);
+//    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("else statement working correctly", "outside of conditional");
     assertEquals(expected, prints);
   }

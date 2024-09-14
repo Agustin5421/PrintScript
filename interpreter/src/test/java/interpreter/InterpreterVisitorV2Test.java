@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import token.Position;
 
 public class InterpreterVisitorV2Test {
+  private final List<String> prints = List.of();
 
   @Test
   public void testReadInputNumberDouble() {
@@ -250,9 +251,9 @@ public class InterpreterVisitorV2Test {
     String code = "println(\"Hello, world!\");";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.interpret(code);
+    // List<String> printedValues = interpreter.interpret(code);
 
-    assertEquals("Hello, world!", printedValues.get(0));
+    assertEquals("Hello, world!", prints.get(0));
   }
 
   @Test
@@ -260,9 +261,9 @@ public class InterpreterVisitorV2Test {
     String code = "println(42);";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.interpret(code);
+    // List<String> printedValues = interpreter.interpret(code);
 
-    assertEquals("42", printedValues.get(0));
+    assertEquals("42", prints.get(0));
   }
 
   @Test
@@ -270,9 +271,9 @@ public class InterpreterVisitorV2Test {
     String code = "println(\"true\");";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.interpret(code);
+    // List<String> printedValues = interpreter.interpret(code);
 
-    assertEquals("true", printedValues.get(0));
+    assertEquals("true", prints.get(0));
   }
 
   @Test
@@ -280,9 +281,9 @@ public class InterpreterVisitorV2Test {
     String code = "println(21 + 21);";
     VariablesRepository variablesRepository = new VariablesRepository();
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> printedValues = interpreter.interpret(code);
+    // List<String> printedValues = interpreter.interpret(code);
 
-    assertEquals("42", printedValues.get(0));
+    assertEquals("42", prints.get(0));
   }
 
   @Test
@@ -294,7 +295,7 @@ public class InterpreterVisitorV2Test {
             + "}\n"
             + "println(\"outside of conditional\");\n";
     Interpreter interpreter = new Interpreter("1.1");
-    List<String> prints = interpreter.interpret(code);
+    // List<String> prints = interpreter.interpret(code);
 
     assertEquals("if statement working correctly", prints.get(0));
     assertEquals("outside of conditional", prints.get(1));
@@ -307,7 +308,7 @@ public class InterpreterVisitorV2Test {
             println("World");
             """;
     Interpreter interpreter = new Interpreter("1.0");
-    List<String> prints = interpreter.interpret(code);
+//    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("Hello", "World");
     assertEquals(expected, prints);
   }

@@ -1,25 +1,39 @@
 package interpreter.visitor;
 
-import ast.expressions.BinaryExpression;
-import ast.identifier.Identifier;
-import ast.literal.BooleanLiteral;
-import ast.literal.Literal;
-import ast.literal.NumberLiteral;
-import ast.literal.StringLiteral;
 import ast.root.AstNode;
-import ast.statements.AssignmentExpression;
-import ast.statements.CallExpression;
-import ast.statements.IfStatement;
-import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
-import interpreter.visitor.patternStat.ResultLiteral;
 import interpreter.visitor.repository.VariablesRepository;
-import interpreter.visitor.staticprovider.Inputs;
+
 import java.util.*;
-import token.Position;
+
+import output.OutputResult;
 
 public class InterpreterVisitorV2 implements InterpreterVisitor {
+  public InterpreterVisitorV2(InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository, List<String> printedValues) {
 
+  }
+
+  @Override
+  public VariablesRepository getVariablesRepository() {
+    return null;
+  }
+
+  @Override
+  public InterpreterVisitor cloneVisitor() {
+    return null;
+  }
+
+  @Override
+  public NodeVisitor visit(AstNode node) {
+    return null;
+  }
+
+  @Override
+  public OutputResult<?> getOutputResult() {
+    return null;
+  }
+
+  /*
   private final InterpreterVisitor previousVisitor;
   private final VariablesRepository variablesRepository;
   private final List<String> printedValues;
@@ -231,4 +245,6 @@ public class InterpreterVisitorV2 implements InterpreterVisitor {
   public InterpreterVisitor getPreviousVisitor() {
     return previousVisitor;
   }
+
+   */
 }

@@ -1,27 +1,39 @@
 package interpreter.visitor;
 
-import ast.expressions.BinaryExpression;
-import ast.expressions.ExpressionNode;
-import ast.identifier.Identifier;
-import ast.literal.BooleanLiteral;
-import ast.literal.Literal;
-import ast.literal.NumberLiteral;
-import ast.literal.StringLiteral;
 import ast.root.AstNode;
-import ast.statements.AssignmentExpression;
-import ast.statements.CallExpression;
-import ast.statements.IfStatement;
-import ast.statements.VariableDeclaration;
 import ast.visitor.NodeVisitor;
-import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
-import interpreter.visitor.repository.VariableIdentifier;
-import interpreter.visitor.repository.VariableIdentifierFactory;
 import interpreter.visitor.repository.VariablesRepository;
-import java.util.ArrayList;
+
 import java.util.List;
-import token.Position;
+
+import output.OutputResult;
+
 
 public class InterpreterVisitorV1 implements InterpreterVisitor {
+  public InterpreterVisitorV1(VariablesRepository variablesRepository, List<String> printedValues) {
+
+  }
+
+  @Override
+  public VariablesRepository getVariablesRepository() {
+    return null;
+  }
+
+  @Override
+  public InterpreterVisitor cloneVisitor() {
+    return null;
+  }
+
+  @Override
+  public NodeVisitor visit(AstNode node) {
+    return null;
+  }
+
+  @Override
+  public OutputResult<?> getOutputResult() {
+    return null;
+  }
+  /*
   private final VariablesRepository variablesRepository;
   private final Literal<?> value;
   private final BinaryExpressionEvaluator binaryExpressionEvaluator =
@@ -74,6 +86,11 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     return this;
   }
 
+  @Override
+  public OutputResult<?> getOutputResult() {
+    return null;
+  }
+
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     throw new IllegalArgumentException("If Node not supported in this version :( ");
   }
@@ -103,7 +120,7 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     InterpreterVisitor latestVisitor =
         InterpreterVisitorFactory.getInterpreterVisitorWithParams(
             variablesRepository, printedValues);
-
+    
     Literal<?> evaluatedRight =
         ((InterpreterVisitor) assignmentExpression.right().accept(latestVisitor)).getValue();
 
@@ -170,4 +187,6 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
   public InterpreterVisitor getPreviousVisitor() {
     return null;
   }
+  
+   */
 }
