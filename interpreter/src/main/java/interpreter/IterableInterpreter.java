@@ -11,15 +11,15 @@ import java.util.List;
 import lexer.Lexer;
 import parsers.Parser;
 
-public class IterableInterpreter implements Iterator<List<String>> {
+public class IterableInterpreter // implements Iterator<List<String>>
+{
   private InterpreterVisitor nodeVisitor;
-  private final Parser parser;
 
   public IterableInterpreter(String version, InputStream code) {
     this.nodeVisitor = InterpreterVisitorFactory.getInterpreterVisitor(version);
-    this.parser = getParser(version, code);
   }
 
+  /*
   @Override
   public boolean hasNext() {
     return parser.hasNext();
@@ -29,7 +29,12 @@ public class IterableInterpreter implements Iterator<List<String>> {
   public List<String> next() {
     AstNode statement = parser.next();
     nodeVisitor = (InterpreterVisitor) statement.accept(nodeVisitor.cloneVisitor());
-    return nodeVisitor.getPrintedValues();
+    return List.of();
+  }
+   */
+
+  public void executeNextLine(AstNode statement) {
+    nodeVisitor = (InterpreterVisitor) statement.accept(nodeVisitor.cloneVisitor());
   }
 
   private Parser getParser(String version, InputStream code) {

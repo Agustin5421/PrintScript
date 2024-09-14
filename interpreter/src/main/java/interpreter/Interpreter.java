@@ -58,7 +58,7 @@ public class Interpreter implements Progressable {
     return variablesRepository;
   }
 
-  public List<String> interpret(String code) {
+  public void interpret(String code) {
     InterpreterVisitor visitor = nodeVisitor;
     Lexer newLexer = parser.getLexer().setInputAsString(code);
     parser = parser.setLexer(newLexer);
@@ -67,11 +67,9 @@ public class Interpreter implements Progressable {
       visitor = (InterpreterVisitor) statement.accept(visitor);
       updateProgress();
     }
-
-    return visitor.getPrintedValues();
   }
 
-  public void interpretInputStream(InputStream code, OutputResult printLog) {
+  public void interpretInputStream(InputStream code) {
 
     InterpreterVisitor visitor = nodeVisitor;
     Lexer newLexer = null;
@@ -84,10 +82,14 @@ public class Interpreter implements Progressable {
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();
       visitor = (InterpreterVisitor) statement.accept(visitor.cloneVisitor());
+      // Values are being saved internally in the outputResult object
+      /*
       List<String> printedValues = visitor.getPrintedValues();
       for (String printedValue : printedValues) {
         printLog.saveResult(printedValue);
       }
+
+       */
       System.gc();
       updateProgress();
     }
