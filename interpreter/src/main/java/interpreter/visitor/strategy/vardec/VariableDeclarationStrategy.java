@@ -1,4 +1,4 @@
-package interpreter.visitor.strategy;
+package interpreter.visitor.strategy.vardec;
 
 import ast.expressions.ExpressionNode;
 import ast.literal.Literal;
@@ -10,6 +10,7 @@ import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariableIdentifierFactory;
 import interpreter.visitor.repository.VariablesRepository;
+import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class VariableDeclarationStrategy implements InterpretingStrategy {
     @Override
