@@ -9,6 +9,7 @@ import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
 import observers.ProgressObserver;
+import output.OutputResult;
 import parsers.Parser;
 
 public class Runner {
@@ -45,7 +46,7 @@ public class Runner {
   }
 
   public void format(String code, String version, String config) {
-    // TODO: need factory for formatter
+    // TODO:
   }
 
   public void validate(String input, String version) {

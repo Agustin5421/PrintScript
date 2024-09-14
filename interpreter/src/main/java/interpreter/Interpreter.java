@@ -5,6 +5,7 @@ import ast.visitor.NodeVisitor;
 import factory.ParserFactory;
 import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorFactory;
+import interpreter.visitor.InterpreterVisitorV2;
 import interpreter.visitor.repository.VariablesRepository;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,7 +65,8 @@ public class Interpreter implements Progressable {
     parser = parser.setLexer(newLexer);
     while (hasMoreStatements()) {
       AstNode statement = getNextStatement();
-      visitor = (InterpreterVisitor) statement.accept(visitor);
+      NodeVisitor visitor1 = (InterpreterVisitor) statement.accept(visitor);
+      visitor = mergeVisitors(visitor, (NodeVisitor) visitor1);
       updateProgress();
     }
 
@@ -91,6 +93,23 @@ public class Interpreter implements Progressable {
       System.gc();
       updateProgress();
     }
+  }
+
+  private InterpreterVisitor mergeVisitors(NodeVisitor visitor, NodeVisitor nestedVisitor) {
+    List<String> printedValues = ((InterpreterVisitor) visitor).getPrintedValues();
+    printedValues.addAll(((InterpreterVisitor) nestedVisitor).getPrintedValues());
+
+    VariablesRepository variablesRepository =
+        ((InterpreterVisitor) visitor).getVariablesRepository();
+    VariablesRepository nestedVisitorVariablesRepository =
+        ((InterpreterVisitor) nestedVisitor).getVariablesRepository();
+
+    // TODO: update var logic
+
+    return new InterpreterVisitorV2(
+        InterpreterVisitorFactory.getInterpreterVisitor("1.0"),
+        nestedVisitorVariablesRepository,
+        printedValues);
   }
 
   private boolean hasMoreStatements() {

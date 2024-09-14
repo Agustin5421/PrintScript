@@ -47,7 +47,16 @@ public class Lexer implements Iterator<Token>, Observable {
   }
 
   private void advanceToNextLine() throws IOException {
-    currentLine = reader.readLine();
+    while (currentLine == null || !matcher.find()) {
+      currentLine = reader.readLine();
+      currentPosition = new Position(currentPosition.row() + 1, 1);
+
+      if (currentLine == null) {
+        break;
+      }
+
+      matcher = pattern.matcher(currentLine);
+    }
     if (currentLine != null) {
       matcher = pattern.matcher(currentLine);
     }
@@ -55,7 +64,7 @@ public class Lexer implements Iterator<Token>, Observable {
 
   @Override
   public boolean hasNext() {
-    // If there are tokens in the buffer, return true
+    // If there are tokens in the buffer or there is a line to tokenize, return true
     return !tokens.isEmpty() || currentLine != null;
   }
 
@@ -91,7 +100,7 @@ public class Lexer implements Iterator<Token>, Observable {
 
   @Override
   public Token next() {
-    if (tokens.isEmpty() || currentLine != null) {
+    if (tokens.isEmpty()) {
       tokenizeLine();
     }
 

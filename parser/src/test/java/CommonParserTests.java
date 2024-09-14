@@ -26,19 +26,17 @@ public abstract class CommonParserTests {
 
   @Test
   public void testVariableDeclaration() {
+
     Parser parser = setParser("let name: string = \"Oliver\";", getParser());
     assertInstanceOf(VariableDeclaration.class, parser.next());
   }
 
   // TODO: solve these tests
-  /*
   @Test
   public void testNoValueDeclaration() {
     Parser parser = setParser("let x: string;\"", getParser());
     assertInstanceOf(VariableDeclaration.class, parser.next());
   }
-
-   */
 
   @Test
   public void testCallFunctionAsExpression() {
@@ -108,5 +106,13 @@ public abstract class CommonParserTests {
   public void testUnsupportedExpression() {
     Parser parser = setParser("let name : string = let a = 2;", getParser());
     assertThrows(UnsupportedExpressionException.class, parser::next);
+  }
+
+  @Test
+  public void testMultipleStatementsWithLinesBetween() {
+    Parser parser =
+        setParser("let name : string = 2 + 2; \n \n \n \n \n \n \n \n println(name);", getParser());
+    assertInstanceOf(VariableDeclaration.class, parser.next());
+    assertInstanceOf(CallExpression.class, parser.next());
   }
 }

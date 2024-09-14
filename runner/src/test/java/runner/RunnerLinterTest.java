@@ -12,7 +12,7 @@ public class RunnerLinterTest {
 
     Runner runner = new Runner();
     runner.analyze(
-            new ByteArrayInputStream(code.getBytes()),
+            new ByteArrayInputStream(code.getBytes()).toString(),
         "1.0",
         "{\n"
             + "  \"identifier\": {\n"
