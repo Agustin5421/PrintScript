@@ -17,7 +17,8 @@ import token.Position;
 public class ExpressionEvaluatorTest {
   private final VariablesRepository variablesRepository = new VariablesRepository();
   private List<String> printedValues;
-  private final InterpreterVisitorV1 visitor = new InterpreterVisitorV1(variablesRepository, printedValues);
+  private final InterpreterVisitorV1 visitor =
+      new InterpreterVisitorV1(variablesRepository, printedValues);
   private final BinaryExpressionEvaluator expressionEvaluator = new BinaryExpressionEvaluator();
 
   private NumberLiteral evaluateBinaryExpression(

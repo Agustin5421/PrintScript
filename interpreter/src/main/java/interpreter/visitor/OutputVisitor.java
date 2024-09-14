@@ -4,5 +4,5 @@ import ast.visitor.NodeVisitor;
 import output.OutputResult;
 
 public interface OutputVisitor extends NodeVisitor {
-    OutputResult<String> getOutputResult();
+  OutputResult<String> getOutputResult();
 }

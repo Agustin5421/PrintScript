@@ -30,7 +30,7 @@ public class InterpreterPrintStatementTest {
                 println(pi / 2);
                 """;
     Interpreter interpreter = new Interpreter("1.0");
-//    List<String> printedValues = interpreter.interpret(code);
+    //    List<String> printedValues = interpreter.interpret(code);
     assertEquals(1.57, Double.parseDouble(printedValues.get(0)));
   }
 
@@ -43,7 +43,7 @@ public class InterpreterPrintStatementTest {
                                 println(result);
                 """;
     Interpreter interpreter = new Interpreter("1.0");
-//    List<String> printedValues = interpreter.interpret(code);
+    //    List<String> printedValues = interpreter.interpret(code);
     assertEquals(5, Double.parseDouble(printedValues.get(0)));
   }
 
@@ -56,7 +56,7 @@ public class InterpreterPrintStatementTest {
                 println(someString + someNumber);
                 """;
     Interpreter interpreter = new Interpreter("1.0");
-//    List<String> printedValues = interpreter.interpret(code);
+    //    List<String> printedValues = interpreter.interpret(code);
     assertEquals("hello world 1", printedValues.get(0));
   }
 
@@ -78,7 +78,7 @@ public class InterpreterPrintStatementTest {
                 println(pi / 2);
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> printedValues = interpreter.interpret(code);
+    //    List<String> printedValues = interpreter.interpret(code);
     assertEquals(1.57, Double.parseDouble(printedValues.get(0)));
   }
 
@@ -95,7 +95,7 @@ public class InterpreterPrintStatementTest {
                 println("outside of conditional");
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> prints = interpreter.interpret(code);
+    //    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("else statement working correctly", "outside of conditional");
     assertEquals(expected, prints);
   }
@@ -113,7 +113,7 @@ public class InterpreterPrintStatementTest {
                 println("outside of conditional");
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> prints = interpreter.interpret(code);
+    //    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("else statement working correctly", "outside of conditional");
     assertEquals(expected, prints);
   }
@@ -129,7 +129,7 @@ public class InterpreterPrintStatementTest {
                 println("outside of conditional");
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> prints = interpreter.interpret(code);
+    //    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("outside of conditional");
     assertEquals(expected, prints);
   }
@@ -146,7 +146,7 @@ public class InterpreterPrintStatementTest {
 
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> prints = interpreter.interpret(code);
+    //    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("if statement working correctly", "outside of conditional");
     assertEquals(expected, prints);
   }
@@ -161,7 +161,7 @@ public class InterpreterPrintStatementTest {
                 println(name);
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> prints = interpreter.interpret(code);
+    //    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("What is the best football club?", "San Lorenzo");
     assertEquals(expected, prints);
   }
@@ -177,7 +177,7 @@ public class InterpreterPrintStatementTest {
                 println("Hello " + name + "!");
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> prints = interpreter.interpret(code);
+    //    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("Name:", "Hello world!");
     assertEquals(expected, prints);
   }
@@ -191,7 +191,7 @@ public class InterpreterPrintStatementTest {
                                 println(result);
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> printedValues = interpreter.interpret(code);
+    //    List<String> printedValues = interpreter.interpret(code);
     assertEquals(5, Double.parseDouble(printedValues.get(0)));
   }
 
@@ -204,7 +204,7 @@ public class InterpreterPrintStatementTest {
                 println(someString + someNumber);
                 """;
     Interpreter interpreter = new Interpreter("1.1");
-//    List<String> printedValues = interpreter.interpret(code);
+    //    List<String> printedValues = interpreter.interpret(code);
     assertEquals("hello world 1", printedValues.get(0));
   }
 }

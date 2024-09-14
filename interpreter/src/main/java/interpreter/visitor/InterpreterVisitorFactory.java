@@ -10,7 +10,9 @@ public class InterpreterVisitorFactory {
     return switch (version) {
       case "1.0" -> new InterpreterVisitorV1(variablesRepository, printedValues);
       case "1.1" -> new InterpreterVisitorV2(
-          new InterpreterVisitorV1(variablesRepository, printedValues), variablesRepository, printedValues);
+          new InterpreterVisitorV1(variablesRepository, printedValues),
+          variablesRepository,
+          printedValues);
       default -> throw new IllegalArgumentException("Invalid version: " + version);
     };
   }
@@ -21,7 +23,9 @@ public class InterpreterVisitorFactory {
     return switch (version) {
       case "1.0" -> new InterpreterVisitorV1(variablesRepository, printedValues);
       case "1.1" -> new InterpreterVisitorV2(
-          new InterpreterVisitorV1(variablesRepository, printedValues), variablesRepository, printedValues);
+          new InterpreterVisitorV1(variablesRepository, printedValues),
+          variablesRepository,
+          printedValues);
       default -> throw new IllegalArgumentException("Invalid version: " + version);
     };
   }

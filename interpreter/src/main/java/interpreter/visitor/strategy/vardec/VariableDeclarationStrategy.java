@@ -3,8 +3,8 @@ package interpreter.visitor.strategy.vardec;
 import ast.expressions.ExpressionNode;
 import ast.literal.Literal;
 import ast.root.AstNode;
-import ast.visitor.NodeVisitor;
 import ast.statements.VariableDeclaration;
+import ast.visitor.NodeVisitor;
 import interpreter.ValueCollector;
 import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.repository.VariableIdentifier;
@@ -13,31 +13,33 @@ import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class VariableDeclarationStrategy implements InterpretingStrategy {
-    @Override
-    public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
-        VariableDeclaration varDecNode = (VariableDeclaration) node;
-        InterpreterVisitorV3 interpreterVisitor = (InterpreterVisitorV3) visitor;
+  @Override
+  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+    VariableDeclaration varDecNode = (VariableDeclaration) node;
+    InterpreterVisitorV3 interpreterVisitor = (InterpreterVisitorV3) visitor;
 
-        Literal<?> evaluatedValue = evaluateExpression(varDecNode, interpreterVisitor);
+    Literal<?> evaluatedValue = evaluateExpression(varDecNode, interpreterVisitor);
 
-        VariablesRepository newRepository = setVariable(varDecNode, interpreterVisitor, evaluatedValue);
-        
-        return interpreterVisitor.setVariablesRepository(newRepository);
-    }
+    VariablesRepository newRepository = setVariable(varDecNode, interpreterVisitor, evaluatedValue);
 
-    private Literal<?> evaluateExpression(VariableDeclaration varDecNode, InterpreterVisitorV3 visitor) {
-        ExpressionNode valueToEvaluate = varDecNode.expression();
+    return interpreterVisitor.setVariablesRepository(newRepository);
+  }
 
-        ValueCollector valueCollector = visitor.getValueCollector();
-        ValueCollector temp = (ValueCollector) valueCollector.visit(valueToEvaluate);
+  private Literal<?> evaluateExpression(
+      VariableDeclaration varDecNode, InterpreterVisitorV3 visitor) {
+    ExpressionNode valueToEvaluate = varDecNode.expression();
 
-        return temp.getValue();
-    }
+    ValueCollector valueCollector = visitor.getValueCollector();
+    ValueCollector temp = (ValueCollector) valueCollector.visit(valueToEvaluate);
 
-    private VariablesRepository setVariable(VariableDeclaration varDecNode, InterpreterVisitorV3 visitor, Literal<?> evaluatedValue) {
-        VariablesRepository repository = visitor.getVariablesRepository();
-        VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromVarDec(varDecNode);
+    return temp.getValue();
+  }
 
-        return repository.setNewVariable(varId, evaluatedValue);
-    }
+  private VariablesRepository setVariable(
+      VariableDeclaration varDecNode, InterpreterVisitorV3 visitor, Literal<?> evaluatedValue) {
+    VariablesRepository repository = visitor.getVariablesRepository();
+    VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromVarDec(varDecNode);
+
+    return repository.setNewVariable(varId, evaluatedValue);
+  }
 }

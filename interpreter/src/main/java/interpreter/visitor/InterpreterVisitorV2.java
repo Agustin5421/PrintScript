@@ -3,15 +3,14 @@ package interpreter.visitor;
 import ast.root.AstNode;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.repository.VariablesRepository;
-
 import java.util.*;
-
 import output.OutputResult;
 
 public class InterpreterVisitorV2 implements InterpreterVisitor {
-  public InterpreterVisitorV2(InterpreterVisitorV1 interpreterVisitorV1, VariablesRepository variablesRepository, List<String> printedValues) {
-
-  }
+  public InterpreterVisitorV2(
+      InterpreterVisitorV1 interpreterVisitorV1,
+      VariablesRepository variablesRepository,
+      List<String> printedValues) {}
 
   @Override
   public VariablesRepository getVariablesRepository() {

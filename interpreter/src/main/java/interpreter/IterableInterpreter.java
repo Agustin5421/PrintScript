@@ -6,13 +6,11 @@ import interpreter.visitor.InterpreterVisitor;
 import interpreter.visitor.InterpreterVisitorFactory;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
 import lexer.Lexer;
 import parsers.Parser;
 
 public class IterableInterpreter // implements Iterator<List<String>>
-{
+ {
   private InterpreterVisitor nodeVisitor;
 
   public IterableInterpreter(String version, InputStream code) {

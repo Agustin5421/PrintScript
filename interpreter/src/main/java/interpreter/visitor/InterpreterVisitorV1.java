@@ -3,16 +3,12 @@ package interpreter.visitor;
 import ast.root.AstNode;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.repository.VariablesRepository;
-
 import java.util.List;
-
 import output.OutputResult;
 
-
 public class InterpreterVisitorV1 implements InterpreterVisitor {
-  public InterpreterVisitorV1(VariablesRepository variablesRepository, List<String> printedValues) {
-
-  }
+  public InterpreterVisitorV1(
+      VariablesRepository variablesRepository, List<String> printedValues) {}
 
   @Override
   public VariablesRepository getVariablesRepository() {
@@ -120,7 +116,7 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     InterpreterVisitor latestVisitor =
         InterpreterVisitorFactory.getInterpreterVisitorWithParams(
             variablesRepository, printedValues);
-    
+
     Literal<?> evaluatedRight =
         ((InterpreterVisitor) assignmentExpression.right().accept(latestVisitor)).getValue();
 
@@ -187,6 +183,6 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
   public InterpreterVisitor getPreviousVisitor() {
     return null;
   }
-  
+
    */
 }

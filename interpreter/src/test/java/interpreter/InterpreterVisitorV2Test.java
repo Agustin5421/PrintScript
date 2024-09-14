@@ -308,7 +308,7 @@ public class InterpreterVisitorV2Test {
             println("World");
             """;
     Interpreter interpreter = new Interpreter("1.0");
-//    List<String> prints = interpreter.interpret(code);
+    //    List<String> prints = interpreter.interpret(code);
     List<String> expected = List.of("Hello", "World");
     assertEquals(expected, prints);
   }

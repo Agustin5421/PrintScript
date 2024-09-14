@@ -12,7 +12,6 @@ import java.util.List;
 import lexer.Lexer;
 import observers.Observer;
 import observers.Progressable;
-import output.OutputResult;
 import parsers.Parser;
 
 public class Interpreter implements Progressable {
