@@ -1,7 +1,7 @@
 package output;
 
-public interface OutputResult {
-  OutputResult saveResult(String result);
+public interface OutputResult<T> {
+  void saveResult(T result);
 
-  String getResult();
+  T getResult();
 }

@@ -3,10 +3,10 @@ package cli;
 
 import output.OutputResult;
 
-public class OutputMock implements OutputResult {
+public class OutputMock implements OutputResult<String> {
   @Override
-  public OutputResult saveResult(String result) {
-    return this;
+  public void saveResult(String result) {
+
   }
 
   @Override

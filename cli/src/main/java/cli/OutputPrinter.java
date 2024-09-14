@@ -2,11 +2,10 @@ package cli;
 
 import output.OutputResult;
 
-public class OutputPrinter implements OutputResult {
+public class OutputPrinter implements OutputResult<String> {
   @Override
-  public OutputResult saveResult(String result) {
+  public void saveResult(String result) {
     System.out.println(result);
-    return this;
   }
 
   @Override

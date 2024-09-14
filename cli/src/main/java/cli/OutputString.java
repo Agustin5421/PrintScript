@@ -2,8 +2,8 @@ package cli;
 
 import output.OutputResult;
 
-public class OutputString implements OutputResult {
-  private final String result;
+public class OutputString implements OutputResult<String> {
+  private String result;
 
   public OutputString() {
     this.result = "";
@@ -14,8 +14,8 @@ public class OutputString implements OutputResult {
   }
 
   @Override
-  public OutputResult saveResult(String result) {
-    return new OutputString(this.result + result);
+  public void saveResult(String result) {
+    this.result += result;
   }
 
   @Override
