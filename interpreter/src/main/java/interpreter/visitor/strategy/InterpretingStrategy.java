@@ -1,8 +1,9 @@
 package interpreter.visitor.strategy;
 
 import ast.root.AstNode;
+import ast.visitor.NodeVisitor;
 import interpreter.visitor.InterpreterVisitorV3;
 
 public interface InterpretingStrategy {
-    InterpreterVisitorV3 interpret(AstNode node, InterpreterVisitorV3 visitor);
+    NodeVisitor interpret(AstNode node, NodeVisitor visitor);
 }
