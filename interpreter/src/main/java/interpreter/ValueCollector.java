@@ -36,6 +36,10 @@ public class ValueCollector implements NodeVisitor {
     return new ValueCollector(strategies, value, variablesRepository);
   }
 
+  public VariablesRepository getVariablesRepository() {
+    return variablesRepository;
+  }
+
   public Literal<?> getValue() {
     return value;
   }
