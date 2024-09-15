@@ -1,8 +1,11 @@
 package interpreter.visitor.strategy.callexpression;
 
+import ast.literal.Literal;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.visitor.NodeVisitor;
+import interpreter.ValueCollector;
+import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class PrintlnStrategy implements InterpretingStrategy {
@@ -15,7 +18,12 @@ public class PrintlnStrategy implements InterpretingStrategy {
   @Override
   public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
     CallExpression callExp = (CallExpression) node;
-    printingStrategy.interpret(callExp.arguments().get(0), visitor);
+
+    ValueCollector valueCollector = ((InterpreterVisitorV3) visitor).getValueCollector();
+    AstNode argumentToPrint = callExp.arguments().get(0);
+    Literal<?> literal = ((ValueCollector) valueCollector.visit(argumentToPrint)).getValue();
+
+    printingStrategy.interpret(literal, visitor);
     return visitor;
   }
 }
