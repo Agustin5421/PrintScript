@@ -20,7 +20,7 @@ public class VariableDeclarationStrategy implements InterpretingStrategy {
 
     Literal<?> evaluatedValue = evaluateExpression(varDecNode, interpreterVisitor);
 
-    VariablesRepository newRepository = setVariable(varDecNode, interpreterVisitor, evaluatedValue);
+    VariablesRepository newRepository = addVariable(varDecNode, interpreterVisitor, evaluatedValue);
 
     return interpreterVisitor.setVariablesRepository(newRepository);
   }
@@ -35,11 +35,11 @@ public class VariableDeclarationStrategy implements InterpretingStrategy {
     return temp.getValue();
   }
 
-  private VariablesRepository setVariable(
+  private VariablesRepository addVariable(
       VariableDeclaration varDecNode, InterpreterVisitorV3 visitor, Literal<?> evaluatedValue) {
     VariablesRepository repository = visitor.getVariablesRepository();
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromVarDec(varDecNode);
 
-    return repository.setNewVariable(varId, evaluatedValue);
+    return repository.addNewVariable(varId, evaluatedValue);
   }
 }
