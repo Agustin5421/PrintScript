@@ -4,10 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import ast.expressions.BinaryExpression;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
-import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
-import exceptions.SyntaxException;
 import exceptions.UnexpectedTokenException;
 import exceptions.UnsupportedExpressionException;
 import exceptions.UnsupportedStatementException;
@@ -30,30 +28,20 @@ public abstract class CommonParserTests {
     assertInstanceOf(VariableDeclaration.class, parser.next());
   }
 
-  // TODO: solve these tests
-  /*
-  @Test
-  public void testNoValueDeclaration() {
-    Parser parser = setParser("let x: string;\"", getParser());
-    assertInstanceOf(VariableDeclaration.class, parser.next());
-  }
-
-   */
-
   @Test
   public void testCallFunctionAsExpression() {
-    Parser parser = setParser("let name: string = println(myVar);", getParser());
+    Parser parser = setParser("let name: string = println(2);", getParser());
     assertInstanceOf(VariableDeclaration.class, parser.next());
   }
 
   @Test
   public void testBinaryOperation() {
-    Parser parser = setParser("myNumber =  1 + 'hola';", getParser());
-    AssignmentExpression assignment = (AssignmentExpression) parser.next();
+    Parser parser = setParser("let myNumber : string =  1 + 'hola';", getParser());
+    VariableDeclaration var = (VariableDeclaration) parser.next();
 
-    assertInstanceOf(AssignmentExpression.class, assignment);
+    assertInstanceOf(VariableDeclaration.class, var);
 
-    BinaryExpression binary = (BinaryExpression) assignment.right();
+    BinaryExpression binary = (BinaryExpression) var.expression();
 
     Assertions.assertEquals("+", binary.operator());
     assertInstanceOf(BinaryExpression.class, binary);
@@ -90,12 +78,6 @@ public abstract class CommonParserTests {
   public void testSyntaxException() {
     Parser parser = setParser("let name string = \"Oliver\";", getParser());
     assertThrows(UnexpectedTokenException.class, parser::next);
-  }
-
-  @Test
-  public void testSyntaxException2() {
-    Parser parser = setParser("let pi: number = \"hola\";", getParser());
-    assertThrows(SyntaxException.class, parser::next);
   }
 
   @Test

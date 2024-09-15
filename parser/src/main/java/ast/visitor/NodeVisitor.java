@@ -11,21 +11,21 @@ import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 
 public interface NodeVisitor {
-  NodeVisitor visitIfStatement(IfStatement ifStatement);
+  NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral);
+
+  NodeVisitor visitStringLiteral(StringLiteral stringLiteral);
 
   NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral);
 
+  NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression);
+
   NodeVisitor visitCallExpression(CallExpression callExpression);
+
+  NodeVisitor visitIdentifier(Identifier identifier);
 
   NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression);
 
   NodeVisitor visitVarDec(VariableDeclaration variableDeclaration);
 
-  NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral);
-
-  NodeVisitor visitStringLiteral(StringLiteral stringLiteral);
-
-  NodeVisitor visitIdentifier(Identifier identifier);
-
-  NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression);
+  NodeVisitor visitIfStatement(IfStatement ifStatement);
 }
