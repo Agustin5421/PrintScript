@@ -8,7 +8,7 @@ import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.StrategyContainer;
 import output.OutputResult;
 
-public class InterpreterVisitorV3 implements NodeVisitor {
+public class InterpreterVisitorV3 implements OutputVisitor {
   private final VariablesRepository variablesRepository;
   // Only works with VariableDeclaration, AssignmentExpression and CallExpression (only println()
   // method).
