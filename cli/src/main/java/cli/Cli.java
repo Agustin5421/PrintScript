@@ -2,8 +2,9 @@ package cli;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.LinkedList;
 
+import output.OutputMock;
+import output.OutputString;
 import runner.Runner;
 
 public class Cli {

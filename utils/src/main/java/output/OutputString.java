@@ -1,6 +1,4 @@
-package cli;
-
-import output.OutputResult;
+package output;
 
 public class OutputString implements OutputResult<String> {
   private String result;

@@ -1,12 +1,9 @@
-package cli;
+package output;
 
-
-import output.OutputResult;
-
-public class OutputMock implements OutputResult<String> {
+public class OutputPrinter implements OutputResult<String> {
   @Override
   public void saveResult(String result) {
-
+    System.out.println(result);
   }
 
   @Override
