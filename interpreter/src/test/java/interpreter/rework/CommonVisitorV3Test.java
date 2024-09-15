@@ -1,11 +1,12 @@
 package interpreter.rework;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ast.identifier.Identifier;
+import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
+import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import interpreter.visitor.InterpreterVisitorV3;
@@ -127,6 +128,22 @@ public abstract class CommonVisitorV3Test {
     OutputListString outputResult = (OutputListString) visitor.getOutputResult();
     for (int i = 0; i < 4; i++) {
       assertEquals("Hello, World!", outputResult.getSavedResults().get(i));
+    }
+  }
+
+  @Test
+  public void failWithNonStatementNodes() {
+    Position position = new Position(0, 0);
+    Identifier identifier = new Identifier("x", position, position);
+    NumberLiteral numberLiteral = new NumberLiteral(32, position, position);
+    StringLiteral stringLiteral = new StringLiteral("Hello, World!", position, position);
+    BooleanLiteral booleanLiteral = new BooleanLiteral(true, position, position);
+    List<AstNode> nodes = List.of(identifier, numberLiteral, stringLiteral, booleanLiteral);
+
+    InterpreterVisitorV3 visitor = getVisitor();
+
+    for (AstNode node : nodes) {
+      assertThrows(Exception.class, () -> visitor.visit(node));
     }
   }
 }
