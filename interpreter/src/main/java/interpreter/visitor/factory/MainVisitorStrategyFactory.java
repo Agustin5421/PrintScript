@@ -34,13 +34,11 @@ public class MainVisitorStrategyFactory {
     InterpretingStrategy assignStrategy = new AssignmentExpressionStrategy();
     InterpretingStrategy callExpStrategy = getCallExpStrategy();
 
-    Map<AstNodeType, InterpretingStrategy> visitorStratMap =
-        new HashMap<>(
+    return new HashMap<>(
             Map.of(
                 AstNodeType.VARIABLE_DECLARATION, varDecStrategy,
                 AstNodeType.ASSIGNMENT_EXPRESSION, assignStrategy,
                 AstNodeType.CALL_EXPRESSION, callExpStrategy));
-    return visitorStratMap;
   }
 
   private InterpretingStrategy getCallExpStrategy() {
