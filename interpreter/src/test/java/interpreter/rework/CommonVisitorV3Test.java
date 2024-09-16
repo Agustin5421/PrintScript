@@ -153,13 +153,16 @@ public abstract class CommonVisitorV3Test {
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("x", position, position);
     NumberLiteral numberLiteral = new NumberLiteral(32, position, position);
-    BinaryExpression binaryExpression = new BinaryExpression(numberLiteral, numberLiteral, "+", position, position);
-    VariableDeclaration variableDeclaration = new VariableDeclaration("let", identifier, binaryExpression, "number", position, position);
+    BinaryExpression binaryExpression =
+        new BinaryExpression(numberLiteral, numberLiteral, "+", position, position);
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifier, binaryExpression, "number", position, position);
 
     InterpreterVisitorV3 visitor = getVisitor();
     visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
 
-    VariableIdentifier variableIdentifier = VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
+    VariableIdentifier variableIdentifier =
+        VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
     VariablesRepository variablesRepository = visitor.getVariablesRepository();
     assertEquals(64, variablesRepository.getNewVariable(variableIdentifier).value());
   }
@@ -170,13 +173,16 @@ public abstract class CommonVisitorV3Test {
     Identifier identifier = new Identifier("x", position, position);
     StringLiteral stringLiteral1 = new StringLiteral("Hello,", position, position);
     StringLiteral stringLiteral2 = new StringLiteral(" World!", position, position);
-    BinaryExpression binaryExpression = new BinaryExpression(stringLiteral1, stringLiteral2, "+", position, position);
-    VariableDeclaration variableDeclaration = new VariableDeclaration("let", identifier, binaryExpression, "string", position, position);
+    BinaryExpression binaryExpression =
+        new BinaryExpression(stringLiteral1, stringLiteral2, "+", position, position);
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifier, binaryExpression, "string", position, position);
 
     InterpreterVisitorV3 visitor = getVisitor();
     visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
 
-    VariableIdentifier variableIdentifier = VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
+    VariableIdentifier variableIdentifier =
+        VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
     VariablesRepository variablesRepository = visitor.getVariablesRepository();
     assertEquals("Hello, World!", variablesRepository.getNewVariable(variableIdentifier).value());
   }
@@ -187,13 +193,16 @@ public abstract class CommonVisitorV3Test {
     Identifier identifier = new Identifier("x", position, position);
     StringLiteral stringLiteral = new StringLiteral("Hello, ", position, position);
     NumberLiteral numberLiteral = new NumberLiteral(32, position, position);
-    BinaryExpression binaryExpression = new BinaryExpression(stringLiteral, numberLiteral, "+", position, position);
-    VariableDeclaration variableDeclaration = new VariableDeclaration("let", identifier, binaryExpression, "string", position, position);
+    BinaryExpression binaryExpression =
+        new BinaryExpression(stringLiteral, numberLiteral, "+", position, position);
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifier, binaryExpression, "string", position, position);
 
     InterpreterVisitorV3 visitor = getVisitor();
     visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
 
-    VariableIdentifier variableIdentifier = VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
+    VariableIdentifier variableIdentifier =
+        VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
     VariablesRepository variablesRepository = visitor.getVariablesRepository();
     assertEquals("Hello, 32", variablesRepository.getNewVariable(variableIdentifier).value());
   }
@@ -203,17 +212,21 @@ public abstract class CommonVisitorV3Test {
     Position position = new Position(0, 0);
     Identifier identifierX = new Identifier("x", position, position);
     StringLiteral stringLiteral = new StringLiteral("Hello, ", position, position);
-    VariableDeclaration variableDeclaration = new VariableDeclaration("let", identifierX, stringLiteral, "string", position, position);
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifierX, stringLiteral, "string", position, position);
 
-    BinaryExpression binaryExpression = new BinaryExpression(identifierX, stringLiteral, "+", position, position);
+    BinaryExpression binaryExpression =
+        new BinaryExpression(identifierX, stringLiteral, "+", position, position);
     Identifier identifierY = new Identifier("y", position, position);
-    VariableDeclaration variableDeclaration2 = new VariableDeclaration("let", identifierY, binaryExpression, "string", position, position);
+    VariableDeclaration variableDeclaration2 =
+        new VariableDeclaration("let", identifierY, binaryExpression, "string", position, position);
 
     InterpreterVisitorV3 visitor = getVisitor();
     visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
     visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration2);
 
-    VariableIdentifier variableIdentifier = VariableIdentifierFactory.createVarIdFromIdentifier(identifierY);
+    VariableIdentifier variableIdentifier =
+        VariableIdentifierFactory.createVarIdFromIdentifier(identifierY);
     VariablesRepository variablesRepository = visitor.getVariablesRepository();
     assertEquals("Hello, Hello, ", variablesRepository.getNewVariable(variableIdentifier).value());
   }
