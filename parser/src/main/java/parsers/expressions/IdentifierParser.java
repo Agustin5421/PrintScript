@@ -1,9 +1,8 @@
 package parsers.expressions;
 
 import ast.expressions.ExpressionNode;
-import java.util.List;
-
 import ast.identifier.Identifier;
+import java.util.List;
 import parsers.Parser;
 import token.Token;
 import token.types.TokenSyntaxType;

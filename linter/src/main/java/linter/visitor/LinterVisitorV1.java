@@ -16,6 +16,7 @@ import ast.visitor.NodeVisitor;
 import java.util.Map;
 import linter.visitor.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
+import output.OutputResult;
 
 public class LinterVisitorV1 implements LinterVisitor {
   private final FullReport fullReport;
@@ -39,6 +40,29 @@ public class LinterVisitorV1 implements LinterVisitor {
   }
 
   @Override
+  public NodeVisitor visit(AstNode node) {
+    if (node instanceof VariableDeclaration) {
+      return visitVarDec((VariableDeclaration) node);
+    } else if (node instanceof IfStatement) {
+      return visitIfStatement((IfStatement) node);
+    } else if (node instanceof BooleanLiteral) {
+      return visitBooleanLiteral((BooleanLiteral) node);
+    } else if (node instanceof CallExpression) {
+      return visitCallExpression((CallExpression) node);
+    } else if (node instanceof AssignmentExpression) {
+      return visitAssignmentExpression((AssignmentExpression) node);
+    } else if (node instanceof BinaryExpression) {
+      return visitBinaryExpression((BinaryExpression) node);
+    } else if (node instanceof NumberLiteral) {
+      return visitNumberLiteral((NumberLiteral) node);
+    } else if (node instanceof StringLiteral) {
+      return visitStringLiteral((StringLiteral) node);
+    } else if (node instanceof Identifier) {
+      return visitIdentifier((Identifier) node);
+    }
+    return this;
+  }
+
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
     Identifier identifier = variableDeclaration.identifier();
     NodeVisitor visitor = identifier.accept(this);
@@ -55,17 +79,14 @@ public class LinterVisitorV1 implements LinterVisitor {
     return new LinterVisitorV1(newReport, getNodesStrategies());
   }
 
-  @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     throw new IllegalArgumentException("If Node not supported in this version :( ");
   }
 
-  @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
     throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
-  @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     Identifier methodIdentifier = callExpression.methodIdentifier();
     NodeVisitor visitor = methodIdentifier.accept(this);
@@ -83,7 +104,6 @@ public class LinterVisitorV1 implements LinterVisitor {
     return new LinterVisitorV1(newReport, getNodesStrategies());
   }
 
-  @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     Identifier left = assignmentExpression.left();
     NodeVisitor visitor = left.accept(this);
@@ -100,7 +120,6 @@ public class LinterVisitorV1 implements LinterVisitor {
     return new LinterVisitorV1(newReport, getNodesStrategies());
   }
 
-  @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     ExpressionNode left = binaryExpression.left();
     NodeVisitor visitor = left.accept(this);
@@ -117,7 +136,6 @@ public class LinterVisitorV1 implements LinterVisitor {
     return new LinterVisitorV1(newReport, getNodesStrategies());
   }
 
-  @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
     LintingStrategy strategy = getNodesStrategies().get(numberLiteral.getNodeType());
 
@@ -129,7 +147,6 @@ public class LinterVisitorV1 implements LinterVisitor {
     return this;
   }
 
-  @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
     LintingStrategy strategy = getNodesStrategies().get(stringLiteral.getNodeType());
 
@@ -141,7 +158,6 @@ public class LinterVisitorV1 implements LinterVisitor {
     return this;
   }
 
-  @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
     LintingStrategy strategy = getNodesStrategies().get(identifier.getNodeType());
 
@@ -151,5 +167,10 @@ public class LinterVisitorV1 implements LinterVisitor {
     }
 
     return this;
+  }
+
+  @Override
+  public OutputResult<?> getOutputResult() {
+    return null;
   }
 }

@@ -16,6 +16,7 @@ import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.BinaryExpressionStrategy;
 import java.util.HashMap;
 import java.util.Map;
+import output.OutputResult;
 
 public class FormatterVisitorV1 implements FormatterVisitor {
   private final String currentCode;
@@ -31,16 +32,37 @@ public class FormatterVisitorV1 implements FormatterVisitor {
   }
 
   @Override
+  public NodeVisitor visit(AstNode node) {
+    if (node instanceof VariableDeclaration) {
+      return visitVarDec((VariableDeclaration) node);
+    } else if (node instanceof IfStatement) {
+      return visitIfStatement((IfStatement) node);
+    } else if (node instanceof BooleanLiteral) {
+      return visitBooleanLiteral((BooleanLiteral) node);
+    } else if (node instanceof CallExpression) {
+      return visitCallExpression((CallExpression) node);
+    } else if (node instanceof AssignmentExpression) {
+      return visitAssignmentExpression((AssignmentExpression) node);
+    } else if (node instanceof BinaryExpression) {
+      return visitBinaryExpression((BinaryExpression) node);
+    } else if (node instanceof NumberLiteral) {
+      return visitNumberLiteral((NumberLiteral) node);
+    } else if (node instanceof StringLiteral) {
+      return visitStringLiteral((StringLiteral) node);
+    } else if (node instanceof Identifier) {
+      return visitIdentifier((Identifier) node);
+    }
+    return this;
+  }
+
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     throw new IllegalArgumentException("If Node not supported in this version :( ");
   }
 
-  @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
     throw new IllegalArgumentException("Boolean Node not supported in this version :( ");
   }
 
-  @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     FormattingStrategy strategy = getStrategy(callExpression);
     String formattedCode = strategy.apply(callExpression, this);
@@ -48,7 +70,6 @@ public class FormatterVisitorV1 implements FormatterVisitor {
     return newVisitor(formattedCode);
   }
 
-  @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     FormattingStrategy strategy = getStrategy(assignmentExpression);
     String formattedCode = strategy.apply(assignmentExpression, this);
@@ -56,7 +77,6 @@ public class FormatterVisitorV1 implements FormatterVisitor {
     return newVisitor(formattedCode);
   }
 
-  @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
     FormattingStrategy strategy = getStrategy(variableDeclaration);
     String formattedCode = strategy.apply(variableDeclaration, this);
@@ -64,22 +84,18 @@ public class FormatterVisitorV1 implements FormatterVisitor {
     return newVisitor(formattedCode);
   }
 
-  @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
     return newVisitor(numberLiteral.value().toString());
   }
 
-  @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
     return newVisitor("\"" + stringLiteral.value() + "\"");
   }
 
-  @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
     return newVisitor(identifier.name());
   }
 
-  @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     BinaryExpressionStrategy strategy = new BinaryExpressionStrategy(binaryExpression.operator());
     return newVisitor(strategy.apply(binaryExpression, this));
@@ -117,5 +133,10 @@ public class FormatterVisitorV1 implements FormatterVisitor {
   @Override
   public FormatterVisitor cloneVisitor() {
     return new FormatterVisitorV1(strategies, currentCode);
+  }
+
+  @Override
+  public OutputResult<?> getOutputResult() {
+    return null;
   }
 }

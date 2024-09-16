@@ -15,11 +15,12 @@ import ast.visitor.NodeVisitor;
 import formatter.strategy.FormattingStrategy;
 import java.util.HashMap;
 import java.util.Map;
+import output.OutputResult;
 
 public class FormatterVisitorV2 implements FormatterVisitor {
   private final String currentCode;
   private final Map<AstNodeType, FormattingStrategy> strategies;
-  private final FormatterVisitor visitorV1;
+  private final FormatterVisitorV1 visitorV1;
   private final int indentationLevel;
   // The configurable amount of spaces to multiply the indentation level by
   private final int indentSize;
@@ -73,52 +74,67 @@ public class FormatterVisitorV2 implements FormatterVisitor {
   }
 
   @Override
+  public NodeVisitor visit(AstNode node) {
+    if (node instanceof VariableDeclaration) {
+      return visitVarDec((VariableDeclaration) node);
+    } else if (node instanceof IfStatement) {
+      return visitIfStatement((IfStatement) node);
+    } else if (node instanceof BooleanLiteral) {
+      return visitBooleanLiteral((BooleanLiteral) node);
+    } else if (node instanceof CallExpression) {
+      return visitCallExpression((CallExpression) node);
+    } else if (node instanceof AssignmentExpression) {
+      return visitAssignmentExpression((AssignmentExpression) node);
+    } else if (node instanceof BinaryExpression) {
+      return visitBinaryExpression((BinaryExpression) node);
+    } else if (node instanceof NumberLiteral) {
+      return visitNumberLiteral((NumberLiteral) node);
+    } else if (node instanceof StringLiteral) {
+      return visitStringLiteral((StringLiteral) node);
+    } else if (node instanceof Identifier) {
+      return visitIdentifier((Identifier) node);
+    }
+    return this;
+  }
+
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     String formattedCode = getStrategy(ifStatement).apply(ifStatement, this);
     formattedCode += "\n";
     return newVisitor(formattedCode);
   }
 
-  @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
     return newVisitor(booleanLiteral.value().toString());
   }
 
-  @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     return newVisitor(
         ((FormatterVisitor) visitorV1.visitCallExpression(callExpression)).getCurrentCode());
   }
 
-  @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     String formattedCode =
         getStrategy(assignmentExpression).apply(assignmentExpression, this) + "\n";
     return newVisitor(formattedCode);
   }
 
-  @Override
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
     String formattedCode = getStrategy(variableDeclaration).apply(variableDeclaration, this) + "\n";
     return newVisitor(formattedCode);
   }
 
-  @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
     return newVisitorV1((FormatterVisitorV1) visitorV1.visitNumberLiteral(numberLiteral));
   }
 
-  @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
     return newVisitorV1((FormatterVisitorV1) visitorV1.visitStringLiteral(stringLiteral));
   }
 
-  @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
     return newVisitorV1((FormatterVisitorV1) visitorV1.visitIdentifier(identifier));
   }
 
-  @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     return newVisitorV1((FormatterVisitorV1) visitorV1.visitBinaryExpression(binaryExpression));
   }
@@ -131,5 +147,10 @@ public class FormatterVisitorV2 implements FormatterVisitor {
   public FormatterVisitorV2 enterLevel() {
     return new FormatterVisitorV2(
         visitorV1, strategies, currentCode, indentSize, indentationLevel + 1);
+  }
+
+  @Override
+  public OutputResult<?> getOutputResult() {
+    return null;
   }
 }

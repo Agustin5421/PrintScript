@@ -1,12 +1,12 @@
 package factory;
 
-import parsers.expressions.IdentifierParser;
 import java.util.List;
 import lexer.Lexer;
 import parsers.Parser;
 import parsers.expressions.BinaryExpressionParser;
 import parsers.expressions.CallFunctionAsExpressionParser;
 import parsers.expressions.ExpressionParser;
+import parsers.expressions.IdentifierParser;
 import parsers.expressions.LiteralParser;
 import parsers.statements.AssignmentParser;
 import parsers.statements.CallFunctionAsStatementParser;

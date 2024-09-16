@@ -5,5 +5,6 @@ import output.OutputResult;
 
 public interface NodeVisitor {
   NodeVisitor visit(AstNode node);
+
   OutputResult<?> getOutputResult();
 }
