@@ -10,7 +10,7 @@ import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
 import interpreter.visitor.InterpreterVisitorV3;
-import interpreter.visitor.InterpreterVisitorV3Factory;
+import interpreter.visitor.factory.InterpreterVisitorV3Factory;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
