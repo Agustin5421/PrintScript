@@ -8,6 +8,7 @@ import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.root.AstNode;
+import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
 import interpreter.visitor.InterpreterVisitorV3;
@@ -146,6 +147,47 @@ public abstract class CommonVisitorV3Test {
     for (AstNode node : nodes) {
       assertThrows(Exception.class, () -> visitor.visit(node));
     }
+  }
+
+  @Test
+  public void interpretAssignmentExpression() {
+    Position position = new Position(0, 0);
+    Identifier identifier = new Identifier("x", position, position);
+    StringLiteral stringLiteral = new StringLiteral("Hello, World!", position, position);
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifier, stringLiteral, "string", position, position);
+
+    StringLiteral newStringLiteral = new StringLiteral("Goodbye, World!", position, position);
+    AssignmentExpression assignmentExpression =
+        new AssignmentExpression(identifier, newStringLiteral, "=");
+
+    InterpreterVisitorV3 visitor = getVisitor();
+    visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
+    visitor = (InterpreterVisitorV3) visitor.visit(assignmentExpression);
+
+    VariableIdentifier variableIdentifier =
+        VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
+    VariablesRepository variablesRepository = visitor.getVariablesRepository();
+    assertEquals(
+        newStringLiteral.value(), variablesRepository.getNewVariable(variableIdentifier).value());
+  }
+
+  @Test
+  public void failAssignmentExpressionWithDifferentType() {
+    Position position = new Position(0, 0);
+    Identifier identifier = new Identifier("x", position, position);
+    StringLiteral stringLiteral = new StringLiteral("Hello, World!", position, position);
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifier, stringLiteral, "string", position, position);
+
+    NumberLiteral numberLiteral = new NumberLiteral(32, position, position);
+    AssignmentExpression assignmentExpression =
+        new AssignmentExpression(identifier, numberLiteral, "=");
+
+    InterpreterVisitorV3 visitor = getVisitor();
+    visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
+    InterpreterVisitorV3 finalVisitor = visitor;
+    assertThrows(Exception.class, () -> finalVisitor.visit(assignmentExpression));
   }
 
   @Test

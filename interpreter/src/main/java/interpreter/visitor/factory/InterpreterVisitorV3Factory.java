@@ -29,7 +29,7 @@ public class InterpreterVisitorV3Factory {
       default -> throw new IllegalArgumentException("Invalid version: " + version);
     }
 
-    ValueCollector valueCollector = new ValueCollector(collectorStrategies);
+    ValueCollector valueCollector = new ValueCollector(collectorStrategies, outputResult);
 
     VariablesRepository varRepo = new VariablesRepository();
     return new InterpreterVisitorV3(varRepo, visitorStrategies, outputResult, valueCollector);

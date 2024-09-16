@@ -28,7 +28,8 @@ public class ReadInputStrategy implements InterpretingStrategy {
     Literal<?> processedLiteral = literalHandler.getLiteral(callExpression, input);
 
     // saves the literal in the output result
-    printingStrategy.interpret(processedLiteral, valueCollector);
+    Literal<?> argumentLiteral = (Literal<?>) callExpression.arguments().get(0);
+    printingStrategy.interpret(argumentLiteral, valueCollector);
 
     // return the collector with the value of the literal
     return valueCollector.setValue(processedLiteral);

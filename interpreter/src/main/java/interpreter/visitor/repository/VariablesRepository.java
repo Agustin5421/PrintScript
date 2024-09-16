@@ -2,8 +2,10 @@ package interpreter.visitor.repository;
 
 import ast.identifier.Identifier;
 import ast.literal.Literal;
+import ast.root.AstNodeType;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class VariablesRepository {
   // Single map to store all variables
@@ -72,6 +74,11 @@ public class VariablesRepository {
       throw new IllegalArgumentException("Variable " + identifier.name() + " is not modifiable.");
     }
 
+    if (differentVarTypes(keyId, value)) {
+      throw new IllegalArgumentException(
+          "Variable " + identifier.name() + " is not of the same type.");
+    }
+
     newVariables.put(keyId, value);
     return new VariablesRepository(getVariables(), newVariables);
   }
@@ -93,6 +100,15 @@ public class VariablesRepository {
       }
     }
     return null;
+  }
+
+  private boolean differentVarTypes(VariableIdentifier keyId, Literal<?> value) {
+    return (Objects.equals(keyId.type(), "string")
+            && value.getNodeType() != AstNodeType.STRING_LITERAL)
+        || (Objects.equals(keyId.type(), "number")
+            && value.getNodeType() != AstNodeType.NUMBER_LITERAL)
+        || (Objects.equals(keyId.type(), "boolean")
+            && value.getNodeType() != AstNodeType.BOOLEAN_LITERAL);
   }
 
   public VariablesRepository update(VariablesRepository other) {
