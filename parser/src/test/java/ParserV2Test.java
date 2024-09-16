@@ -1,11 +1,11 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ast.root.AstNode;
-import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
+import exceptions.MismatchTypeException;
+import exceptions.VariableNotDeclaredException;
 import factory.ParserFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,27 +25,6 @@ public class ParserV2Test extends CommonParserTests {
   }
 
   @Test
-  public void testIfStatement() {
-    Parser parser =
-        setParser(
-            "if (true) { if(a){hola=2;} let name: string = \"Oliver\";} else {a=3; a=5; a=6;}",
-            getParser());
-    AstNode node = parser.next();
-    assertInstanceOf(IfStatement.class, node);
-  }
-
-  // TODO: solve these tests
-  /*
-  @Test
-  public void testNoElse() {
-    Parser parser = setParser("if (true) { let name: string = \"Oliver\";}", getParser());
-    AstNode node = parser.next();
-    assertInstanceOf(IfStatement.class, node);
-  }
-
-   */
-
-  @Test
   public void testConstDeclaration() {
     Parser parser = setParser("const myBool: boolean = true;", getParser());
     AstNode node = parser.next();
@@ -54,7 +33,7 @@ public class ParserV2Test extends CommonParserTests {
 
   @Test
   public void testReadInputFunction() {
-    Parser parser = setParser("readInput(this, is, a, test);", getParser());
+    Parser parser = setParser("readInput('this', 'is', 'a', 'test');", getParser());
     CallExpression node = (CallExpression) parser.next();
     assertInstanceOf(CallExpression.class, node);
     assertEquals("readInput", node.methodIdentifier().name());
@@ -74,28 +53,59 @@ public class ParserV2Test extends CommonParserTests {
 
   @Test
   public void testReadEnvFunction() {
-    Parser parser = setParser("readEnv('this is a string', is, also, a, test);", getParser());
+    Parser parser = setParser("readEnv('this is a string');", getParser());
     CallExpression node = (CallExpression) parser.next();
     assertInstanceOf(CallExpression.class, node);
     assertEquals("readEnv", node.methodIdentifier().name());
-    assertEquals(5, node.arguments().size());
+    assertEquals(1, node.arguments().size());
   }
 
   @Test
   public void testReadEnvAsFunctionExpression() {
-    Parser parser = setParser("a = readEnv('this is a string', is, also, a, test);", getParser());
-    AssignmentExpression node = (AssignmentExpression) parser.next();
-    assertInstanceOf(AssignmentExpression.class, node);
-    CallExpression callExpression = (CallExpression) node.right();
+    Parser parser =
+        setParser("let a : string = readEnv('this is a string', 2, 3, 4, 5);", getParser());
+    VariableDeclaration node = (VariableDeclaration) parser.next();
+    assertInstanceOf(VariableDeclaration.class, node);
+    CallExpression callExpression = (CallExpression) node.expression();
     assertEquals("readEnv", callExpression.methodIdentifier().name());
     assertEquals(5, callExpression.arguments().size());
-    assertEquals("a", node.left().name());
+    assertEquals("a", node.identifier().name());
+  }
+
+  @Test
+  public void testInvalidTypeDeclaration() {
+    Parser parser = setParser("let myVar : number = 'hola' + 2 ;", getParser());
+    assertThrows(MismatchTypeException.class, parser::next);
   }
 
   @Test
   public void testIfWithoutElse() {
-    Parser parser = setParser("if (true) {x = 'omg it worked';}", getParser());
+    Parser parser = setParser("if (true) {let x : string = 'omg it worked';}", getParser());
     IfStatement node = (IfStatement) parser.next();
     assertEquals(1, node.getThenBlockStatement().size());
+  }
+
+  @Test
+  public void test() {
+    Parser parser = setParser("let a : boolean = false; if (a) {} else {c=2;}", getParser());
+    parser.next();
+    assertThrows(VariableNotDeclaredException.class, parser::next);
+  }
+
+  @Test
+  public void testConst() {
+    Parser parser =
+        setParser(
+            """
+                        const booleanValue : boolean = true;
+                        if(booleanValue) {
+                            println("if statement working correctly");
+                          }
+                          println("outside of conditional");""",
+            getParser());
+
+    while (parser.hasNext()) {
+      parser.next();
+    }
   }
 }
