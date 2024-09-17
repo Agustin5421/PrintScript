@@ -1,2 +1,15 @@
-let myVar : string = "Hello World!";
+let myVar : string = "a World!";
+myVar = "Goodbye World!";
+
+if (false){
+    myVar = "Hello World!";
+}
+else{
+    if (true){
+        myVar = "Wow this works!";
+    }
+    else{
+        myVar = "This is a test!";
+    }
+}
 println(myVar);
