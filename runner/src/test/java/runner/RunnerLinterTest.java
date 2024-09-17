@@ -8,7 +8,7 @@ import output.OutputResult;
 public class RunnerLinterTest {
   @Test
   public void runLinterTest() {
-    String code = "let snake_case: string = \"Oliver\";\nlet snake_case: string = \"Oliver\";";
+    String code = "let snake_case: string = \"Oliver\";\nlet camel_case: string = \"Oliver\";";
 
     Runner runner = new Runner();
     runner.analyze(
