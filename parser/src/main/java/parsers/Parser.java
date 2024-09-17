@@ -13,6 +13,7 @@ import parsers.statements.StatementParser;
 import splitters.MainStatementSplitter;
 import token.Token;
 import validators.MainStatementValidator;
+import visitor.ParsingValidatorVisitor;
 
 public class Parser implements Iterator<AstNode> {
   private final List<StatementParser> statementParsers;
@@ -20,6 +21,7 @@ public class Parser implements Iterator<AstNode> {
   private final MainStatementValidator mainStatementValidator;
   private final MainStatementSplitter mainStatementSplitter = new MainStatementSplitter();
   private final Lexer lexer;
+  private final ParsingValidatorVisitor visitor = new ParsingValidatorVisitor();
 
   public Parser(
       Lexer lexer,
@@ -83,7 +85,11 @@ public class Parser implements Iterator<AstNode> {
     }
 
     List<Token> statement = getNextStatement();
-    return parseStatement(statement);
+    AstNode statementNode = parseStatement(statement);
+
+    statementNode.accept(visitor);
+
+    return statementNode;
   }
 
   private List<Token> getNextStatement() {
