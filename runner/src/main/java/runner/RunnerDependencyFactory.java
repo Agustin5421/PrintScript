@@ -2,12 +2,13 @@ package runner;
 
 import factory.LexerFactory;
 import factory.ParserFactory;
-import interpreter.Interpreter;
-import interpreter.factory.InterpreterFactory;
+import interpreter.ReworkedInterpreter;
+import interpreter.ReworkedInterpreterFactory;
 import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
 import observers.ProgressObserver;
+import output.OutputResult;
 import parsers.Parser;
 
 import java.util.Formatter;
@@ -23,8 +24,8 @@ public class RunnerDependencyFactory {
     }
 
     //TODO: interpreter should receive the parser
-    public static Interpreter getInterpreterExecute(String version, String code, ProgressObserver progressObserver) {
-        return InterpreterFactory.getInterpreter(version);
+    public static ReworkedInterpreter getInterpreterExecute(String version, OutputResult<String> output, String code, ProgressObserver progressObserver) {
+        return ReworkedInterpreterFactory.buildInterpreter(version, output);
     }
 
     public static Formatter getFormatterFormat(String version, String code, ProgressObserver progressObserver) {

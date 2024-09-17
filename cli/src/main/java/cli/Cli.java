@@ -31,15 +31,16 @@ public class Cli {
     ProgressPrinter progressPrinter = new ProgressPrinter();
     ProgressObserver progressObserver = new ProgressObserver(progressPrinter, 3);
 
-    Runner runner = new Runner(progressObserver);
+//    Runner runner = new Runner(progressObserver);
+    Runner runner = new Runner();
 
     String operation = "Validation";                                //args[0];
     String codeFilePath = "cli/src/main/resources/clitest.txt";     //args[1];
     String version = "1.1";                                         //args[2];
 
-    String operation = args[0];
-    String codeFilePath = args[1];
-    String version = args[2];
+//    String operation = args[0];
+//    String codeFilePath = args[1];
+//    String version = args[2];
 
     InputStream code = findCode(codeFilePath);
 
