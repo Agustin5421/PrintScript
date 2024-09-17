@@ -18,7 +18,6 @@ import exceptions.VariableNotDeclaredException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import output.OutputResult;
 
 public class ParsingValidatorVisitor implements NodeVisitor {
   private final Map<String, String> variables =
