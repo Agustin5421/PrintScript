@@ -2,14 +2,11 @@ package runner;
 
 import factory.LexerFactory;
 import factory.ParserFactory;
-import interpreter.Interpreter;
-import interpreter.IterableInterpreter;
-import interpreter.factory.InterpreterFactory;
-
+import interpreter.ReworkedInterpreter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-
+import java.util.Objects;
+import interpreter.factory.ReworkedInterpreterFactory;
 import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
@@ -17,27 +14,30 @@ import output.OutputResult;
 import parsers.Parser;
 
 public class Runner {
-
-  public void execute(InputStream code, String version,OutputResult printLog, OutputResult errorLog) {
-    IterableInterpreter iterableInterpreter = new IterableInterpreter(version, code);
+  public void execute(InputStream code, String version,OutputResult<String> printLog, OutputResult<String> errorLog) {
+    Lexer lexer;
+    try {
+      lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    Parser parser = ParserFactory.getParser(version).setLexer(lexer);
+    ReworkedInterpreter interpreter = ReworkedInterpreterFactory.buildInterpreter(version, printLog);
 
     try {
-      List<String> nextPrints;
-      while(iterableInterpreter.hasNext()) {
-        nextPrints = iterableInterpreter.next();
-        for (String print : nextPrints) {
-          printLog.saveResult(print);
-        }
+      while (parser.hasNext()) {
+        interpreter = interpreter.interpret(parser.next());
       }
     } catch (Throwable e) {
-      iterableInterpreter = null;
+      lexer = null;
+      parser = null;
+      interpreter = null;
       System.gc();
-      System.out.println(e.getMessage());
       errorLog.saveResult(e.getMessage());
     }
   }
 
-  public void analyze(InputStream code, String version, String config, OutputResult output) {
+  public void analyze(InputStream code, String version, String config, OutputResult<String> output) {
     Linter linter = LinterFactory.getLinter(version, config);
     linter = linter.setInputStream(code);
 
