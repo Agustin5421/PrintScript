@@ -9,45 +9,20 @@ import java.util.Objects;
 
 public class VariablesRepository {
   // Single map to store all variables
-  private final Map<Identifier, Literal<?>> variables;
   private final Map<VariableIdentifier, Literal<?>> newVariables;
 
   public VariablesRepository() {
-    this(new HashMap<>(), new HashMap<>());
+    this(new HashMap<>());
   }
 
-  public VariablesRepository(Map<Identifier, Literal<?>> variables) {
-    this(variables, new HashMap<>());
-  }
-
-  public VariablesRepository(
-      Map<Identifier, Literal<?>> variables, Map<VariableIdentifier, Literal<?>> newVariables) {
-    this.variables = variables;
+  public VariablesRepository(Map<VariableIdentifier, Literal<?>> newVariables) {
     this.newVariables = newVariables;
-  }
-
-  public Map<Identifier, Literal<?>> getVariables() {
-    return new HashMap<>(variables);
   }
 
   public Map<VariableIdentifier, Literal<?>> getNewVariables() {
     return newVariables;
   }
 
-  @SuppressWarnings("unchecked")
-  public <T> Literal<T> getVariable(Identifier identifier) {
-    if (variables.containsKey(identifier)) {
-      return (Literal<T>) variables.get(identifier);
-    } else {
-      throw new IllegalArgumentException("Variable " + identifier + " is not defined");
-    }
-  }
-
-  public VariablesRepository addVariable(Identifier identifier, Literal<?> value) {
-    Map<Identifier, Literal<?>> newVariables = new HashMap<>(getVariables());
-    newVariables.put(identifier, value);
-    return new VariablesRepository(newVariables);
-  }
 
   public VariablesRepository addNewVariable(VariableIdentifier identifier, Literal<?> value) {
     Map<VariableIdentifier, Literal<?>> newVariables = new HashMap<>(getNewVariables());
@@ -59,7 +34,7 @@ public class VariablesRepository {
 
     newVariables.put(identifier, value);
 
-    return new VariablesRepository(getVariables(), newVariables);
+    return new VariablesRepository(newVariables);
   }
 
   public VariablesRepository setNewVariable(VariableIdentifier identifier, Literal<?> value) {
@@ -80,7 +55,7 @@ public class VariablesRepository {
     }
 
     newVariables.put(keyId, value);
-    return new VariablesRepository(getVariables(), newVariables);
+    return new VariablesRepository(newVariables);
   }
 
   public <T> Literal<T> getNewVariable(VariableIdentifier identifier) {
@@ -118,6 +93,6 @@ public class VariablesRepository {
         mergedVariables.put(entry.getKey(), entry.getValue());
       }
     }
-    return new VariablesRepository(Map.of(), mergedVariables);
+    return new VariablesRepository(mergedVariables);
   }
 }

@@ -102,22 +102,6 @@ public class ExpressionEvaluatorTest {
   }
 
   @Test
-  public void testReadInputNumberDouble() {
-    String input = "42.0";
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-    String code = "readInput(\"Number:\");";
-    Interpreter interpreter = new Interpreter("1.1");
-    VariablesRepository repository = interpreter.executeProgram(code);
-
-    assertEquals(
-        42.0,
-        repository
-            .getVariable(new Identifier("readInput", new Position(0, 0), new Position(0, 0)))
-            .value());
-  }
-
-  @Test
   public void readInputPlusStringTest() {
     String input = "hello";
     System.setIn(new ByteArrayInputStream(input.getBytes()));
