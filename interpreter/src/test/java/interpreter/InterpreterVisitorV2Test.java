@@ -21,8 +21,6 @@ import output.OutputMock;
 import parsers.Parser;
 
 public class InterpreterVisitorV2Test {
-  private final List<String> prints = List.of();
-
   private Parser getParser(String code) {
     Lexer lexer = LexerFactory.getLexer("1.1");
     try {
@@ -281,5 +279,23 @@ public class InterpreterVisitorV2Test {
     VariablesRepository repository = visitor.getVariablesRepository();
 
     assertEquals(6.62607015e-34, repository.getNewVariable(new VariableIdentifier("x")).value());
+  }
+
+  @Test
+  public void testArithOp2() {
+    String code = "let numberResult: number = 5 * 5 - 8; println(numberResult);";
+
+    Parser parser = getParser(code);
+    ReworkedInterpreter reworkedInterpreter =
+        ReworkedInterpreterFactory.buildInterpreter("1.1", new OutputListString());
+
+    while (parser.hasNext()) {
+      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+    }
+
+    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
+    VariablesRepository repository = visitor.getVariablesRepository();
+
+    assertEquals(17, repository.getNewVariable(new VariableIdentifier("numberResult")).value());
   }
 }
