@@ -10,7 +10,6 @@ import interpreter.ReworkedInterpreterFactory;
 import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
-import observers.ProgressObserver;
 import output.OutputResult;
 import parsers.Parser;
 

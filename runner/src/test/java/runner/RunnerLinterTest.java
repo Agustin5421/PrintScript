@@ -27,7 +27,7 @@ public class RunnerLinterTest {
                       }
                     }
                     """,
-        new OutputResult<String>() {
+        new OutputResult<>() {
           @Override
           public void saveResult(String result) {
             System.out.println(result);
