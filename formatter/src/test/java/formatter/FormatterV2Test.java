@@ -52,7 +52,8 @@ public class FormatterV2Test extends AbstractFormatterTest {
 
   @Test
   public void testBooleanReAssignation() {
-    String formattedCode = """
+    String formattedCode =
+        """
                 let anotherVar : boolean = true;
                 anotherVar = false;
                 """;

@@ -15,7 +15,6 @@ import ast.visitor.NodeVisitor;
 import formatter.strategy.FormattingStrategy;
 import java.util.HashMap;
 import java.util.Map;
-import output.OutputResult;
 
 public class FormatterVisitorV2 implements FormatterVisitor {
   private final String currentCode;

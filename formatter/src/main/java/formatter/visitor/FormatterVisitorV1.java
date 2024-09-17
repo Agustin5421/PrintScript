@@ -16,7 +16,6 @@ import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.BinaryExpressionStrategy;
 import java.util.HashMap;
 import java.util.Map;
-import output.OutputResult;
 
 public class FormatterVisitorV1 implements FormatterVisitor {
   private final String currentCode;

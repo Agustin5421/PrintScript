@@ -18,7 +18,6 @@ import java.util.Map;
 import linter.visitor.report.FullReport;
 import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
-import output.OutputResult;
 
 public class LinterVisitorV2 implements LinterVisitor {
   private final FullReport fullReport;
@@ -73,11 +72,6 @@ public class LinterVisitorV2 implements LinterVisitor {
       return visitIdentifier((Identifier) node);
     }
     return this;
-  }
-
-  @Override
-  public OutputResult<?> getOutputResult() {
-    return null;
   }
 
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {

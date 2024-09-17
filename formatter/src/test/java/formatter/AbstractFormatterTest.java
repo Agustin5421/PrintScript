@@ -19,7 +19,8 @@ public abstract class AbstractFormatterTest {
 
   @Test
   public void assignationTest() {
-    String formattedCode = """
+    String formattedCode =
+        """
                 let myVar : string = "Hello World!";
                 myVar = "Goodbye World!";
                 """;
