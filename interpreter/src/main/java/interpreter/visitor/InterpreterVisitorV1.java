@@ -4,7 +4,6 @@ import ast.root.AstNode;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.repository.VariablesRepository;
 import java.util.List;
-import output.OutputResult;
 
 public class InterpreterVisitorV1 implements InterpreterVisitor {
   public InterpreterVisitorV1(

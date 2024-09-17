@@ -29,6 +29,10 @@ public class VariableDeclarationStrategy implements InterpretingStrategy {
       VariableDeclaration varDecNode, InterpreterVisitorV3 visitor) {
     ExpressionNode valueToEvaluate = varDecNode.expression();
 
+    if (valueToEvaluate == null) {
+      return null;
+    }
+
     ValueCollector valueCollector = visitor.getValueCollector();
     ValueCollector temp = (ValueCollector) valueCollector.visit(valueToEvaluate);
 
