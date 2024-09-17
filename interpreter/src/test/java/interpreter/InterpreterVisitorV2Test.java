@@ -3,27 +3,22 @@ package interpreter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import ast.identifier.Identifier;
 import factory.LexerFactory;
 import factory.ParserFactory;
-import interpreter.factory.InterpreterFactory;
 import interpreter.factory.ReworkedInterpreterFactory;
 import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.repository.VariableIdentifier;
-import interpreter.visitor.repository.VariableIdentifierFactory;
 import interpreter.visitor.repository.VariablesRepository;
+import interpreter.visitor.staticprovider.Inputs;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.List;
-
-import interpreter.visitor.staticprovider.Inputs;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
 import output.OutputMock;
 import parsers.Parser;
-import token.Position;
 
 public class InterpreterVisitorV2Test {
   private final List<String> prints = List.of();
@@ -58,11 +53,7 @@ public class InterpreterVisitorV2Test {
     InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
     VariablesRepository repository = visitor.getVariablesRepository();
 
-    assertEquals(
-        42.0,
-        repository
-            .getNewVariable(new VariableIdentifier("x"))
-            .value());
+    assertEquals(42.0, repository.getNewVariable(new VariableIdentifier("x")).value());
     Inputs.setInputs(null);
   }
 
@@ -85,11 +76,7 @@ public class InterpreterVisitorV2Test {
     InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
     VariablesRepository repository = visitor.getVariablesRepository();
 
-    assertEquals(
-        42,
-        repository
-            .getNewVariable(new VariableIdentifier("x"))
-            .value());
+    assertEquals(42, repository.getNewVariable(new VariableIdentifier("x")).value());
 
     Inputs.setInputs(null);
   }
@@ -112,11 +99,7 @@ public class InterpreterVisitorV2Test {
     InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
     VariablesRepository repository = visitor.getVariablesRepository();
 
-    assertEquals(
-        "Hello, world!",
-        repository
-            .getNewVariable(new VariableIdentifier("x"))
-            .value());
+    assertEquals("Hello, world!", repository.getNewVariable(new VariableIdentifier("x")).value());
 
     Inputs.setInputs(null);
   }
@@ -156,11 +139,7 @@ public class InterpreterVisitorV2Test {
     InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
     VariablesRepository repository = visitor.getVariablesRepository();
 
-    assertEquals(
-        "hola",
-        repository
-            .getNewVariable(new VariableIdentifier("x"))
-            .value());
+    assertEquals("hola", repository.getNewVariable(new VariableIdentifier("x")).value());
     Inputs.setInputs(null);
   }
 
@@ -183,11 +162,7 @@ public class InterpreterVisitorV2Test {
     InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
     VariablesRepository repository = visitor.getVariablesRepository();
 
-    assertEquals(
-        true,
-        repository
-            .getNewVariable(new VariableIdentifier("x"))
-            .value());
+    assertEquals(true, repository.getNewVariable(new VariableIdentifier("x")).value());
     Inputs.setInputs(null);
   }
 

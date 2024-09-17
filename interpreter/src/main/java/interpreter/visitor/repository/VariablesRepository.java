@@ -1,6 +1,5 @@
 package interpreter.visitor.repository;
 
-import ast.identifier.Identifier;
 import ast.literal.Literal;
 import ast.root.AstNodeType;
 import java.util.HashMap;
@@ -22,7 +21,6 @@ public class VariablesRepository {
   public Map<VariableIdentifier, Literal<?>> getNewVariables() {
     return newVariables;
   }
-
 
   public VariablesRepository addNewVariable(VariableIdentifier identifier, Literal<?> value) {
     Map<VariableIdentifier, Literal<?>> newVariables = new HashMap<>(getNewVariables());

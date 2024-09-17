@@ -3,7 +3,6 @@ package interpreter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.expressions.BinaryExpression;
-import ast.identifier.Identifier;
 import ast.literal.NumberLiteral;
 import interpreter.visitor.InterpreterVisitorV1;
 import interpreter.visitor.evaluator.BinaryExpressionEvaluator;
