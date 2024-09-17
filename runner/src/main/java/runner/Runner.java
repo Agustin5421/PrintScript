@@ -6,7 +6,7 @@ import interpreter.ReworkedInterpreter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import interpreter.factory.ReworkedInterpreterFactory;
+import interpreter.ReworkedInterpreterFactory;
 import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;

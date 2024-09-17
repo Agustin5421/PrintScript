@@ -5,8 +5,8 @@ import ast.literal.Literal;
 import ast.root.AstNode;
 import ast.statements.IfStatement;
 import ast.visitor.NodeVisitor;
-import interpreter.ValueCollector;
 import interpreter.visitor.InterpreterVisitorV3;
+import interpreter.visitor.ValueCollector;
 import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.InterpretingStrategy;
 

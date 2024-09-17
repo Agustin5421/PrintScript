@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import exceptions.MismatchTypeException;
 import factory.LexerFactory;
 import factory.ParserFactory;
-import interpreter.factory.ReworkedInterpreterFactory;
 import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;

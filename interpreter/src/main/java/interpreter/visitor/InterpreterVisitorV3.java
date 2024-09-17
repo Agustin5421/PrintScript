@@ -3,7 +3,6 @@ package interpreter.visitor;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
-import interpreter.ValueCollector;
 import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.StrategyContainer;
 import output.OutputResult;

@@ -5,7 +5,7 @@ import ast.literal.StringLiteral;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.visitor.NodeVisitor;
-import interpreter.ValueCollector;
+import interpreter.visitor.ValueCollector;
 import interpreter.visitor.staticprovider.EnvLoader;
 import interpreter.visitor.strategy.InterpretingStrategy;
 import java.util.List;

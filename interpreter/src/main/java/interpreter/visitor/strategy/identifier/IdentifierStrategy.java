@@ -4,7 +4,7 @@ import ast.identifier.Identifier;
 import ast.literal.Literal;
 import ast.root.AstNode;
 import ast.visitor.NodeVisitor;
-import interpreter.ValueCollector;
+import interpreter.visitor.ValueCollector;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariableIdentifierFactory;
 import interpreter.visitor.repository.VariablesRepository;

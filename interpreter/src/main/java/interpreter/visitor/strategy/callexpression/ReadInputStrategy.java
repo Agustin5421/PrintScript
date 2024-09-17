@@ -4,7 +4,7 @@ import ast.literal.Literal;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.visitor.NodeVisitor;
-import interpreter.ValueCollector;
+import interpreter.visitor.ValueCollector;
 import interpreter.visitor.staticprovider.Inputs;
 import interpreter.visitor.strategy.InterpretingStrategy;
 

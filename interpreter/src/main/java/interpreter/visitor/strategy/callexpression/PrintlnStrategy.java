@@ -4,8 +4,8 @@ import ast.literal.Literal;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.visitor.NodeVisitor;
-import interpreter.ValueCollector;
 import interpreter.visitor.InterpreterVisitorV3;
+import interpreter.visitor.ValueCollector;
 import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class PrintlnStrategy implements InterpretingStrategy {

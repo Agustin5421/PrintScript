@@ -1,10 +1,9 @@
-package interpreter;
+package interpreter.visitor;
 
 import ast.literal.Literal;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
-import interpreter.visitor.OutputVisitor;
 import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.StrategyContainer;
 import output.OutputResult;

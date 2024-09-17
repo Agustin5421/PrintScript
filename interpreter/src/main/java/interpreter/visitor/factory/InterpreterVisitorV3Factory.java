@@ -1,8 +1,8 @@
 package interpreter.visitor.factory;
 
 import ast.root.AstNodeType;
-import interpreter.ValueCollector;
 import interpreter.visitor.InterpreterVisitorV3;
+import interpreter.visitor.ValueCollector;
 import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.StrategyContainer;
 import output.OutputResult;

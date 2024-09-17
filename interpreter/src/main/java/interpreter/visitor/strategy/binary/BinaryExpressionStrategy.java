@@ -4,7 +4,7 @@ import ast.expressions.BinaryExpression;
 import ast.literal.Literal;
 import ast.root.AstNode;
 import ast.visitor.NodeVisitor;
-import interpreter.ValueCollector;
+import interpreter.visitor.ValueCollector;
 import interpreter.visitor.strategy.InterpretingStrategy;
 import java.util.List;
 

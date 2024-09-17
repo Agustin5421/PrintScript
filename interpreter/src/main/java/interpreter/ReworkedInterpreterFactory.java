@@ -1,6 +1,5 @@
-package interpreter.factory;
+package interpreter;
 
-import interpreter.ReworkedInterpreter;
 import interpreter.visitor.OutputVisitor;
 import interpreter.visitor.factory.InterpreterVisitorV3Factory;
 import output.OutputResult;
