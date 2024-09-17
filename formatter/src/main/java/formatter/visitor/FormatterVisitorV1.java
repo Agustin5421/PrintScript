@@ -134,9 +134,4 @@ public class FormatterVisitorV1 implements FormatterVisitor {
   public FormatterVisitor cloneVisitor() {
     return new FormatterVisitorV1(strategies, currentCode);
   }
-
-  @Override
-  public OutputResult<?> getOutputResult() {
-    return null;
-  }
 }

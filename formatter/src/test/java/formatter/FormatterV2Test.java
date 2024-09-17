@@ -53,6 +53,7 @@ public class FormatterV2Test extends AbstractFormatterTest {
   @Test
   public void testBooleanReAssignation() {
     String formattedCode = """
+                let anotherVar : boolean = true;
                 anotherVar = false;
                 """;
     MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);

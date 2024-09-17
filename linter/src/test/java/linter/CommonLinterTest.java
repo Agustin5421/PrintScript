@@ -51,7 +51,7 @@ public abstract class CommonLinterTest {
 
   @Test
   public void lintCallExpression2Test() {
-    String code = "println(identifier);";
+    String code = "let identifier: string = 'text';\nprintln(identifier);";
     Linter linter = configureLinter(code);
     FullReport report = linter.next();
     assertEquals(0, report.getReports().size());

@@ -148,9 +148,4 @@ public class FormatterVisitorV2 implements FormatterVisitor {
     return new FormatterVisitorV2(
         visitorV1, strategies, currentCode, indentSize, indentationLevel + 1);
   }
-
-  @Override
-  public OutputResult<?> getOutputResult() {
-    return null;
-  }
 }

@@ -25,10 +25,6 @@ public class InterpreterVisitorV1 implements InterpreterVisitor {
     return null;
   }
 
-  @Override
-  public OutputResult<?> getOutputResult() {
-    return null;
-  }
   /*
   private final VariablesRepository variablesRepository;
   private final Literal<?> value;

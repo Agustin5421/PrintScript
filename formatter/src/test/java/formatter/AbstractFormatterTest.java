@@ -20,6 +20,7 @@ public abstract class AbstractFormatterTest {
   @Test
   public void assignationTest() {
     String formattedCode = """
+                let myVar : string = "Hello World!";
                 myVar = "Goodbye World!";
                 """;
     MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
@@ -51,7 +52,7 @@ public abstract class AbstractFormatterTest {
                 let myVar : number = 2 + 3 * 2;
 
                 println(myVar);
-                myVar = "Hello World!";
+                myVar = 2;
 
                 println(myVar);
                 """;
@@ -67,7 +68,7 @@ public abstract class AbstractFormatterTest {
 
 
                 println(myVar);
-                myVar="Hello World!";
+                myVar=2;
 
 
                 println(myVar);
