@@ -3,6 +3,7 @@ package interpreter.rework;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;
 import ast.literal.BooleanLiteral;
 import ast.literal.StringLiteral;
@@ -224,5 +225,38 @@ public class VisitorV2Test extends CommonVisitorV3Test {
 
     InterpreterVisitorV3 visitor = getVisitor();
     assertThrows(Exception.class, () -> visitor.visit(variableDeclaration));
+  }
+
+  @Test
+  public void binaryExpressionWithReadInput() {
+    Position position = new Position(0, 0);
+    Identifier methodName = new Identifier("readInput", position, position);
+    StringLiteral stringLiteral = new StringLiteral("Sample text", position, position);
+    CallExpression inputCall =
+        new CallExpression(methodName, List.of(stringLiteral), position, position);
+
+    Identifier identifier = new Identifier("x", position, position);
+    StringLiteral stringLiteral2 = new StringLiteral("Hello ", position, position);
+    BinaryExpression binaryExpression = new BinaryExpression(stringLiteral2, inputCall, "+");
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifier, binaryExpression, "string", position, position);
+
+    String input = "world";
+    Inputs.setInputs(null);
+    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+
+    InterpreterVisitorV3 visitor = getVisitor();
+    visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
+
+    VariableIdentifier variableIdentifier =
+        VariableIdentifierFactory.createVarIdFromIdentifier(identifier);
+    assertEquals(
+        "Hello world", visitor.getVariablesRepository().getNewVariable(variableIdentifier).value());
+
+    OutputListString outputResult = (OutputListString) visitor.getOutputResult();
+    assertEquals(1, outputResult.getSavedResults().size());
+    assertEquals("Sample text", outputResult.getSavedResults().get(0));
+
+    Inputs.setInputs(null);
   }
 }
