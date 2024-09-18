@@ -2,7 +2,7 @@ package interpreter.visitor.factory;
 
 import ast.root.AstNodeType;
 import interpreter.visitor.strategy.InterpretingStrategy;
-import interpreter.visitor.strategy.StrategyContainer;
+import container.StrategyContainer;
 import interpreter.visitor.strategy.binary.*;
 import interpreter.visitor.strategy.callexpression.*;
 import interpreter.visitor.strategy.identifier.IdentifierStrategy;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ValueCollectorStrategyFactory {
-  public StrategyContainer<AstNodeType> createStrategyContainerV1() {
+  public StrategyContainer<AstNodeType, InterpretingStrategy> createStrategyContainerV1() {
     Map<AstNodeType, InterpretingStrategy> commonStrategies = createCommonStrategiesMapV1();
 
     ArrayList<BinaryProcedure> procedures = getBinaryProcedures();
@@ -22,10 +22,10 @@ public class ValueCollectorStrategyFactory {
 
     commonStrategies.put(AstNodeType.BINARY_EXPRESSION, binaryExpressionStrategy);
 
-    return new StrategyContainer<>(commonStrategies);
+    return new StrategyContainer<>(commonStrategies,"Can't interpret ");
   }
 
-  public StrategyContainer<AstNodeType> createStrategyContainerV2() {
+  public StrategyContainer<AstNodeType, InterpretingStrategy> createStrategyContainerV2() {
     Map<AstNodeType, InterpretingStrategy> commonStrategies = createCommonStrategiesMapV2();
 
     InterpretingStrategy innerCallExpStrategy = getCallExpStrategy();
@@ -39,7 +39,7 @@ public class ValueCollectorStrategyFactory {
 
     commonStrategies.put(AstNodeType.BINARY_EXPRESSION, binaryExpressionStrategy);
 
-    return new StrategyContainer<>(commonStrategies);
+    return new StrategyContainer<>(commonStrategies, "Can't interpret ");
   }
 
   private ArrayList<BinaryProcedure> getBinaryProcedures() {
@@ -81,8 +81,8 @@ public class ValueCollectorStrategyFactory {
             "readInput", readInputStrategy,
             "readEnv", readEnvStrategy);
 
-    StrategyContainer<String> innerCallExpStrategies =
-        new StrategyContainer<>(innerCallExpStratMap);
+    StrategyContainer<String, InterpretingStrategy> innerCallExpStrategies =
+        new StrategyContainer<>(innerCallExpStratMap, "Can't interpret ");
 
     return new CallExpressionStrategy(innerCallExpStrategies);
   }

@@ -4,20 +4,21 @@ import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.repository.VariablesRepository;
-import interpreter.visitor.strategy.StrategyContainer;
+import interpreter.visitor.strategy.InterpretingStrategy;
+import container.StrategyContainer;
 import output.OutputResult;
 
 public class InterpreterVisitorV3 implements OutputVisitor {
   private final VariablesRepository variablesRepository;
   // Only works with VariableDeclaration, AssignmentExpression and CallExpression (only println()
   // method).
-  private final StrategyContainer<AstNodeType> strategies;
+  private final StrategyContainer<AstNodeType, InterpretingStrategy> strategies;
   private final OutputResult<String> outputResult;
   private final ValueCollector valueCollector;
 
   public InterpreterVisitorV3(
       VariablesRepository variablesRepository,
-      StrategyContainer<AstNodeType> strategies,
+      StrategyContainer<AstNodeType, InterpretingStrategy> strategies,
       OutputResult<String> outputResult,
       ValueCollector valueCollector) {
     this.variablesRepository = variablesRepository;
@@ -34,7 +35,7 @@ public class InterpreterVisitorV3 implements OutputVisitor {
     return variablesRepository;
   }
 
-  public StrategyContainer<AstNodeType> getStrategies() {
+  public StrategyContainer<AstNodeType, InterpretingStrategy> getStrategies() {
     return strategies;
   }
 

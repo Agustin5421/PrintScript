@@ -5,19 +5,20 @@ import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.repository.VariablesRepository;
-import interpreter.visitor.strategy.StrategyContainer;
+import interpreter.visitor.strategy.InterpretingStrategy;
+import container.StrategyContainer;
 import output.OutputResult;
 
 public class ValueCollector implements OutputVisitor {
   private final Literal<?> value;
   // Only works with Identifier, Literals, BinaryExpressions and CallExpression (readInput() and
   // readEnv()).
-  private final StrategyContainer<AstNodeType> strategies;
+  private final StrategyContainer<AstNodeType, InterpretingStrategy> strategies;
   private final VariablesRepository variablesRepository;
   private final OutputResult<String> outputResult;
 
   public ValueCollector(
-      StrategyContainer<AstNodeType> strategies,
+      StrategyContainer<AstNodeType, InterpretingStrategy> strategies,
       Literal<?> value,
       VariablesRepository variablesRepository,
       OutputResult<String> outputResult) {
@@ -28,7 +29,7 @@ public class ValueCollector implements OutputVisitor {
   }
 
   public ValueCollector(
-      StrategyContainer<AstNodeType> strategies, OutputResult<String> outputResult) {
+      StrategyContainer<AstNodeType, InterpretingStrategy> strategies, OutputResult<String> outputResult) {
     this(strategies, null, null, outputResult);
   }
 

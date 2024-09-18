@@ -4,7 +4,8 @@ import ast.root.AstNodeType;
 import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.ValueCollector;
 import interpreter.visitor.repository.VariablesRepository;
-import interpreter.visitor.strategy.StrategyContainer;
+import interpreter.visitor.strategy.InterpretingStrategy;
+import container.StrategyContainer;
 import output.OutputResult;
 
 public class InterpreterVisitorV3Factory {
@@ -14,8 +15,8 @@ public class InterpreterVisitorV3Factory {
       new ValueCollectorStrategyFactory();
 
   public static InterpreterVisitorV3 getVisitor(String version, OutputResult<String> outputResult) {
-    StrategyContainer<AstNodeType> visitorStrategies;
-    StrategyContainer<AstNodeType> collectorStrategies;
+    StrategyContainer <AstNodeType, InterpretingStrategy> visitorStrategies;
+    StrategyContainer<AstNodeType, InterpretingStrategy> collectorStrategies;
 
     switch (version) {
       case "1.0" -> {
