@@ -12,7 +12,7 @@ import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class IdentifierStrategy implements InterpretingStrategy {
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     Identifier identifierNode = (Identifier) node;
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromIdentifier(identifierNode);
     ValueCollector valueCollector = (ValueCollector) visitor;

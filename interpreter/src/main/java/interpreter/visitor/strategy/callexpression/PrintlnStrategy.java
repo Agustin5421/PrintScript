@@ -16,14 +16,14 @@ public class PrintlnStrategy implements InterpretingStrategy {
   }
 
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     CallExpression callExp = (CallExpression) node;
 
     ValueCollector valueCollector = ((InterpreterVisitorV3) visitor).getValueCollector();
     AstNode argumentToPrint = callExp.arguments().get(0);
     Literal<?> literal = ((ValueCollector) valueCollector.visit(argumentToPrint)).getValue();
 
-    printingStrategy.interpret(literal, visitor);
+    printingStrategy.apply(literal, visitor);
     return visitor;
   }
 }

@@ -18,7 +18,7 @@ public class ReadInputStrategy implements InterpretingStrategy {
   }
 
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     // We receive a collector to store the value of the literal
     ValueCollector valueCollector = (ValueCollector) visitor;
     CallExpression callExpression = (CallExpression) node;
@@ -29,7 +29,7 @@ public class ReadInputStrategy implements InterpretingStrategy {
 
     // saves the literal in the output result
     Literal<?> argumentLiteral = (Literal<?>) callExpression.arguments().get(0);
-    printingStrategy.interpret(argumentLiteral, valueCollector);
+    printingStrategy.apply(argumentLiteral, valueCollector);
 
     // return the collector with the value of the literal
     return valueCollector.setValue(processedLiteral);

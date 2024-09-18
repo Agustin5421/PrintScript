@@ -34,16 +34,18 @@ public class ValueCollector implements OutputVisitor {
     this(strategies, null, null, outputResult);
   }
 
-  public ValueCollector setValue(Literal<?> value) {
-    return new ValueCollector(strategies, value, variablesRepository, outputResult);
-  }
-
+  @Override
   public ValueCollector setVariablesRepository(VariablesRepository variablesRepository) {
     return new ValueCollector(strategies, value, variablesRepository, outputResult);
   }
 
+  @Override
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
+  }
+
+  public ValueCollector setValue(Literal<?> value) {
+    return new ValueCollector(strategies, value, variablesRepository, outputResult);
   }
 
   public Literal<?> getValue() {
@@ -59,7 +61,7 @@ public class ValueCollector implements OutputVisitor {
     // vuelve a varDec, assignment, callExp (println()) -> devuelve valor almacenado
 
     AstNodeType nodeType = node.getNodeType();
-    return strategies.getStrategy(nodeType).interpret(node, this);
+    return strategies.getStrategy(nodeType).apply(node, this);
   }
 
   @Override

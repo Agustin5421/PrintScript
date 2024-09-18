@@ -16,7 +16,7 @@ public class BinaryExpressionStrategy implements InterpretingStrategy {
   }
 
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     BinaryExpression binExp = (BinaryExpression) node;
     ValueCollector valueCollector = (ValueCollector) visitor;
 

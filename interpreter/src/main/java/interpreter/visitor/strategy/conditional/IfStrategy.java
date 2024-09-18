@@ -12,7 +12,7 @@ import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class IfStrategy implements InterpretingStrategy {
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     IfStatement ifStatement = (IfStatement) node;
     ExpressionNode condition = ifStatement.getCondition();
 

@@ -18,7 +18,7 @@ public class ReadEnvStrategy implements InterpretingStrategy {
   }
 
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     CallExpression callExp = (CallExpression) node;
     List<AstNode> arguments = callExp.arguments();
 

@@ -27,12 +27,19 @@ public class InterpreterVisitorV3 implements OutputVisitor {
     this.valueCollector = valueCollector;
   }
 
-  public InterpreterVisitorV3 setVariablesRepository(VariablesRepository repository) {
+  @Override
+  public OutputVisitor setVariablesRepository(VariablesRepository repository) {
     return new InterpreterVisitorV3(repository, strategies, outputResult, valueCollector);
   }
 
+  @Override
   public VariablesRepository getVariablesRepository() {
     return variablesRepository;
+  }
+
+  @Override
+  public OutputResult<String> getOutputResult() {
+    return outputResult;
   }
 
   public StrategyContainer<AstNodeType, InterpretingStrategy> getStrategies() {
@@ -44,14 +51,9 @@ public class InterpreterVisitorV3 implements OutputVisitor {
   }
 
   @Override
-  public OutputResult<String> getOutputResult() {
-    return outputResult;
-  }
-
-  @Override
   public NodeVisitor visit(AstNode node) {
     AstNodeType nodeType = node.getNodeType();
-    return strategies.getStrategy(nodeType).interpret(node, this);
+    return strategies.getStrategy(nodeType).apply(node, this);
   }
 
   public InterpreterVisitorV3 cloneVisitor() {

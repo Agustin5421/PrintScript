@@ -1,16 +1,10 @@
 package interpreter.visitor;
 
-import ast.literal.Literal;
-import ast.literal.NumberLiteral;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.repository.VariablesRepository;
 
 public interface InterpreterVisitor extends NodeVisitor {
-  VariablesRepository getVariablesRepository();
+  public InterpreterVisitor setVariablesRepository(VariablesRepository repository);
 
-  InterpreterVisitor cloneVisitor();
-
-  default Literal<?> getValue() {
-    return new NumberLiteral(0, null, null);
-  }
+  public VariablesRepository getVariablesRepository();
 }

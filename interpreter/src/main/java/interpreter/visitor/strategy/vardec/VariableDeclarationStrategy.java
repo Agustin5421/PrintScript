@@ -14,7 +14,7 @@ import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class VariableDeclarationStrategy implements InterpretingStrategy {
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     VariableDeclaration varDecNode = (VariableDeclaration) node;
     InterpreterVisitorV3 interpreterVisitor = (InterpreterVisitorV3) visitor;
 

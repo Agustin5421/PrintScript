@@ -1,8 +1,6 @@
 package interpreter.visitor.strategy;
 
-import ast.root.AstNode;
 import ast.visitor.NodeVisitor;
+import strategy.Strategy;
 
-public interface InterpretingStrategy {
-  NodeVisitor interpret(AstNode node, NodeVisitor visitor);
-}
+public interface InterpretingStrategy extends Strategy<NodeVisitor> {}

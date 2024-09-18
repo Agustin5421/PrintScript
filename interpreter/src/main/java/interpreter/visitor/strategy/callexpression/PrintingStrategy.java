@@ -9,7 +9,7 @@ import output.OutputResult;
 
 public class PrintingStrategy implements InterpretingStrategy {
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     Literal<?> literal = (Literal<?>) node;
     OutputVisitor outputVisitor = (OutputVisitor) visitor;
     OutputResult<String> outputResult = outputVisitor.getOutputResult();

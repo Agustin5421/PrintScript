@@ -15,7 +15,7 @@ import interpreter.visitor.strategy.InterpretingStrategy;
 
 public class AssignmentExpressionStrategy implements InterpretingStrategy {
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     AssignmentExpression assign = (AssignmentExpression) node;
     InterpreterVisitorV3 visitorV3 = (InterpreterVisitorV3) visitor;
 

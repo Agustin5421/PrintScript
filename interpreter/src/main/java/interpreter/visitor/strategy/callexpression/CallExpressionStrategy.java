@@ -15,12 +15,12 @@ public class CallExpressionStrategy implements InterpretingStrategy {
   }
 
   @Override
-  public NodeVisitor interpret(AstNode node, NodeVisitor visitor) {
+  public NodeVisitor apply(AstNode node, NodeVisitor visitor) {
     CallExpression methodCall = (CallExpression) node;
     Identifier methodName = methodCall.methodIdentifier();
 
     InterpretingStrategy methodStrategy = methodsContainer.getStrategy(methodName.name());
 
-    return methodStrategy.interpret(node, visitor);
+    return methodStrategy.apply(node, visitor);
   }
 }
