@@ -25,21 +25,4 @@ public record Identifier(
   public NodeVisitor accept(NodeVisitor visitor) {
     return visitor.visit(this);
   }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null || getClass() != obj.getClass()) {
-      return false;
-    }
-    Identifier that = (Identifier) obj;
-    return name.equals(that.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return name.hashCode();
-  }
 }

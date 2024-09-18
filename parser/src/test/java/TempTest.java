@@ -5,7 +5,11 @@ import ast.identifier.Identifier;
 import ast.literal.StringLiteral;
 import ast.root.AstNodeType;
 import ast.statements.VariableDeclaration;
+import factory.LexerFactory;
+import factory.ParserFactory;
+import lexer.Lexer;
 import org.junit.jupiter.api.Test;
+import parsers.Parser;
 
 public class TempTest {
   @Test
@@ -21,5 +25,13 @@ public class TempTest {
     variableDeclaration = new VariableDeclaration(identifier, value);
     assertNull(variableDeclaration.start());
     assertNull(variableDeclaration.end());
+  }
+
+  @Test
+  public void visitorTest() {
+    Lexer lexer = LexerFactory.getLexer("1.0");
+    lexer = lexer.setInputAsString("let x : number = 1;");
+    Parser parser = ParserFactory.getParser("1.0");
+    parser.setLexer(lexer);
   }
 }

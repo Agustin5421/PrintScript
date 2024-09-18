@@ -6,9 +6,7 @@ import ast.literal.NumberLiteral;
 import ast.literal.StringLiteral;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
-import exceptions.UnexpectedTokenException;
-import exceptions.UnsupportedExpressionException;
-import exceptions.UnsupportedStatementException;
+import exceptions.*;
 import lexer.Lexer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -90,5 +88,20 @@ public abstract class CommonParserTests {
   public void testUnsupportedExpression() {
     Parser parser = setParser("let name : string = let a = 2;", getParser());
     assertThrows(UnsupportedExpressionException.class, parser::next);
+  }
+
+  @Test
+  public void testVarAlreadyDeclared() {
+    Parser parser =
+        setParser("let name : string = \"Oliver\"; let name : string = \"Oliver\";", getParser());
+    parser.next();
+    assertThrows(VariableAlreadyDeclaredException.class, parser::next);
+  }
+
+  @Test
+  public void testUnbalancedParentheses() {
+    Parser parser = setParser("let name : string = \"Oliver\"; println(2;", getParser());
+    parser.next();
+    assertThrows(SyntaxException.class, parser::next);
   }
 }

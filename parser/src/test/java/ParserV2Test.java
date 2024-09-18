@@ -1,9 +1,11 @@
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
+import exceptions.InvalidConstReassignmentException;
 import exceptions.MismatchTypeException;
 import exceptions.VariableNotDeclaredException;
 import factory.ParserFactory;
@@ -107,5 +109,13 @@ public class ParserV2Test extends CommonParserTests {
     while (parser.hasNext()) {
       parser.next();
     }
+  }
+
+  @Test
+  public void testInvalidConstReassign() {
+    Parser parser =
+        setParser("const myVar : string = 'Hello' + 2; myVar = 'Goodbye';", getParser());
+    parser.next();
+    assertThrows(InvalidConstReassignmentException.class, parser::next);
   }
 }
