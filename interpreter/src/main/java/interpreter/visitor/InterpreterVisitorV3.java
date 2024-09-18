@@ -5,8 +5,8 @@ import ast.root.AstNodeType;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.InterpretingStrategy;
-import container.StrategyContainer;
 import output.OutputResult;
+import strategy.StrategyContainer;
 
 public class InterpreterVisitorV3 implements OutputVisitor {
   private final VariablesRepository variablesRepository;

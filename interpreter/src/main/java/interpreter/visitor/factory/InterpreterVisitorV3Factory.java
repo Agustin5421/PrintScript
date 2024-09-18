@@ -5,8 +5,8 @@ import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.ValueCollector;
 import interpreter.visitor.repository.VariablesRepository;
 import interpreter.visitor.strategy.InterpretingStrategy;
-import container.StrategyContainer;
 import output.OutputResult;
+import strategy.StrategyContainer;
 
 public class InterpreterVisitorV3Factory {
   private static final MainVisitorStrategyFactory mainVisitorStrategyFactory =
@@ -15,7 +15,7 @@ public class InterpreterVisitorV3Factory {
       new ValueCollectorStrategyFactory();
 
   public static InterpreterVisitorV3 getVisitor(String version, OutputResult<String> outputResult) {
-    StrategyContainer <AstNodeType, InterpretingStrategy> visitorStrategies;
+    StrategyContainer<AstNodeType, InterpretingStrategy> visitorStrategies;
     StrategyContainer<AstNodeType, InterpretingStrategy> collectorStrategies;
 
     switch (version) {

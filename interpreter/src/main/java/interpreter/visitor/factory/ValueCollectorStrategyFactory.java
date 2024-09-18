@@ -2,7 +2,6 @@ package interpreter.visitor.factory;
 
 import ast.root.AstNodeType;
 import interpreter.visitor.strategy.InterpretingStrategy;
-import container.StrategyContainer;
 import interpreter.visitor.strategy.binary.*;
 import interpreter.visitor.strategy.callexpression.*;
 import interpreter.visitor.strategy.identifier.IdentifierStrategy;
@@ -12,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import strategy.StrategyContainer;
 
 public class ValueCollectorStrategyFactory {
   public StrategyContainer<AstNodeType, InterpretingStrategy> createStrategyContainerV1() {
@@ -22,7 +22,7 @@ public class ValueCollectorStrategyFactory {
 
     commonStrategies.put(AstNodeType.BINARY_EXPRESSION, binaryExpressionStrategy);
 
-    return new StrategyContainer<>(commonStrategies,"Can't interpret ");
+    return new StrategyContainer<>(commonStrategies, "Can't interpret ");
   }
 
   public StrategyContainer<AstNodeType, InterpretingStrategy> createStrategyContainerV2() {

@@ -5,7 +5,7 @@ import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.visitor.NodeVisitor;
 import interpreter.visitor.strategy.InterpretingStrategy;
-import container.StrategyContainer;
+import strategy.StrategyContainer;
 
 public class CallExpressionStrategy implements InterpretingStrategy {
   private final StrategyContainer<String, InterpretingStrategy> methodsContainer;

@@ -2,7 +2,6 @@ package interpreter.visitor.factory;
 
 import ast.root.AstNodeType;
 import interpreter.visitor.strategy.InterpretingStrategy;
-import container.StrategyContainer;
 import interpreter.visitor.strategy.assignment.AssignmentExpressionStrategy;
 import interpreter.visitor.strategy.callexpression.CallExpressionStrategy;
 import interpreter.visitor.strategy.callexpression.PrintingStrategy;
@@ -11,6 +10,7 @@ import interpreter.visitor.strategy.conditional.IfStrategy;
 import interpreter.visitor.strategy.vardec.VariableDeclarationStrategy;
 import java.util.HashMap;
 import java.util.Map;
+import strategy.StrategyContainer;
 
 public class MainVisitorStrategyFactory {
   public StrategyContainer<AstNodeType, InterpretingStrategy> createStrategyContainerV1() {
@@ -26,7 +26,7 @@ public class MainVisitorStrategyFactory {
 
     visitorStratMap.put(AstNodeType.IF_STATEMENT, ifStatementStrategy);
 
-    return new StrategyContainer<>(visitorStratMap,"Can't interpret ");
+    return new StrategyContainer<>(visitorStratMap, "Can't interpret ");
   }
 
   private Map<AstNodeType, InterpretingStrategy> getCommonStrategies() {
@@ -45,7 +45,8 @@ public class MainVisitorStrategyFactory {
     PrintingStrategy printingStrategy = new PrintingStrategy();
     InterpretingStrategy printlnStrategy = new PrintlnStrategy(printingStrategy);
     Map<String, InterpretingStrategy> callExpStratMap = Map.of("println", printlnStrategy);
-    StrategyContainer<String, InterpretingStrategy> callExpStrategies = new StrategyContainer<>(callExpStratMap, "Can't interpret ");
+    StrategyContainer<String, InterpretingStrategy> callExpStrategies =
+        new StrategyContainer<>(callExpStratMap, "Can't interpret ");
 
     return new CallExpressionStrategy(callExpStrategies);
   }

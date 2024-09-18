@@ -1,4 +1,4 @@
-package container;
+package strategy;
 
 import java.util.Map;
 
@@ -8,7 +8,7 @@ public class StrategyContainer<K, V> {
 
   public StrategyContainer(Map<K, V> strategies, String errorMessage) {
     this.strategies = strategies;
-      this.errorMessage = errorMessage;
+    this.errorMessage = errorMessage;
   }
 
   // This way we ensure that this will never return a null strategy.
