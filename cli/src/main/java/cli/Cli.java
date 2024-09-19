@@ -30,10 +30,10 @@ public class Cli {
      */
 
     ProgressPrinter progressPrinter = new ProgressPrinter();
-    ProgressObserver progressObserver = new ProgressObserver(progressPrinter, 3);
+    ProgressObserver progressObserver = new ProgressObserver(progressPrinter);
 
-//    Runner runner = new Runner(progressObserver);
-    Runner runner = new Runner();
+    Runner runner = new Runner(progressObserver);
+//    Runner runner = new Runner();
 
     String operation = "Validation";                                //args[0];
     String codeFilePath = "cli/src/main/resources/clitest.txt";     //args[1];

@@ -3,8 +3,7 @@ myVar = "Goodbye World!";
 
 if (false){
     myVar = "Hello World!";
-}
-else{
+} else{
     if (true){
         myVar = "Wow this works!";
     }

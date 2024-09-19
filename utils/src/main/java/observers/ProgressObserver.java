@@ -4,11 +4,10 @@ import printer.ProgressType;
 
 public class ProgressObserver implements Observer {
   private final ProgressPrinter progressPrinter;
-  private final int totalModules;
+  private float progress;
 
-  public ProgressObserver(ProgressPrinter progressPrinter, int totalModules) {
+  public ProgressObserver(ProgressPrinter progressPrinter) {
     this.progressPrinter = progressPrinter;
-    this.totalModules = totalModules;
   }
 
   public void finish() {
@@ -21,6 +20,7 @@ public class ProgressObserver implements Observer {
 
   @Override
   public void update(Observable observable) {
-    progressPrinter.printProgress(100 / totalModules, ProgressType.IN_PROGRESS);
+    progress = progress + observable.getProgress();
+    progressPrinter.printProgress(progress, ProgressType.IN_PROGRESS);
   }
 }

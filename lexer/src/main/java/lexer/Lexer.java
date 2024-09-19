@@ -1,7 +1,11 @@
 package lexer;
 
 import exceptions.UnsupportedCharacter;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -9,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import observers.Observable;
 import observers.ProgressObserver;
+import observers.ProgressPrinter;
 import token.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
@@ -23,20 +28,24 @@ public class Lexer implements Iterator<Token>, Observable {
   private String currentLine;
   private Position currentPosition;
   private final Queue<Token> tokens; // Token buffer
-  private ProgressObserver observer;
+  private final ProgressObserver observer;
+  private final int length;
+  private int bytesRead = 0;
 
   public Lexer(InputStream inputStream, TokenTypeGetter tokenTypeGetter) throws IOException {
+    length = inputStream.available();
     this.reader = new BufferedReader(new InputStreamReader(inputStream));
     this.tokenTypeGetter = tokenTypeGetter;
     this.pattern = new PatternProvider().getPattern();
     this.currentPosition = new Position(1, 1);
     this.tokens = new LinkedList<>();
-    this.observer = null;
+    this.observer = new ProgressObserver(new ProgressPrinter());
     advanceToNextLine();
   }
 
   public Lexer(InputStream inputStream, TokenTypeGetter tokenTypeGetter, ProgressObserver observer)
       throws IOException {
+    length = inputStream.available();
     this.reader = new BufferedReader(new InputStreamReader(inputStream));
     this.tokenTypeGetter = tokenTypeGetter;
     this.pattern = new PatternProvider().getPattern();
@@ -55,6 +64,8 @@ public class Lexer implements Iterator<Token>, Observable {
         break;
       }
 
+      bytesRead += currentLine.getBytes().length + 1;
+
       matcher = pattern.matcher(currentLine);
     }
     if (currentLine != null) {
@@ -65,7 +76,12 @@ public class Lexer implements Iterator<Token>, Observable {
   @Override
   public boolean hasNext() {
     // If there are tokens in the buffer or there is a line to tokenize, return true
-    return !tokens.isEmpty() || currentLine != null;
+    if (!tokens.isEmpty() || currentLine != null) {
+      return true;
+    }
+
+    observer.finish();
+    return false;
   }
 
   private void tokenizeLine() {
@@ -104,6 +120,7 @@ public class Lexer implements Iterator<Token>, Observable {
       tokenizeLine();
     }
 
+    notifyObservers();
     return tokens.poll();
   }
 
@@ -138,7 +155,7 @@ public class Lexer implements Iterator<Token>, Observable {
   public Lexer setInputAsString(String code) {
     try {
       InputStream myCode = new ByteArrayInputStream(code.getBytes());
-      return new Lexer(myCode, this.tokenTypeGetter);
+      return new Lexer(myCode, this.tokenTypeGetter, this.observer);
     } catch (IOException e) {
       return null;
     }
@@ -151,7 +168,13 @@ public class Lexer implements Iterator<Token>, Observable {
     }
   }
 
-  public void addObserver(ProgressObserver progressObserver) {
-    observer = progressObserver;
+  @Override
+  public float getProgress() {
+    return ((float) length / bytesRead);
+  }
+
+  public Lexer setInputWithObserver(InputStream input, ProgressObserver observer)
+      throws IOException {
+    return new Lexer(input, this.tokenTypeGetter, observer);
   }
 }

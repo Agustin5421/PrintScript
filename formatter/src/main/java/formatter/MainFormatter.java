@@ -2,19 +2,13 @@ package formatter;
 
 import formatter.visitor.FormatterVisitor;
 import java.util.Iterator;
-import java.util.List;
-import observers.Observer;
-import observers.Progressable;
 import parsers.Parser;
 
-public class MainFormatter implements Progressable, Iterator<String> {
-  private final List<Observer> observers;
-  private int totalSteps;
+public class MainFormatter implements Iterator<String> {
   private FormatterVisitor visitor;
   private final Parser parser;
 
-  public MainFormatter(List<Observer> observers, FormatterVisitor visitor, Parser parser) {
-    this.observers = observers;
+  public MainFormatter(FormatterVisitor visitor, Parser parser) {
     this.visitor = visitor;
     this.parser = parser;
   }
@@ -25,18 +19,6 @@ public class MainFormatter implements Progressable, Iterator<String> {
       formattedCode.append(next());
     }
     return formattedCode.toString();
-  }
-
-  @Override
-  public float getProgress() {
-    return (float) 1 / totalSteps * 100;
-  }
-
-  @Override
-  public void notifyObservers() {
-    for (Observer observer : observers) {
-      observer.update(this);
-    }
   }
 
   @Override

@@ -1,6 +1,8 @@
 package interpreter.rework;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ast.expressions.BinaryExpression;
 import ast.identifier.Identifier;

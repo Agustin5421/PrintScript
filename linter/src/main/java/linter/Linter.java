@@ -7,10 +7,9 @@ import java.util.Iterator;
 import lexer.Lexer;
 import linter.visitor.LinterVisitor;
 import linter.visitor.report.FullReport;
-import observers.Progressable;
 import parsers.Parser;
 
-public class Linter implements Progressable, Iterator<FullReport> {
+public class Linter implements Iterator<FullReport> {
   private final Parser parser;
   private final LinterVisitor linterVisitor;
 
@@ -48,14 +47,6 @@ public class Linter implements Progressable, Iterator<FullReport> {
   public Linter setParser(Parser parser) {
     return new Linter(parser, linterVisitor);
   }
-
-  @Override
-  public float getProgress() {
-    return 0;
-  }
-
-  @Override
-  public void notifyObservers() {}
 
   @Override
   public boolean hasNext() {
