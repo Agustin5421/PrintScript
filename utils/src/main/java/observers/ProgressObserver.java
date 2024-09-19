@@ -15,12 +15,12 @@ public class ProgressObserver implements Observer {
   }
 
   public void error() {
-    progressPrinter.printProgress(0, ProgressType.ERROR);
+    progressPrinter.printProgress((int) progress, ProgressType.ERROR);
   }
 
   @Override
   public void update(Observable observable) {
     progress = progress + observable.getProgress();
-    progressPrinter.printProgress(progress, ProgressType.IN_PROGRESS);
+    progressPrinter.printProgress((int) progress, ProgressType.IN_PROGRESS);
   }
 }

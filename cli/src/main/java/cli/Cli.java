@@ -46,12 +46,21 @@ public class Cli {
     InputStream code = findCode(codeFilePath);
 
     //args[3] is the options file
-    switch (operation) {
-      case "Validation" -> runner.validate(code, version);
-      case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock(), new InputMock());
-      case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputString());
-      case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
-      default -> throw new IllegalArgumentException("Unsupported operation: " + operation);
+    try {
+      switch (operation) {
+        case "Validation" -> runner.validate(code, version);
+        case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock(), new InputMock());
+        case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputString());
+        case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
+        default -> {
+          progressObserver.error();
+          throw new IllegalArgumentException("Unsupported operation: " + operation);
+        }
+      }
+    } catch (Exception e) {
+      progressObserver.error();
+      System.out.println(); // Empty line since the progress bar would be overwritten by the error message
+      System.out.println("Error: " + e.getMessage());
     }
   }
 
