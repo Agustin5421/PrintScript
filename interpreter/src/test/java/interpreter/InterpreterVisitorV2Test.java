@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import factory.LexerFactory;
 import factory.ParserFactory;
+import input.InputQueue;
 import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.repository.VariableIdentifier;
 import interpreter.visitor.repository.VariablesRepository;
@@ -37,7 +38,7 @@ public class InterpreterVisitorV2Test {
 
     String input = "42.0";
     Inputs.setInputs(null);
-    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+    Inputs.setInputs(new InputQueue(new ArrayDeque<>(List.of(input))));
 
     Parser parser = getParser(code);
     ReworkedInterpreter reworkedInterpreter =
@@ -60,7 +61,7 @@ public class InterpreterVisitorV2Test {
 
     String input = "42";
     Inputs.setInputs(null);
-    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+    Inputs.setInputs(new InputQueue(new ArrayDeque<>(List.of(input))));
 
     Parser parser = getParser(code);
     ReworkedInterpreter reworkedInterpreter =
@@ -87,7 +88,7 @@ public class InterpreterVisitorV2Test {
 
     String input = "Hello, world!";
     Inputs.setInputs(null);
-    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+    Inputs.setInputs(new InputQueue(new ArrayDeque<>(List.of(input))));
 
     while (parser.hasNext()) {
       reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
@@ -123,7 +124,7 @@ public class InterpreterVisitorV2Test {
 
     String input = "hola";
     Inputs.setInputs(null);
-    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+    Inputs.setInputs(new InputQueue(new ArrayDeque<>(List.of(input))));
 
     Parser parser = getParser(code);
     ReworkedInterpreter reworkedInterpreter =
@@ -146,7 +147,7 @@ public class InterpreterVisitorV2Test {
 
     String input = "true";
     Inputs.setInputs(null);
-    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+    Inputs.setInputs(new InputQueue(new ArrayDeque<>(List.of(input))));
 
     Parser parser = getParser(code);
     ReworkedInterpreter reworkedInterpreter =

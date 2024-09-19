@@ -11,6 +11,7 @@ import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
+import input.InputQueue;
 import interpreter.visitor.InterpreterVisitorV3;
 import interpreter.visitor.factory.InterpreterVisitorV3Factory;
 import interpreter.visitor.repository.VariableIdentifier;
@@ -158,7 +159,7 @@ public class VisitorV2Test extends CommonVisitorV3Test {
 
     String input = "hello";
     Inputs.setInputs(null);
-    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+    Inputs.setInputs(new InputQueue(new ArrayDeque<>(List.of(input))));
 
     InterpreterVisitorV3 visitor = getVisitor();
     visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);
@@ -243,7 +244,7 @@ public class VisitorV2Test extends CommonVisitorV3Test {
 
     String input = "world";
     Inputs.setInputs(null);
-    Inputs.setInputs(new ArrayDeque<>(List.of(input)));
+    Inputs.setInputs(new InputQueue(new ArrayDeque<>(List.of(input))));
 
     InterpreterVisitorV3 visitor = getVisitor();
     visitor = (InterpreterVisitorV3) visitor.visit(variableDeclaration);

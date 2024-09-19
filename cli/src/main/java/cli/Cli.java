@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import input.InputMock;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import output.OutputMock;
@@ -47,7 +48,7 @@ public class Cli {
     //args[3] is the options file
     switch (operation) {
       case "Validation" -> runner.validate(code, version);
-      case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock());
+      case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock(), new InputMock());
       case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputString());
       case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
       default -> throw new IllegalArgumentException("Unsupported operation: " + operation);

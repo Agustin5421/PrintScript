@@ -1,17 +1,16 @@
 package interpreter.visitor.staticprovider;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import input.InputHandler;
 
 public class Inputs {
-  private static Queue<String> inputs = new LinkedList<>();
+  private static InputHandler inputs;
 
-  public static void setInputs(Queue<String> inputs) {
+  public static void setInputs(InputHandler inputs) {
     Inputs.inputs = inputs;
   }
 
   public static String nextInput() throws IllegalStateException {
-    String input = inputs.poll();
+    String input = inputs.getInput();
     if (input == null) {
       throw new IllegalStateException("No more inputs available");
     }

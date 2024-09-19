@@ -2,11 +2,13 @@ package runner;
 
 import factory.LexerFactory;
 import factory.ParserFactory;
+import input.InputHandler;
 import interpreter.ReworkedInterpreter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import interpreter.ReworkedInterpreterFactory;
+import interpreter.visitor.staticprovider.Inputs;
 import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
@@ -14,7 +16,8 @@ import output.OutputResult;
 import parsers.Parser;
 
 public class Runner {
-  public void execute(InputStream code, String version,OutputResult<String> printLog, OutputResult<String> errorLog) {
+  public void execute(InputStream code, String version, OutputResult<String> printLog,
+                      OutputResult<String> errorLog, InputHandler inputs) {
     Lexer lexer;
     try {
       lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
@@ -23,6 +26,8 @@ public class Runner {
     }
     Parser parser = ParserFactory.getParser(version).setLexer(lexer);
     ReworkedInterpreter interpreter = ReworkedInterpreterFactory.buildInterpreter(version, printLog);
+
+    Inputs.setInputs(inputs);
 
     try {
       while (parser.hasNext()) {
