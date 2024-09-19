@@ -22,7 +22,8 @@ import java.util.Objects;
 public class ParsingValidatorVisitor implements NodeVisitor {
   private final Map<String, String> variablesRep =
       new HashMap<>(); // Map of variable names to their type
-  private final Map<String, String> varKind = new HashMap<>(); // Map of variable names to their kind
+  private final Map<String, String> varKind =
+      new HashMap<>(); // Map of variable names to their kind
   private String comparableType = null;
 
   public ParsingValidatorVisitor() {}

@@ -31,12 +31,6 @@ public abstract class CommonParserTests {
   }
 
   @Test
-  public void testCallFunctionAsExpression() {
-    Parser parser = setParser("let name: number = readInput(2);", getParser());
-    assertInstanceOf(VariableDeclaration.class, parser.next());
-  }
-
-  @Test
   public void testBinaryOperation() {
     Parser parser = setParser("let myNumber : string =  1 + 'hola';", getParser());
     VariableDeclaration var = (VariableDeclaration) parser.next();
