@@ -30,7 +30,6 @@ public class VariableDeclarationParser implements StatementParser {
 
     Identifier identifier = new Identifier(name, start, end);
 
-    // TODO: improve exception messages
     if (!tokens.get(2).value().equals(":")) {
       throw new UnexpectedTokenException(tokens.get(2), ":");
     }

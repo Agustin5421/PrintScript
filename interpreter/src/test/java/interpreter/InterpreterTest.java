@@ -204,8 +204,6 @@ public class InterpreterTest {
         });
   }
 
-  // TODO: solve these tests
-
   @Test
   public void testNoValueDeclaration() {
     String code = "let x: string;";

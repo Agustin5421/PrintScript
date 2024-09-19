@@ -45,7 +45,6 @@ public class Parser implements Iterator<AstNode> {
       }
     }
 
-    // TODO: Add exception message
     throw new UnsupportedExpressionException(tokens);
   }
 

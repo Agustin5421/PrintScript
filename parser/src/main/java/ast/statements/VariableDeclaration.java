@@ -16,7 +16,6 @@ public record VariableDeclaration(
     implements StatementNode {
   private static final AstNodeType type = AstNodeType.VARIABLE_DECLARATION;
 
-  // TODO remove this constructor
   public VariableDeclaration(Identifier identifier, ExpressionNode expression) {
     this("test", identifier, expression, "test", identifier.start(), expression.end());
   }

@@ -40,7 +40,6 @@ public class FormatterV2Test extends AbstractFormatterTest {
             """;
   }
 
-  // TODO : Add additional tests for the new formatter
   @Test
   public void testBooleanDeclaration() {
     String formattedCode = """
@@ -79,8 +78,6 @@ public class FormatterV2Test extends AbstractFormatterTest {
     Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
-  // TODO: Fix this test
-
   @Test
   public void newCompleteFormattingTest() {
     String code =
@@ -106,8 +103,6 @@ public class FormatterV2Test extends AbstractFormatterTest {
     TestRunner testRunner = setRunner(getJsonOptions(), code);
     Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
-
-  // TODO: fix this test
 
   @Test
   public void newDifferentFormatTest() {
