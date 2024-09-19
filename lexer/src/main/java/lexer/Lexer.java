@@ -13,7 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import observers.Observable;
 import observers.ProgressObserver;
-import observers.ProgressPrinter;
 import token.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
@@ -39,7 +38,7 @@ public class Lexer implements Iterator<Token>, Observable {
     this.pattern = new PatternProvider().getPattern();
     this.currentPosition = new Position(1, 1);
     this.tokens = new LinkedList<>();
-    this.observer = new ProgressObserver(new ProgressPrinter());
+    this.observer = null;
     advanceToNextLine();
   }
 
@@ -80,7 +79,9 @@ public class Lexer implements Iterator<Token>, Observable {
       return true;
     }
 
-    observer.finish();
+    if (observer != null) {
+      observer.finish();
+    }
     return false;
   }
 

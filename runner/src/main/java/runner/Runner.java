@@ -13,7 +13,6 @@ import lexer.Lexer;
 import linter.Linter;
 import linter.LinterFactory;
 import observers.ProgressObserver;
-import observers.ProgressPrinter;
 import output.OutputResult;
 import parsers.Parser;
 
@@ -25,7 +24,7 @@ public class Runner {
   }
 
   public Runner() {
-    this.progressObserver = new ProgressObserver(new ProgressPrinter());
+    this.progressObserver = null;
   }
 
   public void execute(InputStream code, String version, OutputResult<String> printLog,
@@ -46,9 +45,6 @@ public class Runner {
         interpreter = interpreter.interpret(parser.next());
       }
     } catch (Throwable e) {
-      lexer = null;
-      parser = null;
-      interpreter = null;
       System.gc();
       errorLog.saveResult(e.getMessage());
     }
