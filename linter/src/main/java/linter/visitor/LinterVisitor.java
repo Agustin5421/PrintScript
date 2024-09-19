@@ -15,5 +15,4 @@ public interface LinterVisitor extends NodeVisitor {
   default OutputResult<String> getOutput() {
     return null;
   }
-  ;
 }
