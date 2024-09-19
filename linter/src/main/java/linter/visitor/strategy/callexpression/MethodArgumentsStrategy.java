@@ -5,6 +5,7 @@ import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import linter.visitor.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.NewLinterVisitor;
 
 public class MethodArgumentsStrategy implements LintingStrategy {
   private final String methodName;
@@ -22,6 +23,15 @@ public class MethodArgumentsStrategy implements LintingStrategy {
     }
 
     return argumentsStrategy.apply(node, fullReport);
+  }
+
+  @Override
+  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
+    if (!shouldApply(node)) {
+      return visitor;
+    }
+
+    return argumentsStrategy.apply(node, visitor);
   }
 
   private boolean shouldApply(AstNode node) {

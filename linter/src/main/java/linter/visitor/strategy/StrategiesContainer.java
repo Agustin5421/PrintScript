@@ -19,4 +19,13 @@ public class StrategiesContainer implements LintingStrategy {
 
     return fullReport;
   }
+
+  @Override
+  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
+    for (LintingStrategy strategy : strategies) {
+      visitor = strategy.apply(node, visitor);
+    }
+
+    return visitor;
+  }
 }

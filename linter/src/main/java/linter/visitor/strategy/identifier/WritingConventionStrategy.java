@@ -6,6 +6,7 @@ import ast.root.AstNodeType;
 import linter.visitor.report.FullReport;
 import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.NewLinterVisitor;
 
 public class WritingConventionStrategy implements LintingStrategy {
   private final String writingConventionName;
@@ -34,6 +35,27 @@ public class WritingConventionStrategy implements LintingStrategy {
     }
 
     return fullReport;
+  }
+
+  @Override
+  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
+    if (!shouldApply(node)) {
+      return visitor;
+    }
+
+    Identifier identifier = (Identifier) node;
+
+    if (!identifier.name().matches(writingConventionPattern)) {
+      Report newReport =
+          new Report(
+              identifier.start(),
+              identifier.end(),
+              "Identifier " + identifier.name() + " is not in " + writingConventionName);
+
+      visitor.getOutput().saveResult(newReport.toString());
+    }
+
+    return visitor;
   }
 
   private boolean shouldApply(AstNode node) {

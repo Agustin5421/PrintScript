@@ -7,6 +7,7 @@ import java.util.List;
 import linter.visitor.report.FullReport;
 import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.NewLinterVisitor;
 
 public class ArgumentsStrategy implements LintingStrategy {
   private final List<AstNodeType> allowedArguments;
@@ -38,6 +39,32 @@ public class ArgumentsStrategy implements LintingStrategy {
     }
 
     return fullReport;
+  }
+
+  @Override
+  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
+    if (!shouldApply(node)) {
+      return visitor;
+    }
+
+    CallExpression callExpression = (CallExpression) node;
+
+    List<AstNode> arguments = callExpression.arguments();
+
+    for (AstNode argument : arguments) {
+      AstNodeType argumentType = argument.getNodeType();
+      if (isNotValidArgument(argumentType)) {
+        Report newReport =
+            new Report(
+                argument.start(),
+                argument.end(),
+                "Value of type " + argumentType + " is not allowed as an argument");
+
+        visitor.getOutput().saveResult(newReport.toString());
+      }
+    }
+
+    return visitor;
   }
 
   private boolean shouldApply(AstNode node) {
