@@ -65,13 +65,12 @@ public class ParserV2Test extends CommonParserTests {
 
   @Test
   public void testReadEnvAsFunctionExpression() {
-    Parser parser =
-        setParser("let a : string = readEnv('this is a string', 2, 3, 4, 5);", getParser());
+    Parser parser = setParser("let a : string = readEnv('this is a string');", getParser());
     VariableDeclaration node = (VariableDeclaration) parser.next();
     assertInstanceOf(VariableDeclaration.class, node);
     CallExpression callExpression = (CallExpression) node.expression();
     assertEquals("readEnv", callExpression.methodIdentifier().name());
-    assertEquals(5, callExpression.arguments().size());
+    assertEquals(1, callExpression.arguments().size());
     assertEquals("a", node.identifier().name());
   }
 
@@ -118,5 +117,12 @@ public class ParserV2Test extends CommonParserTests {
         setParser("const myVar : string = 'Hello' + 2; myVar = 'Goodbye';", getParser());
     parser.next();
     assertThrows(InvalidConstReassignmentException.class, parser::next);
+  }
+
+  @Test
+  public void testReadInput() {
+    Parser parser = setParser("let myVar : string = 'Hello'; myVar = readInput('2');", getParser());
+    parser.next();
+    parser.next();
   }
 }

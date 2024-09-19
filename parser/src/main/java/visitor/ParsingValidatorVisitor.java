@@ -20,9 +20,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ParsingValidatorVisitor implements NodeVisitor {
-  private final Map<String, String> variables =
+  private final Map<String, String> variablesRep =
       new HashMap<>(); // Map of variable names to their type
-  private final Map<String, String> kinds = new HashMap<>(); // Map of variable names to their kind
+  private final Map<String, String> varKind = new HashMap<>(); // Map of variable names to their kind
   private String comparableType = null;
 
   public ParsingValidatorVisitor() {}
@@ -73,42 +73,43 @@ public class ParsingValidatorVisitor implements NodeVisitor {
     binaryExpression.right().accept(this);
     String right = comparableType;
 
-    comparableType = combine(left, right);
+    comparableType = getType(left, right);
 
     return this;
   }
 
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
-    for (AstNode exp : callExpression.arguments()) {
-      exp.accept(this);
+    for (AstNode arg : callExpression.arguments()) {
+      arg.accept(this);
     }
+
     comparableType = null;
 
     return this;
   }
 
   public NodeVisitor visitIdentifier(Identifier identifier) {
-    if (!variables.containsKey(identifier.name())) {
+    if (!variablesRep.containsKey(identifier.name())) {
       throw new VariableNotDeclaredException(identifier.name());
     }
-    comparableType = variables.get(identifier.name());
+    comparableType = variablesRep.get(identifier.name());
 
     return this;
   }
 
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     String name = assignmentExpression.left().name();
-    if (!variables.containsKey(name)) {
+    if (!variablesRep.containsKey(name)) {
       throw new VariableNotDeclaredException(name);
     }
-    if (Objects.equals(kinds.get(name), "const")) {
+    if (Objects.equals(varKind.get(name), "const")) {
       throw new InvalidConstReassignmentException(assignmentExpression.left());
     }
 
     assignmentExpression.right().accept(this);
 
-    String expected = variables.get(name);
-    if (!Objects.equals(expected, comparableType)) {
+    String expected = variablesRep.get(name);
+    if (!Objects.equals(expected, comparableType) && comparableType != null) {
       throw new MismatchTypeException(name, expected, comparableType);
     }
 
@@ -119,12 +120,12 @@ public class ParsingValidatorVisitor implements NodeVisitor {
   public NodeVisitor visitVarDec(VariableDeclaration node) {
     String name = node.identifier().name();
 
-    if (variables.containsKey(name)) {
+    if (variablesRep.containsKey(name)) {
       throw new VariableAlreadyDeclaredException(node.identifier());
     }
 
-    variables.put(name, node.varType());
-    kinds.put(name, node.kind());
+    variablesRep.put(name, node.varType());
+    varKind.put(name, node.kind());
 
     if (node.expression() == null) {
       return this;
@@ -141,10 +142,10 @@ public class ParsingValidatorVisitor implements NodeVisitor {
 
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     if (ifStatement.getCondition() instanceof Identifier id) {
-      if (!variables.containsKey(id.name())) {
+      if (!variablesRep.containsKey(id.name())) {
         throw new VariableNotDeclaredException(id.name());
       }
-      if (!Objects.equals(variables.get(id.name()), "boolean")) {
+      if (!Objects.equals(variablesRep.get(id.name()), "boolean")) {
         throw new MismatchTypeException(
             ifStatement.getCondition().toString(), "boolean", comparableType);
       }
@@ -165,7 +166,7 @@ public class ParsingValidatorVisitor implements NodeVisitor {
     return this;
   }
 
-  private static String combine(String left, String right) {
+  private static String getType(String left, String right) {
     if (Objects.equals(left, "boolean") || Objects.equals(right, "boolean")) {
       // TODO: fix message
       throw new UnsupportedOperationException(left);

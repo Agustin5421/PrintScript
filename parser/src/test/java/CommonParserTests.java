@@ -32,7 +32,7 @@ public abstract class CommonParserTests {
 
   @Test
   public void testCallFunctionAsExpression() {
-    Parser parser = setParser("let name: string = println(2);", getParser());
+    Parser parser = setParser("let name: number = readInput(2);", getParser());
     assertInstanceOf(VariableDeclaration.class, parser.next());
   }
 
