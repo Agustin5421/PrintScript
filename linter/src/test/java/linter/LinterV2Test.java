@@ -8,24 +8,24 @@ import ast.literal.BooleanLiteral;
 import ast.root.AstNode;
 import ast.statements.IfStatement;
 import java.util.List;
-import lexer.Lexer;
-import linter.visitor.report.FullReport;
+import linter.visitor.strategy.NewLinterVisitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import output.OutputListString;
 import parsers.Parser;
 
 public class LinterV2Test extends CommonLinterTest {
-  private Linter linterV2;
+  private ReworkedLinter linterV2;
 
   @BeforeEach
   public void setUp() {
     String rules = TestUtils.readResourceFile("linterRulesRework2A.json");
     assertNotNull(rules);
-    linterV2 = LinterFactory.getLinter("1.1", rules);
+    linterV2 = LinterFactory.getReworkedLinter("1.1", rules, new OutputListString());
   }
 
   @Override
-  protected Linter getLinter() {
+  protected ReworkedLinter getLinter() {
     return linterV2;
   }
 
@@ -33,35 +33,40 @@ public class LinterV2Test extends CommonLinterTest {
   public void lintIfStatementTest() {
     ExpressionNode booleanNode = new BooleanLiteral(true, null, null);
     AstNode ifNode = new IfStatement(null, null, booleanNode, List.of(), List.of());
-    Linter linter = getLinter();
+    ReworkedLinter linter = getLinter();
 
-    FullReport report = linter.lint(ifNode);
-    assertEquals(0, report.getReports().size());
+    linter = linter.lint(ifNode);
+    NewLinterVisitor visitor = linter.getVisitor();
+    OutputListString output = (OutputListString) visitor.getOutput();
+
+    assertEquals(0, output.getSavedResults().size());
   }
 
   @Test
   public void lintBooleanLiteralTest() {
     AstNode booleanNode = new BooleanLiteral(true, null, null);
-    Linter linter = getLinter();
+    ReworkedLinter linter = getLinter();
 
-    FullReport report = linter.lint(booleanNode);
-    assertEquals(0, report.getReports().size());
+    linter = linter.lint(booleanNode);
+    NewLinterVisitor visitor = linter.getVisitor();
+    OutputListString output = (OutputListString) visitor.getOutput();
+
+    assertEquals(0, output.getSavedResults().size());
   }
 
   @Test
   public void emptyConfigTest() {
-    Linter linter = LinterFactory.getLinter("1.1", "{}");
+    ReworkedLinter linter = LinterFactory.getReworkedLinter("1.1", "{}", new OutputListString());
     String code = "let snake_case: string = \"Oliver\"; let camelCase: string = \"Oliver\";";
+    Parser parser = getParser(code);
 
-    Parser parser = linter.getParser();
-    Lexer newLexer = parser.getLexer().setInputAsString(code);
-    linter = linter.setParser(parser.setLexer(newLexer));
-
-    FullReport report = new FullReport();
-    while (linter.hasNext()) {
-      report = linter.next();
+    while (parser.hasNext()) {
+      linter = linter.lint(parser.next());
     }
 
-    assertEquals(0, report.getReports().size());
+    NewLinterVisitor visitor = linter.getVisitor();
+    OutputListString output = (OutputListString) visitor.getOutput();
+
+    assertEquals(0, output.getSavedResults().size());
   }
 }

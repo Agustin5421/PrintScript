@@ -11,54 +11,72 @@ import ast.statements.CallExpression;
 import java.util.List;
 import java.util.Map;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.NewLinterVisitor;
 import linter.visitor.strategy.StrategiesContainer;
+import linter.visitor.strategy.assign.AssignmentExpressionTraversing;
+import linter.visitor.strategy.binary.BinaryExpressionTraversing;
+import linter.visitor.strategy.callexpression.CallExpressionTraversing;
 import linter.visitor.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
+import output.OutputListString;
+import strategy.StrategyContainer;
 import token.Position;
 
 public class LinterVisitorV1NodeTest {
-  private LinterVisitorV1 getLinterVisitorOnlyIdentifierLinting() {
+  private NewLinterVisitor getLinterVisitorOnlyIdentifierLinting() {
     LintingStrategy idStrategy =
         new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
     LintingStrategy mainIdStrategy = new StrategiesContainer(List.of(idStrategy));
 
     Map<AstNodeType, LintingStrategy> nodesStrategies =
-        Map.of(AstNodeType.IDENTIFIER, mainIdStrategy);
+        Map.of(
+            AstNodeType.IDENTIFIER, mainIdStrategy,
+            AstNodeType.CALL_EXPRESSION,
+                new CallExpressionTraversing(new StrategiesContainer(List.of())),
+            AstNodeType.BINARY_EXPRESSION,
+                new BinaryExpressionTraversing(new StrategiesContainer(List.of())),
+            AstNodeType.ASSIGNMENT_EXPRESSION,
+                new AssignmentExpressionTraversing(new StrategiesContainer(List.of())));
 
-    return new LinterVisitorV1(nodesStrategies);
+    StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
+        new StrategyContainer<>(nodesStrategies, "Can't lint: ");
+
+    return new ReworkedLinterVisitor(mockStrategy, new OutputListString());
   }
 
   @Test
   public void lintCallExpressionAllWrongCase() {
-    LinterVisitorV1 visitor = getLinterVisitorOnlyIdentifierLinting();
+    NewLinterVisitor visitor = getLinterVisitorOnlyIdentifierLinting();
 
     Position position = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("test_name", position, position);
     List<AstNode> arguments = List.of(methodIdentifier, methodIdentifier);
     CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(callExpression);
+    NewLinterVisitor newVisitor = visitor.lintNode(callExpression);
 
-    assertEquals(3, newVisitor.getFullReport().getReports().size());
+    OutputListString output = (OutputListString) newVisitor.getOutput();
+    assertEquals(3, output.getSavedResults().size());
   }
 
   @Test
   public void lintCallExpressionNoWrongCase() {
-    LinterVisitorV1 visitor = getLinterVisitorOnlyIdentifierLinting();
+    NewLinterVisitor visitor = getLinterVisitorOnlyIdentifierLinting();
 
     Position position = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("testName", position, position);
     List<AstNode> arguments = List.of(methodIdentifier, methodIdentifier);
     CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(callExpression);
+    NewLinterVisitor newVisitor = visitor.lintNode(callExpression);
 
-    assertEquals(0, newVisitor.getFullReport().getReports().size());
+    OutputListString output = (OutputListString) newVisitor.getOutput();
+    assertEquals(0, output.getSavedResults().size());
   }
 
   @Test
   public void lintCallExpressionOneCorrectCase() {
-    LinterVisitorV1 visitor = getLinterVisitorOnlyIdentifierLinting();
+    NewLinterVisitor visitor = getLinterVisitorOnlyIdentifierLinting();
 
     Position position = new Position(0, 0);
     Identifier methodIdentifier = new Identifier("test_name", position, position);
@@ -66,28 +84,30 @@ public class LinterVisitorV1NodeTest {
         List.of(new Identifier("testName", position, position), methodIdentifier);
     CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(callExpression);
+    NewLinterVisitor newVisitor = visitor.lintNode(callExpression);
 
-    assertEquals(2, newVisitor.getFullReport().getReports().size());
+    OutputListString output = (OutputListString) newVisitor.getOutput();
+    assertEquals(2, output.getSavedResults().size());
   }
 
   @Test
   public void lintBinaryExpressionTest() {
-    LinterVisitorV1 visitor = getLinterVisitorOnlyIdentifierLinting();
+    NewLinterVisitor visitor = getLinterVisitorOnlyIdentifierLinting();
 
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("test_name", position, position);
     Identifier identifier2 = new Identifier("testName", position, position);
     BinaryExpression binaryExpression = new BinaryExpression(identifier, identifier2, "+");
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(binaryExpression);
+    NewLinterVisitor newVisitor = visitor.lintNode(binaryExpression);
 
-    assertEquals(1, newVisitor.getFullReport().getReports().size());
+    OutputListString output = (OutputListString) newVisitor.getOutput();
+    assertEquals(1, output.getSavedResults().size());
   }
 
   @Test
   public void lintAssignmentExpressionTest() {
-    LinterVisitorV1 visitor = getLinterVisitorOnlyIdentifierLinting();
+    NewLinterVisitor visitor = getLinterVisitorOnlyIdentifierLinting();
 
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("test_name", position, position);
@@ -95,8 +115,9 @@ public class LinterVisitorV1NodeTest {
     AssignmentExpression assignmentExpression =
         new AssignmentExpression(identifier, identifier2, "=");
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(assignmentExpression);
+    NewLinterVisitor newVisitor = visitor.lintNode(assignmentExpression);
 
-    assertEquals(1, newVisitor.getFullReport().getReports().size());
+    OutputListString output = (OutputListString) newVisitor.getOutput();
+    assertEquals(1, output.getSavedResults().size());
   }
 }

@@ -10,6 +10,10 @@ public class ReworkedLinter {
     this.visitor = visitor;
   }
 
+  public NewLinterVisitor getVisitor() {
+    return visitor;
+  }
+
   public ReworkedLinter lint(AstNode node) {
     NewLinterVisitor visitor2 = visitor.lintNode(node);
 

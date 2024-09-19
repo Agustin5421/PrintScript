@@ -8,6 +8,10 @@ import linter.visitor.ReworkedLinterVisitor;
 import linter.visitor.strategy.LintingStrategy;
 import linter.visitor.strategy.NewLinterVisitor;
 import linter.visitor.strategy.StrategiesContainer;
+import linter.visitor.strategy.assign.AssignmentExpressionTraversing;
+import linter.visitor.strategy.binary.BinaryExpressionTraversing;
+import linter.visitor.strategy.callexpression.CallExpressionTraversing;
+import linter.visitor.strategy.vardec.VariableDeclarationTraversing;
 import output.OutputResult;
 import strategy.StrategyContainer;
 
@@ -30,7 +34,8 @@ public class NewLinterVisitorFactory {
     Map<AstNodeType, LintingStrategy> nodesStrategies = getCommonStandByStrategies(mockStrategy);
 
     nodesStrategies.put(AstNodeType.IDENTIFIER, identifierLintingStrategies);
-    nodesStrategies.put(AstNodeType.CALL_EXPRESSION, callExpressionLintingStrategies);
+    nodesStrategies.put(
+        AstNodeType.CALL_EXPRESSION, new CallExpressionTraversing(callExpressionLintingStrategies));
 
     if (version.equals("1.1")) {
       nodesStrategies.put(AstNodeType.IF_STATEMENT, mockStrategy);
@@ -53,9 +58,9 @@ public class NewLinterVisitorFactory {
       StrategiesContainer mockStrategy) {
     return new HashMap<>(
         Map.of(
-            AstNodeType.VARIABLE_DECLARATION, mockStrategy,
-            AstNodeType.ASSIGNMENT_EXPRESSION, mockStrategy,
-            AstNodeType.BINARY_EXPRESSION, mockStrategy,
+            AstNodeType.VARIABLE_DECLARATION, new VariableDeclarationTraversing(mockStrategy),
+            AstNodeType.ASSIGNMENT_EXPRESSION, new AssignmentExpressionTraversing(mockStrategy),
+            AstNodeType.BINARY_EXPRESSION, new BinaryExpressionTraversing(mockStrategy),
             AstNodeType.NUMBER_LITERAL, mockStrategy,
             AstNodeType.STRING_LITERAL, mockStrategy));
   }
