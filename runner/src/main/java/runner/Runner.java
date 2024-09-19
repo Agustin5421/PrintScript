@@ -32,7 +32,7 @@ public class Runner {
                       OutputResult<String> errorLog, InputHandler inputs) {
     Lexer lexer;
     try {
-      lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
+      lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInputWithObserver(code, progressObserver);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
