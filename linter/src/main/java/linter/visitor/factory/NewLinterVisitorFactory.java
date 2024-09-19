@@ -11,6 +11,7 @@ import linter.visitor.strategy.StrategiesContainer;
 import linter.visitor.strategy.assign.AssignmentExpressionTraversing;
 import linter.visitor.strategy.binary.BinaryExpressionTraversing;
 import linter.visitor.strategy.callexpression.CallExpressionTraversing;
+import linter.visitor.strategy.conditional.IfTraversing;
 import linter.visitor.strategy.vardec.VariableDeclarationTraversing;
 import output.OutputResult;
 import strategy.StrategyContainer;
@@ -38,7 +39,7 @@ public class NewLinterVisitorFactory {
         AstNodeType.CALL_EXPRESSION, new CallExpressionTraversing(callExpressionLintingStrategies));
 
     if (version.equals("1.1")) {
-      nodesStrategies.put(AstNodeType.IF_STATEMENT, mockStrategy);
+      nodesStrategies.put(AstNodeType.IF_STATEMENT, new IfTraversing(mockStrategy));
       nodesStrategies.put(AstNodeType.BOOLEAN_LITERAL, mockStrategy);
     }
 

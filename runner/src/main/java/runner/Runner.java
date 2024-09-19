@@ -10,8 +10,8 @@ import java.util.Objects;
 import interpreter.ReworkedInterpreterFactory;
 import interpreter.visitor.staticprovider.Inputs;
 import lexer.Lexer;
-import linter.Linter;
 import linter.LinterFactory;
+import linter.ReworkedLinter;
 import observers.ProgressObserver;
 import output.OutputResult;
 import parsers.Parser;
@@ -51,11 +51,17 @@ public class Runner {
   }
 
   public void analyze(InputStream code, String version, String config, OutputResult<String> output) {
-    Linter linter = LinterFactory.getLinter(version, config);
-    linter = linter.setInputStream(code);
+    Lexer lexer;
+    try {
+      lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    Parser parser = ParserFactory.getParser(version).setLexer(lexer);
+    ReworkedLinter linter = LinterFactory.getReworkedLinter(version, config, output);
 
-    while (linter.hasNext()) {
-      output.saveResult(linter.next().toString());
+    while (parser.hasNext()) {
+      linter = linter.lint(parser.next());
     }
   }
 

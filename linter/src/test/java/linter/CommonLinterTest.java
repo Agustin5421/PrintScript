@@ -2,11 +2,6 @@ package linter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import factory.LexerFactory;
-import factory.ParserFactory;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import lexer.Lexer;
 import linter.visitor.strategy.NewLinterVisitor;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
@@ -15,16 +10,7 @@ import parsers.Parser;
 public abstract class CommonLinterTest {
   protected abstract ReworkedLinter getLinter();
 
-  public Parser getParser(String code) {
-    Lexer lexer = LexerFactory.getLexer("1.0");
-    try {
-      lexer = lexer.setInput(new ByteArrayInputStream(code.getBytes()));
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    Parser parser = ParserFactory.getParser("1.0");
-    return parser.setLexer(lexer);
-  }
+  protected abstract Parser getParser(String code);
 
   @Test
   public void lintVariableDeclarationTest() {
