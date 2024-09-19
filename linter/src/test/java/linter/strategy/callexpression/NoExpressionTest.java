@@ -31,7 +31,7 @@ public class NoExpressionTest {
                 AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
     FullReport fullReport = new FullReport();
 
-    FullReport newReport = strategy.apply(callExpression, fullReport);
+    FullReport newReport = strategy.oldApply(callExpression, fullReport);
 
     assertEquals(1, newReport.getReports().size());
   }
@@ -48,7 +48,7 @@ public class NoExpressionTest {
                 AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
     FullReport fullReport = new FullReport();
 
-    FullReport newReport = strategy.apply(callExpression, fullReport);
+    FullReport newReport = strategy.oldApply(callExpression, fullReport);
 
     assertEquals(0, newReport.getReports().size());
   }

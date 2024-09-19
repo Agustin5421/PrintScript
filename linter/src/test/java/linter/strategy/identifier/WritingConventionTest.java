@@ -42,7 +42,7 @@ public class WritingConventionTest {
     LintingStrategy camelCaseIdentifier = getCamelCaseLintingStrategy();
     FullReport fullReport = new FullReport();
 
-    fullReport = camelCaseIdentifier.apply(identifier, fullReport);
+    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
     assertEquals(0, fullReport.getReports().size());
   }
@@ -54,7 +54,7 @@ public class WritingConventionTest {
     LintingStrategy camelCaseIdentifier = getCamelCaseLintingStrategy();
     FullReport fullReport = new FullReport();
 
-    fullReport = camelCaseIdentifier.apply(identifier, fullReport);
+    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
     assertEquals(1, fullReport.getReports().size());
 
@@ -70,7 +70,7 @@ public class WritingConventionTest {
     LintingStrategy camelCaseIdentifier = getSnakeCaseLintingStrategy();
     FullReport fullReport = new FullReport();
 
-    fullReport = camelCaseIdentifier.apply(identifier, fullReport);
+    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
     assertEquals(0, fullReport.getReports().size());
   }
@@ -82,7 +82,7 @@ public class WritingConventionTest {
     LintingStrategy camelCaseIdentifier = getSnakeCaseLintingStrategy();
     FullReport fullReport = new FullReport();
 
-    fullReport = camelCaseIdentifier.apply(identifier, fullReport);
+    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
     assertEquals(1, fullReport.getReports().size());
 

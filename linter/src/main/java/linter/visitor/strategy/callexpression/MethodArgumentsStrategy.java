@@ -17,12 +17,12 @@ public class MethodArgumentsStrategy implements LintingStrategy {
   }
 
   @Override
-  public FullReport apply(AstNode node, FullReport fullReport) {
+  public FullReport oldApply(AstNode node, FullReport fullReport) {
     if (!shouldApply(node)) {
       return fullReport;
     }
 
-    return argumentsStrategy.apply(node, fullReport);
+    return argumentsStrategy.oldApply(node, fullReport);
   }
 
   @Override

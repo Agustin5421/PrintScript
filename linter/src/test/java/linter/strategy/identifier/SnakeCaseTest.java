@@ -20,7 +20,7 @@ public class SnakeCaseTest {
     LintingStrategy camelCaseIdentifier =
         new WritingConventionStrategy("snakeCase", "^[a-z]+(_[a-z0-9]+)*$");
     FullReport fullReport = new FullReport();
-    fullReport = camelCaseIdentifier.apply(identifier, fullReport);
+    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
     assertEquals(0, fullReport.getReports().size());
   }
@@ -34,7 +34,7 @@ public class SnakeCaseTest {
     LintingStrategy camelCaseIdentifier =
         new WritingConventionStrategy("snakeCase", "^[a-z]+(_[a-z0-9]+)*$");
     FullReport fullReport = new FullReport();
-    fullReport = camelCaseIdentifier.apply(identifier, fullReport);
+    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
     assertEquals(1, fullReport.getReports().size());
 

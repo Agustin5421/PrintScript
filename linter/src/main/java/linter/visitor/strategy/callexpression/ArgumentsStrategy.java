@@ -17,7 +17,7 @@ public class ArgumentsStrategy implements LintingStrategy {
   }
 
   @Override
-  public FullReport apply(AstNode node, FullReport fullReport) {
+  public FullReport oldApply(AstNode node, FullReport fullReport) {
     if (!shouldApply(node)) {
       return fullReport;
     }

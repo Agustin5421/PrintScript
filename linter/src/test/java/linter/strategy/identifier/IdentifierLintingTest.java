@@ -34,7 +34,7 @@ public class IdentifierLintingTest {
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {
-      fullReport = mainIdLinting.apply(identifier, fullReport);
+      fullReport = mainIdLinting.oldApply(identifier, fullReport);
     }
 
     assertEquals(1, fullReport.getReports().size());
@@ -50,7 +50,7 @@ public class IdentifierLintingTest {
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {
-      fullReport = mainIdLinting.apply(identifier, fullReport);
+      fullReport = mainIdLinting.oldApply(identifier, fullReport);
     }
 
     assertEquals(1, fullReport.getReports().size());
@@ -69,7 +69,7 @@ public class IdentifierLintingTest {
 
     FullReport fullReport = new FullReport();
     for (Identifier identifier : identifiers) {
-      fullReport = mainIdLinting.apply(identifier, fullReport);
+      fullReport = mainIdLinting.oldApply(identifier, fullReport);
     }
 
     assertEquals(2, fullReport.getReports().size());

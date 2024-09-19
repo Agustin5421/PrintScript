@@ -13,9 +13,9 @@ public class StrategiesContainer implements LintingStrategy {
   }
 
   @Override
-  public FullReport apply(AstNode node, FullReport fullReport) {
+  public FullReport oldApply(AstNode node, FullReport fullReport) {
     for (LintingStrategy strategy : strategies) {
-      fullReport = strategy.apply(node, fullReport);
+      fullReport = strategy.oldApply(node, fullReport);
     }
 
     return fullReport;

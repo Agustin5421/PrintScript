@@ -6,5 +6,5 @@ import linter.visitor.report.FullReport;
 import strategy.Strategy;
 
 public interface LintingStrategy extends Strategy<LinterVisitor> {
-  FullReport apply(AstNode node, FullReport fullReport);
+  FullReport oldApply(AstNode node, FullReport fullReport);
 }
