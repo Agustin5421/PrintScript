@@ -153,6 +153,7 @@ public class ParsingValidatorVisitor implements NodeVisitor {
 
   private static String getType(String left, String right) {
     if (Objects.equals(left, "boolean") || Objects.equals(right, "boolean")) {
+      // TODO: fix message
       throw new UnsupportedOperationException(left);
     }
     return Objects.equals(left, "number") && Objects.equals(right, "number") ? "number" : "string";

@@ -47,6 +47,7 @@ public class InterpreterEngine {
     StatementStrategy strategyToApply = strategies.getStrategy(nodeType);
 
     if (strategyToApply == null) {
+      // todo: specify position of node.
       throw new IllegalArgumentException("No strategy found for node type: " + nodeType);
     }
 

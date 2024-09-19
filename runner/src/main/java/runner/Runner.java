@@ -69,10 +69,12 @@ public class Runner {
   }
 
   public void format(InputStream code, String version, String config) {
+    // TODO: need factory for formatter
 
   }
 
   public void validate(InputStream input, String version) throws IOException {
+    // TODO: lexer should receive codeFilePath
     Lexer lexer = LexerFactory.getLexer(version);
     Parser parser = ParserFactory.getParser(version);
 

@@ -26,6 +26,7 @@ public class FormattingEngine {
     FormattingStrategy strategy = strategies.getStrategy(nodeType);
 
     if (strategy == null) {
+      // todo: specify position of node.
       throw new IllegalArgumentException("No strategy found for node type: " + nodeType);
     }
 

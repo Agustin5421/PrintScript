@@ -35,6 +35,8 @@ public class LexerFactory {
     return null;
   }
 
+  // TODO: move constructors to its own class
+
   private static Lexer getLexerV2() throws IOException {
     IdentifierTypeChecker identifierTypeChecker =
         new IdentifierTypeChecker(Pattern.compile("^[a-zA-Z_][a-zA-Z\\d_]*$"));

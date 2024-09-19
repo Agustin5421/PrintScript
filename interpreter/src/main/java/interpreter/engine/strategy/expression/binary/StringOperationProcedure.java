@@ -20,6 +20,7 @@ public class StringOperationProcedure implements BinaryProcedure {
       if (operator.equals("+")) {
         return true;
       } else {
+        // TODO: should throw IllegalOperation
         throw new UnsupportedExpressionException(List.of());
       }
     }

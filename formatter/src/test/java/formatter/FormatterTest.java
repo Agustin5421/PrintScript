@@ -83,6 +83,7 @@ public class FormatterTest {
                         println(     myVar);
                         """);
 
+    // TODO: Formatter should iterate over parser
 
     Program program = parser.parse(tokens);
     String formattedCode =
@@ -126,6 +127,7 @@ public class FormatterTest {
                         myVar = "Hello World!";
                         println(myVar);""");
 
+    // TODO: Formatter should iterate over parser
 
     Program program = parser.parse(tokens);
 

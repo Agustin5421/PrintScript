@@ -95,6 +95,7 @@ public class CallFunctionAsStatementParser implements StatementParser {
       }
     }
 
+    // TODO: Add exception message
     if (openParentheses != 0) {
       throw new SyntaxException("Unmatched '(' encountered.");
     }
