@@ -64,10 +64,10 @@ public class LinterVisitorV1 implements LinterVisitor {
 
   public NodeVisitor visitVarDec(VariableDeclaration variableDeclaration) {
     Identifier identifier = variableDeclaration.identifier();
-    NodeVisitor visitor = identifier.accept(this);
+    NodeVisitor visitor = visit(identifier);
 
     ExpressionNode expression = variableDeclaration.expression();
-    visitor = expression.accept(visitor);
+    visitor = visitor.visit(expression);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(variableDeclaration.getNodeType());
@@ -88,10 +88,10 @@ public class LinterVisitorV1 implements LinterVisitor {
 
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     Identifier methodIdentifier = callExpression.methodIdentifier();
-    NodeVisitor visitor = methodIdentifier.accept(this);
+    NodeVisitor visitor = visit(methodIdentifier);
 
     for (AstNode argument : callExpression.arguments()) {
-      visitor = argument.accept(visitor);
+      visitor = visitor.visit(argument);
     }
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
@@ -105,10 +105,10 @@ public class LinterVisitorV1 implements LinterVisitor {
 
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     Identifier left = assignmentExpression.left();
-    NodeVisitor visitor = left.accept(this);
+    NodeVisitor visitor = visit(left);
 
     ExpressionNode right = assignmentExpression.right();
-    visitor = right.accept(visitor);
+    visitor = visitor.visit(right);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(assignmentExpression.getNodeType());
@@ -121,10 +121,10 @@ public class LinterVisitorV1 implements LinterVisitor {
 
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     ExpressionNode left = binaryExpression.left();
-    NodeVisitor visitor = left.accept(this);
+    NodeVisitor visitor = visit(left);
 
     ExpressionNode right = binaryExpression.right();
-    visitor = right.accept(visitor);
+    visitor = visitor.visit(right);
 
     FullReport newReport = ((LinterVisitor) visitor).getFullReport();
     LintingStrategy strategy = getNodesStrategies().get(binaryExpression.getNodeType());

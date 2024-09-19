@@ -33,7 +33,7 @@ public class InitialLinterVisitorV1Test {
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("test_name", position, position);
 
-    NodeVisitor newVisitor = identifier.accept(visitor);
+    NodeVisitor newVisitor = visitor.visit(identifier);
 
     FullReport oldReport = visitor.getFullReport();
     FullReport report = ((LinterVisitorV1) newVisitor).getFullReport();
@@ -49,7 +49,7 @@ public class InitialLinterVisitorV1Test {
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("testName", position, position);
 
-    NodeVisitor newVisitor = identifier.accept(visitor);
+    NodeVisitor newVisitor = visitor.visit(identifier);
 
     FullReport report = ((LinterVisitorV1) newVisitor).getFullReport();
 
@@ -63,8 +63,8 @@ public class InitialLinterVisitorV1Test {
     Position position = new Position(0, 0);
     Identifier identifier = new Identifier("test_name", position, position);
 
-    NodeVisitor newVisitor = identifier.accept(visitor);
-    NodeVisitor newVisitor2 = identifier.accept(newVisitor);
+    NodeVisitor newVisitor = visitor.visit(identifier);
+    NodeVisitor newVisitor2 = newVisitor.visit(identifier);
 
     FullReport report = ((LinterVisitorV1) newVisitor2).getFullReport();
 

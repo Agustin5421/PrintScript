@@ -37,7 +37,7 @@ public class LinterVisitorV1NodeTest {
     List<AstNode> arguments = List.of(methodIdentifier, methodIdentifier);
     CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) callExpression.accept(visitor);
+    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(callExpression);
 
     assertEquals(3, newVisitor.getFullReport().getReports().size());
   }
@@ -51,7 +51,7 @@ public class LinterVisitorV1NodeTest {
     List<AstNode> arguments = List.of(methodIdentifier, methodIdentifier);
     CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) callExpression.accept(visitor);
+    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(callExpression);
 
     assertEquals(0, newVisitor.getFullReport().getReports().size());
   }
@@ -66,7 +66,7 @@ public class LinterVisitorV1NodeTest {
         List.of(new Identifier("testName", position, position), methodIdentifier);
     CallExpression callExpression = new CallExpression(methodIdentifier, arguments);
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) callExpression.accept(visitor);
+    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(callExpression);
 
     assertEquals(2, newVisitor.getFullReport().getReports().size());
   }
@@ -80,7 +80,7 @@ public class LinterVisitorV1NodeTest {
     Identifier identifier2 = new Identifier("testName", position, position);
     BinaryExpression binaryExpression = new BinaryExpression(identifier, identifier2, "+");
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) binaryExpression.accept(visitor);
+    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(binaryExpression);
 
     assertEquals(1, newVisitor.getFullReport().getReports().size());
   }
@@ -95,7 +95,7 @@ public class LinterVisitorV1NodeTest {
     AssignmentExpression assignmentExpression =
         new AssignmentExpression(identifier, identifier2, "=");
 
-    LinterVisitorV1 newVisitor = (LinterVisitorV1) assignmentExpression.accept(visitor);
+    LinterVisitorV1 newVisitor = (LinterVisitorV1) visitor.visit(assignmentExpression);
 
     assertEquals(1, newVisitor.getFullReport().getReports().size());
   }

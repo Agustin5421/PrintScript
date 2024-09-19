@@ -36,7 +36,7 @@ public class Linter implements Iterator<FullReport> {
   }
 
   public FullReport lint(AstNode astNode) {
-    LinterVisitor visitor = (LinterVisitor) astNode.accept(linterVisitor);
+    LinterVisitor visitor = (LinterVisitor) linterVisitor.visit(astNode);
     return visitor.getFullReport();
   }
 
