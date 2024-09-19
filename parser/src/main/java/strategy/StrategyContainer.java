@@ -13,10 +13,6 @@ public class StrategyContainer<K, V> {
 
   // This way we ensure that this will never return a null strategy.
   public V getStrategy(K key) {
-    V interpretingStrategy = strategies.get(key);
-    if (interpretingStrategy == null) {
-      throw new IllegalArgumentException(errorMessage + " " + key + ".");
-    }
-    return interpretingStrategy;
+    return strategies.get(key);
   }
 }

@@ -10,7 +10,7 @@ public class MainFormatter {
   }
 
   public MainFormatter formatNext(AstNode node) {
-    FormattingEngine visitor = this.engine.format(node);
-    return new MainFormatter(visitor);
+    FormattingEngine engine = this.engine.format(node);
+    return new MainFormatter(engine);
   }
 }

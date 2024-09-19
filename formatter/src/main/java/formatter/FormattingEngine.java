@@ -23,7 +23,14 @@ public class FormattingEngine {
 
   public FormattingEngine format(AstNode node) {
     AstNodeType nodeType = node.getNodeType();
-    return strategies.getStrategy(nodeType).apply(node, this);
+    FormattingStrategy strategy = strategies.getStrategy(nodeType);
+
+    if (strategy == null) {
+      // todo: specify position of node.
+      throw new IllegalArgumentException("No strategy found for node type: " + nodeType);
+    }
+
+    return strategy.apply(node, this);
   }
 
   public void write(String code) {

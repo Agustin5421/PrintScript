@@ -17,6 +17,7 @@ public class WritingConventionStrategy implements LintingStrategy {
     this.writingConventionPattern = writingConventionPattern;
   }
 
+  // testing purposes
   @Override
   public FullReport oldApply(AstNode node, FullReport fullReport) {
     if (!shouldApply(node)) {

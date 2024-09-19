@@ -23,22 +23,22 @@ public class VariableDeclarationStrategy implements StatementStrategy {
     return engine.setVariablesRepository(newRepository);
   }
 
-  private Literal<?> evaluateExpression(VariableDeclaration varDecNode, InterpreterEngine visitor) {
+  private Literal<?> evaluateExpression(VariableDeclaration varDecNode, InterpreterEngine engine) {
     ExpressionNode valueToEvaluate = varDecNode.expression();
 
     if (valueToEvaluate == null) {
       return null;
     }
 
-    ValueCollector valueCollector = visitor.getValueCollector();
-    ValueCollector temp = (ValueCollector) valueCollector.evaluate(valueToEvaluate);
+    ValueCollector valueCollector = engine.getValueCollector();
+    ValueCollector temp = valueCollector.evaluate(valueToEvaluate);
 
     return temp.getValue();
   }
 
   private VariablesRepository addVariable(
-      VariableDeclaration varDecNode, InterpreterEngine visitor, Literal<?> evaluatedValue) {
-    VariablesRepository repository = visitor.getVariablesRepository();
+      VariableDeclaration varDecNode, InterpreterEngine engine, Literal<?> evaluatedValue) {
+    VariablesRepository repository = engine.getVariablesRepository();
     VariableIdentifier varId = VariableIdentifierFactory.createVarIdFromVarDec(varDecNode);
 
     return repository.addNewVariable(varId, evaluatedValue);

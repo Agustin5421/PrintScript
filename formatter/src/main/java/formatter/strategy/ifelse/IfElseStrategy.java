@@ -30,20 +30,20 @@ public class IfElseStrategy implements FormattingStrategy {
     newCondStrategy.apply(node, engine);
 
     // Enter 1 more level of indentation
-    FormattingEngine newVisitor = engine.changeContext();
+    FormattingEngine newEngine = engine.changeContext();
 
     // Format the whole if body
     BodyStrategy bodyStrategy = new BodyStrategy(ifStatementNode.getThenBlockStatement());
-    formatBody(bodyStrategy, node, engine, newVisitor);
+    formatBody(bodyStrategy, node, engine, newEngine);
 
     // Format the else block if it exists
     if (!ifStatementNode.getElseBlockStatement().isEmpty()) {
-      whiteSpaces.get(0).apply(node, newVisitor);
+      whiteSpaces.get(0).apply(node, newEngine);
       engine.write("else");
-      whiteSpaces.get(1).apply(node, newVisitor);
+      whiteSpaces.get(1).apply(node, newEngine);
 
       bodyStrategy = new BodyStrategy(ifStatementNode.getElseBlockStatement());
-      formatBody(bodyStrategy, node, engine, newVisitor);
+      formatBody(bodyStrategy, node, engine, newEngine);
     }
 
     engine.write("\n");

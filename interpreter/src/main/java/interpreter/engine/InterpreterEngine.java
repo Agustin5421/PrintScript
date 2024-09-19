@@ -44,6 +44,13 @@ public class InterpreterEngine {
 
   public InterpreterEngine interpret(AstNode node) {
     AstNodeType nodeType = node.getNodeType();
-    return strategies.getStrategy(nodeType).apply(node, this);
+    StatementStrategy strategyToApply = strategies.getStrategy(nodeType);
+
+    if (strategyToApply == null) {
+      // todo: specify position of node.
+      throw new IllegalArgumentException("No strategy found for node type: " + nodeType);
+    }
+
+    return strategyToApply.apply(node, this);
   }
 }
