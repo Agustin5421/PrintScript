@@ -21,7 +21,7 @@ public class Linter implements Progressable, Iterator<FullReport> {
 
   public Linter setInputStream(InputStream code) {
     Parser parser = getParser();
-    Lexer newLexer = null;
+    Lexer newLexer;
     try {
       newLexer = parser.getLexer().setInput(code);
     } catch (IOException e) {
