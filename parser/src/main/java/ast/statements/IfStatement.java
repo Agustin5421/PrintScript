@@ -2,9 +2,9 @@ package ast.statements;
 
 import ast.expressions.ExpressionNode;
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import java.util.List;
 import token.Position;
+import visitor.NodeVisitor;
 
 public class IfStatement implements StatementNode {
   private final Position start;
@@ -43,7 +43,7 @@ public class IfStatement implements StatementNode {
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitIfStatement(this);
   }
 
   public ExpressionNode getCondition() {

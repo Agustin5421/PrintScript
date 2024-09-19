@@ -11,14 +11,14 @@ import factory.ParserFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import lexer.Lexer;
-import linter.visitor.strategy.NewLinterVisitor;
+import linter.engine.LinterEngine;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
 import parsers.Parser;
 
 public class LinterV1Test extends CommonLinterTest {
-  private ReworkedLinter linterV1;
+  private Linter linterV1;
   private Parser parser;
 
   @BeforeEach
@@ -41,37 +41,29 @@ public class LinterV1Test extends CommonLinterTest {
   }
 
   @Override
-  protected ReworkedLinter getLinter() {
+  protected Linter getLinter() {
     return linterV1;
   }
 
   @Test
   public void lintIfStatementTest() {
     AstNode ifNode = new IfStatement(null, null, null, null, null);
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          linter.lint(ifNode);
-        });
+    assertThrows(IllegalArgumentException.class, () -> linter.lint(ifNode));
   }
 
   @Test
   public void lintBooleanLiteralTest() {
     AstNode booleanNode = new BooleanLiteral(true, null, null);
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          linter.lint(booleanNode);
-        });
+    assertThrows(IllegalArgumentException.class, () -> linter.lint(booleanNode));
   }
 
   @Test
   public void emptyConfigTest() {
-    ReworkedLinter linter = LinterFactory.getReworkedLinter("1.0", "{}", new OutputListString());
+    Linter linter = LinterFactory.getReworkedLinter("1.0", "{}", new OutputListString());
     String code = "let snake_case: string = \"Oliver\"; let camelCase: string = \"Oliver\";";
     Parser parser = getParser(code);
 
@@ -79,8 +71,8 @@ public class LinterV1Test extends CommonLinterTest {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }

@@ -3,15 +3,15 @@ package runner;
 import factory.LexerFactory;
 import factory.ParserFactory;
 import input.InputHandler;
-import interpreter.ReworkedInterpreter;
+import interpreter.Interpreter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import interpreter.ReworkedInterpreterFactory;
-import interpreter.visitor.staticprovider.Inputs;
+import interpreter.InterpreterFactory;
+import interpreter.engine.staticprovider.Inputs;
 import lexer.Lexer;
 import linter.LinterFactory;
-import linter.ReworkedLinter;
+import linter.Linter;
 import observers.ProgressObserver;
 import output.OutputResult;
 import parsers.Parser;
@@ -36,13 +36,13 @@ public class Runner {
       throw new RuntimeException(e);
     }
     Parser parser = ParserFactory.getParser(version).setLexer(lexer);
-    ReworkedInterpreter interpreter = ReworkedInterpreterFactory.buildInterpreter(version, printLog);
+    Interpreter interpreter = InterpreterFactory.buildInterpreter(version, printLog);
 
     Inputs.setInputs(inputs);
 
     try {
       while (parser.hasNext()) {
-        interpreter = interpreter.interpret(parser.next());
+        interpreter = interpreter.interpretNext(parser.next());
       }
     } catch (Throwable e) {
       System.gc();
@@ -58,7 +58,7 @@ public class Runner {
       throw new RuntimeException(e);
     }
     Parser parser = ParserFactory.getParser(version).setLexer(lexer);
-    ReworkedLinter linter = LinterFactory.getReworkedLinter(version, config, output);
+    Linter linter = LinterFactory.getReworkedLinter(version, config, output);
 
     while (parser.hasNext()) {
       linter = linter.lint(parser.next());

@@ -1,8 +1,6 @@
 package formatter.strategy;
 
-import ast.root.AstNode;
-import formatter.visitor.FormatterVisitor;
+import formatter.FormattingEngine;
+import strategy.Strategy;
 
-public interface FormattingStrategy {
-  String apply(AstNode node, FormatterVisitor visitor);
-}
+public interface FormattingStrategy extends Strategy<FormattingEngine> {}

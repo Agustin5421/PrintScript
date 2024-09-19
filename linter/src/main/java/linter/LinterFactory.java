@@ -1,16 +1,15 @@
 package linter;
 
-import linter.visitor.factory.NewLinterVisitorFactory;
-import linter.visitor.strategy.NewLinterVisitor;
+import linter.engine.LinterEngine;
+import linter.engine.factory.LinterEngineFactory;
 import output.OutputResult;
 
 public class LinterFactory {
-  private static final NewLinterVisitorFactory newLinterVisitorFactory =
-      new NewLinterVisitorFactory();
+  private static final LinterEngineFactory linterEngineFactory = new LinterEngineFactory();
 
-  public static ReworkedLinter getReworkedLinter(
+  public static Linter getReworkedLinter(
       String version, String rules, OutputResult<String> output) {
-    NewLinterVisitor visitor = newLinterVisitorFactory.createLinterVisitor(version, rules, output);
-    return new ReworkedLinter(visitor);
+    LinterEngine engine = linterEngineFactory.createLinterEngine(version, rules, output);
+    return new Linter(engine);
   }
 }

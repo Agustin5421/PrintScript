@@ -19,7 +19,7 @@ public class VariableDeclarationStrategyFactory implements FormattingStrategyFac
   }
 
   @Override
-  public FormattingStrategy create(JsonObject rules, String version) {
+  public FormattingStrategy create(JsonObject rules) {
     List<FormattingStrategy> strategies = new ArrayList<>();
     WhiteSpace whiteSpace = new WhiteSpace();
     JsonObject colonRules = rules.getAsJsonObject("colonRules");

@@ -2,12 +2,14 @@ package formatter.strategy.vardec;
 
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
 
 public class GetTypeStrategy implements FormattingStrategy {
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
-    return ((VariableDeclaration) node).varType();
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
+    VariableDeclaration varDecNode = (VariableDeclaration) node;
+    engine.write(varDecNode.varType());
+    return engine;
   }
 }

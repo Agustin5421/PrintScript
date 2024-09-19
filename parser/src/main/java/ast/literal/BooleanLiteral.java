@@ -1,24 +1,11 @@
 package ast.literal;
 
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import token.Position;
+import visitor.NodeVisitor;
 
-public class BooleanLiteral implements Literal {
-  private final Boolean value;
-  private final Position start;
-  private final Position end;
-
-  public BooleanLiteral(Boolean value, Position start, Position end) {
-    this.value = value;
-    this.start = start;
-    this.end = end;
-  }
-
-  @Override
-  public Boolean value() {
-    return value;
-  }
+public record BooleanLiteral(Boolean value, Position start, Position end)
+    implements Literal<Boolean> {
 
   @Override
   public AstNodeType getNodeType() {
@@ -26,17 +13,7 @@ public class BooleanLiteral implements Literal {
   }
 
   @Override
-  public Position start() {
-    return start;
-  }
-
-  @Override
-  public Position end() {
-    return end;
-  }
-
-  @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitBooleanLiteral(this);
   }
 }

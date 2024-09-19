@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ConditionalFactory implements FormattingStrategyFactory {
   @Override
-  public FormattingStrategy create(JsonObject rules, String version) {
+  public FormattingStrategy create(JsonObject rules) {
     NoSpace noSpace = new NoSpace();
     CharacterStrategy whiteSpace = new WhiteSpace();
     ArgumentsStrategy argumentsStrategy =

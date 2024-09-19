@@ -3,8 +3,8 @@ package ast.statements;
 import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import token.Position;
+import visitor.NodeVisitor;
 
 public record VariableDeclaration(
     String kind,
@@ -28,6 +28,6 @@ public record VariableDeclaration(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitVarDec(this);
   }
 }

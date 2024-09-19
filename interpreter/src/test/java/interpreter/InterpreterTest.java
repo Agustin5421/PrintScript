@@ -6,11 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import factory.LexerFactory;
 import factory.ParserFactory;
-import interpreter.visitor.InterpreterVisitorV3;
-import interpreter.visitor.repository.VariableIdentifier;
-import interpreter.visitor.repository.VariablesRepository;
+import interpreter.engine.InterpreterEngine;
+import interpreter.engine.repository.VariableIdentifier;
+import interpreter.engine.repository.VariablesRepository;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Objects;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
@@ -22,7 +23,7 @@ public class InterpreterTest {
   private Parser getParser(String code) {
     Lexer lexer = LexerFactory.getLexer("1.0");
     try {
-      lexer = lexer.setInput(new ByteArrayInputStream(code.getBytes()));
+      lexer = Objects.requireNonNull(lexer).setInput(new ByteArrayInputStream(code.getBytes()));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -34,15 +35,14 @@ public class InterpreterTest {
   public void testExecuteProgram() {
     String code = "let x: string = \"this is a string\";";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     assertEquals(
         "this is a string", repository.getNewVariable(new VariableIdentifier("x")).value());
   }
@@ -51,15 +51,14 @@ public class InterpreterTest {
   public void testExecuteProgramWithNumber() {
     String code = "let x: number = 42;";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     assertEquals(42, repository.getNewVariable(new VariableIdentifier("x")).value());
   }
 
@@ -67,15 +66,14 @@ public class InterpreterTest {
   public void testExecuteProgramWithMultipleStatements() {
     String code = "let x: string = \"this is a string\"; let y: number = 42;";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     assertEquals(
         "this is a string", repository.getNewVariable(new VariableIdentifier("x")).value());
     assertEquals(42, repository.getNewVariable(new VariableIdentifier("y")).value());
@@ -85,14 +83,13 @@ public class InterpreterTest {
   public void testExecuteProgramWithMultipleStatementsAndVariableUpdate() {
     String code = "let x: string = \"this is a string\"; let x: number = 42;";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     assertThrows(
         Exception.class,
         () -> {
           while (parser.hasNext()) {
-            reworkedInterpreter.interpret(parser.next());
+            interpreter.interpretNext(parser.next());
           }
         });
   }
@@ -102,15 +99,14 @@ public class InterpreterTest {
     String code = "";
 
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     assertEquals(0, repository.getNewVariables().size());
   }
 
@@ -118,15 +114,14 @@ public class InterpreterTest {
   public void testPrinting() {
     String code = "let x: string = \"this is a string\"; println(x);";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     assertEquals(
         "this is a string", repository.getNewVariable(new VariableIdentifier("x")).value());
   }
@@ -135,15 +130,14 @@ public class InterpreterTest {
   public void testBinaryExpressionPrinting() {
     String code = "let x: number = 42.5; let y: number = x + 42.5; println(y); println(x);";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     assertEquals(42.5, repository.getNewVariable(new VariableIdentifier("x")).value());
 
     //  no esta sumando bien, dice q x es 0
@@ -154,15 +148,14 @@ public class InterpreterTest {
   public void testBinaryExpressionPrintForReal() {
     String code = "let x: number = 42.5; println(x + 42.5);";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputString());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputString());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    OutputString output = (OutputString) visitor.getOutputResult();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    OutputString output = (OutputString) engine.getOutputResult();
     assertEquals("85.0", output.getResult());
   }
 
@@ -170,15 +163,14 @@ public class InterpreterTest {
   public void testBinaryStringSumPrint() {
     String code = "println(\"Hello \" + \"World\");";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputString());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputString());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    OutputString output = (OutputString) visitor.getOutputResult();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    OutputString output = (OutputString) engine.getOutputResult();
     assertEquals("Hello World", output.getResult());
   }
 
@@ -186,15 +178,14 @@ public class InterpreterTest {
   public void testBinaryExpressionStringAndNumberPrint() {
     String code = "let x: number = 42.5; println(\"a\" + x);";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputString());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputString());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    OutputString output = (OutputString) visitor.getOutputResult();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    OutputString output = (OutputString) engine.getOutputResult();
     assertEquals("a42.5", output.getResult());
   }
 
@@ -202,14 +193,13 @@ public class InterpreterTest {
   public void testStringsIllegalOperation() {
     String code = "let x: string = \"a\"; println(\"b\" - x);";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputString());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputString());
 
     assertThrows(
         Exception.class,
         () -> {
           while (parser.hasNext()) {
-            reworkedInterpreter.interpret(parser.next());
+            interpreter.interpretNext(parser.next());
           }
         });
   }
@@ -220,15 +210,14 @@ public class InterpreterTest {
   public void testNoValueDeclaration() {
     String code = "let x: string;";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     VariableIdentifier varId = new VariableIdentifier("x");
     assertNull(
         repository.getNewVariable(varId),
@@ -239,15 +228,14 @@ public class InterpreterTest {
   public void testNoAdditionalQuotes() {
     String code = "let x: string = \"hello\";";
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputMock());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputMock());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    VariablesRepository repository = visitor.getVariablesRepository();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    VariablesRepository repository = engine.getVariablesRepository();
     assertEquals("hello", repository.getNewVariable(new VariableIdentifier("x")).value());
   }
 
@@ -258,15 +246,14 @@ public class InterpreterTest {
             println("World");
             """;
     Parser parser = getParser(code);
-    ReworkedInterpreter reworkedInterpreter =
-        ReworkedInterpreterFactory.buildInterpreter("1.0", new OutputListString());
+    Interpreter interpreter = InterpreterFactory.buildInterpreter("1.0", new OutputListString());
 
     while (parser.hasNext()) {
-      reworkedInterpreter = reworkedInterpreter.interpret(parser.next());
+      interpreter = interpreter.interpretNext(parser.next());
     }
 
-    InterpreterVisitorV3 visitor = (InterpreterVisitorV3) reworkedInterpreter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutputResult();
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    OutputListString output = (OutputListString) engine.getOutputResult();
     assertEquals("Hello", output.getSavedResults().get(0));
     assertEquals("World", output.getSavedResults().get(1));
   }

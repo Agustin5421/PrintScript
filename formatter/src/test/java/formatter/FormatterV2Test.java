@@ -1,13 +1,13 @@
 package formatter;
 
-import formatter.factory.FormatterInitializer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import runner.TestRunner;
 
 public class FormatterV2Test extends AbstractFormatterTest {
   @Override
-  protected MainFormatter initFormatter(String jsonOptions, String formattedCode) {
-    return FormatterInitializer.init(jsonOptions, formattedCode, "1.1");
+  protected TestRunner setRunner(String jsonOptions, String formattedCode) {
+    return new TestRunner(jsonOptions, formattedCode, "1.1");
   }
 
   @Override
@@ -46,8 +46,8 @@ public class FormatterV2Test extends AbstractFormatterTest {
     String formattedCode = """
                 let myVar : boolean = true;
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -57,8 +57,8 @@ public class FormatterV2Test extends AbstractFormatterTest {
                 let anotherVar : boolean = true;
                 anotherVar = false;
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -66,8 +66,8 @@ public class FormatterV2Test extends AbstractFormatterTest {
     String formattedCode = """
             let myVar : string = readInput();
             """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -75,39 +75,37 @@ public class FormatterV2Test extends AbstractFormatterTest {
     String formattedCode = """
             let myVar : string = readEnv("ENV_VAR");
             """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   // TODO: Fix this test
-  /*
+
   @Test
   public void newCompleteFormattingTest() {
     String code =
-        "if (true) { if(a){hola=2;} let name: string = \"Oliver\";} else {a=3; a=5; a=6;a=readInput();if(a){a=readEnv(\"ENV_VAR\");}} const a: number = 5;";
+        "if (true) { if(true){let hola: number=2;} let name: string = \"Oliver\";} else {let a: number=3; a=5; a=6;let c: string=readInput(\"Name:\");if(false){let d: string=readEnv(\"ENV_VAR\");}} const b: number = 5;";
     String formattedCode =
         """
                 if (true) {
-                	if (a) {
-                		hola = 2;
+                	if (true) {
+                		let hola : number = 2;
                 	}
                 	let name : string = "Oliver";
                 } else {
-                	a = 3;
+                	let a : number = 3;
                 	a = 5;
                 	a = 6;
-                	a = readInput();
-                	if (a) {
-                		a = readEnv("ENV_VAR");
+                	let c : string = readInput("Name:");
+                	if (false) {
+                		let d : string = readEnv("ENV_VAR");
                 	}
                 }
-                const a : number = 5;
+                const b : number = 5;
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), code);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), code);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
-
-   */
 
   // TODO: fix this test
 
@@ -117,16 +115,16 @@ public class FormatterV2Test extends AbstractFormatterTest {
         "let hola : string = 'hola'; if (true) { if(false){hola='chau';} let name: string = \"Oliver\";} const a: number = 5;";
     String formattedCode =
         """
-let hola: string="hola";
-if (true) {
-				if (false) {
-								hola="chau";
-				}
-				let name: string="Oliver";
-}
-const a: number=5;
+                let hola: string="hola";
+                if (true) {
+                				if (false) {
+                								hola="chau";
+                				}
+                				let name: string="Oliver";
+                }
+                const a: number=5;
                 """;
-    MainFormatter formatter = initFormatter(alternativeOptions(), code);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(alternativeOptions(), code);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 }

@@ -13,7 +13,7 @@ public class ReAssignmentFactory implements FormattingStrategyFactory {
   }
 
   @Override
-  public FormattingStrategy create(JsonObject rules, String version) {
+  public FormattingStrategy create(JsonObject rules) {
     return new ReAssignationStrategy(equalStrategy);
   }
 }

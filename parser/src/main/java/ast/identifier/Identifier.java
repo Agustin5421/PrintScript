@@ -2,10 +2,10 @@ package ast.identifier;
 
 import ast.expressions.ExpressionNode;
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import java.util.Map;
 import token.Position;
 import token.types.TokenDataType;
+import visitor.NodeVisitor;
 
 public record Identifier(
     String name, Position start, Position end, TokenDataType type, Map<String, Boolean> modifiers)
@@ -23,6 +23,6 @@ public record Identifier(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitIdentifier(this);
   }
 }

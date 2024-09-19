@@ -12,14 +12,14 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import lexer.Lexer;
-import linter.visitor.strategy.NewLinterVisitor;
+import linter.engine.LinterEngine;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
 import parsers.Parser;
 
 public class LinterV2Test extends CommonLinterTest {
-  private ReworkedLinter linterV2;
+  private Linter linterV2;
   private Parser parser;
 
   @BeforeEach
@@ -42,7 +42,7 @@ public class LinterV2Test extends CommonLinterTest {
   }
 
   @Override
-  protected ReworkedLinter getLinter() {
+  protected Linter getLinter() {
     return linterV2;
   }
 
@@ -50,11 +50,11 @@ public class LinterV2Test extends CommonLinterTest {
   public void lintIfStatementTest() {
     ExpressionNode booleanNode = new BooleanLiteral(true, null, null);
     AstNode ifNode = new IfStatement(null, null, booleanNode, List.of(), List.of());
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     linter = linter.lint(ifNode);
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }
@@ -62,18 +62,18 @@ public class LinterV2Test extends CommonLinterTest {
   @Test
   public void lintBooleanLiteralTest() {
     AstNode booleanNode = new BooleanLiteral(true, null, null);
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     linter = linter.lint(booleanNode);
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }
 
   @Test
   public void emptyConfigTest() {
-    ReworkedLinter linter = LinterFactory.getReworkedLinter("1.1", "{}", new OutputListString());
+    Linter linter = LinterFactory.getReworkedLinter("1.1", "{}", new OutputListString());
     String code = "let snake_case: string = \"Oliver\"; let camelCase: string = \"Oliver\";";
     Parser parser = getParser(code);
 
@@ -81,8 +81,8 @@ public class LinterV2Test extends CommonLinterTest {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }
@@ -92,15 +92,15 @@ public class LinterV2Test extends CommonLinterTest {
     String code = "if (true) { let a: number = 1; }";
     Parser parser = getParser(code);
 
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     while (parser.hasNext()) {
       AstNode next = parser.next();
       linter = linter.lint(next);
     }
 
-    NewLinterVisitor visitor = linterV2.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linterV2.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }

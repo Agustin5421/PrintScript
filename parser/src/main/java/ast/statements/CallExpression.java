@@ -4,9 +4,9 @@ import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import java.util.List;
 import token.Position;
+import visitor.NodeVisitor;
 
 public record CallExpression(
     Identifier methodIdentifier, List<AstNode> arguments, Position start, Position end)
@@ -27,6 +27,6 @@ public record CallExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitCallExpression(this);
   }
 }

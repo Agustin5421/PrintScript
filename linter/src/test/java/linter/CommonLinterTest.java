@@ -2,13 +2,13 @@ package linter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import linter.visitor.strategy.NewLinterVisitor;
+import linter.engine.LinterEngine;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
 import parsers.Parser;
 
 public abstract class CommonLinterTest {
-  protected abstract ReworkedLinter getLinter();
+  protected abstract Linter getLinter();
 
   protected abstract Parser getParser(String code);
 
@@ -17,14 +17,14 @@ public abstract class CommonLinterTest {
     String code = "let snake_case: string = \"Oliver\";";
     Parser parser = getParser(code);
 
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     while (parser.hasNext()) {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(1, output.getSavedResults().size());
   }
@@ -34,14 +34,14 @@ public abstract class CommonLinterTest {
     String code = "let camelCase: string = \"Oliver\";";
     Parser parser = getParser(code);
 
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     while (parser.hasNext()) {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }
@@ -51,14 +51,14 @@ public abstract class CommonLinterTest {
     String code = "let var: number = 1 + 1;";
     Parser parser = getParser(code);
 
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     while (parser.hasNext()) {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }
@@ -68,14 +68,14 @@ public abstract class CommonLinterTest {
     String code = "println(\"Hello, World!\");";
     Parser parser = getParser(code);
 
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     while (parser.hasNext()) {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }
@@ -85,14 +85,14 @@ public abstract class CommonLinterTest {
     String code = "let identifier: string = 'text';\nprintln(identifier);";
     Parser parser = getParser(code);
 
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     while (parser.hasNext()) {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(0, output.getSavedResults().size());
   }
@@ -102,14 +102,14 @@ public abstract class CommonLinterTest {
     String code = "println(1 + 1);";
     Parser parser = getParser(code);
 
-    ReworkedLinter linter = getLinter();
+    Linter linter = getLinter();
 
     while (parser.hasNext()) {
       linter = linter.lint(parser.next());
     }
 
-    NewLinterVisitor visitor = linter.getVisitor();
-    OutputListString output = (OutputListString) visitor.getOutput();
+    LinterEngine engine = linter.engine();
+    OutputListString output = (OutputListString) engine.getOutput();
 
     assertEquals(1, output.getSavedResults().size());
   }

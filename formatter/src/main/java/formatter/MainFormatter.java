@@ -1,34 +1,16 @@
 package formatter;
 
-import formatter.visitor.FormatterVisitor;
-import java.util.Iterator;
-import parsers.Parser;
+import ast.root.AstNode;
 
-public class MainFormatter implements Iterator<String> {
-  private FormatterVisitor visitor;
-  private final Parser parser;
+public class MainFormatter {
+  private final FormattingEngine engine;
 
-  public MainFormatter(FormatterVisitor visitor, Parser parser) {
-    this.visitor = visitor;
-    this.parser = parser;
+  public MainFormatter(FormattingEngine engine) {
+    this.engine = engine;
   }
 
-  public String formatProgram() {
-    StringBuilder formattedCode = new StringBuilder();
-    while (hasNext()) {
-      formattedCode.append(next());
-    }
-    return formattedCode.toString();
-  }
-
-  @Override
-  public boolean hasNext() {
-    return parser.hasNext();
-  }
-
-  @Override
-  public String next() {
-    visitor = (FormatterVisitor) parser.next().accept(visitor);
-    return visitor.getCurrentCode();
+  public MainFormatter formatNext(AstNode node) {
+    FormattingEngine visitor = this.engine.format(node);
+    return new MainFormatter(visitor);
   }
 }

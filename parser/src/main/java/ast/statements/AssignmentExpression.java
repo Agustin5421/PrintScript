@@ -3,8 +3,8 @@ package ast.statements;
 import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import token.Position;
+import visitor.NodeVisitor;
 
 public record AssignmentExpression(
     Identifier left, ExpressionNode right, String operator, Position start, Position end)
@@ -21,6 +21,6 @@ public record AssignmentExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitAssignmentExpression(this);
   }
 }

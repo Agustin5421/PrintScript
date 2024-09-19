@@ -3,10 +3,10 @@ package linter.factory;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import linter.TestUtils;
-import linter.visitor.factory.IdentifierStrategyFactory;
-import linter.visitor.factory.StrategyFactory;
-import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.StrategiesContainer;
+import linter.engine.factory.IdentifierStrategyFactory;
+import linter.engine.factory.StrategyFactory;
+import linter.engine.strategy.LintingStrategy;
+import linter.engine.strategy.StrategiesContainer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

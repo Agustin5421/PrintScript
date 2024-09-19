@@ -1,8 +1,8 @@
 package formatter.strategy.callexpr;
 
 import ast.root.AstNode;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
 
 public class LineBreaksStrategy implements FormattingStrategy {
   private final int lineBreaks;
@@ -12,10 +12,10 @@ public class LineBreaksStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
-    String currentCode = visitor.getCurrentCode();
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
+    String currentCode = engine.getCurrentCode();
     if (currentCode.isEmpty()) {
-      return "";
+      return engine;
     }
 
     int existingLineBreaks = 0;
@@ -29,6 +29,8 @@ public class LineBreaksStrategy implements FormattingStrategy {
     int additionalLineBreaks = Math.max(0, lineBreaks - existingLineBreaks);
 
     // Append the necessary number of line breaks
-    return "\n".repeat(additionalLineBreaks);
+    engine.write("\n".repeat(additionalLineBreaks));
+
+    return engine;
   }
 }

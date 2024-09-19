@@ -1,8 +1,8 @@
 package ast.literal;
 
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import token.Position;
+import visitor.NodeVisitor;
 
 public record StringLiteral(String value, Position start, Position end) implements Literal<String> {
 
@@ -13,6 +13,6 @@ public record StringLiteral(String value, Position start, Position end) implemen
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitStringLiteral(this);
   }
 }

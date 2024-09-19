@@ -1,8 +1,8 @@
 package formatter.strategy.vardec;
 
 import ast.root.AstNode;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class TypingStrategy implements FormattingStrategy {
@@ -13,11 +13,10 @@ public class TypingStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
-    StringBuilder formattedCode = new StringBuilder();
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
     for (FormattingStrategy strategy : strategies) {
-      formattedCode.append(strategy.apply(node, visitor));
+      strategy.apply(node, engine);
     }
-    return formattedCode.toString();
+    return engine;
   }
 }

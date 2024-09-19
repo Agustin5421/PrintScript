@@ -1,8 +1,8 @@
 package formatter.strategy.common;
 
 import ast.root.AstNode;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class ArgumentsStrategy implements FormattingStrategy {
@@ -24,22 +24,21 @@ public class ArgumentsStrategy implements FormattingStrategy {
     return new ArgumentsStrategy(whiteSpaces, arguments);
   }
 
+  // This strategy is already inside the "parentheses"
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
-    StringBuilder formattedCode = new StringBuilder();
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
     CharacterStrategy comaSpace = whiteSpaces.get(1);
     int argumentsCount = arguments.size();
 
-    formattedCode.append(whiteSpaces.get(0).apply(node, visitor));
+    whiteSpaces.get(0).apply(node, engine);
     for (int i = 0; i < argumentsCount; i++) {
       AstNode argument = arguments.get(i);
-      formattedCode.append(((FormatterVisitor) argument.accept(visitor)).getCurrentCode());
+      engine.format(argument);
       if (i < argumentsCount - 1) {
-        formattedCode.append(",");
-        formattedCode.append(comaSpace.apply(node, visitor));
+        engine.write(",");
+        comaSpace.apply(node, engine);
       }
     }
-    formattedCode.append(whiteSpaces.get(2).apply(node, visitor));
-    return formattedCode.toString();
+    return whiteSpaces.get(2).apply(node, engine);
   }
 }

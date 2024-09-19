@@ -1,8 +1,8 @@
 package ast.expressions;
 
 import ast.root.AstNodeType;
-import ast.visitor.NodeVisitor;
 import token.Position;
+import visitor.NodeVisitor;
 
 public record BinaryExpression(
     ExpressionNode left, ExpressionNode right, String operator, Position start, Position end)
@@ -18,6 +18,6 @@ public record BinaryExpression(
 
   @Override
   public NodeVisitor accept(NodeVisitor visitor) {
-    return visitor.visit(this);
+    return visitor.visitBinaryExpression(this);
   }
 }

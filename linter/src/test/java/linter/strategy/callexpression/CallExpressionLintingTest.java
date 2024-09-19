@@ -10,19 +10,18 @@ import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
 import java.util.Map;
-import linter.visitor.ReworkedLinterVisitor;
-import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.NewLinterVisitor;
-import linter.visitor.strategy.StrategiesContainer;
-import linter.visitor.strategy.callexpression.ArgumentsStrategy;
-import linter.visitor.strategy.callexpression.CallExpressionTraversing;
+import linter.engine.LinterEngine;
+import linter.engine.strategy.LintingStrategy;
+import linter.engine.strategy.StrategiesContainer;
+import linter.engine.strategy.callexpression.ArgumentsStrategy;
+import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
 import strategy.StrategyContainer;
 import token.Position;
 
 public class CallExpressionLintingTest {
-  private NewLinterVisitor getLinterVisitorV2() {
+  private LinterEngine getLinterEngineV2() {
     LintingStrategy strategy =
         new ArgumentsStrategy(
             List.of(
@@ -41,7 +40,7 @@ public class CallExpressionLintingTest {
     StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
         new StrategyContainer<>(nodesStrategies, "Can't lint: ");
 
-    return new ReworkedLinterVisitor(mockStrategy, new OutputListString());
+    return new LinterEngine(mockStrategy, new OutputListString());
   }
 
   @Test
@@ -53,9 +52,9 @@ public class CallExpressionLintingTest {
     Identifier identifier = new Identifier("methodName", position, position);
     CallExpression callExpression = new CallExpression(identifier, List.of(binaryExpression));
 
-    NewLinterVisitor visitor = getLinterVisitorV2();
-    NewLinterVisitor newVisitor = visitor.lintNode(callExpression);
-    OutputListString output = (OutputListString) newVisitor.getOutput();
+    LinterEngine engine = getLinterEngineV2();
+    LinterEngine newEngine = engine.lintNode(callExpression);
+    OutputListString output = (OutputListString) newEngine.getOutput();
 
     assertEquals(1, output.getSavedResults().size());
   }
@@ -72,9 +71,9 @@ public class CallExpressionLintingTest {
             identifier,
             List.of(binaryExpression, binaryExpression, binaryExpression, binaryExpression));
 
-    NewLinterVisitor visitor = getLinterVisitorV2();
-    NewLinterVisitor newVisitor = visitor.lintNode(callExpression);
-    OutputListString output = (OutputListString) newVisitor.getOutput();
+    LinterEngine engine = getLinterEngineV2();
+    LinterEngine newEngine = engine.lintNode(callExpression);
+    OutputListString output = (OutputListString) newEngine.getOutput();
 
     assertEquals(4, output.getSavedResults().size());
   }
@@ -91,14 +90,14 @@ public class CallExpressionLintingTest {
             identifier,
             List.of(binaryExpression, identifier, binaryExpression, binaryExpression, identifier));
 
-    NewLinterVisitor visitor = getLinterVisitorV2();
-    NewLinterVisitor newVisitor = visitor.lintNode(callExpression);
-    OutputListString output = (OutputListString) newVisitor.getOutput();
+    LinterEngine engine = getLinterEngineV2();
+    LinterEngine newEngine = engine.lintNode(callExpression);
+    OutputListString output = (OutputListString) newEngine.getOutput();
 
     assertEquals(3, output.getSavedResults().size());
   }
 
-  private NewLinterVisitor getLinterVisitorStrictArguments() {
+  private LinterEngine getLinterEngineStrictArguments() {
     LintingStrategy strategy1 = new ArgumentsStrategy(List.of(AstNodeType.IDENTIFIER));
     LintingStrategy mainCallExpressionStrategy = new StrategiesContainer(List.of(strategy1));
     Map<AstNodeType, LintingStrategy> nodesStrategies =
@@ -107,7 +106,7 @@ public class CallExpressionLintingTest {
     StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
         new StrategyContainer<>(nodesStrategies, "Can't lint: ");
 
-    return new ReworkedLinterVisitor(mockStrategy, new OutputListString());
+    return new LinterEngine(mockStrategy, new OutputListString());
   }
 
   @Test
@@ -121,9 +120,9 @@ public class CallExpressionLintingTest {
         new CallExpression(
             identifier, List.of(binaryExpression, one, two, binaryExpression, identifier));
 
-    NewLinterVisitor visitor = getLinterVisitorStrictArguments();
-    NewLinterVisitor newVisitor = visitor.lintNode(callExpression);
-    OutputListString output = (OutputListString) newVisitor.getOutput();
+    LinterEngine engine = getLinterEngineStrictArguments();
+    LinterEngine newEngine = engine.lintNode(callExpression);
+    OutputListString output = (OutputListString) newEngine.getOutput();
 
     assertEquals(4, output.getSavedResults().size());
   }

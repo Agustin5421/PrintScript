@@ -1,8 +1,8 @@
 package formatter.strategy.common;
 
 import ast.root.AstNode;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
 
 public class CharacterStrategy implements FormattingStrategy {
   private final String character;
@@ -12,7 +12,8 @@ public class CharacterStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
-    return character;
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
+    engine.write(character);
+    return engine;
   }
 }

@@ -2,9 +2,9 @@ package formatter.strategy.vardec;
 
 import ast.root.AstNode;
 import ast.statements.VariableDeclaration;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.AssignationStrategy;
-import formatter.visitor.FormatterVisitor;
 
 public class VariableDeclarationStrategy implements FormattingStrategy {
   // Strategies should be having (or not) the first space for : and the
@@ -23,25 +23,25 @@ public class VariableDeclarationStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
     VariableDeclaration varDecNode = (VariableDeclaration) node;
-    StringBuilder formattedCode = new StringBuilder();
 
     // Adding the let or const keyword
     String kind = varDecNode.kind();
-    formattedCode.append(kind).append(keyWordSpace);
+    engine.write(kind);
+    engine.write(keyWordSpace);
 
     // Adding the identifier
-    FormatterVisitor visitIdentifier = (FormatterVisitor) varDecNode.identifier().accept(visitor);
-    formattedCode.append(visitIdentifier.getCurrentCode());
+    engine.format(varDecNode.identifier());
 
     // Adding the whitespaces strategies for " : type"
-    formattedCode.append(typeAssignation.apply(varDecNode, visitor));
+    typeAssignation.apply(varDecNode, engine);
 
     // Assigning the expression
-    formattedCode.append(assignationStrategy.apply(varDecNode.expression(), visitor));
-    formattedCode.append(";");
+    assignationStrategy.apply(varDecNode.expression(), engine);
 
-    return formattedCode.toString();
+    engine.write(";\n");
+
+    return engine;
   }
 }

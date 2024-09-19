@@ -1,8 +1,8 @@
 package formatter.strategy.common;
 
 import ast.root.AstNode;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
-import formatter.visitor.FormatterVisitor;
 import java.util.List;
 
 public class CallStrategy implements FormattingStrategy {
@@ -43,16 +43,21 @@ public class CallStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
-    StringBuilder formattedCode = new StringBuilder();
-    formattedCode.append(lineBreaksStrategy.apply(node, visitor));
-    formattedCode.append(keyWord);
-    formattedCode.append(whiteSpace);
-    formattedCode.append("(");
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
+    // Print function is the only one for now that has this strategy
+    if (keyWord.equals("println")) {
+      lineBreaksStrategy.apply(node, engine);
+    }
+    engine.write(keyWord);
+    engine.write(whiteSpace);
+    engine.write("(");
     ArgumentsStrategy newArgsStrategy = argumentsStrategy.newStrategy(arguments);
-    formattedCode.append(newArgsStrategy.apply(node, visitor));
-    formattedCode.append(")");
-    formattedCode.append(end.apply(node, visitor));
-    return formattedCode.toString();
+    newArgsStrategy.apply(node, engine);
+    engine.write(")");
+    if (keyWord.equals("println")) {
+      engine.write(";\n");
+    }
+    end.apply(node, engine);
+    return engine;
   }
 }

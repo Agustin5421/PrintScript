@@ -2,31 +2,32 @@ package formatter.strategy.common;
 
 import ast.expressions.BinaryExpression;
 import ast.root.AstNode;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
-import formatter.strategy.common.space.WhiteSpace;
-import formatter.visitor.FormatterVisitor;
-import java.util.List;
 
 public class BinaryExpressionStrategy implements FormattingStrategy {
   // The same strategy but the operator differs
-  private final OperatorConcatenationStrategy strategy;
+  private final CharacterStrategy beforeSpace;
+  private final CharacterStrategy afterSpace;
 
-  public BinaryExpressionStrategy(String operator) {
-    WhiteSpace whiteSpace = new WhiteSpace();
-    this.strategy =
-        new OperatorConcatenationStrategy(
-            List.of(whiteSpace, new CharacterStrategy(operator), whiteSpace));
+  public BinaryExpressionStrategy(CharacterStrategy beforeSpace, CharacterStrategy afterSpace) {
+    this.beforeSpace = beforeSpace;
+    this.afterSpace = afterSpace;
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
     BinaryExpression binaryExpression = (BinaryExpression) node;
-    String formattedCode =
-        ((FormatterVisitor) binaryExpression.left().accept(visitor)).getCurrentCode();
+
+    // Writing the left side of the expression
+    engine.format(binaryExpression.left());
+
     // Applying the spaces and operator between the expression
-    formattedCode += strategy.apply(binaryExpression, visitor);
-    // Formatting the right side of the expression
-    formattedCode += ((FormatterVisitor) binaryExpression.right().accept(visitor)).getCurrentCode();
-    return formattedCode;
+    beforeSpace.apply(binaryExpression, engine);
+    engine.write(binaryExpression.operator());
+    afterSpace.apply(binaryExpression, engine);
+
+    // Writing the right side of the expression
+    return engine.format(binaryExpression.right());
   }
 }

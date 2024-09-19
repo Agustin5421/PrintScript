@@ -3,9 +3,10 @@ package formatter;
 import com.google.gson.JsonSyntaxException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import runner.TestRunner;
 
 public abstract class AbstractFormatterTest {
-  protected abstract MainFormatter initFormatter(String jsonOptions, String formattedCode);
+  protected abstract TestRunner setRunner(String jsonOptions, String formattedCode);
 
   @Test
   public void varDeclarationTest() {
@@ -13,8 +14,8 @@ public abstract class AbstractFormatterTest {
         """
                 let myVar : string = "Hello World!";
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -24,8 +25,8 @@ public abstract class AbstractFormatterTest {
                 let myVar : string = "Hello World!";
                 myVar = "Goodbye World!";
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -33,8 +34,8 @@ public abstract class AbstractFormatterTest {
     String formattedCode = """
                 let myVar : number = 2 + 2 * 5;
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -42,8 +43,8 @@ public abstract class AbstractFormatterTest {
     String formattedCode = """
                 println("Hello World!");
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -57,8 +58,8 @@ public abstract class AbstractFormatterTest {
 
                 println(myVar);
                 """;
-    MainFormatter formatter = initFormatter(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
@@ -74,14 +75,13 @@ public abstract class AbstractFormatterTest {
 
                 println(myVar);
                 """;
-    MainFormatter formatter = initFormatter(alternativeOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, formatter.formatProgram());
+    TestRunner testRunner = setRunner(alternativeOptions(), formattedCode);
+    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
   @Test
   public void invalidOptionsTest() {
-    Assertions.assertThrows(
-        JsonSyntaxException.class, () -> initFormatter("invalid options json", ""));
+    Assertions.assertThrows(JsonSyntaxException.class, () -> setRunner("invalid options json", ""));
   }
 
   protected String getJsonOptions() {

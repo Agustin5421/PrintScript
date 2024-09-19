@@ -2,9 +2,9 @@ package formatter.strategy.reassign;
 
 import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
+import formatter.FormattingEngine;
 import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.AssignationStrategy;
-import formatter.visitor.FormatterVisitor;
 
 public class ReAssignationStrategy implements FormattingStrategy {
   private final AssignationStrategy assignationStrategy;
@@ -14,18 +14,17 @@ public class ReAssignationStrategy implements FormattingStrategy {
   }
 
   @Override
-  public String apply(AstNode node, FormatterVisitor visitor) {
+  public FormattingEngine apply(AstNode node, FormattingEngine engine) {
     AssignmentExpression assignmentExpression = (AssignmentExpression) node;
-    StringBuilder formattedCode = new StringBuilder();
 
     // Adding the identifier
-    FormatterVisitor visit = (FormatterVisitor) assignmentExpression.left().accept(visitor);
-    formattedCode.append(visit.getCurrentCode());
+    engine.format(assignmentExpression.left());
 
     // Assigning the expression
-    formattedCode.append(assignationStrategy.apply(assignmentExpression.right(), visitor));
-    formattedCode.append(";");
+    assignationStrategy.apply(assignmentExpression.right(), engine);
 
-    return formattedCode.toString();
+    engine.write(";\n");
+
+    return engine;
   }
 }

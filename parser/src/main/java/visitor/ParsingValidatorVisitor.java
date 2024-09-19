@@ -10,7 +10,6 @@ import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
-import ast.visitor.NodeVisitor;
 import exceptions.InvalidConstReassignmentException;
 import exceptions.MismatchTypeException;
 import exceptions.VariableAlreadyDeclaredException;
@@ -29,44 +28,24 @@ public class ParsingValidatorVisitor implements NodeVisitor {
   public ParsingValidatorVisitor() {}
 
   @Override
-  public NodeVisitor visit(AstNode node) {
-    if (node instanceof VariableDeclaration) {
-      return visitVarDec((VariableDeclaration) node);
-    } else if (node instanceof IfStatement) {
-      return visitIfStatement((IfStatement) node);
-    } else if (node instanceof BooleanLiteral) {
-      return visitBooleanLiteral((BooleanLiteral) node);
-    } else if (node instanceof CallExpression) {
-      return visitCallExpression((CallExpression) node);
-    } else if (node instanceof AssignmentExpression) {
-      return visitAssignmentExpression((AssignmentExpression) node);
-    } else if (node instanceof BinaryExpression) {
-      return visitBinaryExpression((BinaryExpression) node);
-    } else if (node instanceof NumberLiteral) {
-      return visitNumberLiteral((NumberLiteral) node);
-    } else if (node instanceof StringLiteral) {
-      return visitStringLiteral((StringLiteral) node);
-    } else if (node instanceof Identifier) {
-      return visitIdentifier((Identifier) node);
-    }
-    return this;
-  }
-
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
     comparableType = "number";
     return this;
   }
 
+  @Override
   public NodeVisitor visitStringLiteral(StringLiteral stringLiteral) {
     comparableType = "string";
     return this;
   }
 
+  @Override
   public NodeVisitor visitBooleanLiteral(BooleanLiteral booleanLiteral) {
     comparableType = "boolean";
     return this;
   }
 
+  @Override
   public NodeVisitor visitBinaryExpression(BinaryExpression binaryExpression) {
     binaryExpression.left().accept(this);
     String left = comparableType;
@@ -79,6 +58,7 @@ public class ParsingValidatorVisitor implements NodeVisitor {
     return this;
   }
 
+  @Override
   public NodeVisitor visitCallExpression(CallExpression callExpression) {
     for (AstNode arg : callExpression.arguments()) {
       arg.accept(this);
@@ -89,6 +69,7 @@ public class ParsingValidatorVisitor implements NodeVisitor {
     return this;
   }
 
+  @Override
   public NodeVisitor visitIdentifier(Identifier identifier) {
     if (!variablesRep.containsKey(identifier.name())) {
       throw new VariableNotDeclaredException(identifier.name());
@@ -98,6 +79,7 @@ public class ParsingValidatorVisitor implements NodeVisitor {
     return this;
   }
 
+  @Override
   public NodeVisitor visitAssignmentExpression(AssignmentExpression assignmentExpression) {
     String name = assignmentExpression.left().name();
     if (!variablesRep.containsKey(name)) {
@@ -118,6 +100,7 @@ public class ParsingValidatorVisitor implements NodeVisitor {
     return this;
   }
 
+  @Override
   public NodeVisitor visitVarDec(VariableDeclaration node) {
     String name = node.identifier().name();
 
@@ -141,6 +124,7 @@ public class ParsingValidatorVisitor implements NodeVisitor {
     return this;
   }
 
+  @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
     if (ifStatement.getCondition() instanceof Identifier id) {
       if (!variablesRep.containsKey(id.name())) {
