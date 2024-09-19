@@ -45,6 +45,9 @@ public class Runner {
         interpreter = interpreter.interpretNext(parser.next());
       }
     } catch (Throwable e) {
+      lexer = null;
+      parser = null;
+      interpreter = null;
       System.gc();
       errorLog.saveResult(e.getMessage());
     }
