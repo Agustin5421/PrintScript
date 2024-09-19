@@ -3,10 +3,10 @@ package linter.visitor.strategy.identifier;
 import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
+import linter.visitor.LinterVisitor;
 import linter.visitor.report.FullReport;
 import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
-import linter.visitor.strategy.NewLinterVisitor;
 
 public class WritingConventionStrategy implements LintingStrategy {
   private final String writingConventionName;
@@ -38,7 +38,7 @@ public class WritingConventionStrategy implements LintingStrategy {
   }
 
   @Override
-  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
+  public LinterVisitor apply(AstNode node, LinterVisitor visitor) {
     if (!shouldApply(node)) {
       return visitor;
     }
