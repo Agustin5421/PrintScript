@@ -4,7 +4,7 @@ import ast.root.AstNode;
 import linter.visitor.ReworkedLinterVisitor;
 
 public class ReworkedLinter {
-  private ReworkedLinterVisitor visitor;
+  private final ReworkedLinterVisitor visitor;
 
   public ReworkedLinter(ReworkedLinterVisitor visitor) {
     this.visitor = visitor;

@@ -2,7 +2,6 @@ package linter.visitor.strategy;
 
 import ast.root.AstNode;
 import java.util.List;
-import linter.visitor.LinterVisitor;
 import linter.visitor.report.FullReport;
 
 public class StrategiesContainer implements LintingStrategy {
@@ -22,7 +21,7 @@ public class StrategiesContainer implements LintingStrategy {
   }
 
   @Override
-  public LinterVisitor apply(AstNode node, LinterVisitor visitor) {
+  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
     for (LintingStrategy strategy : strategies) {
       visitor = strategy.apply(node, visitor);
     }

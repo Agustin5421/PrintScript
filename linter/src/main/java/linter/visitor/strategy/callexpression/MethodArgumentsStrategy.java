@@ -3,9 +3,9 @@ package linter.visitor.strategy.callexpression;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
-import linter.visitor.LinterVisitor;
 import linter.visitor.report.FullReport;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.NewLinterVisitor;
 
 public class MethodArgumentsStrategy implements LintingStrategy {
   private final String methodName;
@@ -26,7 +26,7 @@ public class MethodArgumentsStrategy implements LintingStrategy {
   }
 
   @Override
-  public LinterVisitor apply(AstNode node, LinterVisitor visitor) {
+  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
     if (!shouldApply(node)) {
       return visitor;
     }

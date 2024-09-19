@@ -4,10 +4,10 @@ import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
-import linter.visitor.LinterVisitor;
 import linter.visitor.report.FullReport;
 import linter.visitor.report.Report;
 import linter.visitor.strategy.LintingStrategy;
+import linter.visitor.strategy.NewLinterVisitor;
 
 public class ArgumentsStrategy implements LintingStrategy {
   private final List<AstNodeType> allowedArguments;
@@ -42,7 +42,7 @@ public class ArgumentsStrategy implements LintingStrategy {
   }
 
   @Override
-  public LinterVisitor apply(AstNode node, LinterVisitor visitor) {
+  public NewLinterVisitor apply(AstNode node, NewLinterVisitor visitor) {
     if (!shouldApply(node)) {
       return visitor;
     }
