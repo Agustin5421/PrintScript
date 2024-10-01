@@ -26,6 +26,10 @@ public class PatternProvider {
             + "|\\S"; // Any other single character (mismatch), excluding spaces
   }
 
+  public PatternProvider(String pattern) {
+    this.pattern = pattern;
+  }
+
   public Pattern getPattern() {
     return Pattern.compile(pattern);
   }

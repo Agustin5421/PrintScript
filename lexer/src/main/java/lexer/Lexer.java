@@ -102,12 +102,11 @@ public class Lexer implements Iterator<Token>, Observable {
       TokenType type = tokenTypeGetter.getType(word);
       Token token = new Token(type, word, startPosition, endPosition);
 
-      if (token.nodeType() == TokenSyntaxType.INVALID) {
+      if (token.tokenType() == TokenSyntaxType.INVALID) {
         throw new UnsupportedCharacter("Invalid token: " + token.value());
       }
       tokens.add(token);
     }
-
     try {
       advanceToNextLine();
     } catch (IOException e) {

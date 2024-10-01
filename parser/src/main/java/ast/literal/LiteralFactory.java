@@ -5,10 +5,10 @@ import token.Token;
 import token.types.TokenType;
 import token.types.TokenValueType;
 
-// TODO: Implement a Literal parser for each nodeType of literal
+// TODO: Implement a Literal parser for each tokenType of literal
 public class LiteralFactory {
   public static Literal<?> createLiteral(Token token) {
-    TokenType tokenType = token.nodeType();
+    TokenType tokenType = token.tokenType();
     if (tokenType == TokenValueType.STRING) {
       return new StringLiteral(
           removeQuotes(token.value()), token.initialPosition(), token.finalPosition());

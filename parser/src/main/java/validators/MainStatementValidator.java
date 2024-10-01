@@ -14,6 +14,7 @@ public class MainStatementValidator {
 
     tokens.add(lexer.next());
 
+    // TODO: check function name
     for (StatementValidator statementSplitter : statementValidators) {
       if (statementSplitter.shouldSplit(tokens)) {
         return statementSplitter.validate(lexer, tokens);

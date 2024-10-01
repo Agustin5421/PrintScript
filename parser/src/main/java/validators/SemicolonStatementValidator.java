@@ -12,7 +12,7 @@ public class SemicolonStatementValidator implements StatementValidator {
     while (lexer.hasNext()) {
       Token token = lexer.next();
       tokens.add(token);
-      if (token.nodeType().equals(TokenSyntaxType.SEMICOLON)) {
+      if (token.tokenType().equals(TokenSyntaxType.SEMICOLON)) {
         return tokens;
       }
     }

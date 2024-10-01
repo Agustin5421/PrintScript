@@ -19,6 +19,8 @@ public class TokenTypeGetter implements TypeGetter {
         return type;
       }
     }
+
+    // TODO: throw exception
     return TokenSyntaxType.INVALID;
   }
 }

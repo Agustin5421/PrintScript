@@ -16,14 +16,14 @@ public class IfStatementValidator implements StatementValidator {
       Token token = lexer.next();
       tokens.add(token);
 
-      if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
+      if (token.tokenType() == TokenSyntaxType.OPEN_BRACES) {
         braceCount++;
       }
 
-      if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
+      if (token.tokenType() == TokenSyntaxType.CLOSE_BRACES) {
         braceCount--;
         if (braceCount == 0) {
-          if (lexer.peek() != null && lexer.peek().nodeType() == TokenSyntaxType.ELSE) {
+          if (lexer.peek() != null && lexer.peek().tokenType() == TokenSyntaxType.ELSE) {
             hasElse = true;
           }
           break;
@@ -36,11 +36,11 @@ public class IfStatementValidator implements StatementValidator {
       while (lexer.hasNext()) {
         Token token = lexer.next();
         tokens.add(token);
-        if (token.nodeType().equals(TokenSyntaxType.OPEN_BRACES)) {
+        if (token.tokenType().equals(TokenSyntaxType.OPEN_BRACES)) {
           braceCount++;
         }
 
-        if (token.nodeType().equals(TokenSyntaxType.CLOSE_BRACES)) {
+        if (token.tokenType().equals(TokenSyntaxType.CLOSE_BRACES)) {
           braceCount--;
           if (braceCount == 0) {
             return tokens;
@@ -49,6 +49,7 @@ public class IfStatementValidator implements StatementValidator {
       }
     }
 
+    // TODO: throw exception?
     return tokens;
   }
 
@@ -57,6 +58,6 @@ public class IfStatementValidator implements StatementValidator {
     if (tokens.isEmpty()) {
       return false;
     }
-    return tokens.get(0).nodeType().equals(TokenSyntaxType.IF);
+    return tokens.get(0).tokenType().equals(TokenSyntaxType.IF);
   }
 }

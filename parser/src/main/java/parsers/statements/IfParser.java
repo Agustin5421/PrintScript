@@ -36,17 +36,17 @@ public class IfParser implements StatementParser {
     for (int i = 0; i < tokens.size(); i++) {
       Token token = tokens.get(i);
 
-      if (token.nodeType() == TokenSyntaxType.OPEN_BRACES) {
+      if (token.tokenType() == TokenSyntaxType.OPEN_BRACES) {
         braceCount++;
       }
 
       thenBodyTokens.add(token);
 
-      if (token.nodeType() == TokenSyntaxType.CLOSE_BRACES) {
+      if (token.tokenType() == TokenSyntaxType.CLOSE_BRACES) {
         braceCount--;
 
         if (braceCount == 0) {
-          if (i + 1 < tokens.size() && tokens.get(i + 1).nodeType() == TokenSyntaxType.ELSE) {
+          if (i + 1 < tokens.size() && tokens.get(i + 1).tokenType() == TokenSyntaxType.ELSE) {
             hasElse = true;
           }
           break;
@@ -66,8 +66,8 @@ public class IfParser implements StatementParser {
 
   private List<Token> removeBraces(List<Token> tokens) {
     if (tokens.size() >= 2
-        && tokens.get(0).nodeType() == TokenSyntaxType.OPEN_BRACES
-        && tokens.get(tokens.size() - 1).nodeType() == TokenSyntaxType.CLOSE_BRACES) {
+        && tokens.get(0).tokenType() == TokenSyntaxType.OPEN_BRACES
+        && tokens.get(tokens.size() - 1).tokenType() == TokenSyntaxType.CLOSE_BRACES) {
       return tokens.subList(1, tokens.size() - 1);
     }
     return tokens;
@@ -79,6 +79,6 @@ public class IfParser implements StatementParser {
       return false;
     }
 
-    return tokens.get(0).nodeType() == TokenSyntaxType.IF;
+    return tokens.get(0).tokenType() == TokenSyntaxType.IF;
   }
 }

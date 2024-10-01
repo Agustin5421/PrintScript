@@ -20,6 +20,7 @@ public class IdentifierTypeChecker implements TypeGetter {
     return null;
   }
 
+  // TODO: check
   private boolean isValidIdentifier(String word) {
     return word != null && !word.isEmpty() && identifierPattern.matcher(word).matches();
   }

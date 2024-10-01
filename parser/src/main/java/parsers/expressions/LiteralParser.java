@@ -9,7 +9,7 @@ import token.types.TokenValueType;
 
 public class LiteralParser implements ExpressionParser {
 
-  // TODO: Implement a Literal parser for each nodeType of literal
+  // TODO: Implement a Literal parser for each tokenType of literal
   @Override
   public ExpressionNode parse(Parser parser, List<Token> tokens) {
     return LiteralFactory.createLiteral(tokens.get(0));
@@ -17,6 +17,6 @@ public class LiteralParser implements ExpressionParser {
 
   @Override
   public boolean shouldParse(List<Token> tokens) {
-    return tokens.get(0).nodeType() instanceof TokenValueType && tokens.size() <= 2;
+    return tokens.get(0).tokenType() instanceof TokenValueType && tokens.size() <= 2;
   }
 }

@@ -37,7 +37,7 @@ public class VariableDeclarationParser implements StatementParser {
 
     ExpressionNode value;
 
-    if (tokens.get(4).nodeType() != TokenSyntaxType.ASSIGNATION) {
+    if (tokens.get(4).tokenType() != TokenSyntaxType.ASSIGNATION) {
       value = null;
     } else {
       value = parser.parseExpression(tokens.subList(5, tokens.size()));

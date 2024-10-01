@@ -55,7 +55,7 @@ public class CallFunctionAsStatementParser implements StatementParser {
     int openParentheses = 0;
 
     for (Token token : tokens) {
-      TokenType type = token.nodeType();
+      TokenType type = token.tokenType();
 
       if (type == TokenSyntaxType.OPEN_PARENTHESIS) {
         if (inArguments) {
