@@ -3,11 +3,18 @@ package linter.strategy.identifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.identifier.Identifier;
+import ast.root.AstNodeType;
+import java.util.List;
+import java.util.Map;
+import linter.engine.LinterEngine;
 import linter.engine.report.FullReport;
 import linter.engine.report.Report;
 import linter.engine.strategy.LintingStrategy;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
+import output.OutputListString;
+import output.OutputString;
+import strategy.StrategyContainer;
 import token.Position;
 
 public class CamelCaseTest {
@@ -19,10 +26,17 @@ public class CamelCaseTest {
 
     LintingStrategy camelCaseIdentifier =
         new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
-    FullReport fullReport = new FullReport();
-    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
-    assertEquals(0, fullReport.getReports().size());
+    StrategyContainer<AstNodeType, LintingStrategy> nodesStrategies =
+        new StrategyContainer<>(
+            Map.of(AstNodeType.IDENTIFIER, camelCaseIdentifier), "Can't lint: ");
+    OutputString output = new OutputString();
+    LinterEngine engine = new LinterEngine(nodesStrategies, output);
+
+    engine.lintNode(identifier);
+
+    String result = output.getResult();
+    assertEquals("", result);
   }
 
   @Test
@@ -33,6 +47,19 @@ public class CamelCaseTest {
 
     LintingStrategy camelCaseIdentifier =
         new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
+
+    StrategyContainer<AstNodeType, LintingStrategy> nodesStrategies =
+        new StrategyContainer<>(
+            Map.of(AstNodeType.IDENTIFIER, camelCaseIdentifier), "Can't lint: ");
+    OutputListString output = new OutputListString();
+    LinterEngine engine = new LinterEngine(nodesStrategies, output);
+
+    engine.lintNode(identifier);
+
+    List<String> result = output.getSavedResults();
+
+    assertEquals(1, result.size());
+
     FullReport fullReport = new FullReport();
     fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
 
