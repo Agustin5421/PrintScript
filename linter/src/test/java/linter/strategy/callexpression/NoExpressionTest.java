@@ -17,7 +17,6 @@ import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import org.junit.jupiter.api.Test;
 import output.OutputReport;
 import position.Position;
-import report.FullReport;
 import strategy.StrategyContainer;
 
 public class NoExpressionTest {
@@ -66,14 +65,11 @@ public class NoExpressionTest {
     Identifier identifier = new Identifier("methodName", position, position);
     CallExpression callExpression = new CallExpression(identifier, List.of(identifier));
 
-    LintingStrategy strategy =
-        new ArgumentsStrategy(
-            List.of(
-                AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
-    FullReport fullReport = new FullReport();
+    LinterEngine engine = getLinterEngine();
+    engine.lintNode(callExpression);
 
-    FullReport newReport = strategy.oldApply(callExpression, fullReport);
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, newReport.getReports().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 }

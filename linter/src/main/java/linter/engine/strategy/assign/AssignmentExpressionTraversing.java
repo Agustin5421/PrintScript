@@ -6,18 +6,12 @@ import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
-import report.FullReport;
 
 public class AssignmentExpressionTraversing implements LintingStrategy {
   private final LintingStrategy selfStrategy;
 
   public AssignmentExpressionTraversing(LintingStrategy selfStrategy) {
     this.selfStrategy = selfStrategy;
-  }
-
-  @Override
-  public FullReport oldApply(AstNode node, FullReport fullReport) {
-    return null;
   }
 
   @Override

@@ -5,7 +5,6 @@ import ast.root.AstNode;
 import ast.root.AstNodeType;
 import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
-import report.FullReport;
 import report.Report;
 
 public class WritingConventionStrategy implements LintingStrategy {
@@ -15,27 +14,6 @@ public class WritingConventionStrategy implements LintingStrategy {
   public WritingConventionStrategy(String writingConventionName, String writingConventionPattern) {
     this.writingConventionName = writingConventionName;
     this.writingConventionPattern = writingConventionPattern;
-  }
-
-  // testing purposes
-  @Override
-  public FullReport oldApply(AstNode node, FullReport fullReport) {
-    if (!shouldApply(node)) {
-      return fullReport;
-    }
-
-    Identifier identifier = (Identifier) node;
-
-    if (!identifier.name().matches(writingConventionPattern)) {
-      fullReport =
-          fullReport.addReport(
-              new Report(
-                  identifier.start(),
-                  identifier.end(),
-                  "Identifier " + identifier.name() + " is not in " + writingConventionName));
-    }
-
-    return fullReport;
   }
 
   @Override

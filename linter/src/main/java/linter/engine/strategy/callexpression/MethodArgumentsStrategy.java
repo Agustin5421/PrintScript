@@ -5,7 +5,6 @@ import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
-import report.FullReport;
 
 public class MethodArgumentsStrategy implements LintingStrategy {
   private final String methodName;
@@ -14,11 +13,6 @@ public class MethodArgumentsStrategy implements LintingStrategy {
   public MethodArgumentsStrategy(String methodName, LintingStrategy argumentsStrategy) {
     this.methodName = methodName;
     this.argumentsStrategy = argumentsStrategy;
-  }
-
-  @Override
-  public FullReport oldApply(AstNode node, FullReport fullReport) {
-    return null;
   }
 
   @Override

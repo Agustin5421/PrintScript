@@ -5,18 +5,12 @@ import ast.root.AstNode;
 import ast.statements.CallExpression;
 import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
-import report.FullReport;
 
 public class CallExpressionTraversing implements LintingStrategy {
   private final LintingStrategy selfStrategy;
 
   public CallExpressionTraversing(LintingStrategy selfStrategy) {
     this.selfStrategy = selfStrategy;
-  }
-
-  @Override
-  public FullReport oldApply(AstNode node, FullReport fullReport) {
-    return null;
   }
 
   @Override

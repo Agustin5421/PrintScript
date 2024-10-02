@@ -6,7 +6,6 @@ import ast.statements.CallExpression;
 import java.util.List;
 import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
-import report.FullReport;
 import report.Report;
 
 public class ArgumentsStrategy implements LintingStrategy {
@@ -14,31 +13,6 @@ public class ArgumentsStrategy implements LintingStrategy {
 
   public ArgumentsStrategy(List<AstNodeType> allowedArguments) {
     this.allowedArguments = allowedArguments;
-  }
-
-  @Override
-  public FullReport oldApply(AstNode node, FullReport fullReport) {
-    if (!shouldApply(node)) {
-      return fullReport;
-    }
-
-    CallExpression callExpression = (CallExpression) node;
-
-    List<AstNode> arguments = callExpression.arguments();
-
-    for (AstNode argument : arguments) {
-      AstNodeType argumentType = argument.getNodeType();
-      if (isNotValidArgument(argumentType)) {
-        Report newReport =
-            new Report(
-                argument.start(),
-                argument.end(),
-                "Value of type " + argumentType + " is not allowed as an argument");
-        fullReport = fullReport.addReport(newReport);
-      }
-    }
-
-    return fullReport;
   }
 
   @Override

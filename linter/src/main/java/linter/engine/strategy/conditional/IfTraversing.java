@@ -5,18 +5,12 @@ import ast.root.AstNode;
 import ast.statements.IfStatement;
 import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
-import report.FullReport;
 
 public class IfTraversing implements LintingStrategy {
   private final LintingStrategy selfStrategy;
 
   public IfTraversing(LintingStrategy selfStrategy) {
     this.selfStrategy = selfStrategy;
-  }
-
-  @Override
-  public FullReport oldApply(AstNode node, FullReport fullReport) {
-    return null;
   }
 
   @Override
