@@ -1,6 +1,6 @@
-package linter.engine.report;
+package report;
 
-import token.Position;
+import position.Position;
 
 public record Report(Position start, Position end, String message) {
   @Override
