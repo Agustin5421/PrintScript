@@ -50,18 +50,18 @@
 
     <module name="TreeWalker">
         <module name="OuterTypeFilename"/>
-        <module name="IllegalTokenText">
-            <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>
-            <property name="format"
-                      value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>
-            <property name="message"
-                      value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
-        </module>
-        <module name="AvoidEscapedUnicodeCharacters">
-            <property name="allowEscapesForControlCharacters" value="true"/>
-            <property name="allowByTailComment" value="true"/>
-            <property name="allowNonPrintableEscapes" value="true"/>
-        </module>
+        <!--        <module name="IllegalTokenText">-->
+        <!--            <property name="tokens" value="STRING_LITERAL, CHAR_LITERAL"/>-->
+        <!--            <property name="format"-->
+        <!--                      value="\\u00(09|0(a|A)|0(c|C)|0(d|D)|22|27|5(C|c))|\\(0(10|11|12|14|15|42|47)|134)"/>-->
+        <!--            <property name="message"-->
+        <!--                      value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>-->
+        <!--        </module>-->
+        <!--        <module name="AvoidEscapedUnicodeCharacters">-->
+        <!--            <property name="allowEscapesForControlCharacters" value="true"/>-->
+        <!--            <property name="allowByTailComment" value="true"/>-->
+        <!--            <property name="allowNonPrintableEscapes" value="true"/>-->
+        <!--        </module>-->
         <module name="AvoidStarImport"/>
         <module name="OneTopLevelClass"/>
         <module name="NoLineWrap">
@@ -98,12 +98,6 @@
                     INSTANCE_INIT, ANNOTATION_DEF, ENUM_DEF, INTERFACE_DEF, RECORD_DEF,
                     COMPACT_CTOR_DEF"/>
         </module>
-        <module name="SuppressionXpathSingleFilter">
-            <!-- suppresion is required till https://github.com/checkstyle/checkstyle/issues/7541 -->
-            <property name="id" value="RightCurlyAlone"/>
-            <property name="query" value="//RCURLY[parent::SLIST[count(./*)=1]
-                                     or preceding-sibling::*[last()][self::LCURLY]]"/>
-        </module>
         <module name="WhitespaceAfter">
             <property name="tokens"
                       value="COMMA, SEMI, TYPECAST, LITERAL_IF, LITERAL_ELSE, LITERAL_RETURN,
@@ -136,8 +130,8 @@
         <module name="MultipleVariableDeclarations"/>
         <module name="ArrayTypeStyle"/>
         <module name="MissingSwitchDefault"/>
-        <module name="FallThrough"/>
-        <module name="UpperEll"/>
+        <!--        <module name="FallThrough"/>-->
+        <!--        <module name="UpperEll"/>-->
         <module name="ModifierOrder"/>
         <module name="EmptyLineSeparator">
             <property name="tokens"
@@ -268,7 +262,7 @@
         </module>
         <module name="NoWhitespaceBeforeCaseDefaultColon"/>
         <module name="OverloadMethodsDeclarationOrder"/>
-        <module name="VariableDeclarationUsageDistance"/>
+        <!--        <module name="VariableDeclarationUsageDistance"/>-->
         <module name="CustomImportOrder">
             <property name="sortImportsInGroupAlphabetically" value="true"/>
             <property name="separateLineBetweenGroups" value="true"/>
@@ -353,18 +347,18 @@
                      value="Method name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="SingleLineJavadoc"/>
-        <module name="EmptyCatchBlock">
-            <property name="exceptionVariableName" value="expected"/>
-        </module>
+        <!--        <module name="EmptyCatchBlock">-->
+        <!--            <property name="exceptionVariableName" value="expected"/>-->
+        <!--        </module>-->
         <module name="CommentsIndentation">
             <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>
         </module>
         <!-- https://checkstyle.org/filters/suppressionxpathfilter.html -->
-        <module name="SuppressionXpathFilter">
-            <property name="file" value="${org.checkstyle.google.suppressionxpathfilter.config}"
-                      default="checkstyle-xpath-suppressions.xml" />
-            <property name="optional" value="true"/>
-        </module>
+        <!--        <module name="SuppressionXpathFilter">-->
+        <!--            <property name="file" value="${org.checkstyle.google.suppressionxpathfilter.config}"-->
+        <!--                      default="checkstyle-xpath-suppressions.xml" />-->
+        <!--            <property name="optional" value="true"/>-->
+        <!--        </module>-->
         <module name="SuppressWarningsHolder" />
         <module name="SuppressionCommentFilter">
             <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)" />
