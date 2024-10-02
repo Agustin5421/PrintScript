@@ -10,6 +10,7 @@ import input.InputMock;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import output.OutputMock;
+import output.OutputReport;
 import output.OutputString;
 import runner.Runner;
 
@@ -50,7 +51,7 @@ public class Cli {
       switch (operation) {
         case "Validation" -> runner.validate(code, version);
         case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock(), new InputMock());
-        case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputString());
+        case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputReport());
         case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
         default -> {
           progressObserver.error();

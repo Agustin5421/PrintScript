@@ -17,7 +17,7 @@ import linter.engine.strategy.binary.BinaryExpressionTraversing;
 import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
-import output.OutputListString;
+import output.OutputReport;
 import position.Position;
 import strategy.StrategyContainer;
 
@@ -40,7 +40,7 @@ public class LinterEngineV1NodeTest {
     StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
         new StrategyContainer<>(nodesStrategies, "Can't lint: ");
 
-    return new LinterEngine(mockStrategy, new OutputListString());
+    return new LinterEngine(mockStrategy, new OutputReport());
   }
 
   @Test
@@ -54,8 +54,8 @@ public class LinterEngineV1NodeTest {
 
     LinterEngine newEngine = engine.lintNode(callExpression);
 
-    OutputListString output = (OutputListString) newEngine.getOutput();
-    assertEquals(3, output.getSavedResults().size());
+    OutputReport output = (OutputReport) newEngine.getOutput();
+    assertEquals(3, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -69,8 +69,8 @@ public class LinterEngineV1NodeTest {
 
     LinterEngine newEngine = engine.lintNode(callExpression);
 
-    OutputListString output = (OutputListString) newEngine.getOutput();
-    assertEquals(0, output.getSavedResults().size());
+    OutputReport output = (OutputReport) newEngine.getOutput();
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -85,8 +85,8 @@ public class LinterEngineV1NodeTest {
 
     LinterEngine newEngine = engine.lintNode(callExpression);
 
-    OutputListString output = (OutputListString) newEngine.getOutput();
-    assertEquals(2, output.getSavedResults().size());
+    OutputReport output = (OutputReport) newEngine.getOutput();
+    assertEquals(2, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -100,8 +100,8 @@ public class LinterEngineV1NodeTest {
 
     LinterEngine newEngine = engine.lintNode(binaryExpression);
 
-    OutputListString output = (OutputListString) newEngine.getOutput();
-    assertEquals(1, output.getSavedResults().size());
+    OutputReport output = (OutputReport) newEngine.getOutput();
+    assertEquals(1, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -116,7 +116,7 @@ public class LinterEngineV1NodeTest {
 
     LinterEngine newEngine = engine.lintNode(assignmentExpression);
 
-    OutputListString output = (OutputListString) newEngine.getOutput();
-    assertEquals(1, output.getSavedResults().size());
+    OutputReport output = (OutputReport) newEngine.getOutput();
+    assertEquals(1, output.getFullReport().getReports().size());
   }
 }

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import linter.engine.LinterEngine;
 import org.junit.jupiter.api.Test;
-import output.OutputListString;
+import output.OutputReport;
 import parsers.Parser;
 
 public abstract class CommonLinterTest {
@@ -24,9 +24,9 @@ public abstract class CommonLinterTest {
     }
 
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(1, output.getSavedResults().size());
+    assertEquals(1, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -41,9 +41,9 @@ public abstract class CommonLinterTest {
     }
 
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -58,9 +58,9 @@ public abstract class CommonLinterTest {
     }
 
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -75,9 +75,9 @@ public abstract class CommonLinterTest {
     }
 
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -92,9 +92,9 @@ public abstract class CommonLinterTest {
     }
 
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -109,8 +109,8 @@ public abstract class CommonLinterTest {
     }
 
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(1, output.getSavedResults().size());
+    assertEquals(1, output.getFullReport().getReports().size());
   }
 }

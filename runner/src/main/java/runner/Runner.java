@@ -15,6 +15,7 @@ import linter.Linter;
 import observers.ProgressObserver;
 import output.OutputResult;
 import parsers.Parser;
+import report.Report;
 
 public class Runner {
   private final ProgressObserver progressObserver;
@@ -53,7 +54,7 @@ public class Runner {
     }
   }
 
-  public void analyze(InputStream code, String version, String config, OutputResult<String> output) {
+  public void analyze(InputStream code, String version, String config, OutputResult<Report> output) {
     Lexer lexer;
     try {
       lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);

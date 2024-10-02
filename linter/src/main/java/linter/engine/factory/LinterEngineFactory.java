@@ -13,6 +13,7 @@ import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import linter.engine.strategy.conditional.IfTraversing;
 import linter.engine.strategy.vardec.VariableDeclarationTraversing;
 import output.OutputResult;
+import report.Report;
 import strategy.StrategyContainer;
 
 public class LinterEngineFactory {
@@ -25,7 +26,7 @@ public class LinterEngineFactory {
   }
 
   public LinterEngine createLinterEngine(
-      String version, String rules, OutputResult<String> output) {
+      String version, String rules, OutputResult<Report> output) {
     LintingStrategy identifierLintingStrategies = getIdentifierLintingStrategies(rules, version);
     LintingStrategy callExpressionLintingStrategies =
         getCallExpressionLintingStrategies(rules, version);

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import output.OutputResult;
+import report.Report;
 
 public class RunnerLinterTest {
   @Test
@@ -29,13 +30,13 @@ public class RunnerLinterTest {
                     """,
         new OutputResult<>() {
           @Override
-          public void saveResult(String result) {
-            System.out.println(result);
+          public void saveResult(Report result) {
+            System.out.println(result.toString());
           }
 
           @Override
-          public String getResult() {
-            return "";
+          public Report getResult() {
+            return null;
           }
         });
   }

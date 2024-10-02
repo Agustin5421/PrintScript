@@ -60,7 +60,7 @@ public class ArgumentsStrategy implements LintingStrategy {
                 argument.end(),
                 "Value of type " + argumentType + " is not allowed as an argument");
 
-        engine.getOutput().saveResult(newReport.toString());
+        engine.getOutput().saveResult(newReport);
       }
     }
 

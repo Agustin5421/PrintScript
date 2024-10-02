@@ -15,7 +15,7 @@ import lexer.Lexer;
 import linter.engine.LinterEngine;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import output.OutputListString;
+import output.OutputReport;
 import parsers.Parser;
 
 public class LinterV2Test extends CommonLinterTest {
@@ -26,7 +26,7 @@ public class LinterV2Test extends CommonLinterTest {
   public void setUp() {
     String rules = TestUtils.readResourceFile("linterRulesRework2A.json");
     assertNotNull(rules);
-    linterV2 = LinterFactory.getReworkedLinter("1.1", rules, new OutputListString());
+    linterV2 = LinterFactory.getReworkedLinter("1.1", rules, new OutputReport());
 
     parser = ParserFactory.getParser("1.1");
   }
@@ -54,9 +54,9 @@ public class LinterV2Test extends CommonLinterTest {
 
     linter = linter.lint(ifNode);
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -66,14 +66,14 @@ public class LinterV2Test extends CommonLinterTest {
 
     linter = linter.lint(booleanNode);
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
   public void emptyConfigTest() {
-    Linter linter = LinterFactory.getReworkedLinter("1.1", "{}", new OutputListString());
+    Linter linter = LinterFactory.getReworkedLinter("1.1", "{}", new OutputReport());
     String code = "let snake_case: string = \"Oliver\"; let camelCase: string = \"Oliver\";";
     Parser parser = getParser(code);
 
@@ -82,9 +82,9 @@ public class LinterV2Test extends CommonLinterTest {
     }
 
     LinterEngine engine = linter.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -100,8 +100,8 @@ public class LinterV2Test extends CommonLinterTest {
     }
 
     LinterEngine engine = linterV2.engine();
-    OutputListString output = (OutputListString) engine.getOutput();
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 }

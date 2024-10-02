@@ -10,10 +10,8 @@ import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
-import output.OutputListString;
-import output.OutputString;
+import output.OutputReport;
 import position.Position;
-import report.FullReport;
 import report.Report;
 import strategy.StrategyContainer;
 
@@ -30,13 +28,13 @@ public class CamelCaseTest {
     StrategyContainer<AstNodeType, LintingStrategy> nodesStrategies =
         new StrategyContainer<>(
             Map.of(AstNodeType.IDENTIFIER, camelCaseIdentifier), "Can't lint: ");
-    OutputString output = new OutputString();
+    OutputReport output = new OutputReport();
     LinterEngine engine = new LinterEngine(nodesStrategies, output);
 
     engine.lintNode(identifier);
 
-    String result = output.getResult();
-    assertEquals("", result);
+    List<Report> result = output.getFullReport().getReports();
+    assertEquals(0, result.size());
   }
 
   @Test
@@ -51,22 +49,13 @@ public class CamelCaseTest {
     StrategyContainer<AstNodeType, LintingStrategy> nodesStrategies =
         new StrategyContainer<>(
             Map.of(AstNodeType.IDENTIFIER, camelCaseIdentifier), "Can't lint: ");
-    OutputListString output = new OutputListString();
+    OutputReport output = new OutputReport();
     LinterEngine engine = new LinterEngine(nodesStrategies, output);
 
     engine.lintNode(identifier);
 
-    List<String> result = output.getSavedResults();
+    List<Report> result = output.getFullReport().getReports();
 
     assertEquals(1, result.size());
-
-    FullReport fullReport = new FullReport();
-    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
-
-    assertEquals(1, fullReport.getReports().size());
-
-    Report report = fullReport.getReports().get(0);
-    assertEquals(start, report.start());
-    assertEquals(end, report.end());
   }
 }

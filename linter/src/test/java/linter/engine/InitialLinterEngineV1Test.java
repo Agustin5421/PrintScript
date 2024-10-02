@@ -10,7 +10,7 @@ import linter.engine.strategy.LintingStrategy;
 import linter.engine.strategy.StrategiesContainer;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
-import output.OutputListString;
+import output.OutputReport;
 import position.Position;
 import strategy.StrategyContainer;
 
@@ -26,7 +26,7 @@ public class InitialLinterEngineV1Test {
     StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
         new StrategyContainer<>(nodesStrategies, "Can't lint: ");
 
-    return new LinterEngine(mockStrategy, new OutputListString());
+    return new LinterEngine(mockStrategy, new OutputReport());
   }
 
   @Test
@@ -38,11 +38,11 @@ public class InitialLinterEngineV1Test {
 
     LinterEngine newEngine = engine.lintNode(identifier);
 
-    OutputListString oldOutput = (OutputListString) engine.getOutput();
-    OutputListString newOutput = (OutputListString) newEngine.getOutput();
+    OutputReport oldOutput = (OutputReport) engine.getOutput();
+    OutputReport newOutput = (OutputReport) newEngine.getOutput();
 
-    assertEquals(1, oldOutput.getSavedResults().size());
-    assertEquals(1, newOutput.getSavedResults().size());
+    assertEquals(1, oldOutput.getFullReport().getReports().size());
+    assertEquals(1, newOutput.getFullReport().getReports().size());
   }
 
   @Test
@@ -54,9 +54,9 @@ public class InitialLinterEngineV1Test {
 
     LinterEngine newEngine = engine.lintNode(identifier);
 
-    OutputListString output = (OutputListString) newEngine.getOutput();
+    OutputReport output = (OutputReport) newEngine.getOutput();
 
-    assertEquals(0, output.getSavedResults().size());
+    assertEquals(0, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -69,8 +69,8 @@ public class InitialLinterEngineV1Test {
     LinterEngine newEngine = engine.lintNode(identifier);
     LinterEngine newEngine2 = newEngine.lintNode(identifier);
 
-    OutputListString output = (OutputListString) newEngine2.getOutput();
+    OutputReport output = (OutputReport) newEngine2.getOutput();
 
-    assertEquals(2, output.getSavedResults().size());
+    assertEquals(2, output.getFullReport().getReports().size());
   }
 }

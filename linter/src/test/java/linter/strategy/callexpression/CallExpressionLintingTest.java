@@ -16,7 +16,7 @@ import linter.engine.strategy.StrategiesContainer;
 import linter.engine.strategy.callexpression.ArgumentsStrategy;
 import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import org.junit.jupiter.api.Test;
-import output.OutputListString;
+import output.OutputReport;
 import position.Position;
 import strategy.StrategyContainer;
 
@@ -40,7 +40,7 @@ public class CallExpressionLintingTest {
     StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
         new StrategyContainer<>(nodesStrategies, "Can't lint: ");
 
-    return new LinterEngine(mockStrategy, new OutputListString());
+    return new LinterEngine(mockStrategy, new OutputReport());
   }
 
   @Test
@@ -54,9 +54,9 @@ public class CallExpressionLintingTest {
 
     LinterEngine engine = getLinterEngineV2();
     LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputListString output = (OutputListString) newEngine.getOutput();
+    OutputReport output = (OutputReport) newEngine.getOutput();
 
-    assertEquals(1, output.getSavedResults().size());
+    assertEquals(1, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -73,9 +73,9 @@ public class CallExpressionLintingTest {
 
     LinterEngine engine = getLinterEngineV2();
     LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputListString output = (OutputListString) newEngine.getOutput();
+    OutputReport output = (OutputReport) newEngine.getOutput();
 
-    assertEquals(4, output.getSavedResults().size());
+    assertEquals(4, output.getFullReport().getReports().size());
   }
 
   @Test
@@ -92,9 +92,9 @@ public class CallExpressionLintingTest {
 
     LinterEngine engine = getLinterEngineV2();
     LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputListString output = (OutputListString) newEngine.getOutput();
+    OutputReport output = (OutputReport) newEngine.getOutput();
 
-    assertEquals(3, output.getSavedResults().size());
+    assertEquals(3, output.getFullReport().getReports().size());
   }
 
   private LinterEngine getLinterEngineStrictArguments() {
@@ -106,7 +106,7 @@ public class CallExpressionLintingTest {
     StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
         new StrategyContainer<>(nodesStrategies, "Can't lint: ");
 
-    return new LinterEngine(mockStrategy, new OutputListString());
+    return new LinterEngine(mockStrategy, new OutputReport());
   }
 
   @Test
@@ -122,8 +122,8 @@ public class CallExpressionLintingTest {
 
     LinterEngine engine = getLinterEngineStrictArguments();
     LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputListString output = (OutputListString) newEngine.getOutput();
+    OutputReport output = (OutputReport) newEngine.getOutput();
 
-    assertEquals(4, output.getSavedResults().size());
+    assertEquals(4, output.getFullReport().getReports().size());
   }
 }

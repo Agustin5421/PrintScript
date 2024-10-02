@@ -53,7 +53,7 @@ public class WritingConventionStrategy implements LintingStrategy {
               identifier.end(),
               "Identifier " + identifier.name() + " is not in " + writingConventionName);
 
-      engine.getOutput().saveResult(newReport.toString());
+      engine.getOutput().saveResult(newReport);
     }
 
     return engine;
