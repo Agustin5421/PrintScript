@@ -3,7 +3,7 @@ package linter.engine.strategy;
 import ast.root.AstNode;
 import java.util.List;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
+import report.FullReport;
 
 public class StrategiesContainer implements LintingStrategy {
   private final List<LintingStrategy> strategies;

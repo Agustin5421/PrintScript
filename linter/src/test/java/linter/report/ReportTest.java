@@ -2,10 +2,10 @@ package linter.report;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import linter.engine.report.FullReport;
-import linter.engine.report.Report;
 import org.junit.jupiter.api.Test;
-import token.Position;
+import position.Position;
+import report.FullReport;
+import report.Report;
 
 public class ReportTest {
   @Test

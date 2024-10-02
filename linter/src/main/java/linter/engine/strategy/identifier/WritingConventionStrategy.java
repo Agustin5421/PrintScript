@@ -4,9 +4,9 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
-import linter.engine.report.Report;
 import linter.engine.strategy.LintingStrategy;
+import report.FullReport;
+import report.Report;
 
 public class WritingConventionStrategy implements LintingStrategy {
   private final String writingConventionName;

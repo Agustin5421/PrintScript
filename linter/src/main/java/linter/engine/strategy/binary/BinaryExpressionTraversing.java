@@ -4,8 +4,8 @@ import ast.expressions.BinaryExpression;
 import ast.expressions.ExpressionNode;
 import ast.root.AstNode;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
 import linter.engine.strategy.LintingStrategy;
+import report.FullReport;
 
 public class BinaryExpressionTraversing implements LintingStrategy {
   private final LintingStrategy selfStrategy;

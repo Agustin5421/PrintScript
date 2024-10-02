@@ -8,11 +8,11 @@ import ast.literal.NumberLiteral;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
-import linter.engine.report.FullReport;
 import linter.engine.strategy.LintingStrategy;
 import linter.engine.strategy.callexpression.ArgumentsStrategy;
 import org.junit.jupiter.api.Test;
-import token.Position;
+import position.Position;
+import report.FullReport;
 
 public class NoExpressionTest {
   @Test

@@ -22,7 +22,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
-import token.Position;
+import position.Position;
 
 public class EngineV2Test extends CommonEngineTest {
   private InterpreterEngine engine;

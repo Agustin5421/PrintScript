@@ -1,7 +1,7 @@
 package ast.expressions;
 
 import ast.root.AstNodeType;
-import token.Position;
+import position.Position;
 import visitor.NodeVisitor;
 
 public record BinaryExpression(

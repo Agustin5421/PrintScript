@@ -3,7 +3,7 @@ package ast.statements;
 import ast.expressions.ExpressionNode;
 import ast.root.AstNodeType;
 import java.util.List;
-import token.Position;
+import position.Position;
 import visitor.NodeVisitor;
 
 public class IfStatement implements StatementNode {

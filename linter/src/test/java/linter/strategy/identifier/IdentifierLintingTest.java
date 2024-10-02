@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.identifier.Identifier;
 import java.util.List;
-import linter.engine.report.FullReport;
 import linter.engine.strategy.LintingStrategy;
 import linter.engine.strategy.StrategiesContainer;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
-import token.Position;
+import position.Position;
+import report.FullReport;
 
 public class IdentifierLintingTest {
   private List<Identifier> getIdentifiers() {

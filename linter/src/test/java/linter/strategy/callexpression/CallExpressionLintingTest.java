@@ -17,8 +17,8 @@ import linter.engine.strategy.callexpression.ArgumentsStrategy;
 import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
+import position.Position;
 import strategy.StrategyContainer;
-import token.Position;
 
 public class CallExpressionLintingTest {
   private LinterEngine getLinterEngineV2() {

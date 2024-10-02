@@ -2,7 +2,7 @@ package interpreter.engine.strategy.expression.literal;
 
 import ast.literal.Literal;
 import ast.literal.StringLiteral;
-import token.Position;
+import position.Position;
 
 public class StringLiteralFactory implements LiteralFactory {
   @Override

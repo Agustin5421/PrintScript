@@ -5,7 +5,7 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.root.AstNodeType;
 import java.util.List;
-import token.Position;
+import position.Position;
 import visitor.NodeVisitor;
 
 public record CallExpression(

@@ -4,8 +4,8 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.statements.CallExpression;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
 import linter.engine.strategy.LintingStrategy;
+import report.FullReport;
 
 public class CallExpressionTraversing implements LintingStrategy {
   private final LintingStrategy selfStrategy;

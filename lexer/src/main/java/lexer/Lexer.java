@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import observers.Observable;
 import observers.ProgressObserver;
-import token.Position;
+import position.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
 import token.types.TokenType;

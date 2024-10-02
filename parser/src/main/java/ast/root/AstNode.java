@@ -1,6 +1,6 @@
 package ast.root;
 
-import token.Position;
+import position.Position;
 
 public interface AstNode extends VisitableNode {
   AstNodeType getNodeType();

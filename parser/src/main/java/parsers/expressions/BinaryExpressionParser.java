@@ -6,7 +6,7 @@ import ast.expressions.BinaryExpression;
 import ast.expressions.ExpressionNode;
 import java.util.List;
 import parsers.Parser;
-import token.Position;
+import position.Position;
 import token.Token;
 import token.types.TokenDataType;
 import token.types.TokenSyntaxType;

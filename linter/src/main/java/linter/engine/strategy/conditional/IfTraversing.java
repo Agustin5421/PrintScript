@@ -4,8 +4,8 @@ import ast.expressions.ExpressionNode;
 import ast.root.AstNode;
 import ast.statements.IfStatement;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
 import linter.engine.strategy.LintingStrategy;
+import report.FullReport;
 
 public class IfTraversing implements LintingStrategy {
   private final LintingStrategy selfStrategy;

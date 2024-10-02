@@ -18,8 +18,8 @@ import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
+import position.Position;
 import strategy.StrategyContainer;
-import token.Position;
 
 public class LinterEngineV1NodeTest {
   private LinterEngine getLinterEngineOnlyIdentifierLinting() {

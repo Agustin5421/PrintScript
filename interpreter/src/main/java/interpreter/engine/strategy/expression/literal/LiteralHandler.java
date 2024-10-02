@@ -3,7 +3,7 @@ package interpreter.engine.strategy.expression.literal;
 import ast.literal.Literal;
 import ast.statements.CallExpression;
 import java.util.Map;
-import token.Position;
+import position.Position;
 
 public class LiteralHandler {
   private final Map<String, LiteralFactory> strategies;

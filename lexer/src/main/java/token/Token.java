@@ -1,5 +1,6 @@
 package token;
 
+import position.Position;
 import token.types.TokenType;
 
 public record Token(

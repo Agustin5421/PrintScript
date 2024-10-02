@@ -20,7 +20,7 @@ import interpreter.engine.repository.VariablesRepository;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
-import token.Position;
+import position.Position;
 
 public abstract class CommonEngineTest {
   protected abstract InterpreterEngine getEngine();

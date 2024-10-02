@@ -1,4 +1,4 @@
-package token;
+package position;
 
 public record Position(int row, int col) {
 

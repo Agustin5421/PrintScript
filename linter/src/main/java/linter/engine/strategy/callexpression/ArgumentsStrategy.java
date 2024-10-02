@@ -5,9 +5,9 @@ import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
-import linter.engine.report.Report;
 import linter.engine.strategy.LintingStrategy;
+import report.FullReport;
+import report.Report;
 
 public class ArgumentsStrategy implements LintingStrategy {
   private final List<AstNodeType> allowedArguments;

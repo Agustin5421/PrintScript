@@ -5,8 +5,8 @@ import ast.identifier.Identifier;
 import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
 import linter.engine.strategy.LintingStrategy;
+import report.FullReport;
 
 public class AssignmentExpressionTraversing implements LintingStrategy {
   private final LintingStrategy selfStrategy;

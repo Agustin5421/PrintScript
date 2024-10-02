@@ -3,7 +3,7 @@ package ast.identifier;
 import ast.expressions.ExpressionNode;
 import ast.root.AstNodeType;
 import java.util.Map;
-import token.Position;
+import position.Position;
 import token.types.TokenDataType;
 import visitor.NodeVisitor;
 

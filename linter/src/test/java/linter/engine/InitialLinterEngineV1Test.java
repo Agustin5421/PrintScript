@@ -11,8 +11,8 @@ import linter.engine.strategy.StrategiesContainer;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
+import position.Position;
 import strategy.StrategyContainer;
-import token.Position;
 
 public class InitialLinterEngineV1Test {
   private LinterEngine getLinterEngineV2() {

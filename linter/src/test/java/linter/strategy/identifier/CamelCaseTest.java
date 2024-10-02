@@ -7,15 +7,15 @@ import ast.root.AstNodeType;
 import java.util.List;
 import java.util.Map;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
-import linter.engine.report.Report;
 import linter.engine.strategy.LintingStrategy;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
 import output.OutputListString;
 import output.OutputString;
+import position.Position;
+import report.FullReport;
+import report.Report;
 import strategy.StrategyContainer;
-import token.Position;
 
 public class CamelCaseTest {
   @Test

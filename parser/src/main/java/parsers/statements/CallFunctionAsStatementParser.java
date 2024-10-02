@@ -9,7 +9,7 @@ import exceptions.UnexpectedTokenException;
 import java.util.ArrayList;
 import java.util.List;
 import parsers.Parser;
-import token.Position;
+import position.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
 import token.types.TokenType;

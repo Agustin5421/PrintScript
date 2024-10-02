@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import parsers.Parser;
-import token.Position;
+import position.Position;
 import token.Token;
 import token.types.TokenSyntaxType;
 

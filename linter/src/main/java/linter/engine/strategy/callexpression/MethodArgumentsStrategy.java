@@ -4,8 +4,8 @@ import ast.root.AstNode;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import linter.engine.LinterEngine;
-import linter.engine.report.FullReport;
 import linter.engine.strategy.LintingStrategy;
+import report.FullReport;
 
 public class MethodArgumentsStrategy implements LintingStrategy {
   private final String methodName;

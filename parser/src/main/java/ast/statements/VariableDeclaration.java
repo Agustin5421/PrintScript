@@ -3,7 +3,7 @@ package ast.statements;
 import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.root.AstNodeType;
-import token.Position;
+import position.Position;
 import visitor.NodeVisitor;
 
 public record VariableDeclaration(
