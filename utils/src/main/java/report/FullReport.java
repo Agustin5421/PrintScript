@@ -3,7 +3,6 @@ package report;
 import java.util.ArrayList;
 import java.util.List;
 
-// Testing purposes
 public class FullReport {
   private final List<Report> reports;
 
