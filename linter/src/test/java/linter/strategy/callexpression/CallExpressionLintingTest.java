@@ -53,8 +53,8 @@ public class CallExpressionLintingTest {
     CallExpression callExpression = new CallExpression(identifier, List.of(binaryExpression));
 
     LinterEngine engine = getLinterEngineV2();
-    LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputReport output = (OutputReport) newEngine.getOutput();
+    engine.lintNode(callExpression);
+    OutputReport output = (OutputReport) engine.getOutput();
 
     assertEquals(1, output.getFullReport().getReports().size());
   }
@@ -72,8 +72,8 @@ public class CallExpressionLintingTest {
             List.of(binaryExpression, binaryExpression, binaryExpression, binaryExpression));
 
     LinterEngine engine = getLinterEngineV2();
-    LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputReport output = (OutputReport) newEngine.getOutput();
+    engine.lintNode(callExpression);
+    OutputReport output = (OutputReport) engine.getOutput();
 
     assertEquals(4, output.getFullReport().getReports().size());
   }
@@ -91,8 +91,8 @@ public class CallExpressionLintingTest {
             List.of(binaryExpression, identifier, binaryExpression, binaryExpression, identifier));
 
     LinterEngine engine = getLinterEngineV2();
-    LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputReport output = (OutputReport) newEngine.getOutput();
+    engine.lintNode(callExpression);
+    OutputReport output = (OutputReport) engine.getOutput();
 
     assertEquals(3, output.getFullReport().getReports().size());
   }
@@ -121,8 +121,8 @@ public class CallExpressionLintingTest {
             identifier, List.of(binaryExpression, one, two, binaryExpression, identifier));
 
     LinterEngine engine = getLinterEngineStrictArguments();
-    LinterEngine newEngine = engine.lintNode(callExpression);
-    OutputReport output = (OutputReport) newEngine.getOutput();
+    engine.lintNode(callExpression);
+    OutputReport output = (OutputReport) engine.getOutput();
 
     assertEquals(4, output.getFullReport().getReports().size());
   }

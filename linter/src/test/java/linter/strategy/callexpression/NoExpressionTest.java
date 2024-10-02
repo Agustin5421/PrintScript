@@ -8,13 +8,40 @@ import ast.literal.NumberLiteral;
 import ast.root.AstNodeType;
 import ast.statements.CallExpression;
 import java.util.List;
+import java.util.Map;
+import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
+import linter.engine.strategy.StrategiesContainer;
 import linter.engine.strategy.callexpression.ArgumentsStrategy;
+import linter.engine.strategy.callexpression.CallExpressionTraversing;
 import org.junit.jupiter.api.Test;
+import output.OutputReport;
 import position.Position;
 import report.FullReport;
+import strategy.StrategyContainer;
 
 public class NoExpressionTest {
+  private LinterEngine getLinterEngine() {
+    LintingStrategy strategy =
+        new ArgumentsStrategy(
+            List.of(
+                AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
+    LintingStrategy mainCallExpressionStrategy = new StrategiesContainer(List.of(strategy));
+
+    StrategiesContainer mock = new StrategiesContainer(List.of());
+    Map<AstNodeType, LintingStrategy> nodesStrategies =
+        Map.of(
+            AstNodeType.CALL_EXPRESSION, new CallExpressionTraversing(mainCallExpressionStrategy),
+            AstNodeType.IDENTIFIER, mock,
+            AstNodeType.NUMBER_LITERAL, mock,
+            AstNodeType.BINARY_EXPRESSION, mock);
+
+    StrategyContainer<AstNodeType, LintingStrategy> mockStrategy =
+        new StrategyContainer<>(nodesStrategies, "Can't lint: ");
+
+    return new LinterEngine(mockStrategy, new OutputReport());
+  }
+
   @Test
   public void callExpressionWithExpressionArgumentTest() {
     Position position = new Position(0, 0);
@@ -25,15 +52,12 @@ public class NoExpressionTest {
         new CallExpression(
             new Identifier("methodName", position, position), List.of(binaryExpression));
 
-    LintingStrategy strategy =
-        new ArgumentsStrategy(
-            List.of(
-                AstNodeType.IDENTIFIER, AstNodeType.STRING_LITERAL, AstNodeType.NUMBER_LITERAL));
-    FullReport fullReport = new FullReport();
+    LinterEngine engine = getLinterEngine();
+    engine.lintNode(callExpression);
 
-    FullReport newReport = strategy.oldApply(callExpression, fullReport);
+    OutputReport output = (OutputReport) engine.getOutput();
 
-    assertEquals(1, newReport.getReports().size());
+    assertEquals(1, output.getFullReport().getReports().size());
   }
 
   @Test
