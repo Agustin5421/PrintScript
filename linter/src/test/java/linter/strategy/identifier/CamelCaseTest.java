@@ -16,12 +16,7 @@ import report.Report;
 import strategy.StrategyContainer;
 
 public class CamelCaseTest {
-  @Test
-  public void identifierIsInCamelCase() {
-    Position start = new Position(0, 0);
-    Position end = new Position(0, 8);
-    Identifier identifier = new Identifier("testName", start, end);
-
+  private LinterEngine getLinterEngine() {
     LintingStrategy camelCaseIdentifier =
         new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
 
@@ -29,11 +24,20 @@ public class CamelCaseTest {
         new StrategyContainer<>(
             Map.of(AstNodeType.IDENTIFIER, camelCaseIdentifier), "Can't lint: ");
     OutputReport output = new OutputReport();
-    LinterEngine engine = new LinterEngine(nodesStrategies, output);
+    return new LinterEngine(nodesStrategies, output);
+  }
+
+  @Test
+  public void identifierIsInCamelCase() {
+    Position start = new Position(0, 0);
+    Position end = new Position(0, 8);
+    Identifier identifier = new Identifier("testName", start, end);
+
+    LinterEngine engine = getLinterEngine();
 
     engine.lintNode(identifier);
 
-    List<Report> result = output.getFullReport().getReports();
+    List<Report> result = ((OutputReport) engine.getOutput()).getFullReport().getReports();
     assertEquals(0, result.size());
   }
 
@@ -43,19 +47,14 @@ public class CamelCaseTest {
     Position end = new Position(0, 8);
     Identifier identifier = new Identifier("test_name", start, end);
 
-    LintingStrategy camelCaseIdentifier =
-        new WritingConventionStrategy("camelCase", "^[a-z]+(?:[A-Z]?[a-z0-9]+)*$");
-
-    StrategyContainer<AstNodeType, LintingStrategy> nodesStrategies =
-        new StrategyContainer<>(
-            Map.of(AstNodeType.IDENTIFIER, camelCaseIdentifier), "Can't lint: ");
-    OutputReport output = new OutputReport();
-    LinterEngine engine = new LinterEngine(nodesStrategies, output);
+    LinterEngine engine = getLinterEngine();
 
     engine.lintNode(identifier);
 
-    List<Report> result = output.getFullReport().getReports();
+    List<Report> result = ((OutputReport) engine.getOutput()).getFullReport().getReports();
 
     assertEquals(1, result.size());
+    assertEquals(start, result.get(0).start());
+    assertEquals(end, result.get(0).end());
   }
 }

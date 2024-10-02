@@ -3,26 +3,42 @@ package linter.strategy.identifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import ast.identifier.Identifier;
+import ast.root.AstNodeType;
+import java.util.List;
+import java.util.Map;
+import linter.engine.LinterEngine;
 import linter.engine.strategy.LintingStrategy;
 import linter.engine.strategy.identifier.WritingConventionStrategy;
 import org.junit.jupiter.api.Test;
+import output.OutputReport;
 import position.Position;
-import report.FullReport;
 import report.Report;
+import strategy.StrategyContainer;
 
 public class SnakeCaseTest {
+  private LinterEngine getLinterEngine() {
+    LintingStrategy camelCaseIdentifier =
+        new WritingConventionStrategy("snakeCase", "^[a-z]+(_[a-z0-9]+)*$");
+
+    StrategyContainer<AstNodeType, LintingStrategy> nodesStrategies =
+        new StrategyContainer<>(
+            Map.of(AstNodeType.IDENTIFIER, camelCaseIdentifier), "Can't lint: ");
+    OutputReport output = new OutputReport();
+    return new LinterEngine(nodesStrategies, output);
+  }
+
   @Test
   public void identifierIsInSnakeCase() {
     Position start = new Position(0, 0);
     Position end = new Position(0, 8);
     Identifier identifier = new Identifier("test_name", start, end);
 
-    LintingStrategy camelCaseIdentifier =
-        new WritingConventionStrategy("snakeCase", "^[a-z]+(_[a-z0-9]+)*$");
-    FullReport fullReport = new FullReport();
-    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
+    LinterEngine engine = getLinterEngine();
 
-    assertEquals(0, fullReport.getReports().size());
+    engine.lintNode(identifier);
+
+    List<Report> result = ((OutputReport) engine.getOutput()).getFullReport().getReports();
+    assertEquals(0, result.size());
   }
 
   @Test
@@ -31,15 +47,13 @@ public class SnakeCaseTest {
     Position end = new Position(0, 8);
     Identifier identifier = new Identifier("testName", start, end);
 
-    LintingStrategy camelCaseIdentifier =
-        new WritingConventionStrategy("snakeCase", "^[a-z]+(_[a-z0-9]+)*$");
-    FullReport fullReport = new FullReport();
-    fullReport = camelCaseIdentifier.oldApply(identifier, fullReport);
+    LinterEngine engine = getLinterEngine();
 
-    assertEquals(1, fullReport.getReports().size());
+    engine.lintNode(identifier);
 
-    Report report = fullReport.getReports().get(0);
-    assertEquals(start, report.start());
-    assertEquals(end, report.end());
+    List<Report> result = ((OutputReport) engine.getOutput()).getFullReport().getReports();
+    assertEquals(1, result.size());
+    assertEquals(start, result.get(0).start());
+    assertEquals(end, result.get(0).end());
   }
 }
