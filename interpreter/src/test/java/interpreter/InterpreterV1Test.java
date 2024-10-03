@@ -14,7 +14,7 @@ import output.OutputResult;
 import parsers.Parser;
 
 public class InterpreterV1Test extends CommonInterpreterTest {
-  private OutputMock output = new OutputMock();
+  private final OutputMock output = new OutputMock();
 
   @Override
   protected Parser getParser(String code) {
