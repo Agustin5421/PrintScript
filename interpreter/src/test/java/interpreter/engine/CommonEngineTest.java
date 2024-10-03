@@ -1,4 +1,4 @@
-package interpreter.rework;
+package interpreter.engine;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -13,7 +13,6 @@ import ast.root.AstNode;
 import ast.statements.AssignmentExpression;
 import ast.statements.CallExpression;
 import ast.statements.VariableDeclaration;
-import interpreter.engine.InterpreterEngine;
 import interpreter.engine.repository.VariableIdentifier;
 import interpreter.engine.repository.VariableIdentifierFactory;
 import interpreter.engine.repository.VariablesRepository;

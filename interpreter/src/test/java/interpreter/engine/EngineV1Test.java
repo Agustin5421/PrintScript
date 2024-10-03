@@ -1,4 +1,4 @@
-package interpreter.rework;
+package interpreter.engine;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -9,7 +9,6 @@ import ast.root.AstNode;
 import ast.statements.CallExpression;
 import ast.statements.IfStatement;
 import ast.statements.VariableDeclaration;
-import interpreter.engine.InterpreterEngine;
 import interpreter.engine.factory.InterpreterEngineFactory;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
