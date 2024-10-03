@@ -258,4 +258,17 @@ public class EngineV2Test extends CommonEngineTest {
 
     Inputs.setInputs(null);
   }
+
+  @Test
+  public void failBinaryExpressionWithBooleans() {
+    Position position = new Position(0, 0);
+    BooleanLiteral booleanLiteral = new BooleanLiteral(true, position, position);
+    Identifier identifier = new Identifier("x", position, position);
+    BinaryExpression binaryExpression = new BinaryExpression(booleanLiteral, booleanLiteral, "+");
+    VariableDeclaration variableDeclaration =
+        new VariableDeclaration("let", identifier, binaryExpression, "boolean", position, position);
+
+    InterpreterEngine visitor = getEngine();
+    assertThrows(UnsupportedOperationException.class, () -> visitor.interpret(variableDeclaration));
+  }
 }
