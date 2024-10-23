@@ -84,7 +84,10 @@ public class FormatterV2Test extends AbstractFormatterTest {
   @Test
   public void newCompleteFormattingTest() {
     String code =
-        "if (true) { if(true){let hola: number=2;} let name: string = \"Oliver\";} else {let a: number=3; a=5; a=6;let c: string=readInput(\"Name:\");if(false){let d: string=readEnv(\"ENV_VAR\");}} const b: number = 5;";
+        "if (true) { if(true){let hola: number=2;} let name: string = \"Oliver\";}"
+            + "else {let a: number=3; a=5; a=6;let c: string=readInput(\"Name:\");"
+            + "if(false){let d: string=readEnv(\"ENV_VAR\");}} "
+            + "const b: number = 5;";
     String formattedCode =
         """
                 if (true) {
@@ -112,7 +115,9 @@ public class FormatterV2Test extends AbstractFormatterTest {
   @Test
   public void newDifferentFormatTest() {
     String code =
-        "let hola : string = 'hola'; if (true) { if(false){hola='chau';} let name: string = \"Oliver\";} const a: number = 5;";
+        "let hola : string = 'hola'; "
+            + "if (true) { if(false){hola='chau';} let name: string = \"Oliver\";} "
+            + "const a: number = 5;";
     String formattedCode =
         """
                 let hola: string="hola";
