@@ -57,7 +57,19 @@ public class ValueCollector {
     // vuelve a varDec, assignment, callExp (println()) -> devuelve valor almacenado
 
     AstNodeType nodeType = node.getNodeType();
-    return strategies.getStrategy(nodeType).apply(node, this);
+    ExpressionStrategy evaluationStrategy = strategies.getStrategy(nodeType);
+
+    if (evaluationStrategy == null) {
+      throw new IllegalArgumentException(
+          "Can not evaluate node "
+              + node.getNodeType()
+              + " from "
+              + node.start()
+              + " to "
+              + node.end());
+    }
+
+    return evaluationStrategy.apply(node, this);
   }
 
   public OutputResult<String> getOutputResult() {

@@ -23,8 +23,13 @@ public class LinterEngine {
     LintingStrategy strategy = strategies.getStrategy(nodeType);
 
     if (strategy == null) {
-      // todo: specify position of node.
-      throw new IllegalArgumentException("No strategy found for node type: " + nodeType);
+      throw new IllegalArgumentException(
+          "Can not lint node "
+              + node.getNodeType()
+              + " from "
+              + node.start()
+              + " to "
+              + node.end());
     }
 
     return strategy.apply(node, this);
