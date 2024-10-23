@@ -1,8 +1,7 @@
 package runner;
 
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
+import org.junit.jupiter.api.Test;
 import output.OutputResult;
 import report.Report;
 
@@ -13,9 +12,9 @@ public class RunnerLinterTest {
 
     Runner runner = new Runner();
     runner.analyze(
-            new ByteArrayInputStream(code.getBytes()),
+        new ByteArrayInputStream(code.getBytes()),
         "1.0",
-            """
+        """
                     {
                       "identifier": {
                         "writingConvention": {
