@@ -40,18 +40,6 @@ tasks.withType(JacocoCoverageVerification).configureEach {
                 minimum = 0.8 // Establece el mínimo aceptable de cobertura
             }
         }
-
-        rule {
-            enabled = false
-            element = 'CLASS'
-            includes = ['org.gradle.*']
-
-            limit {
-                counter = 'LINE'
-                value = 'TOTALCOUNT'
-                maximum = 0.3
-            }
-        }
     }
 }
 
