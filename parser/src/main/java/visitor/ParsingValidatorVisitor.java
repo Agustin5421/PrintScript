@@ -1,6 +1,7 @@
 package visitor;
 
 import ast.expressions.BinaryExpression;
+import ast.expressions.ExpressionNode;
 import ast.identifier.Identifier;
 import ast.literal.BooleanLiteral;
 import ast.literal.NumberLiteral;
@@ -24,8 +25,6 @@ public class ParsingValidatorVisitor implements NodeVisitor {
   private final Map<String, String> varKind =
       new HashMap<>(); // Map of variable names to their kind
   private String comparableType = null;
-
-  public ParsingValidatorVisitor() {}
 
   @Override
   public NodeVisitor visitNumberLiteral(NumberLiteral numberLiteral) {
@@ -126,7 +125,14 @@ public class ParsingValidatorVisitor implements NodeVisitor {
 
   @Override
   public NodeVisitor visitIfStatement(IfStatement ifStatement) {
-    if (ifStatement.getCondition() instanceof Identifier id) {
+    ExpressionNode expNode = ifStatement.getCondition();
+
+    if (!(expNode instanceof Identifier || expNode instanceof BooleanLiteral)) {
+      throw new MismatchTypeException(
+          ifStatement.getCondition().toString(), "boolean", comparableType);
+    }
+
+    if (expNode instanceof Identifier id) {
       if (!variablesRep.containsKey(id.name())) {
         throw new VariableNotDeclaredException(id.name());
       }
@@ -134,10 +140,6 @@ public class ParsingValidatorVisitor implements NodeVisitor {
         throw new MismatchTypeException(
             ifStatement.getCondition().toString(), "boolean", comparableType);
       }
-    } else if (ifStatement.getCondition() instanceof BooleanLiteral) {
-    } else {
-      throw new MismatchTypeException(
-          ifStatement.getCondition().toString(), "boolean", comparableType);
     }
 
     for (AstNode statement : ifStatement.getThenBlockStatement()) {
