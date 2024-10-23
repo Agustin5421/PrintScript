@@ -12,21 +12,24 @@ public class NumberOperationProcedure implements BinaryProcedure {
     double leftValue = leftNumber.doubleValue();
     double rightValue = rightNumber.doubleValue();
 
-    double result =
-        switch (operator) {
-          case "+" -> leftValue + rightValue;
-          case "-" -> leftValue - rightValue;
-          case "*" -> leftValue * rightValue;
-          case "/" -> leftValue / rightValue;
-          case "%" -> leftValue % rightValue;
-          default -> throw new IllegalArgumentException("Invalid operator: " + operator);
-        };
+    double result = getResult(operator, leftValue, rightValue);
 
     if (returnsInteger(leftNumber, rightNumber, operator)) {
       return new NumberLiteral((int) result, left.start(), right.end());
     } else {
       return new NumberLiteral(result, left.start(), right.end());
     }
+  }
+
+  private double getResult(String operator, double leftValue, double rightValue) {
+    return switch (operator) {
+      case "+" -> leftValue + rightValue;
+      case "-" -> leftValue - rightValue;
+      case "*" -> leftValue * rightValue;
+      case "/" -> leftValue / rightValue;
+      case "%" -> leftValue % rightValue;
+      default -> throw new IllegalArgumentException("Invalid operator: " + operator);
+    };
   }
 
   public boolean returnsInteger(Number a, Number b, String operator) {
