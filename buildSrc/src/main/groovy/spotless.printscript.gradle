@@ -8,7 +8,7 @@ dependencies {
 
 spotless {
     java {
-        googleJavaFormat('1.15.0')
+        googleJavaFormat('1.17.0')
         target 'src/**/*.java'
     }
 }
