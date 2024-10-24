@@ -2,6 +2,9 @@ package runner;
 
 import factory.LexerFactory;
 import factory.ParserFactory;
+import formatter.CodeOutput;
+import formatter.MainFormatter;
+import formatter.factory.FormatterFactory;
 import input.InputHandler;
 import interpreter.Interpreter;
 import java.io.IOException;
@@ -69,9 +72,14 @@ public class Runner {
     }
   }
 
-  public void format(InputStream code, String version, String config) {
-    // TODO: need factory for formatter
+  public void format(InputStream code, String version, String config, OutputResult<String> output) throws IOException {
+    Lexer lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
+    Parser parser = ParserFactory.getParser(version).setLexer(lexer);
+    MainFormatter formatter = FormatterFactory.create(config, version, output);
 
+    while (parser.hasNext()) {
+      formatter = formatter.formatNext(parser.next());
+    }
   }
 
   public void validate(InputStream input, String version) throws IOException {

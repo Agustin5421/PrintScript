@@ -52,7 +52,7 @@ public class Cli {
         case "Validation" -> runner.validate(code, version);
         case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock(), new InputMock());
         case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputReport());
-        case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
+        case "Formatting" -> runner.format(code, version, findCode(args[3]).toString(), new OutputMock());
         default -> {
           progressObserver.error();
           throw new IllegalArgumentException("Unsupported operation: " + operation);
