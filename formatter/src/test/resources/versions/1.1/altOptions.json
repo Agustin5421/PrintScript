@@ -1,0 +1,9 @@
+{
+  "colonRules": {
+    "before": false,
+    "after": true
+  },
+  "equalSpaces": false,
+  "printLineBreaks": 2,
+  "indentSize": 4
+}

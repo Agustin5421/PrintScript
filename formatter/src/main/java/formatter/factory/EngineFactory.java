@@ -43,7 +43,7 @@ public class EngineFactory {
     StrategyContainer<AstNodeType, FormattingStrategy> strategies =
         new StrategyContainer<>(getV1Strategies(rules), errorMessage);
 
-    FormattingContext formattingContext = new IndentationContext(0,0);
+    FormattingContext formattingContext = new IndentationContext(0, 0);
     return new FormattingEngine(formattingContext, strategies, writer);
   }
 

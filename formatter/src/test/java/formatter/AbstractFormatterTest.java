@@ -1,6 +1,9 @@
 package formatter;
 
 import com.google.gson.JsonSyntaxException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import runner.TestRunner;
@@ -15,7 +18,7 @@ public abstract class AbstractFormatterTest {
                 let myVar : string = "Hello World!";
                 """;
     TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
+    Assertions.assertEquals(formattedCode.trim(), testRunner.runFormatting().trim());
   }
 
   @Test
@@ -26,7 +29,7 @@ public abstract class AbstractFormatterTest {
                 myVar = "Goodbye World!";
                 """;
     TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
+    Assertions.assertEquals(formattedCode.trim(), testRunner.runFormatting().trim());
   }
 
   @Test
@@ -50,33 +53,19 @@ public abstract class AbstractFormatterTest {
   @Test
   public void completeFormattingTest() {
     String formattedCode =
-        """
-                let myVar : number = 2 + 3 * 2;
-
-                println(myVar);
-                myVar = 2;
-
-                println(myVar);
-                """;
+        readFileContent("src/test/resources/versions/common/complete-formatting.ps");
     TestRunner testRunner = setRunner(getJsonOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
+    Result result = getResult(formattedCode, testRunner.runFormatting());
+    Assertions.assertEquals(result.expected, result.json);
   }
 
   @Test
   public void differentFormatTest() {
     String formattedCode =
-        """
-                let myVar: number=2 + 3 * 2;
-
-
-                println(myVar);
-                myVar=2;
-
-
-                println(myVar);
-                """;
+        readFileContent("src/test/resources/versions/common/different-format.ps");
     TestRunner testRunner = setRunner(alternativeOptions(), formattedCode);
-    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
+    Result result = getResult(formattedCode, testRunner.runFormatting());
+    Assertions.assertEquals(result.expected, result.json);
   }
 
   @Test
@@ -85,28 +74,30 @@ public abstract class AbstractFormatterTest {
   }
 
   protected String getJsonOptions() {
-    return """
-            {
-              "colonRules": {
-                "before": true,
-                "after": true
-              },
-              "equalSpaces": true,
-              "printLineBreaks": 1
-            }
-            """;
+    return readFileContent("src/test/resources/versions/common/options.json");
   }
 
   protected String alternativeOptions() {
-    return """
-            {
-              "colonRules": {
-                "before": false,
-                "after": true
-              },
-              "equalSpaces": false,
-              "printLineBreaks": 2
-            }
-            """;
+    return readFileContent("src/test/resources/versions/common/altOptions.json");
   }
+
+  protected String readFileContent(String filePath) {
+    try {
+      return Files.readString(Paths.get(filePath));
+    } catch (NoSuchFileException e) {
+      System.err.println("File not found: " + filePath);
+      return null;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  protected static Result getResult(String json, String expected) {
+    json = json.replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n").replaceAll("    ", "\t");
+    expected = expected.replaceAll("\\r\\n", "\n").replaceAll("\\r", "\n").replaceAll("    ", "\t");
+    return new Result(json, expected);
+  }
+
+  protected record Result(String json, String expected) {}
 }

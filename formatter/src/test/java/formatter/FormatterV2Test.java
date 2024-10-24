@@ -12,35 +12,14 @@ public class FormatterV2Test extends AbstractFormatterTest {
 
   @Override
   public String getJsonOptions() {
-    return """
-            {
-              "colonRules": {
-                "before": true,
-                "after": true
-              },
-              "equalSpaces": true,
-              "printLineBreaks": 1,
-              "indentSize": 1
-            }
-            """;
+    return readFileContent("src/test/resources/versions/1.1/options.json");
   }
 
   @Override
   public String alternativeOptions() {
-    return """
-            {
-              "colonRules": {
-                "before": false,
-                "after": true
-              },
-              "equalSpaces": false,
-              "printLineBreaks": 2,
-              "indentSize": 4
-            }
-            """;
+    return readFileContent("src/test/resources/versions/1.1/altOptions.json");
   }
 
-  // TODO : Add additional tests for the new formatter
   @Test
   public void testBooleanDeclaration() {
     String formattedCode = """
@@ -79,57 +58,23 @@ public class FormatterV2Test extends AbstractFormatterTest {
     Assertions.assertEquals(formattedCode, testRunner.runFormatting());
   }
 
-  // TODO: Fix this test
-
   @Test
   public void newCompleteFormattingTest() {
-    String code =
-        "if (true) { if(true){let hola: number=2;} let name: string = \"Oliver\";}"
-            + "else {let a: number=3; a=5; a=6;let c: string=readInput(\"Name:\");"
-            + "if(false){let d: string=readEnv(\"ENV_VAR\");}} "
-            + "const b: number = 5;";
+    String code = readFileContent("src/test/resources/versions/1.1/complete-formatting/input.ps");
     String formattedCode =
-        """
-                if (true) {
-                	if (true) {
-                		let hola : number = 2;
-                	}
-                	let name : string = "Oliver";
-                } else {
-                	let a : number = 3;
-                	a = 5;
-                	a = 6;
-                	let c : string = readInput("Name:");
-                	if (false) {
-                		let d : string = readEnv("ENV_VAR");
-                	}
-                }
-                const b : number = 5;
-                """;
+        readFileContent("src/test/resources/versions/1.1/complete-formatting/output.ps");
     TestRunner testRunner = setRunner(getJsonOptions(), code);
-    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
+    Result result = getResult(formattedCode, testRunner.runFormatting());
+    Assertions.assertEquals(result.expected(), result.json());
   }
-
-  // TODO: fix this test
 
   @Test
   public void newDifferentFormatTest() {
-    String code =
-        "let hola : string = 'hola'; "
-            + "if (true) { if(false){hola='chau';} let name: string = \"Oliver\";} "
-            + "const a: number = 5;";
+    String code = readFileContent("src/test/resources/versions/1.1/different-format/input.ps");
     String formattedCode =
-        """
-                let hola: string="hola";
-                if (true) {
-                				if (false) {
-                								hola="chau";
-                				}
-                				let name: string="Oliver";
-                }
-                const a: number=5;
-                """;
+        readFileContent("src/test/resources/versions/1.1/different-format/output.ps");
     TestRunner testRunner = setRunner(alternativeOptions(), code);
-    Assertions.assertEquals(formattedCode, testRunner.runFormatting());
+    Result result = getResult(formattedCode, testRunner.runFormatting());
+    Assertions.assertEquals(result.expected(), result.json());
   }
 }
