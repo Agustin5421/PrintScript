@@ -55,11 +55,11 @@ public class IfElseStrategy implements FormattingStrategy {
   public void formatBody(
       BodyStrategy bodyStrategy,
       AstNode node,
-      FormattingEngine previousVisitor,
-      FormattingEngine visitor) {
-    visitor.write("{\n");
-    bodyStrategy.apply(node, visitor);
-    previousVisitor.addContext();
-    visitor.write("}");
+      FormattingEngine engine,
+      FormattingEngine newEngine) {
+    newEngine.write("{\n");
+    bodyStrategy.apply(node, newEngine);
+    engine.addContext();
+    newEngine.write("}");
   }
 }

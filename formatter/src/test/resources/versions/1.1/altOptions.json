@@ -4,6 +4,6 @@
     "after": true
   },
   "equalSpaces": false,
-  "printLineBreaks": 2,
+  "printLineBreaks": 1,
   "indentSize": 4
 }
