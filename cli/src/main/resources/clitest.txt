@@ -1,13 +1,13 @@
 let myVar : string = "a World!";
 myVar = "Goodbye World!";
 
-if (true){
-    println(myVar)
+if (false){
+    println(myVar);
     myVar = "Hello World!";
-
     println(myVar);
 } else{
     if (true){
+        println(myVar);
         myVar = "Wow this works!";
         println(myVar);
     }
@@ -15,5 +15,7 @@ if (true){
         myVar = "This is a test!";
     }
 }
+
+myVar = "Final change";
 
 println(myVar);
