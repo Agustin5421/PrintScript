@@ -1,17 +1,13 @@
 package cli;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import input.InputMock;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import output.OutputMock;
 import output.OutputReport;
-import output.OutputString;
 import runner.Runner;
 
 public class Cli {
@@ -34,24 +30,26 @@ public class Cli {
     ProgressObserver progressObserver = new ProgressObserver(progressPrinter);
 
     Runner runner = new Runner(progressObserver);
-//    Runner runner = new Runner();
+    //    Runner runner = new Runner();
 
-    String operation = "Validation";                                //args[0];
-    String codeFilePath = "cli/src/main/resources/clitest.txt";     //args[1];
-    String version = "1.1";                                         //args[2];
+    String operation = "Validation"; // args[0];
+    String codeFilePath = "cli/src/main/resources/clitest.txt"; // args[1];
+    String version = "1.1"; // args[2];
 
-//    String operation = args[0];
-//    String codeFilePath = args[1];
-//    String version = args[2];
+    //    String operation = args[0];
+    //    String codeFilePath = args[1];
+    //    String version = args[2];
 
     InputStream code = findCode(codeFilePath);
 
-    //args[3] is the options file
+    // args[3] is the options file
     try {
       switch (operation) {
         case "Validation" -> runner.validate(code, version);
-        case "Execution" -> runner.execute(code, version, new OutputMock(), new OutputMock(), new InputMock());
-        case "Analyzing" -> runner.analyze(code, version, findCode(args[3]).toString(), new OutputReport());
+        case "Execution" -> runner.execute(
+            code, version, new OutputMock(), new OutputMock(), new InputMock());
+        case "Analyzing" -> runner.analyze(
+            code, version, findCode(args[3]).toString(), new OutputReport());
         case "Formatting" -> runner.format(code, version, findCode(args[3]).toString(), new OutputMock());
         default -> {
           progressObserver.error();
@@ -60,7 +58,8 @@ public class Cli {
       }
     } catch (Exception e) {
       progressObserver.error();
-      System.out.println(); // Empty line since the progress bar would be overwritten by the error message
+      System.out
+          .println(); // Empty line since the progress bar would be overwritten by the error message
       System.out.println("Error: " + e.getMessage());
     }
   }
@@ -69,7 +68,7 @@ public class Cli {
     try {
       return new FileInputStream(codeFilePath);
     } catch (Exception e) {
-        throw new RuntimeException(e);
+      throw new RuntimeException(e);
     }
   }
 }

@@ -7,14 +7,14 @@ import formatter.MainFormatter;
 import formatter.factory.FormatterFactory;
 import input.InputHandler;
 import interpreter.Interpreter;
+import interpreter.InterpreterFactory;
+import interpreter.engine.staticprovider.Inputs;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import interpreter.InterpreterFactory;
-import interpreter.engine.staticprovider.Inputs;
 import lexer.Lexer;
-import linter.LinterFactory;
 import linter.Linter;
+import linter.LinterFactory;
 import observers.ProgressObserver;
 import output.OutputResult;
 import parsers.Parser;
@@ -31,11 +31,17 @@ public class Runner {
     this.progressObserver = null;
   }
 
-  public void execute(InputStream code, String version, OutputResult<String> printLog,
-                      OutputResult<String> errorLog, InputHandler inputs) {
+  public void execute(
+      InputStream code,
+      String version,
+      OutputResult<String> printLog,
+      OutputResult<String> errorLog,
+      InputHandler inputs) {
     Lexer lexer;
     try {
-      lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInputWithObserver(code, progressObserver);
+      lexer =
+          Objects.requireNonNull(LexerFactory.getLexer(version))
+              .setInputWithObserver(code, progressObserver);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -57,7 +63,8 @@ public class Runner {
     }
   }
 
-  public void analyze(InputStream code, String version, String config, OutputResult<Report> output) {
+  public void analyze(
+      InputStream code, String version, String config, OutputResult<Report> output) {
     Lexer lexer;
     try {
       lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
