@@ -36,15 +36,14 @@ public class Cli {
     Runner runner = new Runner(progressObserver);
     //    Runner runner = new Runner();
 
-    String operation = "Execution"; // args[0];
-    String codeFilePath =
-        "C:\\Users\\nacho\\universidad\\tercero\\ingSis\\PrintScript\\cli\\src\\main\\resources\\clitest.txt"; // args[1];
+    String operation = "Formatting"; // args[0];
+    String absPath = "C:\\Users\\nacho\\universidad\\tercero\\ingSis\\PrintScript\\";
+    String codeFilePath = absPath + "cli\\src\\main\\resources\\clitest.txt"; // args[1];
     String version = "1.1"; // args[2];
     String configPath =
-        "C:\\Users\\nacho\\universidad\\tercero\\ingSis\\PrintScript\\cli\\src\\main\\resources\\formatterOptionsTest.json"; // args[3];
+        absPath + "cli\\src\\main\\resources\\formatterOptionsTest.json"; // args[3];
     String config = readJsonFile(configPath);
-    String inputsPath =
-        "C:\\Users\\nacho\\universidad\\tercero\\ingSis\\PrintScript\\cli\\src\\main\\resources\\inputsExample.txt";
+    String inputsPath = absPath + "cli\\src\\main\\resources\\inputsExample.txt";
     List<String> inputs = readInputs(inputsPath);
 
     //    String operation = args[0];
