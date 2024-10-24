@@ -1,5 +1,4 @@
-let myVar : string = "a World!";
-myVar = "Goodbye World!";
+let myVar : string = readInput("lal");
 
 if (false){
     println(myVar);

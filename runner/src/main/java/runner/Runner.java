@@ -66,7 +66,9 @@ public class Runner {
       InputStream code, String version, String config, OutputResult<Report> output) {
     Lexer lexer;
     try {
-      lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
+      lexer =
+          Objects.requireNonNull(LexerFactory.getLexer(version))
+              .setInputWithObserver(code, progressObserver);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -80,13 +82,18 @@ public class Runner {
 
   public void format(InputStream code, String version, String config, OutputResult<String> output)
       throws IOException {
-    Lexer lexer = Objects.requireNonNull(LexerFactory.getLexer(version)).setInput(code);
+    Lexer lexer =
+        Objects.requireNonNull(LexerFactory.getLexer(version))
+            .setInputWithObserver(code, progressObserver);
     Parser parser = ParserFactory.getParser(version).setLexer(lexer);
     MainFormatter formatter = FormatterFactory.create(config, version, output);
 
     while (parser.hasNext()) {
       formatter = formatter.formatNext(parser.next());
     }
+
+    System.out.println();
+    System.out.println(output.getResult());
   }
 
   public void validate(InputStream input, String version) throws IOException {
