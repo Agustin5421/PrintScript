@@ -11,6 +11,7 @@ public class IfElseStrategy implements FormattingStrategy {
   private final ConditionalStatementStrategy conditionalStatementStrategy;
   // List of two white spaces for the else keyword (before and after)
   private final List<CharacterStrategy> whiteSpaces;
+
   // Strategy that adds indentation depending on the level of the node (getValue())
 
   public IfElseStrategy(

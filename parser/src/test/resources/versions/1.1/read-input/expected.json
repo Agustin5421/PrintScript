@@ -1,0 +1,100 @@
+{
+  "nodes": [
+    {
+      "kind": "let",
+      "identifier": {
+        "name": "myVar",
+        "start": {
+          "row": 2,
+          "col": 0
+        },
+        "end": {
+          "row": 2,
+          "col": 29
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "expression": {
+        "value": "Hello",
+        "start": {
+          "row": 2,
+          "col": 21
+        },
+        "end": {
+          "row": 2,
+          "col": 28
+        }
+      },
+      "varType": "string",
+      "start": {
+        "row": 2,
+        "col": 0
+      },
+      "end": {
+        "row": 2,
+        "col": 29
+      }
+    },
+    {
+      "left": {
+        "name": "myVar",
+        "start": {
+          "row": 2,
+          "col": 30
+        },
+        "end": {
+          "row": 2,
+          "col": 35
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "right": {
+        "methodIdentifier": {
+          "name": "readInput",
+          "start": {
+            "row": 2,
+            "col": 38
+          },
+          "end": {
+            "row": 2,
+            "col": 53
+          },
+          "type": "STRING_TYPE",
+          "modifiers": {}
+        },
+        "arguments": [
+          {
+            "value": "2",
+            "start": {
+              "row": 2,
+              "col": 48
+            },
+            "end": {
+              "row": 2,
+              "col": 51
+            }
+          }
+        ],
+        "start": {
+          "row": 2,
+          "col": 38
+        },
+        "end": {
+          "row": 2,
+          "col": 53
+        }
+      },
+      "operator": "\u003d",
+      "start": {
+        "row": 2,
+        "col": 30
+      },
+      "end": {
+        "row": 2,
+        "col": 47
+      }
+    }
+  ]
+}
