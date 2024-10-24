@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import output.OutputReportSystem;
@@ -53,8 +52,7 @@ public class Cli {
         case "Validation" -> runner.validate(code, version);
         case "Execution" -> runner.execute(
             code, version, new OutputStringSystem(), new OutputStringSystem(), new InputSystem());
-        case "Analyzing" -> runner.analyze(
-            code, version, config, new OutputReportSystem());
+        case "Analyzing" -> runner.analyze(code, version, config, new OutputReportSystem());
         case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
         default -> {
           progressObserver.error();
