@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import formatter.FormattingEngine;
 import formatter.context.FormattingContext;
 import formatter.context.IndentationContext;
-import formatter.context.NoContext;
 import formatter.strategy.FormattingStrategy;
 import formatter.strategy.common.AssignationStrategy;
 import formatter.strategy.common.BinaryExpressionStrategy;
@@ -44,7 +43,7 @@ public class EngineFactory {
     StrategyContainer<AstNodeType, FormattingStrategy> strategies =
         new StrategyContainer<>(getV1Strategies(rules), errorMessage);
 
-    FormattingContext formattingContext = new NoContext();
+    FormattingContext formattingContext = new IndentationContext(0, 0);
     return new FormattingEngine(formattingContext, strategies, writer);
   }
 

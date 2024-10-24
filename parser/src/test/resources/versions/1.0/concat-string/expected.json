@@ -1,0 +1,62 @@
+{
+  "nodes": [
+    {
+      "kind": "let",
+      "identifier": {
+        "name": "a",
+        "start": {
+          "row": 2,
+          "col": 0
+        },
+        "end": {
+          "row": 2,
+          "col": 29
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "expression": {
+        "left": {
+          "value": "Hello",
+          "start": {
+            "row": 2,
+            "col": 17
+          },
+          "end": {
+            "row": 2,
+            "col": 24
+          }
+        },
+        "right": {
+          "value": 1,
+          "start": {
+            "row": 2,
+            "col": 27
+          },
+          "end": {
+            "row": 2,
+            "col": 28
+          }
+        },
+        "operator": "+",
+        "start": {
+          "row": 2,
+          "col": 17
+        },
+        "end": {
+          "row": 2,
+          "col": 28
+        }
+      },
+      "varType": "string",
+      "start": {
+        "row": 2,
+        "col": 0
+      },
+      "end": {
+        "row": 2,
+        "col": 29
+      }
+    }
+  ]
+}

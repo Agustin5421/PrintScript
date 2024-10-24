@@ -1,0 +1,62 @@
+{
+  "nodes": [
+    {
+      "kind": "const",
+      "identifier": {
+        "name": "variable",
+        "start": {
+          "row": 2,
+          "col": 0
+        },
+        "end": {
+          "row": 2,
+          "col": 38
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "expression": {
+        "left": {
+          "value": "Hello",
+          "start": {
+            "row": 2,
+            "col": 26
+          },
+          "end": {
+            "row": 2,
+            "col": 33
+          }
+        },
+        "right": {
+          "value": 2,
+          "start": {
+            "row": 2,
+            "col": 36
+          },
+          "end": {
+            "row": 2,
+            "col": 37
+          }
+        },
+        "operator": "+",
+        "start": {
+          "row": 2,
+          "col": 26
+        },
+        "end": {
+          "row": 2,
+          "col": 37
+        }
+      },
+      "varType": "string",
+      "start": {
+        "row": 2,
+        "col": 0
+      },
+      "end": {
+        "row": 2,
+        "col": 38
+      }
+    }
+  ]
+}

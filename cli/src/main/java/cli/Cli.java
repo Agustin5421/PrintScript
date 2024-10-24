@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
+import output.OutputMock;
 import output.OutputReportSystem;
 import output.OutputStringSystem;
 import runner.Runner;
@@ -53,7 +54,8 @@ public class Cli {
         case "Execution" -> runner.execute(
             code, version, new OutputStringSystem(), new OutputStringSystem(), new InputSystem());
         case "Analyzing" -> runner.analyze(code, version, config, new OutputReportSystem());
-        case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
+        case "Formatting" -> runner.format(
+            code, version, findCode(args[3]).toString(), new OutputMock());
         default -> {
           progressObserver.error();
           throw new IllegalArgumentException("Unsupported operation: " + operation);

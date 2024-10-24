@@ -1,0 +1,40 @@
+{
+  "nodes": [
+    {
+      "methodIdentifier": {
+        "name": "println",
+        "start": {
+          "row": 2,
+          "col": 0
+        },
+        "end": {
+          "row": 2,
+          "col": 23
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "arguments": [
+        {
+          "value": "Hello World",
+          "start": {
+            "row": 2,
+            "col": 8
+          },
+          "end": {
+            "row": 2,
+            "col": 21
+          }
+        }
+      ],
+      "start": {
+        "row": 2,
+        "col": 0
+      },
+      "end": {
+        "row": 2,
+        "col": 23
+      }
+    }
+  ]
+}

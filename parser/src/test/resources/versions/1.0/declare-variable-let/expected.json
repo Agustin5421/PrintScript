@@ -1,0 +1,40 @@
+{
+  "nodes": [
+    {
+      "kind": "let",
+      "identifier": {
+        "name": "name",
+        "start": {
+          "row": 2,
+          "col": 0
+        },
+        "end": {
+          "row": 2,
+          "col": 28
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "expression": {
+        "value": "Oliver",
+        "start": {
+          "row": 2,
+          "col": 19
+        },
+        "end": {
+          "row": 2,
+          "col": 27
+        }
+      },
+      "varType": "string",
+      "start": {
+        "row": 2,
+        "col": 0
+      },
+      "end": {
+        "row": 2,
+        "col": 28
+      }
+    }
+  ]
+}
