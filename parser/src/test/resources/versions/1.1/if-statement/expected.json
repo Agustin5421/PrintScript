@@ -1,0 +1,138 @@
+{
+  "nodes": [
+    {
+      "kind": "const",
+      "identifier": {
+        "name": "booleanValue",
+        "start": {
+          "row": 2,
+          "col": 0
+        },
+        "end": {
+          "row": 2,
+          "col": 36
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "expression": {
+        "value": true,
+        "start": {
+          "row": 2,
+          "col": 31
+        },
+        "end": {
+          "row": 2,
+          "col": 35
+        }
+      },
+      "varType": "boolean",
+      "start": {
+        "row": 2,
+        "col": 0
+      },
+      "end": {
+        "row": 2,
+        "col": 36
+      }
+    },
+    {
+      "start": {
+        "row": 3,
+        "col": 0
+      },
+      "end": {
+        "row": 5,
+        "col": 3
+      },
+      "condition": {
+        "name": "booleanValue",
+        "start": {
+          "row": 3,
+          "col": 3
+        },
+        "end": {
+          "row": 3,
+          "col": 15
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "thenBlockStatement": [
+        {
+          "methodIdentifier": {
+            "name": "println",
+            "start": {
+              "row": 4,
+              "col": 4
+            },
+            "end": {
+              "row": 4,
+              "col": 46
+            },
+            "type": "STRING_TYPE",
+            "modifiers": {}
+          },
+          "arguments": [
+            {
+              "value": "if statement working correctly",
+              "start": {
+                "row": 4,
+                "col": 12
+              },
+              "end": {
+                "row": 4,
+                "col": 44
+              }
+            }
+          ],
+          "start": {
+            "row": 4,
+            "col": 4
+          },
+          "end": {
+            "row": 4,
+            "col": 46
+          }
+        }
+      ],
+      "elseBlockStatement": []
+    },
+    {
+      "methodIdentifier": {
+        "name": "println",
+        "start": {
+          "row": 6,
+          "col": 0
+        },
+        "end": {
+          "row": 6,
+          "col": 34
+        },
+        "type": "STRING_TYPE",
+        "modifiers": {}
+      },
+      "arguments": [
+        {
+          "value": "outside of conditional",
+          "start": {
+            "row": 6,
+            "col": 8
+          },
+          "end": {
+            "row": 6,
+            "col": 32
+          }
+        }
+      ],
+      "start": {
+        "row": 6,
+        "col": 0
+      },
+      "end": {
+        "row": 6,
+        "col": 34
+      }
+    }
+  ]
+}
