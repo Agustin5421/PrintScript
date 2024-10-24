@@ -1,13 +1,17 @@
 package cli;
 
-import input.InputMock;
+import input.InputFile;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
-import output.OutputMock;
-import output.OutputReport;
+import output.OutputReportSystem;
+import output.OutputString;
+import output.OutputStringSystem;
 import runner.Runner;
 
 public class Cli {
@@ -32,9 +36,16 @@ public class Cli {
     Runner runner = new Runner(progressObserver);
     //    Runner runner = new Runner();
 
-    String operation = "Validation"; // args[0];
-    String codeFilePath = "cli/src/main/resources/clitest.txt"; // args[1];
+    String operation = "Execution"; // args[0];
+    String codeFilePath =
+        "C:\\Users\\nacho\\universidad\\tercero\\ingSis\\PrintScript\\cli\\src\\main\\resources\\clitest.txt"; // args[1];
     String version = "1.1"; // args[2];
+    String configPath =
+        "C:\\Users\\nacho\\universidad\\tercero\\ingSis\\PrintScript\\cli\\src\\main\\resources\\formatterOptionsTest.json"; // args[3];
+    String config = readJsonFile(configPath);
+    String inputsPath =
+        "C:\\Users\\nacho\\universidad\\tercero\\ingSis\\PrintScript\\cli\\src\\main\\resources\\inputsExample.txt";
+    List<String> inputs = readInputs(inputsPath);
 
     //    String operation = args[0];
     //    String codeFilePath = args[1];
@@ -47,11 +58,13 @@ public class Cli {
       switch (operation) {
         case "Validation" -> runner.validate(code, version);
         case "Execution" -> runner.execute(
-            code, version, new OutputMock(), new OutputMock(), new InputMock());
-        case "Analyzing" -> runner.analyze(
-            code, version, findCode(args[3]).toString(), new OutputReport());
-        case "Formatting" -> runner.format(
-            code, version, findCode(args[3]).toString(), new OutputMock());
+            code,
+            version,
+            new OutputStringSystem(),
+            new OutputStringSystem(),
+            new InputFile(inputs));
+        case "Analyzing" -> runner.analyze(code, version, config, new OutputReportSystem());
+        case "Formatting" -> runner.format(code, version, config, new OutputString());
         default -> {
           progressObserver.error();
           throw new IllegalArgumentException("Unsupported operation: " + operation);
@@ -69,6 +82,18 @@ public class Cli {
     try {
       return new FileInputStream(codeFilePath);
     } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static String readJsonFile(String filePath) throws IOException {
+    return new String(Files.readAllBytes(Paths.get(filePath)));
+  }
+
+  private static List<String> readInputs(String inputsPath) {
+    try {
+      return Files.readAllLines(Paths.get(inputsPath));
+    } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }

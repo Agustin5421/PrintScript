@@ -237,4 +237,22 @@ public class InterpreterV2Test extends CommonInterpreterTest {
           }
         });
   }
+
+  @Test
+  public void testIfPrinting() {
+    String code = "let x: number = 42; if(true) { println(x); x = 23; println(x); } println(x);";
+    Parser parser = getParser(code);
+    Interpreter interpreter = getInterpreter(new OutputListString());
+
+    while (parser.hasNext()) {
+      interpreter = interpreter.interpretNext(parser.next());
+    }
+
+    InterpreterEngine engine = interpreter.interpreterEngine();
+    OutputListString output = (OutputListString) engine.getOutputResult();
+
+    assertEquals("42", output.getSavedResults().get(0));
+    assertEquals("23", output.getSavedResults().get(1));
+    assertEquals("23", output.getSavedResults().get(1));
+  }
 }
