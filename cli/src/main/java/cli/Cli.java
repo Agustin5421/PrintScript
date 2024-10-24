@@ -1,13 +1,13 @@
 package cli;
 
-import input.InputMock;
+import input.InputSystem;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
-import output.OutputMock;
-import output.OutputReport;
+import output.OutputReportSystem;
+import output.OutputStringSystem;
 import runner.Runner;
 
 public class Cli {
@@ -47,9 +47,9 @@ public class Cli {
       switch (operation) {
         case "Validation" -> runner.validate(code, version);
         case "Execution" -> runner.execute(
-            code, version, new OutputMock(), new OutputMock(), new InputMock());
+            code, version, new OutputStringSystem(), new OutputStringSystem(), new InputSystem());
         case "Analyzing" -> runner.analyze(
-            code, version, findCode(args[3]).toString(), new OutputReport());
+            code, version, findCode(args[3]).toString(), new OutputReportSystem());
         case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
         default -> {
           progressObserver.error();
