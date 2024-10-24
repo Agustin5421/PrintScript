@@ -4,6 +4,9 @@ import input.InputSystem;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import observers.ProgressObserver;
 import observers.ProgressPrinter;
 import output.OutputReportSystem;
@@ -32,9 +35,11 @@ public class Cli {
     Runner runner = new Runner(progressObserver);
     //    Runner runner = new Runner();
 
-    String operation = "Validation"; // args[0];
+    String operation = "Analyzing"; // args[0];
     String codeFilePath = "cli/src/main/resources/clitest.txt"; // args[1];
     String version = "1.1"; // args[2];
+    String configPath = "cli/src/main/resources/linterOptionsTest.json"; // args[3];
+    String config = readJsonFile(configPath);
 
     //    String operation = args[0];
     //    String codeFilePath = args[1];
@@ -49,7 +54,7 @@ public class Cli {
         case "Execution" -> runner.execute(
             code, version, new OutputStringSystem(), new OutputStringSystem(), new InputSystem());
         case "Analyzing" -> runner.analyze(
-            code, version, findCode(args[3]).toString(), new OutputReportSystem());
+            code, version, config, new OutputReportSystem());
         case "Formatting" -> runner.format(code, version, findCode(args[3]).toString());
         default -> {
           progressObserver.error();
@@ -70,5 +75,9 @@ public class Cli {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static String readJsonFile(String filePath) throws IOException {
+    return new String(Files.readAllBytes(Paths.get(filePath)));
   }
 }
