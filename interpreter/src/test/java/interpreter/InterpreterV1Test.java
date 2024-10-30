@@ -67,7 +67,7 @@ public class InterpreterV1Test extends CommonInterpreterTest {
 
   @Test
   public void failWithBooleanLiteral() {
-    String code = "let x: boolean = true";
+    String code = "let x: boolean = true;";
 
     Parser parser = getParser(code);
     Interpreter interpreter = getInterpreter(output);
